@@ -95,9 +95,9 @@ require('lualine').setup {
 }
 
 -- coc
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_perl_provider = 0
+--vim.g.loaded_python3_provider = 0
+--vim.g.loaded_ruby_provider = 0
+--vim.g.loaded_perl_provider = 0
 
 --telescope
 require('telescope').setup{  defaults = { file_ignore_patterns = { "node_modules" }} }
@@ -143,4 +143,7 @@ require'nvim-treesitter.configs'.setup {
   },
 
 }
+
+-- lsp
+require'lspconfig'.eslint.setup{}
 
