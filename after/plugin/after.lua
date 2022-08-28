@@ -4,53 +4,28 @@ vim.g.material_style = "deep ocean"
 vim.cmd('colorscheme material')
 
 -- nvim tree
-require("nvim-tree").setup({
-  sort_by = "case_sensitive",
-  view = {
-    adaptive_size = true,
-    mappings = {
-      list = {
-        { key = "u", action = "dir_up" },
-      },
-    },
-  },
-  renderer = {
-    group_empty = true,
-            icons = {
-          webdev_colors = true,
-          git_placement = "before",
-          padding = " ",
-          symlink_arrow = " ➛ ",
-          show = {
-            file = false,
-            folder = false,
-            folder_arrow = false,
-            git = false,
-          },
-          glyphs = {
-            folder = {
-              arrow_closed = "",
-              arrow_open = "",
-            },
-            git = {
-              unstaged = "✗",
-              staged = "✓",
-              unmerged = "",
-              renamed = "➜",
-              untracked = "★",
-              deleted = "",
-              ignored = "◌",
-            },
-          },
-}},
+require("nvim-tree").setup{
   git = {
-    enable = true,
-    ignore = false,
-  },
-  filters = {
-    dotfiles = false,
-  },
-})
+        ignore = false,
+      },
+      renderer = {
+        highlight_git = true,
+        indent_markers = {
+          enable = true,
+          inline_arrows = true,
+          icons = {
+            corner = "└",
+            edge = "│",
+            item = "│",
+            none = " ",
+          },
+
+      },
+     icons = {
+          git_placement = "signcolumn",
+        }}}
+
+
 
 -- lualine
 require('lualine').setup {
@@ -94,13 +69,12 @@ require('lualine').setup {
   extensions = {}
 }
 
--- coc
---vim.g.loaded_python3_provider = 0
---vim.g.loaded_ruby_provider = 0
---vim.g.loaded_perl_provider = 0
-
 --telescope
-require('telescope').setup{  defaults = { file_ignore_patterns = { "node_modules" }} }
+require('telescope').setup{ 
+  defaults = {
+    file_ignore_patterns = { "package-lock.json" }
+  }
+}
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
@@ -144,6 +118,72 @@ require'nvim-treesitter.configs'.setup {
 
 }
 
--- lsp
-require'lspconfig'.eslint.setup{}
+-- lsp // cmp // luasnip
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local lspconfig = require('lspconfig')
+
+
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local servers = { 'clangd', 'pyright', 'tsserver', 'eslint' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
+    on_attach = function()
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
+      vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = 0 })
+      vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { buffer = 0 })
+      vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { buffer = 0 })
+    end
+  }
+end
+
+
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
 
