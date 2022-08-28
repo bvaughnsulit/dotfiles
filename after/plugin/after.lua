@@ -1,7 +1,9 @@
 -- color scheme
 vim.g.material_style = "deep ocean"
---vim.g.material_style = "lighter"
+vim.g.monokaipro_filter = "classic"
+
 vim.cmd('colorscheme material')
+--vim.cmd('colorscheme monokaipro')
 
 -- nvim tree
 require("nvim-tree").setup{
