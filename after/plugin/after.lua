@@ -1,32 +1,9 @@
 -- color scheme
-vim.g.material_style = "deep ocean"
+--vim.g.material_style = "deep ocean"
 vim.g.monokaipro_filter = "classic"
 
 vim.cmd('colorscheme material')
 --vim.cmd('colorscheme monokaipro')
-
--- nvim tree
-require("nvim-tree").setup{
-  git = {
-        ignore = false,
-      },
-      renderer = {
-        highlight_git = true,
-        indent_markers = {
-          enable = true,
-          inline_arrows = true,
-          icons = {
-            corner = "└",
-            edge = "│",
-            item = "│",
-            none = " ",
-          },
-
-      },
-     icons = {
-          git_placement = "signcolumn",
-        }}}
-
 
 
 -- lualine
