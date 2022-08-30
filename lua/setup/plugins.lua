@@ -5,6 +5,7 @@ return require('packer').startup(function(use)
   use {'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
+  use { 'echasnovski/mini.nvim', branch = 'stable' }
 
 
   --themes
@@ -13,6 +14,13 @@ return require('packer').startup(function(use)
 
   use {'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'}
+  }
+
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
   }
   
   use {'nvim-lualine/lualine.nvim',
@@ -34,6 +42,9 @@ return require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
   use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
   use 'L3MON4D3/LuaSnip'
 
 end)

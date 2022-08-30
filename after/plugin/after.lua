@@ -105,7 +105,7 @@ local lspconfig = require('lspconfig')
 
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'clangd', 'pyright', 'tsserver', 'eslint' }
+local servers = { 'clangd', 'pyright', 'tsserver', 'eslint', 'vuels' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     capabilities = capabilities,
@@ -119,7 +119,6 @@ for _, lsp in ipairs(servers) do
     end
   }
 end
-
 
 -- luasnip setup
 local luasnip = require 'luasnip'
@@ -160,9 +159,11 @@ cmp.setup {
       end
     end, { 'i', 's' }),
   }),
-  sources = {
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-  },
+  } , {
+    { name = 'buffer' },
+  })  
 }
 
