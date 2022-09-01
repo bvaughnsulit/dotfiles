@@ -48,6 +48,11 @@
           },
         },
       },
+      git = {
+        enable = true,
+        ignore = false,
+        show_on_dirs = true,
+      },
       renderer = {
         add_trailing = false,
         group_empty = false,
@@ -56,7 +61,7 @@
         highlight_opened_files = "none",
         root_folder_modifier = ":~",
         indent_markers = {
-          enable = false,
+          enable = true,
           inline_arrows = true,
           icons = {
             corner = "└",
@@ -67,7 +72,7 @@
         },
         icons = {
           webdev_colors = true,
-          git_placement = "before",
+          git_placement = "signcolumn",
           padding = " ",
           symlink_arrow = " ➛ ",
           show = {
@@ -149,7 +154,7 @@
         change_dir = {
           enable = true,
           global = false,
-          restrict_above_cwd = false,
+          restrict_above_cwd = true,
         },
         expand_all = {
           max_folder_discovery = 300,

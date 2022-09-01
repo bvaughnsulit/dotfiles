@@ -7,6 +7,7 @@ return require('packer').startup(function(use)
   }
   use { 'echasnovski/mini.nvim', branch = 'stable' }
 
+  use {"folke/which-key.nvim"}
 
   --themes
   use 'marko-cerovac/material.nvim'
@@ -37,7 +38,12 @@ return require('packer').startup(function(use)
       {'nvim-lua/plenary.nvim'}
     }
   }
-  
+
+  use {
+    "akinsho/toggleterm.nvim",
+    tag = 'v2.*',
+  }
+
   -- LSP
   use 'neovim/nvim-lspconfig'
   use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
