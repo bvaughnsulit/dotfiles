@@ -110,7 +110,7 @@ vim.diagnostic.config({
     max_width = 60,
     source = true,
     -- severity = { max = 'warn' }, 
-    border = 'double',
+    border = 'rounded',
     style = 'minimal',
   },
 })
