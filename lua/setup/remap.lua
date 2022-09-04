@@ -10,17 +10,16 @@ local function bind(op, outer_opts)
 end
 
 local nnoremap = bind("n")
+local opts = { noremap=true, silent=true }
 
 -- TODO refactor remaps to be native lua, maybe get rid of keymap? 
 
--- change theme
 nnoremap(
   '<leader>mm',
   [[<Cmd>lua require('material.functions').toggle_style()<CR>]],
   { noremap = true, silent = true }
 )
 
--- telescope
 nnoremap(
   '<leader>ff',
   [[<cmd>lua require('telescope.builtin').find_files()<cr>]]
@@ -71,27 +70,19 @@ nnoremap(
   '<cmd>bnext<cr>'
 )
 
--- lsp
-nnoremap(
-  '<leader>gd',
-  function() vim.lsp.buf.definition() end
-)
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
--- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
--- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
--- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
+
+-- ** lsp stuff currently moved to lsp.lua **
+--
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 -- local on_attach = function(client, bufnr)
 --   -- Enable completion triggered by <c-x><c-o>
 --   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
---
---   -- Mappings.
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
 --   local bufopts = { noremap=true, silent=true, buffer=bufnr }
 --   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
 --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -109,8 +100,3 @@ local opts = { noremap=true, silent=true }
 --   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 --   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 -- end
---
--- local lsp_flags = {
---   -- This is the default in Nvim 0.7+
---   debounce_text_changes = 150,
--- }

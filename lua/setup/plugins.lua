@@ -26,7 +26,12 @@ return require('packer').startup(function(use)
         require('Comment').setup()
     end
   }
-  
+ 
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+  }
+
   use {'nvim-lualine/lualine.nvim',
     requires = {
       'kyazdani42/nvim-web-devicons',

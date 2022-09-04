@@ -15,8 +15,8 @@ for _, lsp in ipairs(servers) do
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
       vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = 0 })
-      vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { buffer = 0 })
-      vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { buffer = 0 })
+      vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, { buffer = 0 })
+      vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, { buffer = 0 })
     end
   }
 end
@@ -85,4 +85,32 @@ cmp.setup.cmdline('/', {
   sources = {
     { name = 'buffer' }
   }
+})
+
+
+-- define diagnostic signs, and highlights. currently configured to only
+-- highline line numbers, and not display signs
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, {
+    numhl = hl,
+    -- text = icon,
+    -- texthl = hl,
+  })
+end
+
+
+-- configure display of diagnostics and diagnostic floats
+vim.diagnostic.config({
+  signs = true,
+  virtual_text = false, -- { source = true, severity = 'error', spacing = 10, },
+  float = {
+    wrap = true,
+    max_width = 60,
+    source = true,
+    -- severity = { max = 'warn' }, 
+    border = 'double',
+    style = 'minimal',
+  },
 })

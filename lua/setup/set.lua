@@ -27,5 +27,5 @@ vim.opt.termguicolors = true
 vim.opt.swapfile = false
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.timeoutlen = 500
+vim.opt.timeoutlen = 1000
 vim.opt.hlsearch = false
