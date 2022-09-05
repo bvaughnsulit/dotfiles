@@ -6,12 +6,19 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 local servers = {
-  'clangd',
   'pyright',
   'tsserver',
   'eslint',
-  'vuels',
   'sumneko_lua',
+  'volar',
+  'cssls',
+  'dockerls',
+  'html',
+  'emmet_ls',
+  'jsonls',
+  'tailwindcss',
+  'vimls',
+
 }
 
 local on_attach = function(_, bufnr)
@@ -41,6 +48,16 @@ require'lspconfig'.sumneko_lua.setup {
       telemetry = { enable = false, },
     },
   },
+}
+
+-- custom vue (volar) configs
+require'lspconfig'.volar.setup{
+  init_options = {
+    typescript = {
+      -- putting this as an absolute path feels unwise. need to find a better way.
+      serverPath = '/Users/vaughn/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/tsserverlibrary.js'
+    }
+  }
 }
 
 cmp.setup {
