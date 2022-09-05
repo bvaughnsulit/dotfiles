@@ -10,7 +10,7 @@ local function bind(op, outer_opts)
 end
 
 local nnoremap = bind("n")
-local opts = { noremap=true, silent=true }
+local opts = { noremap=true, silent=true, }
 
 -- TODO refactor remaps to be native lua, maybe get rid of keymap? 
 
@@ -74,6 +74,13 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+
+vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], {})
+vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+
 
 
 -- ** lsp stuff currently moved to lsp.lua **

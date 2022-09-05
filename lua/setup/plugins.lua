@@ -15,7 +15,9 @@ return require('packer').startup(function(use)
   --themes
   use 'marko-cerovac/material.nvim'
   use 'https://gitlab.com/__tpb/monokai-pro.nvim'
-
+  use 'ishan9299/nvim-solarized-lua'
+  use 'shaunsingh/solarized.nvim'
+  
   use {'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'}
   }
@@ -53,7 +55,6 @@ return require('packer').startup(function(use)
   }
 
   use "lukas-reineke/indent-blankline.nvim"
-  use "RRethy/vim-illuminate"
 
   -- LSP
   use 'neovim/nvim-lspconfig'
