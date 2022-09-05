@@ -1,6 +1,6 @@
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "bash", "comment", "css", "dockerfile", "gitignore", "graphql", "html", "http", "javascript", "jsdoc", "json", "json5", "lua", "markdown", "markdown_inline", "python", "regex", "scss", "sql", "svelte", "todotxt", "tsx", "typescript", "vim", "vue", "yaml" },
+  ensure_installed = "all",
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -9,17 +9,11 @@ require'nvim-treesitter.configs'.setup {
   auto_install = true,
 
   -- List of parsers to ignore installing (for "all")
-  --ignore_install = { "javascript" },
+  ignore_install = { "Glimmer and Ember", "Godot", "Godot Resources", "agda", "beancount", "bibtex", "c_sharp", "clojure", "cmake", "commonlisp", "cooklang", "cuda", "d", "dart", "devicetree", "dot", "eex", "elixir", "elm", "elvish", "embedded_template", "erlang", "fennel", "fish", "foam", "fortran", "fusion", "gleam", "glsl", "hack", "haskell", "hcl", "heex", "hjson", "hlsl", "hocon", "julia", "kotlin", "lalrpop", "latex", "ledger", "llvm", "m68k", "meson", "ninja", "nix", "norg", "ocaml", "ocaml_interface", "ocamllex", "org", "pascal", "perl", "pioasm", "proto", "pug", "ql", "qmljs", "r", "racket", "rasi", "rego", "rnoweb", "rst", "ruby", "scala", "scheme", "slint", "solidity", "sparql", "supercollider", "surface", "sxhkdrc", "teal", "tiger", "tlaplus", "toml", "turtle", "v", "vala", "verilog", "wgsl", "yang", "zig", "java" },
 
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
-
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { "c", "rust" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).

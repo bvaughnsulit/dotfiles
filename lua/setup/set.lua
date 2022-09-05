@@ -20,6 +20,7 @@ vim.opt.hidden = true
 vim.opt.undofile = true
 vim.opt.undodir = os.getenv( "HOME" ) .. "/.vim/undo" 
 vim.opt.linebreak = true
+vim.opt.breakindent = true
 vim.opt.wrap = true
 vim.opt.signcolumn = "yes"
 vim.opt.clipboard = "unnamed"
@@ -30,3 +31,23 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.timeoutlen = 1000
 vim.opt.hlsearch = false
+vim.opt.completeopt = 'menuone,noselect'
+
+
+-- want to test the options below individually before enabling
+
+-- Remap for dealing with word wrap
+-- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+-- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+-- local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+-- vim.api.nvim_create_autocmd('TextYankPost', {
+--   callback = function()
+--     vim.highlight.on_yank()
+--   end,
+--   group = highlight_group,
+--   pattern = '*',
+-- })
+--

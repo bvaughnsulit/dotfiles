@@ -1,32 +1,48 @@
--- lsp // cmp // luasnip
+local lspconfig = require('lspconfig')
+local luasnip = require 'luasnip'
+local cmp = require 'cmp'
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-local lspconfig = require('lspconfig')
+local servers = {
+  'clangd',
+  'pyright',
+  'tsserver',
+  'eslint',
+  'vuels',
+  'sumneko_lua',
+}
+
+local on_attach = function(_, bufnr)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
+end
 
 
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'clangd', 'pyright', 'tsserver', 'eslint', 'vuels' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
+    on_attach = on_attach, 
     capabilities = capabilities,
-    on_attach = function()
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = 0 })
-      vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = 0 })
-      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = 0 })
-      vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, { buffer = 0 })
-      vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, { buffer = 0 })
-    end
   }
 end
 
--- luasnip setup
-local luasnip = require 'luasnip'
+-- custom lua configs
+require'lspconfig'.sumneko_lua.setup {
+  on_attach = on_attach, 
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT', },
+      diagnostics = { globals = {'vim'}, },
+      workspace = { library = vim.api.nvim_get_runtime_file("", true), },
+      telemetry = { enable = false, },
+    },
+  },
+}
 
-
--- nvim-cmp setup
-local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
