@@ -15,6 +15,7 @@ return require('packer').startup(function(use)
   --themes
   use 'marko-cerovac/material.nvim'
   use 'https://gitlab.com/__tpb/monokai-pro.nvim'
+  use 'sainnhe/gruvbox-material'
   use 'ishan9299/nvim-solarized-lua'
   use 'shaunsingh/solarized.nvim'
   

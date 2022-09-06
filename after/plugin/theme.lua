@@ -1,3 +1,12 @@
+vim.g.gruvbox_material_background = 'medium'
+vim.opt.background=light
+vim.cmd('colorscheme gruvbox-material')
+
+
+
+
+
+
 require('material').setup{
 	custom_highlights = {
 		MiniCursorword = { link = "Search" },
@@ -10,7 +19,7 @@ require('material').setup{
 
 
 -- color scheme
-vim.g.material_style = "deep ocean"
-vim.g.monokaipro_filter = "classic"
+-- vim.g.material_style = "deep ocean"
+-- vim.g.monokaipro_filter = "classic"
 -- vim.cmd('colorscheme material')
  --vim.cmd('colorscheme monokaipro')
