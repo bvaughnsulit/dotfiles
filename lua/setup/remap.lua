@@ -56,6 +56,11 @@ nnoremap(
 )
 
 nnoremap(
+  '<leader>?',
+  '<cmd>Telescope help_tags<cr>'
+)
+
+nnoremap(
   '<leader>e',
   '<cmd>NvimTreeToggle<cr>'
 )
@@ -70,26 +75,41 @@ nnoremap(
   '<cmd>bnext<cr>'
 )
 
+
+nnoremap(
+  [[<C-\>]],
+  '<cmd>ToggleTermToggleAll<cr>'
+)
+
+nnoremap(
+  '<leader>t2',
+  '<cmd>ToggleTerm 2<cr>'
+)
+
+nnoremap(
+  '<leader>t3',
+  '<cmd>ToggleTerm 3<cr>'
+)
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
+
+vim.keymap.set('t', [[<C-\>]], '<cmd>ToggleTermToggleAll<CR>' , {})
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], {})
 vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
 vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
 vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 
+-- vim.keymap.set('n', '<C-;>', [[<cmd>ToggleTermToggleAll<CR>]], {})
 
 
 -- ** lsp stuff currently moved to lsp.lua **
 --
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
 -- local on_attach = function(client, bufnr)
---   -- Enable completion triggered by <c-x><c-o>
---   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 --   local bufopts = { noremap=true, silent=true, buffer=bufnr }
 --   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
 --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)

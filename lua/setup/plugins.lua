@@ -49,10 +49,8 @@ return require('packer').startup(function(use)
     }
   }
 
-  use {
-    "akinsho/toggleterm.nvim",
-    tag = 'v2.*',
-  }
+  -- local fork of toggleterm  
+  use '$HOME/dev/nvim/toggleterm.nvim'
 
   use "lukas-reineke/indent-blankline.nvim"
 
