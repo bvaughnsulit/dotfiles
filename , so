@@ -21,9 +21,6 @@ return require('packer').startup(function(use)
   use 'sainnhe/gruvbox-material'
   use 'ishan9299/nvim-solarized-lua'
   use 'shaunsingh/solarized.nvim'
-  use { "catppuccin/nvim", as = "catppuccin" }
-  use 'folke/tokyonight.nvim'
-  use "EdenEast/nightfox.nvim"
 
   use {'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'}

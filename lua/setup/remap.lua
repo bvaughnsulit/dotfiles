@@ -61,7 +61,7 @@ nnoremap(
 )
 
 nnoremap(
-  '<leader>e',
+  '<leader>ee',
   '<cmd>NvimTreeToggle<cr>'
 )
 
@@ -91,6 +91,13 @@ nnoremap(
   '<cmd>ToggleTerm 3<cr>'
 )
 
+-- stop using arrow keys!!!
+nnoremap('<up>','<>', opts)
+nnoremap('<down>','<>', opts)
+nnoremap('<left>','<>', opts)
+nnoremap('<right>','<>', opts)
+
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -105,15 +112,9 @@ vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 
 
-
-vim.api.nvim_create_user_command(
-  'Themes',
-  function ()
-    require('telescope.builtin').colorscheme({ enable_preview = true })
-  end, {}
-)
-
--- vim.keymap.set('n', '<C-;>', [[<cmd>ToggleTermToggleAll<CR>]], {})
+-- always paste from yank register at matching indent level
+vim.keymap.set({'n', 'x'}, 'p', '"0]p', {})
+vim.keymap.set({'n', 'x'}, 'P', '"0[p', {})
 
 
 -- ** lsp stuff currently moved to lsp.lua **

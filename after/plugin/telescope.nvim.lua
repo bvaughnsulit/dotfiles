@@ -1,6 +1,6 @@
 local actions = require("telescope.actions")
 require('telescope').setup{
-  defaults = {
+  degfaults = {
     layout_strategy = 'vertical',
     layout_config = {
       mirror = true,

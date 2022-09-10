@@ -33,7 +33,7 @@
         mappings = {
           custom_only = false,
           list = {
-            -- user mappings go here
+            -- custom mappings
           },
         },
         float = {
@@ -47,11 +47,6 @@
             col = 1,
           },
         },
-      },
-      git = {
-        enable = true,
-        ignore = false,
-        show_on_dirs = true,
       },
       renderer = {
         add_trailing = false,
@@ -100,9 +95,9 @@
               staged =  "",
               unmerged = "",
               renamed = "➜",
-              untracked = "六",
+              untracked = "◌", --六
               deleted = "",
-              ignored = "◌",
+              ignored = "",
             },
           },
         },
@@ -145,7 +140,7 @@
       },
       git = {
         enable = true,
-        ignore = true,
+        ignore = false,
         show_on_dirs = true,
         timeout = 400,
       },
@@ -170,7 +165,7 @@
           },
         },
         open_file = {
-          quit_on_open = false,
+          quit_on_open = true,
           resize_window = true,
           window_picker = {
             enable = true,

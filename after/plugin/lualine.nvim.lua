@@ -7,6 +7,7 @@ require('lualine').setup {
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
       statusline = {'NvimTree'},
+      tabline = {'NvimTree'},
       winbar = {},
     },
     ignore_focus = {},
@@ -36,11 +37,13 @@ require('lualine').setup {
   },
   tabline = {
     lualine_a = {
-      { 'buffers',       
+      { 'windows',
       symbols = {
-        modified = ' *',      -- Text to show when the buffer is modified
-        alternate_file = '', -- Text to show to identify the alternate file
-        directory =  '',     -- Text to show when the buffer is a directory
+        modified = ' *',
+        directory =  '',
+      },
+        filetype_names = {
+          NvimTree = '',
       },
     }},
     lualine_b = {},
