@@ -113,9 +113,12 @@ vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 
 
 -- always paste from yank register at matching indent level
-vim.keymap.set({'n', 'x'}, 'p', '"0]p', {})
-vim.keymap.set({'n', 'x'}, 'P', '"0[p', {})
+-- vim.keymap.set({'n', 'x'}, 'p', '"0]p', {})
+-- vim.keymap.set({'n', 'x'}, 'P', '"0[p', {})
 
+-- always paste at matching indent level
+vim.keymap.set({'n', 'x'}, 'p', ']p', {})
+vim.keymap.set({'n', 'x'}, 'P', '[p', {})
 
 -- ** lsp stuff currently moved to lsp.lua **
 --
