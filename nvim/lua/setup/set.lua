@@ -33,7 +33,7 @@ vim.opt.splitright = true
 vim.opt.timeoutlen = 1000
 vim.opt.hlsearch = false
 vim.opt.completeopt = 'menuone,noselect'
-
+vim.opt.diffopt = 'vertical,closeoff'
 
 -- want to test the options below individually before enabling
 

@@ -42,7 +42,8 @@ nnoremap(
 
 nnoremap(
   '<leader>b',
-  '<cmd>Telescope buffers<cr>'
+  [[<cmd>lua require('telescope.builtin').buffers({sort_mru = true, ignore_current_buffer = true})
+  <cr>]]
 )
 
 nnoremap(

@@ -16,8 +16,8 @@
       sync_root_with_cwd = false,
       reload_on_bufenter = false,
       respect_buf_cwd = false,
-      on_attach = "disable", -- function(bufnr). If nil, will use the deprecated mapping strategy
-      remove_keymaps = false, -- boolean (disable totally or not) or list of key (lhs)
+      on_attach = "disable",
+      remove_keymaps = false,
       view = {
         adaptive_size = false,
         centralize_selection = false,
@@ -98,7 +98,7 @@
               untracked = "﬒", --六
               deleted = "",
               ignored = "", --◌
-            }, 
+            },
           },
         },
         special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },

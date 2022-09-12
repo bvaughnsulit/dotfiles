@@ -49,6 +49,7 @@ return require('packer').startup(function(use)
   }
 
   use 'tpope/vim-fugitive'
+  use 'lewis6991/gitsigns.nvim'
 
   use {
     'nvim-telescope/telescope.nvim',
@@ -57,6 +58,8 @@ return require('packer').startup(function(use)
       {'nvim-lua/plenary.nvim'}
     }
   }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+
 
   -- local fork of toggleterm  
   use '$HOME/dev/nvim/toggleterm.nvim'
