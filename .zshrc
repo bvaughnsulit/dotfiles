@@ -23,3 +23,8 @@ alias ls='ls -a'
 alias vi='nvim'
 alias vim='nvim'
 alias home='cd ~'
+
+# tmux
+alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
+alias tmls='tmux new -A -s tmux \; choose-session'
+alias tm='tmux new -A -s tmux' 
