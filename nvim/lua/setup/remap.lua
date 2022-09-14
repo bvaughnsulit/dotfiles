@@ -105,13 +105,13 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
 
-vim.keymap.set('t', [[<C-\>]], '<cmd>' , {})
+vim.keymap.set('t', [[<C-\>]], '<cmd>ToggleTermToggleAll<cr>' , {})
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], {})
 vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
 vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
 vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-
+vim.keymap.set('n', '<leader>!!', '<cmd>TermExec cmd=!!<cr>', opts)
 
 -- always paste from yank register at matching indent level
 -- vim.keymap.set({'n', 'x'}, 'p', '"0]p', {})
