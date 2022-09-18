@@ -26,19 +26,20 @@ local on_attach = function(_, bufnr)
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 end
 
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    on_attach = on_attach, 
+    on_attach = on_attach,
     capabilities = capabilities,
   }
 end
 
 -- custom lua configs
 require'lspconfig'.sumneko_lua.setup {
-  on_attach = on_attach, 
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     Lua = {
@@ -98,7 +99,7 @@ cmp.setup {
     { name = 'luasnip' },
   } , {
     { name = 'buffer' },
-  })  
+  })
 }
 
 -- Use cmdline & path source for ':'
@@ -137,12 +138,12 @@ end
 -- configure display of diagnostics and diagnostic floats
 vim.diagnostic.config({
   signs = true,
-  virtual_text = false, -- { source = true, severity = 'error', spacing = 10, },
+  virtual_text = { source = true, severity = 'error', spacing = 10, },
   float = {
     wrap = true,
     max_width = 60,
     source = true,
-    -- severity = { max = 'warn' }, 
+    severity = { max = 'warn' },
     border = 'rounded',
     style = 'minimal',
   },

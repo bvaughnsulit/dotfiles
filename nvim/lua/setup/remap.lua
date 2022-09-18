@@ -27,7 +27,7 @@ nnoremap(
 
 nnoremap(
   '<C-p>',
-  [[<cmd>lua require('telescope.builtin').find_files()<cr>]]
+  [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]]
 )
 
 nnoremap(
@@ -40,10 +40,20 @@ nnoremap(
   [[<cmd>lua require('telescope.builtin').live_grep()<cr>]]
 )
 
+
+local telescope_buffers = function()
+  return require('telescope.builtin').buffers(
+    require('telescope.themes').get_dropdown{
+      sort_mru = true,
+      initial_mode = 'normal',
+      ignore_current_buffer = true,
+      layout_config = { anchor = "N" }
+    })
+end
+
 nnoremap(
   '<leader>b',
-  [[<cmd>lua require('telescope.builtin').buffers({sort_mru = true, ignore_current_buffer = true})
-  <cr>]]
+  telescope_buffers
 )
 
 nnoremap(
