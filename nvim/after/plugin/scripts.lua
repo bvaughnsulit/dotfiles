@@ -8,3 +8,14 @@ vim.api.nvim_create_user_command(
     vim.cmd('PackerSync')
   end, {}
 )
+
+
+-- [[ Highlight on yank ]]
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank({ timeout = 700, higroup = 'visual' })
+  end,
+  group = highlight_group,
+  pattern = '*',
+})

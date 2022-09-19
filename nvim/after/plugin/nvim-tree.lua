@@ -131,7 +131,7 @@
       },
       filters = {
         dotfiles = false,
-        custom = {},
+        custom = {'.DS_Store'},
         exclude = {},
       },
       filesystem_watchers = {

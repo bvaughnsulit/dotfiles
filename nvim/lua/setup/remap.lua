@@ -21,11 +21,6 @@ nnoremap(
 )
 
 nnoremap(
-  '<leader>ff',
-  [[<cmd>lua require('telescope.builtin').find_files()<cr>]]
-)
-
-nnoremap(
   '<C-p>',
   [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]]
 )
@@ -44,15 +39,25 @@ nnoremap(
 nnoremap(
   '<leader>b',
   function()
-    return require('telescope.builtin').buffers(
+    require('telescope.builtin').buffers(
       require('telescope.themes').get_dropdown{
         sort_mru = true,
-        initial_mode = 'normal',
         ignore_current_buffer = true,
+        initial_mode = "normal",
         layout_config = { anchor = "N" }
       })
   end
 )
+
+vim.keymap.set('n', '<leader>/', function()
+  require('telescope.builtin').current_buffer_fuzzy_find(
+    require('telescope.themes').get_dropdown {
+      layout_config = {
+        anchor = "N",
+        width = 0.7,
+      },
+    })
+end, { desc = '[/] Fuzzily search in current buffer]' })
 
 nnoremap(
   '<leader>o',
@@ -136,6 +141,13 @@ nnoremap('<down>','<>', opts)
 nnoremap('<left>','<>', opts)
 nnoremap('<right>','<>', opts)
 
+
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 vim.keymap.set('n', ']l', '<cmd>cnext<CR>', opts)
 vim.keymap.set('n', '[l', '<cmd>cprevious<CR>', opts)

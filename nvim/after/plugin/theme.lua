@@ -10,9 +10,14 @@ require('material').setup{
 vim.api.nvim_create_user_command(
   'ThemeBrowse',
   function ()
-    require('telescope.builtin').colorscheme(
-      { enable_preview = true }
-    )
+    require('telescope.builtin').colorscheme({
+      layout_config = {
+        height = .5,
+        preview = false,
+        width = 0.2,
+      },
+      enable_preview = true
+    })
   end, {}
 )
 
