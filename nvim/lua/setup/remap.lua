@@ -40,20 +40,18 @@ nnoremap(
   [[<cmd>lua require('telescope.builtin').live_grep()<cr>]]
 )
 
-
-local telescope_buffers = function()
-  return require('telescope.builtin').buffers(
-    require('telescope.themes').get_dropdown{
-      sort_mru = true,
-      initial_mode = 'normal',
-      ignore_current_buffer = true,
-      layout_config = { anchor = "N" }
-    })
-end
-
+-- buffer dropdown
 nnoremap(
   '<leader>b',
-  telescope_buffers
+  function()
+    return require('telescope.builtin').buffers(
+      require('telescope.themes').get_dropdown{
+        sort_mru = true,
+        initial_mode = 'normal',
+        ignore_current_buffer = true,
+        layout_config = { anchor = "N" }
+      })
+  end
 )
 
 nnoremap(
@@ -76,16 +74,46 @@ nnoremap(
   '<cmd>NvimTreeToggle<cr>'
 )
 
-nnoremap(
-  '<C-h>',
-  '<cmd>bprev<cr>'
-)
 
 nnoremap(
-  '<C-l>',
-  '<cmd>bnext<cr>'
+  '<leader>do',
+  '<cmd>TroubleToggle<cr>'
 )
 
+-- write and source current file
+nnoremap(
+  '<leader>xx',
+  function ()
+    vim.cmd('w')
+    vim.cmd('so %')
+  end
+)
+
+
+
+--[[
+    
+    WINDOWS
+
+--]]
+
+nnoremap('<C-h>', '<cmd>wincmd h<cr>')
+nnoremap('<C-l>', '<cmd>wincmd l<cr>')
+nnoremap('<C-j>', '<cmd>wincmd j<cr>')
+nnoremap('<C-k>', '<cmd>wincmd k<cr>')
+
+nnoremap('<leader>ww', '<cmd>vertical resize +20<cr>')
+nnoremap('<leader>wn', '<cmd>vertical resize -20<cr>')
+nnoremap('<leader>wt', '<cmd>resize +8<cr>')
+nnoremap('<leader>ws', '<cmd>resize -8<cr>')
+
+
+
+--[[
+
+  TERMINAL
+
+--]]
 
 nnoremap(
   [[<C-\>]],
@@ -108,6 +136,9 @@ nnoremap('<down>','<>', opts)
 nnoremap('<left>','<>', opts)
 nnoremap('<right>','<>', opts)
 
+
+vim.keymap.set('n', ']l', '<cmd>cnext<CR>', opts)
+vim.keymap.set('n', '[l', '<cmd>cprevious<CR>', opts)
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)

@@ -22,7 +22,13 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
+    lualine_c = {
+      {
+        'filename',
+        path = 1,
+        symbols = { modified = '*'}
+      },
+    },
     lualine_x = {'location'},
     lualine_y = {'progress'},
     lualine_z = {'filetype'}
@@ -38,14 +44,14 @@ require('lualine').setup {
   tabline = {
     lualine_a = {
       { 'windows',
-      symbols = {
-        modified = ' *',
-        directory =  '',
-      },
+        symbols = {
+          modified = ' *',
+          directory =  '',
+        },
         filetype_names = {
-          NvimTree = '',
-      },
-    }},
+          NvimTree = '_',
+        },
+      }},
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},

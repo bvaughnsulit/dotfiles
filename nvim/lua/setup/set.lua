@@ -35,7 +35,7 @@ vim.opt.hlsearch = false
 vim.opt.completeopt = 'menuone,noselect'
 vim.opt.diffopt = 'vertical,closeoff'
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "both"
+vim.opt.cursorlineopt = "line"
 
 -- want to test the options below individually before enabling
 
