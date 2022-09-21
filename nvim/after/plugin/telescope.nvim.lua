@@ -2,6 +2,12 @@ local actions = require("telescope.actions")
 require('telescope').setup{
   defaults = {
     layout_strategy = 'vertical',
+    path_display = {
+      shorten = {
+        exclude = {1, -1}
+      }
+    },
+    color_devicons = true,
     layout_config = {
       mirror = true,
       prompt_position = "top",

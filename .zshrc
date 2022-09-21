@@ -22,6 +22,7 @@ alias ls='ls -a'
 alias vi='nvim'
 alias vim='nvim'
 alias home='cd ~'
+alias gho='gh browse'
 
 # tmux
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'

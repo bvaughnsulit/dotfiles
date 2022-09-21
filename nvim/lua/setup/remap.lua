@@ -30,10 +30,6 @@ nnoremap(
   [[<cmd>lua require('telescope.builtin').live_grep()<cr>]]
 )
 
-nnoremap(
-  '<leader>gr',
-  [[<cmd>lua require('telescope.builtin').live_grep()<cr>]]
-)
 
 -- buffer dropdown
 nnoremap(
@@ -42,8 +38,14 @@ nnoremap(
     require('telescope.builtin').buffers(
       require('telescope.themes').get_dropdown{
         sort_mru = true,
+        bufnr_width = 5,
         ignore_current_buffer = true,
         initial_mode = "normal",
+        path_display = {'tail'},
+        -- path_display = function(opts, path)
+        --   local tail = require("telescope.utils").path_tail(path)
+        --   return string.format("%s (%s)", tail, path)
+        -- end,
         layout_config = { anchor = "N" }
       })
   end
@@ -53,7 +55,7 @@ vim.keymap.set('n', '<leader>/', function()
   require('telescope.builtin').current_buffer_fuzzy_find(
     require('telescope.themes').get_dropdown {
       layout_config = {
-        anchor = "N",
+        anchor = "S",
         width = 0.7,
       },
     })
@@ -82,8 +84,21 @@ nnoremap(
 
 nnoremap(
   '<leader>do',
-  '<cmd>TroubleToggle<cr>'
+  function ()
+    require('telescope.builtin').diagnostics(
+      require('telescope.themes').get_dropdown {
+        initial_mode = 'normal',
+        no_sign = false,
+        layout_config = {
+          anchor = "S",
+          mirror = 'false',
+          width = 0.7,
+        },
+      }
+    )
+  end
 )
+
 
 -- write and source current file
 nnoremap(
@@ -174,23 +189,3 @@ vim.keymap.set('n', '<leader>!!', '<cmd>TermExec cmd=!!<cr>', opts)
 vim.keymap.set({'n', 'x'}, 'p', ']p', {})
 vim.keymap.set({'n', 'x'}, 'P', '[p', {})
 
--- ** lsp stuff currently moved to lsp.lua **
---
--- local on_attach = function(client, bufnr)
---   local bufopts = { noremap=true, silent=true, buffer=bufnr }
---   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
---   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
---   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
---   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
---   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
---   vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
---   vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
---   vim.keymap.set('n', '<space>wl', function()
---     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
---   end, bufopts)
---   vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
---   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
---   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
---   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
---   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
--- end

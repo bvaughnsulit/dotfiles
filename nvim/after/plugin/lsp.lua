@@ -24,8 +24,11 @@ local servers = {
 local on_attach = function(_, bufnr)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+  vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, { buffer = bufnr })
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
+  vim.keymap.set("n", "rn", vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 end
 
@@ -143,7 +146,7 @@ vim.diagnostic.config({
     wrap = true,
     max_width = 60,
     source = true,
-    severity = { max = 'warn' },
+    -- severity = { max = 'warn' }, 
     border = 'rounded',
     style = 'minimal',
   },

@@ -9,12 +9,13 @@ vim.api.nvim_create_user_command(
   end, {}
 )
 
+vim.api.nvim_create_user_command('Gho', function() vim.cmd('!gh browse') end, {})
 
 -- [[ Highlight on yank ]]
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank({ timeout = 700, higroup = 'visual' })
+    vim.highlight.on_yank({ timeout = 500, higroup = 'visual' })
   end,
   group = highlight_group,
   pattern = '*',
