@@ -23,6 +23,12 @@ vim.api.nvim_create_user_command(
 
 local themes = {}
 
+themes.miniScheme = function ()
+  vim.cmd('colorscheme minischeme')
+end
+vim.api.nvim_create_user_command('MiniScheme', themes.miniScheme, {})
+
+
 themes.gruvboxLight = function ()
   vim.g.gruvbox_material_background = 'medium'
   vim.opt.background=light
@@ -34,7 +40,7 @@ themes.materialDeepOcean = function ()
   vim.g.material_style = "deep ocean"
   vim.cmd('colorscheme material')
 end
-vim.api.nvim_create_user_command( 'MateriaDeepOcean', themes.materialDeepOcean, {})
+vim.api.nvim_create_user_command( 'MaterialDeepOcean', themes.materialDeepOcean, {})
 
 
 themes.monokai = function ()
