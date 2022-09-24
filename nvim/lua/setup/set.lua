@@ -31,6 +31,7 @@ vim.opt.swapfile = false
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.timeoutlen = 1000
+vim.opt.hlsearch = true
 vim.opt.completeopt = 'menuone,noselect'
 vim.opt.diffopt = 'vertical,closeoff'
 vim.opt.cursorline = true

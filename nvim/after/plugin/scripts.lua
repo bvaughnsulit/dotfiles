@@ -22,20 +22,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-
--- auto toggle hlsearch when entering and exiting cmd mode
-local auto_clear_hls = vim.api.nvim_create_augroup('auto-clear', { clear = true})
-vim.api.nvim_create_autocmd('CmdlineLeave', {
-  callback = function()
-    vim.opt.hlsearch = false
-  end,
-  group = auto_clear_hls,
-  pattern = '*'
-})
-vim.api.nvim_create_autocmd('CmdlineEnter', {
-  callback = function()
-    vim.opt.hlsearch = true
-  end,
-  group = auto_clear_hls,
-  pattern = '*'
-})

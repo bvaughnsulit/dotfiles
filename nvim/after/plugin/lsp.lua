@@ -100,10 +100,27 @@ cmp.setup {
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-  } , {
-    { name = 'buffer' },
-  })
+  },
+    {
+      { name = 'buffer' },
+      { name = 'nvim_lua' },
+      { name = 'nvim_lsp_signature_help' },
+    }),
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.menu = ({
+        buffer = "[Buffer]",
+        nvim_lsp = "[LSP]",
+        luasnip = "[LuaSnip]",
+        nvim_lua = "[Lua]",
+        nvim_lsp_signature_help = "[LSP]",
+      })[entry.source.name]
+      return vim_item
+    end
+  },
+  experimental = { }
 }
+
 
 -- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
@@ -111,8 +128,8 @@ cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
-    { name = 'cmdline' }
-  })
+      { name = 'cmdline' }
+    })
 })
 
 
