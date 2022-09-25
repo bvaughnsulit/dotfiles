@@ -14,6 +14,7 @@ local vnoremap = bind("v")
 local inoremap = bind("i")
 local opts = { noremap=true, silent=true, }
 
+-- TODO move plugin specific maps to own files
 -- TODO refactor remaps to be native lua, maybe get rid of keymap? 
 
 nnoremap(
@@ -53,7 +54,7 @@ nnoremap(
   end
 )
 
-vim.keymap.set('n', '<leader>/', function()
+vim.keymap.set('n', '<leader>/f', function()
   require('telescope.builtin').current_buffer_fuzzy_find(
     require('telescope.themes').get_dropdown {
       layout_config = {
@@ -111,15 +112,15 @@ nnoremap(
   end
 )
 
--- find and replace/modify in buffer
-nnoremap('<leader>fr', ':%s/\\<<C-r><C-w>\\>//gI<left><left><left>')
-nnoremap('<leader>fm', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<left><left><left>')
--- find in replace in visual selection
-vnoremap('<leader>fr', ':s/<left><left>')
+
+nnoremap('<leader>/y', '/\\V<C-r>0<cr>')
+-- find last search register and replace
+nnoremap('<leader>ra', ':%s/\\V<C-r>///gI<left><left><left>')
+vnoremap('<leader>ra', ':s/\\V<C-r>///gI<left><left><left>')
 
 -- append and prepend selected lines
-vnoremap('<leader>lp', ':s/^/')
-vnoremap('<leader>la', ':s/$/')
+vnoremap('<leader>lp', ':s/^//|noh<left><left><left><left><left>')
+vnoremap('<leader>la', ':s/$//|noh<left><left><left><left><left>')
 
 -- move lines up and down
 nnoremap ('<M-j>', ':m .+1<CR>==')
