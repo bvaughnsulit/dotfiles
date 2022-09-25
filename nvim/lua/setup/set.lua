@@ -24,7 +24,6 @@ vim.opt.breakindent = true
 vim.opt.wrap = true
 vim.opt.colorcolumn='80'
 vim.opt.signcolumn = "yes"
-vim.opt.clipboard = "unnamed"
 vim.opt.showtabline = 0
 vim.opt.termguicolors = true
 vim.opt.swapfile = false

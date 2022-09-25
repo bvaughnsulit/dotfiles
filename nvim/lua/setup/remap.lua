@@ -1,5 +1,5 @@
 local function bind(op, outer_opts)
-    outer_opts = outer_opts or {noremap = true}
+    outer_opts = outer_opts or { noremap = true, silent = true }
     return function(lhs, rhs, opts)
         opts = vim.tbl_extend("force",
             outer_opts,
@@ -10,6 +10,8 @@ local function bind(op, outer_opts)
 end
 
 local nnoremap = bind("n")
+local vnoremap = bind("v")
+local inoremap = bind("i")
 local opts = { noremap=true, silent=true, }
 
 -- TODO refactor remaps to be native lua, maybe get rid of keymap? 
@@ -33,7 +35,7 @@ nnoremap(
 
 -- buffer dropdown
 nnoremap(
-  '<leader>b',
+  '<C-b>',
   function()
     require('telescope.builtin').buffers(
       require('telescope.themes').get_dropdown{
@@ -109,14 +111,35 @@ nnoremap(
   end
 )
 
+-- find and replace/modify in buffer
+nnoremap('<leader>fr', ':%s/\\<<C-r><C-w>\\>//gI<left><left><left>')
+nnoremap('<leader>fm', ':%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<left><left><left>')
+-- find in replace in visual selection
+vnoremap('<leader>fr', ':s/<left><left>')
+
+-- append and prepend selected lines
+vnoremap('<leader>lp', ':s/^/')
+vnoremap('<leader>la', ':s/$/')
+
+-- move lines up and down
+nnoremap ('<M-j>', ':m .+1<CR>==')
+nnoremap ('<M-k>', ':m .-2<CR>==')
+vnoremap ("<M-j>", ":m '>+1<CR>gv=gv")
+vnoremap ("<M-k>", ":m '<-2<CR>gv=gv")
+
+-- yank to system clipboard
+nnoremap ('<leader>Y', '\"+y$')
+vim.keymap.set({'n','v'}, '<leader>y', '\"+y', opts)
+
+-- delete, change, put to black hole register
+vim.keymap.set({'n','v'}, '<leader>d', '\"_d', opts)
+vim.keymap.set({'n','v'}, '<leader>c', '\"_c', opts)
+vim.keymap.set({'x'}, '<leader>p', '\"_dP', opts)
 
 
 --[[
-    
     WINDOWS
-
 --]]
-
 nnoremap('<C-h>', '<cmd>wincmd h<cr>')
 nnoremap('<C-l>', '<cmd>wincmd l<cr>')
 nnoremap('<C-j>', '<cmd>wincmd j<cr>')

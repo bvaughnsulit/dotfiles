@@ -28,7 +28,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-  vim.keymap.set("n", "rn", vim.lsp.buf.rename, { buffer = bufnr })
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 end
 
@@ -118,7 +118,8 @@ cmp.setup {
       return vim_item
     end
   },
-  experimental = { }
+  experimental = {
+  }
 }
 
 
