@@ -29,12 +29,12 @@ end
 vim.api.nvim_create_user_command('MiniScheme', themes.miniScheme, {})
 
 
-themes.gruvboxLight = function ()
-  vim.g.gruvbox_material_background = 'medium'
-  vim.opt.background=light
-  vim.cmd('colorscheme gruvbox-material')
-end
-vim.api.nvim_create_user_command('GruvboxLight', themes.gruvboxLight, {})
+-- themes.gruvboxLight = function ()
+--   vim.g.gruvbox_material_background = 'medium'
+--   vim.opt.background=light
+--   vim.cmd('colorscheme gruvbox-material')
+-- end
+-- vim.api.nvim_create_user_command('GruvboxLight', themes.gruvboxLight, {})
 
 themes.materialDeepOcean = function ()
   vim.g.material_style = "deep ocean"
@@ -68,9 +68,8 @@ local setRandomTheme = function()
   for key, _ in pairs(themes) do table.insert(keys, key) end
   local randomTheme = keys[math.random(1, #keys)]
   themes[randomTheme]()
-  print(randomTheme)
 end
 
-setRandomTheme()
+-- setRandomTheme()
 
 vim.api.nvim_create_user_command('RandomTheme', setRandomTheme, {})

@@ -3,9 +3,9 @@ require('telescope').setup{
   defaults = {
     layout_strategy = 'vertical',
     path_display = {
-      shorten = {
-        exclude = {1, -1}
-      }
+      -- shorten = {
+      --   exclude = {1, -1}
+      -- }
     },
     color_devicons = true,
     layout_config = {
@@ -25,7 +25,15 @@ require('telescope').setup{
         sort_mru = true,
       },
     },
-    file_ignore_patterns = { "package-lock.json", "^.git/" },
+    file_ignore_patterns = {
+      "package%-lock%.json",
+      "^.git/",
+      "%.png$",
+      "%.svg$",
+      "%.gif$",
+      "%.jpg$",
+      "%.jpeg$",
+    },
     mappings = {
       i = {
         ["<esc>"] = actions.close,

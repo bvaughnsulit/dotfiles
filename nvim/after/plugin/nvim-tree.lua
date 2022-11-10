@@ -89,8 +89,8 @@ local opts = {
           symlink_open = "",
         },
         git = {
-          unstaged = "",
-          staged =  "",
+          unstaged = "",
+          staged =  "",
           unmerged = "",
           renamed = "➜",
           untracked = "﬒", --六
@@ -210,3 +210,5 @@ vim.api.nvim_create_user_command(
   end,
   {})
 require("nvim-tree").setup(opts)
+
+vim.keymap.set("n", '<leader>ee', '<cmd>NvimTreeToggle<CR>', {})

@@ -35,4 +35,3 @@ vim.opt.completeopt = 'menuone,noselect'
 vim.opt.diffopt = 'vertical,closeoff'
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "line"
-vim.opt.updatetime = 250

@@ -3,7 +3,7 @@ local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local servers = {
   'pyright',
@@ -18,7 +18,6 @@ local servers = {
   'jsonls',
   'tailwindcss',
   'vimls',
-
 }
 
 local on_attach = function(_, bufnr)
@@ -37,6 +36,7 @@ for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
+    single_file_support = true,
   }
 end
 
@@ -69,6 +69,9 @@ cmp.setup {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
+  },
+  completion = {
+    keyword_length = 2
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -131,8 +134,8 @@ cmp.setup.cmdline(':', {
   }, {
       { name = 'cmdline' }
     })
-})
 
+})
 
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
@@ -150,7 +153,6 @@ for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, {
     numhl = hl,
-    -- text = icon,
     -- texthl = hl,
   })
 end
@@ -159,13 +161,20 @@ end
 -- configure display of diagnostics and diagnostic floats
 vim.diagnostic.config({
   signs = true,
-  virtual_text = { source = true, severity = 'error', spacing = 10, },
+  virtual_text = false,
   float = {
     wrap = true,
     max_width = 60,
     source = true,
-    -- severity = { max = 'warn' }, 
     border = 'rounded',
     style = 'minimal',
   },
 })
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, { border = "rounded" }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, { border = "rounded" }
+)

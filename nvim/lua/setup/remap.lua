@@ -79,10 +79,6 @@ nnoremap(
   '<cmd>Telescope help_tags<cr>'
 )
 
-nnoremap(
-  '<leader>ee',
-  '<cmd>NvimTreeToggle<cr>'
-)
 
 
 nnoremap(
@@ -133,9 +129,9 @@ nnoremap ('<leader>Y', '\"+y$')
 vim.keymap.set({'n','v'}, '<leader>y', '\"+y', opts)
 
 -- delete, change, put to black hole register
-vim.keymap.set({'n','v'}, '<leader>d', '\"_d', opts)
-vim.keymap.set({'n','v'}, '<leader>c', '\"_c', opts)
-vim.keymap.set({'x'}, '<leader>p', '\"_dP', opts)
+vim.keymap.set({'n','v'}, '<leader>xd', '\"_d', opts)
+vim.keymap.set({'n','v'}, '<leader>xc', '\"_c', opts)
+vim.keymap.set({'x'}, '<leader>xp', '\"_dP', opts)
 
 
 --[[

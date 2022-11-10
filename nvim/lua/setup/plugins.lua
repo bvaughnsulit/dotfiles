@@ -11,11 +11,6 @@ return require('packer').startup(function(use)
 
   use { 'echasnovski/mini.nvim', branch = 'stable' }
 
-  -- use {
-  --   "folke/which-key.nvim",
-  --   config = function() require("which-key").setup {} end
-  -- }
-
   --themes
   use 'marko-cerovac/material.nvim'
   use 'https://gitlab.com/__tpb/monokai-pro.nvim'
@@ -26,6 +21,7 @@ return require('packer').startup(function(use)
   use 'folke/tokyonight.nvim'
   use "EdenEast/nightfox.nvim"
   use 'ofirgall/ofirkai.nvim'
+  use 'B4mbus/oxocarbon-lua.nvim'
 
   use {'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'}
@@ -80,5 +76,3 @@ return require('packer').startup(function(use)
   use 'https://github.com/hrsh7th/cmp-nvim-lua'
 
 end)
-
-
