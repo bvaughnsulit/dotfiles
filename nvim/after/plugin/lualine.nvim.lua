@@ -6,7 +6,6 @@ require('lualine').setup {
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
       statusline = {},
-      tabline = {},
       winbar = {},
     },
     ignore_focus = {
@@ -16,7 +15,6 @@ require('lualine').setup {
     globalstatus = true,
     refresh = {
       statusline = 1000,
-      tabline = 1000,
       winbar = 1000,
     }
   },

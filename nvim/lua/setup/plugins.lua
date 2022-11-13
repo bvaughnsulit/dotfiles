@@ -9,6 +9,17 @@ return require('packer').startup(function(use)
   }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
 
+  -- LSP
+  use 'neovim/nvim-lspconfig'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'L3MON4D3/LuaSnip'
+  use 'hrsh7th/cmp-nvim-lsp-signature-help'
+  use 'https://github.com/hrsh7th/cmp-nvim-lua'
+
   use { 'echasnovski/mini.nvim', branch = 'stable' }
 
   --themes
@@ -64,15 +75,15 @@ return require('packer').startup(function(use)
     config = function() require("nvim-autopairs").setup {} end
   }
 
-  -- LSP
-  use 'neovim/nvim-lspconfig'
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'L3MON4D3/LuaSnip'
-  use 'hrsh7th/cmp-nvim-lsp-signature-help'
-  use 'https://github.com/hrsh7th/cmp-nvim-lua'
+  use {
+    'akinsho/bufferline.nvim',
+    tag = "v3.*",
+    requires = 'nvim-tree/nvim-web-devicons'
+  }
+
+  use 'declancm/cinnamon.nvim'
+
+  use 'numToStr/Navigator.nvim'
+
 
 end)

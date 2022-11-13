@@ -54,6 +54,9 @@ nnoremap(
   end
 )
 
+
+vim.keymap.set({'n','v'}, '<leader>bd', '<cmd>bdelete<cr>', opts)
+
 vim.keymap.set('n', '<leader>/f', function()
   require('telescope.builtin').current_buffer_fuzzy_find(
     require('telescope.themes').get_dropdown {
@@ -148,22 +151,15 @@ nnoremap('<leader>wt', '<cmd>resize +8<cr>')
 nnoremap('<leader>ws', '<cmd>resize -8<cr>')
 
 
+-- customize scroll value base on height of window
+-- not needed with smooth scroll
+-- vim.keymap.set('n', '<c-u>', "(winheight(0) / 4) .. '<c-u>'", { expr = true, silent = true })
+-- vim.keymap.set('n', '<c-d>', "(winheight(0) / 4) .. '<c-d>'", { expr = true, silent = true })
 
---[[
-
-  TERMINAL
-
---]]
-
-nnoremap(
-  [[<C-\>]],
-  '<cmd>ToggleTermToggleAll<cr>'
-)
-
-nnoremap(
-  '<leader>t2',
-  '<cmd>ToggleTerm 2<cr>'
-)
+-- nnoremap(
+--   [[<C-\>]],
+--   '<cmd>ToggleTermToggleAll<cr>'
+-- )
 
 nnoremap(
   '<leader>t3',

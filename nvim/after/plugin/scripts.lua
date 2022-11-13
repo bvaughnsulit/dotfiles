@@ -1,6 +1,6 @@
 -- packer plugins file: save, source, take snapshot, sync
 vim.api.nvim_create_user_command(
-  'UpdatePlugins',
+  'PluginUpdate',
   function ()
     vim.cmd('w')
     vim.cmd('source %')
