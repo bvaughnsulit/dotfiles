@@ -22,3 +22,36 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+--
+-- TMUX COMMANDS
+-- 
+
+-- open and focus tmux pane
+vim.keymap.set(
+  'n',
+  '<C-\\>',
+  function()
+    -- if window is zoomed, unzoom 
+    vim.cmd([[ silent !tmux if-shell -F '\#{?window_zoomed_flag,1,0}' 'resize-pane -Z' '' ]])
+    -- move focus to right pane 
+    vim.cmd([[ silent !tmux select-pane -R ]])
+  end,
+  { silent = true }
+)
+
+-- repeat last command in tmux pane
+vim.keymap.set(
+  'n',
+  '<leader>!!',
+  function()
+    -- if zoomed, unzoom
+    vim.cmd([[ silent !tmux if-shell -F '\#{?window_zoomed_flag,1,0}' 'resize-pane -Z' '' ]])
+    -- repeat last command in top right pane
+    vim.cmd([[ silent !tmux send-keys -t {top-right} '\!\!' Enter ]])
+  end,
+  { silent = true }
+)
+
+-- create new vertical split in tmux
+-- wincmd o needs to also zoom
+-- can you add line breaks to ! command in vim?

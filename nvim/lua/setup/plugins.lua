@@ -65,9 +65,6 @@ return require('packer').startup(function(use)
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
 
-  -- local fork of toggleterm  
-  use '$HOME/dev/nvim/toggleterm.nvim'
-
   use "lukas-reineke/indent-blankline.nvim"
 
   use {

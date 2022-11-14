@@ -150,21 +150,10 @@ nnoremap('<leader>wn', '<cmd>vertical resize -20<cr>')
 nnoremap('<leader>wt', '<cmd>resize +8<cr>')
 nnoremap('<leader>ws', '<cmd>resize -8<cr>')
 
-
 -- customize scroll value base on height of window
 -- not needed with smooth scroll
 -- vim.keymap.set('n', '<c-u>', "(winheight(0) / 4) .. '<c-u>'", { expr = true, silent = true })
 -- vim.keymap.set('n', '<c-d>', "(winheight(0) / 4) .. '<c-d>'", { expr = true, silent = true })
-
--- nnoremap(
---   [[<C-\>]],
---   '<cmd>ToggleTermToggleAll<cr>'
--- )
-
-nnoremap(
-  '<leader>t3',
-  '<cmd>ToggleTerm 3<cr>'
-)
 
 -- stop using arrow keys!!!
 nnoremap('<up>','<>', opts)
@@ -188,15 +177,6 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-
-
-vim.keymap.set('t', [[<C-\>]], '<cmd>ToggleTermToggleAll<cr>' , {})
-vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], {})
-vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-vim.keymap.set('n', '<leader>!!', '<cmd>TermExec cmd=!!<cr>', opts)
 
 -- always paste from yank register at matching indent level
 -- vim.keymap.set({'n', 'x'}, 'p', '"0]p', {})
