@@ -31,10 +31,19 @@ vim.keymap.set(
   'n',
   '<C-\\>',
   function()
-    -- if window is zoomed, unzoom 
-    vim.cmd([[ silent !tmux if-shell -F '\#{?window_zoomed_flag,1,0}' 'resize-pane -Z' '' ]])
-    -- move focus to right pane 
-    vim.cmd([[ silent !tmux select-pane -R ]])
+    -- if window is zoomed, unzoom, then move focus to right pane 
+    -- if no addtl pane exists (not zoomed, and rightmost), create and focus it
+    vim.cmd([[ silent
+      \ !tmux if-shell -F
+        \ '\#{?window_zoomed_flag,1,0}' 
+        \ 'resize-pane -Z'
+        \ "if-shell -F
+          \ '\#{?pane_at_right,1,0}' 
+          \ 'split-window -h -l 25\% ; select-pane -R'
+          \ '' " 
+        \ ';' 
+      \ select-pane -R
+    ]])
   end,
   { silent = true }
 )
@@ -44,14 +53,32 @@ vim.keymap.set(
   'n',
   '<leader>!!',
   function()
-    -- if zoomed, unzoom
-    vim.cmd([[ silent !tmux if-shell -F '\#{?window_zoomed_flag,1,0}' 'resize-pane -Z' '' ]])
-    -- repeat last command in top right pane
-    vim.cmd([[ silent !tmux send-keys -t {top-right} '\!\!' Enter ]])
+    -- if zoomed, unzoom, then repeat last command in top right pane
+    vim.cmd([[ silent
+      \ !tmux if-shell -F
+        \ '\#{?window_zoomed_flag,1,0}'
+        \ 'resize-pane -Z'
+        \ '' ';'
+      \ send-keys -t {top-right} '\!\!' Enter 
+    ]])
   end,
   { silent = true }
 )
 
--- create new vertical split in tmux
--- wincmd o needs to also zoom
--- can you add line breaks to ! command in vim?
+-- wincmd o also zooms tmux pane
+vim.keymap.set(
+  'n',
+  '<c-w>o',
+  function()
+    -- default behavior 
+    vim.cmd('only')
+    -- if unzoomed, zoom
+    vim.cmd([[ silent
+      \ !tmux if-shell -F
+        \ '\#{?window_zoomed_flag,1,0}'
+        \ ''
+        \ 'resize-pane -Z'
+    ]])
+  end,
+  { silent = true }
+)
