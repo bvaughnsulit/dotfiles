@@ -28,7 +28,7 @@ require('lualine').setup {
         symbols = { modified = '*'}
       },
     },
-    lualine_x = {'location'},
+    lualine_x = {'searchcount', 'location'},
     lualine_y = {'progress'},
     lualine_z = {'filetype'}
   },

@@ -1,8 +1,11 @@
+vim.cmd('colorscheme minischeme')
+
 require("setup.settings")
-require("setup.plugins")
+require('setup.theme')
 require("setup.keymaps")
 require('setup.functions')
 require('setup.tmux')
+require("setup.plugins")
 
 require('setup.config.bufferline')
 require('setup.config.cinnamon')
@@ -16,7 +19,4 @@ require('setup.config.nvim-tree')
 require('setup.config.nvim-treesitter')
 require('setup.config.telescope')
 require('setup.config.trouble')
-
-require('setup.theme')
-
-vim.cmd('colorscheme minischeme')
+require('setup.config.comment')

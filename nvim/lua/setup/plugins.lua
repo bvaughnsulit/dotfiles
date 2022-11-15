@@ -7,6 +7,8 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
+
   use 'nvim-treesitter/nvim-treesitter-textobjects'
 
   -- LSP
@@ -38,10 +40,7 @@ return require('packer').startup(function(use)
     requires = {'kyazdani42/nvim-web-devicons'}
   }
 
-  use {
-    'numToStr/Comment.nvim',
-    config = function() require('Comment').setup() end
-  }
+  use { 'numToStr/Comment.nvim', }
 
   use {
     "folke/trouble.nvim",

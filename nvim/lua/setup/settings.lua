@@ -35,3 +35,5 @@ vim.opt.completeopt = 'menuone,noselect'
 vim.opt.diffopt = 'vertical,closeoff'
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "line"
+vim.opt.cmdheight = 0
+vim.opt.formatoptions=cro
