@@ -77,7 +77,7 @@ return require('packer').startup(function(use)
     requires = 'nvim-tree/nvim-web-devicons'
   }
 
-  use 'declancm/cinnamon.nvim'
+  use 'karb94/neoscroll.nvim'
 
   use 'numToStr/Navigator.nvim'
 

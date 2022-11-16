@@ -19,12 +19,12 @@ source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 
 alias ls='ls -a'
-alias vi='nvim'
 alias vim='nvim'
 alias home='cd ~'
 alias gho='gh browse'
 
 # tmux
+alias vi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux' 

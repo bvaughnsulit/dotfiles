@@ -8,7 +8,7 @@ require('setup.tmux')
 require("setup.plugins")
 
 require('setup.config.bufferline')
-require('setup.config.cinnamon')
+require('setup.config.neoscroll')
 require('setup.config.gitsigns')
 require('setup.config.indent-blankline')
 require('setup.config.lsp')
