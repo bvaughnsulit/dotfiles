@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.g.material_style = "deep ocean"
 
 vim.opt.scrolloff = 8
 vim.opt.number = true

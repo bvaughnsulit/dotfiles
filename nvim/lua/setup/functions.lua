@@ -21,3 +21,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+vim.keymap.set('n', '<leader>rr', "<cmd>so '$HOME/.config/nvim/init.lua<cr>'", {})
