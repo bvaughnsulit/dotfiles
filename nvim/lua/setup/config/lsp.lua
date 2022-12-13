@@ -33,6 +33,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
   vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
+  vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { buffer = bufnr })
 
   -- -- format on save
   -- if client.supports_method("textDocument/formatting") then
@@ -81,7 +82,10 @@ lspconfig.sumneko_lua.setup {
     Lua = {
       runtime = { version = 'LuaJIT', },
       diagnostics = { globals = {'vim'}, },
-      workspace = { library = vim.api.nvim_get_runtime_file("", true), },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,
+      },
       telemetry = { enable = false, },
     },
   },
