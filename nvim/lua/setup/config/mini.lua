@@ -1,8 +1,8 @@
 require('mini.cursorword').setup()
 require('mini.surround').setup()
 
-require('mini.ai').setup({
-    custom_textobjects = {
+require('mini.ai').setup {
+  custom_textobjects = {
     -- L = function(ai_type)
     --   local line_num = vim.fn.line('.')
     --   local line = vim.fn.getline(line_num)
@@ -35,4 +35,4 @@ require('mini.ai').setup({
     --   return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
     -- end,
   },
-})
+}

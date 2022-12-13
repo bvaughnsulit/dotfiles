@@ -1,7 +1,7 @@
-require("indent_blankline").setup {
+require('indent_blankline').setup {
   indent_blankline_char = '▏',
   indent_blankline_context_char = '▏',
-  space_char_blankline = " ",
+  space_char_blankline = ' ',
   show_current_context = true,
   show_current_context_start = true,
   use_treesitter = true,
@@ -11,5 +11,5 @@ require("indent_blankline").setup {
 }
 
 -- unclear why including these options in the setup above doesn't work
-vim.cmd("let g:indent_blankline_char='▏'")
-vim.cmd("let g:indent_blankline_context_char='▏'")
+vim.cmd "let g:indent_blankline_char='▏'"
+vim.cmd "let g:indent_blankline_context_char='▏'"

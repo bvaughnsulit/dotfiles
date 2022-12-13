@@ -5,7 +5,7 @@ return require('packer').startup(function(use)
 
   use {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
+    run = ':TSUpdate',
   }
   use 'JoosepAlviste/nvim-ts-context-commentstring'
 
@@ -29,7 +29,9 @@ return require('packer').startup(function(use)
   use 'https://github.com/hrsh7th/cmp-nvim-lua'
   use {
     'williamboman/mason.nvim',
-    config = function() require("mason").setup() end
+    config = function()
+      require('mason').setup()
+    end,
   }
 
   use 'jose-elias-alvarez/null-ls.nvim'
@@ -42,51 +44,47 @@ return require('packer').startup(function(use)
   use 'sainnhe/gruvbox-material'
   use 'ishan9299/nvim-solarized-lua'
   use 'shaunsingh/solarized.nvim'
-  use { "catppuccin/nvim", as = "catppuccin" }
+  use { 'catppuccin/nvim', as = 'catppuccin' }
   use 'folke/tokyonight.nvim'
-  use "EdenEast/nightfox.nvim"
+  use 'EdenEast/nightfox.nvim'
   use 'ofirgall/ofirkai.nvim'
   use 'B4mbus/oxocarbon-lua.nvim'
 
-  use {'kyazdani42/nvim-tree.lua',
-    requires = {'kyazdani42/nvim-web-devicons'}
-  }
+  use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
 
-  use { 'numToStr/Comment.nvim', }
+  use { 'numToStr/Comment.nvim' }
 
   use {
-    "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    'folke/trouble.nvim',
+    requires = 'kyazdani42/nvim-web-devicons',
   }
 
-  use {'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
+  use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
 
   use 'tpope/vim-fugitive'
   use 'lewis6991/gitsigns.nvim'
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
-
   use {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } },
   }
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
-
-  use "lukas-reineke/indent-blankline.nvim"
+  use 'lukas-reineke/indent-blankline.nvim'
 
   use {
-    "windwp/nvim-autopairs",
-    config = function() require("nvim-autopairs").setup {} end
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup {}
+    end,
   }
 
   use {
     'akinsho/bufferline.nvim',
-    tag = "v3.*",
-    requires = 'nvim-tree/nvim-web-devicons'
+    tag = 'v3.*',
+    requires = 'nvim-tree/nvim-web-devicons',
   }
 
   -- use fork of karb94/neoscroll.nvim until time-scale branch is merged to main
@@ -97,6 +95,4 @@ return require('packer').startup(function(use)
   }
 
   use 'numToStr/Navigator.nvim'
-
-
 end)

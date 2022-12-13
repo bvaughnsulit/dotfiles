@@ -1,4 +1,4 @@
-local lspconfig = require('lspconfig')
+local lspconfig = require 'lspconfig'
 local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 
@@ -22,33 +22,31 @@ local servers = {
 
 require('mason-lspconfig').setup { ensure_installed = servers }
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
 local on_attach = function(client, bufnr)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-  vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, { buffer = bufnr })
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
+  vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
-  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
-  vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { buffer = bufnr })
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr })
+  vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format, { buffer = bufnr })
 
-  -- -- format on save
-  -- if client.supports_method("textDocument/formatting") then
-  --   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-  --   vim.api.nvim_create_autocmd("BufWritePre", {
-  --     group = augroup,
-  --     buffer = bufnr,
-  --     callback = function()
-  --       vim.lsp.buf.format({ bufnr = bufnr })
-  --     end,
-  --   })
-  -- end
-
+  -- format on save
+  if client.supports_method 'textDocument/formatting' then
+    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format { bufnr = bufnr }
+      end,
+    })
+  end
 end
-
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -58,20 +56,20 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- custom deno config 
+-- custom deno config
 lspconfig.denols.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   single_file_support = false,
-  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+  root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
 }
 
--- custom tsserver config 
+-- custom tsserver config
 lspconfig.tsserver.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   single_file_support = false,
-  root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json"),
+  root_dir = lspconfig.util.root_pattern('package.json', 'tsconfig.json'),
 }
 
 -- custom lua configs
@@ -80,25 +78,25 @@ lspconfig.sumneko_lua.setup {
   capabilities = capabilities,
   settings = {
     Lua = {
-      runtime = { version = 'LuaJIT', },
-      diagnostics = { globals = {'vim'}, },
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
       workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
+        library = vim.api.nvim_get_runtime_file('', true),
         checkThirdParty = false,
       },
-      telemetry = { enable = false, },
+      telemetry = { enable = false },
     },
   },
 }
 
 -- custom vue (volar) configs
-lspconfig.volar.setup{
+lspconfig.volar.setup {
   init_options = {
     typescript = {
       -- putting this as an absolute path feels unwise. need to find a better way.
-      serverPath = '/Users/vaughn/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/tsserverlibrary.js'
-    }
-  }
+      serverPath = '/Users/vaughn/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/tsserverlibrary.js',
+    },
+  },
 }
 
 cmp.setup {
@@ -108,9 +106,9 @@ cmp.setup {
     end,
   },
   completion = {
-    keyword_length = 2
+    keyword_length = 2,
   },
-  mapping = cmp.mapping.preset.insert({
+  mapping = cmp.mapping.preset.insert {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -136,67 +134,61 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
-  }),
+  },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-  },
-    {
-      { name = 'buffer' },
-      { name = 'nvim_lua' },
-      { name = 'nvim_lsp_signature_help' },
-    }),
+  }, {
+    { name = 'buffer' },
+    { name = 'nvim_lua' },
+    { name = 'nvim_lsp_signature_help' },
+  }),
   formatting = {
     format = function(entry, vim_item)
       vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        nvim_lsp_signature_help = "[LSP]",
+        buffer = '[Buffer]',
+        nvim_lsp = '[LSP]',
+        luasnip = '[LuaSnip]',
+        nvim_lua = '[Lua]',
+        nvim_lsp_signature_help = '[LSP]',
       })[entry.source.name]
       return vim_item
-    end
+    end,
   },
-  experimental = {
-  }
+  experimental = {},
 }
-
 
 -- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = 'path' }
+    { name = 'path' },
   }, {
-      { name = 'cmdline' }
-    })
-
+    { name = 'cmdline' },
+  }),
 })
 
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'buffer' }
-  }
+    { name = 'buffer' },
+  },
 })
-
 
 -- define diagnostic signs, and highlights. currently configured to only
 -- highline line numbers, and not display signs
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
+  local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, {
     numhl = hl,
     -- texthl = hl,
   })
 end
 
-
 -- configure display of diagnostics and diagnostic floats
-vim.diagnostic.config({
+vim.diagnostic.config {
   signs = true,
   virtual_text = false,
   float = {
@@ -206,12 +198,8 @@ vim.diagnostic.config({
     border = 'rounded',
     style = 'minimal',
   },
-})
+}
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, { border = "rounded" }
-)
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, { border = "single" }
-)
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'single' })
