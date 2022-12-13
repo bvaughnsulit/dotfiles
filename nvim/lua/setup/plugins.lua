@@ -12,7 +12,13 @@ return require('packer').startup(function(use)
   use 'nvim-treesitter/nvim-treesitter-textobjects'
 
   -- LSP
-  use 'neovim/nvim-lspconfig'
+  use {
+    'neovim/nvim-lspconfig',
+    requires = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    },
+  }
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
@@ -21,6 +27,12 @@ return require('packer').startup(function(use)
   use 'L3MON4D3/LuaSnip'
   use 'hrsh7th/cmp-nvim-lsp-signature-help'
   use 'https://github.com/hrsh7th/cmp-nvim-lua'
+  use {
+    'williamboman/mason.nvim',
+    config = function() require("mason").setup() end
+  }
+
+  use 'jose-elias-alvarez/null-ls.nvim'
 
   use { 'echasnovski/mini.nvim', branch = 'stable' }
 
@@ -77,7 +89,12 @@ return require('packer').startup(function(use)
     requires = 'nvim-tree/nvim-web-devicons'
   }
 
-  use 'karb94/neoscroll.nvim'
+  -- use fork of karb94/neoscroll.nvim until time-scale branch is merged to main
+  -- use 'karb94/neoscroll.nvim'
+  use {
+    'bvaughnsulit/neoscroll.nvim',
+    branch = 'time-scale',
+  }
 
   use 'numToStr/Navigator.nvim'
 

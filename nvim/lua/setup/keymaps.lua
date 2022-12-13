@@ -164,6 +164,9 @@ nnoremap('<right>','<>', opts)
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+vim.keymap.set({ 'n' }, 'n', 'nzz', { silent = true })
+vim.keymap.set({ 'n' }, 'N', 'Nzz', { silent = true })
+
 vim.keymap.set('n', '<c-_>', '<cmd>nohls<CR>', opts)
 
 -- Remap for dealing with word wrap

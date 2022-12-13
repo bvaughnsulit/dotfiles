@@ -14,6 +14,7 @@ local setup = function(opts)
 
   -- plugin configs
   require('setup.config.bufferline')
+  require('setup.config.null-ls')
   require('setup.config.neoscroll')
   require('setup.config.gitsigns')
   require('setup.config.diffview')
@@ -43,5 +44,5 @@ vim.api.nvim_create_user_command(
     end
     setup(setup_opts)
   end,
-  { nargs='*' }
+  { complete='color', nargs='*' }
 )

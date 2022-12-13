@@ -16,11 +16,15 @@ local servers = {
   'html',
   'emmet_ls',
   'jsonls',
-  'tailwindcss',
+  -- 'tailwindcss',
   'vimls',
 }
 
-local on_attach = function(_, bufnr)
+require('mason-lspconfig').setup { ensure_installed = servers }
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+local on_attach = function(client, bufnr)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
   vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, { buffer = bufnr })
@@ -29,6 +33,19 @@ local on_attach = function(_, bufnr)
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
   vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
+
+  -- -- format on save
+  -- if client.supports_method("textDocument/formatting") then
+  --   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+  --   vim.api.nvim_create_autocmd("BufWritePre", {
+  --     group = augroup,
+  --     buffer = bufnr,
+  --     callback = function()
+  --       vim.lsp.buf.format({ bufnr = bufnr })
+  --     end,
+  --   })
+  -- end
+
 end
 
 
@@ -40,8 +57,24 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- custom deno config 
+lspconfig.denols.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  single_file_support = false,
+  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+}
+
+-- custom tsserver config 
+lspconfig.tsserver.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  single_file_support = false,
+  root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json"),
+}
+
 -- custom lua configs
-require'lspconfig'.sumneko_lua.setup {
+lspconfig.sumneko_lua.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -55,7 +88,7 @@ require'lspconfig'.sumneko_lua.setup {
 }
 
 -- custom vue (volar) configs
-require'lspconfig'.volar.setup{
+lspconfig.volar.setup{
   init_options = {
     typescript = {
       -- putting this as an absolute path feels unwise. need to find a better way.
