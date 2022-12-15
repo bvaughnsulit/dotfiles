@@ -48,7 +48,7 @@ return require('packer').startup(function(use)
   use 'folke/tokyonight.nvim'
   use 'EdenEast/nightfox.nvim'
   use 'ofirgall/ofirkai.nvim'
-  use 'B4mbus/oxocarbon-lua.nvim'
+  use 'nyoom-engineering/oxocarbon.nvim'
 
   use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
 

@@ -32,7 +32,7 @@ end
 setup { colorscheme = 'minischeme' }
 
 -- can be called later to reload config
-vim.api.nvim_create_user_command('SourceInit', function(opts)
+vim.api.nvim_create_user_command('ChangeTheme', function(opts)
   local setup_opts = {}
   if opts.args ~= '' then
     setup_opts = { colorscheme = opts.fargs[1] }
