@@ -24,14 +24,38 @@ nnoremap('<C-f>', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
 nnoremap('<C-b>', function()
   require('telescope.builtin').buffers(require('telescope.themes').get_dropdown {
     sort_mru = true,
-    bufnr_width = 5,
+    bufnr_width = 3,
     ignore_current_buffer = true,
     initial_mode = 'normal',
-    path_display = { 'tail' },
-    -- path_display = function(opts, path)
-    --   local tail = require("telescope.utils").path_tail(path)
-    --   return string.format("%s (%s)", tail, path)
-    -- end,
+    path_display = function(opts, path)
+      local maxWidth = 60
+      local maxTailLen = 26
+      local spaceLen = 4
+
+      local tail = require('telescope.utils').path_tail(path)
+      local tailLen = string.len(tail)
+      local relative_path = string.sub(path, 1, -tailLen - 1)
+      if tailLen > maxTailLen then
+        tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
+        tailLen = string.len(tail)
+      end
+      local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
+
+      local pathLen = string.len(relative_path)
+      local maxPathLen = maxWidth - maxTailLen - spaceLen
+      if pathLen == 0 then
+        relative_path = '/'
+      end
+      if pathLen > maxPathLen then
+        local minStartIndex = pathLen - maxPathLen + 3
+        local startIndex = string.find(relative_path, '/', minStartIndex)
+        if startIndex >= pathLen then
+          startIndex = minStartIndex
+        end
+        relative_path = '...' .. string.sub(relative_path, startIndex)
+      end
+      return string.format('%s%s%s', tail, spacing, relative_path)
+    end,
     layout_config = { anchor = 'N' },
   })
 end)
@@ -46,8 +70,6 @@ vim.keymap.set('n', '<leader>/f', function()
     },
   })
 end, { desc = '[/] Fuzzily search in current buffer]' })
-
-nnoremap('<leader>o', '<cmd>Telescope oldfiles<cr>')
 
 nnoremap('<leader>km', '<cmd>Telescope keymaps<cr>')
 
