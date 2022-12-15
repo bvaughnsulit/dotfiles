@@ -18,9 +18,20 @@ local servers = {
   'jsonls',
   -- 'tailwindcss',
   'vimls',
+  'denols',
 }
 
 require('mason-lspconfig').setup { ensure_installed = servers }
+
+-- function to call lsp format method using only null-ls
+local lsp_formatting = function(bufnr)
+  vim.lsp.buf.format {
+    filter = function(client)
+      return client.name == 'null-ls'
+    end,
+    bufnr = bufnr,
+  }
+end
 
 local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
@@ -28,24 +39,24 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
   vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
+  -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
   vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr })
-  vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format, { buffer = bufnr })
+  vim.keymap.set('n', '<leader>bf', lsp_formatting, { buffer = bufnr })
 
-  -- format on save
-  if client.supports_method 'textDocument/formatting' then
-    vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format { bufnr = bufnr }
-      end,
-    })
-  end
+  -- -- format on save
+  -- if client.supports_method 'textDocument/formatting' then
+  --   vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+  --   vim.api.nvim_create_autocmd('BufWritePre', {
+  --     group = augroup,
+  --     buffer = bufnr,
+  --     callback = function()
+  -- lsp_formatting(bufnr)
+  --     end,
+  --   })
+  -- end
 end
 
 for _, lsp in ipairs(servers) do
