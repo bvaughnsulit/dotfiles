@@ -27,7 +27,7 @@ nnoremap('<C-b>', function()
     bufnr_width = 3,
     ignore_current_buffer = true,
     initial_mode = 'normal',
-    path_display = function(opts, path)
+    path_display = function(_, path)
       local maxWidth = 60
       local maxTailLen = 26
       local spaceLen = 4
@@ -54,7 +54,7 @@ nnoremap('<C-b>', function()
         end
         relative_path = '...' .. string.sub(relative_path, startIndex)
       end
-      return string.format('%s%s%s', tail, spacing, relative_path)
+      return tail .. spacing .. relative_path
     end,
     layout_config = { anchor = 'N' },
   })

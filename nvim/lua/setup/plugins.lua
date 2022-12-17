@@ -7,6 +7,15 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
   }
+  use 'nvim-treesitter/nvim-treesitter-context'
+  use {
+    'nvim-treesitter/playground',
+    config = function ()
+      require 'playground'.setup {
+        playground = {}
+      }
+    end
+  }
   use 'JoosepAlviste/nvim-ts-context-commentstring'
 
   use 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -50,7 +59,10 @@ return require('packer').startup(function(use)
   use 'ofirgall/ofirkai.nvim'
   use 'nyoom-engineering/oxocarbon.nvim'
 
-  use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = { 'kyazdani42/nvim-web-devicons' },
+  }
 
   use { 'numToStr/Comment.nvim' }
 
@@ -59,7 +71,10 @@ return require('packer').startup(function(use)
     requires = 'kyazdani42/nvim-web-devicons',
   }
 
-  use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+  }
 
   use 'tpope/vim-fugitive'
   use 'lewis6991/gitsigns.nvim'
@@ -93,6 +108,8 @@ return require('packer').startup(function(use)
     'bvaughnsulit/neoscroll.nvim',
     branch = 'time-scale',
   }
+
+  use { 'Wansmer/treesj', requires = { 'nvim-treesitter' } }
 
   use 'numToStr/Navigator.nvim'
 end)
