@@ -26,6 +26,7 @@ local setup = function(opts)
   require 'setup.config.telescope'
   require 'setup.config.trouble'
   require 'setup.config.comment'
+  require 'setup.config.treesj'
 end
 
 -- called on initial startup
