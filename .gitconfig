@@ -1,6 +1,22 @@
-# This is Git's per-user configuration file.
 [user]
 	name = b. vaughn sulit
 	email = bvaughnsulit@gmail.com
+
 [core]
 	editor = nvim
+  pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    light = false
+    line-numbers = true
+    keep-plus-minus-markers = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

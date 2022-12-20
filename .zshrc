@@ -19,7 +19,7 @@ source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 
 alias ls='ls -a'
-alias vim='nvim'
+# alias vim='nvim'
 alias home='cd ~'
 alias gho='gh browse'
 
@@ -44,3 +44,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
