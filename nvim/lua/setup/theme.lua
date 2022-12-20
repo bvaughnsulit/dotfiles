@@ -6,6 +6,13 @@ require('material').setup {
   },
 }
 
+vim.keymap.set(
+  'n',
+  '<leader>mm',
+  [[<Cmd>lua require('material.functions').toggle_style()<CR>]],
+  { noremap = true, silent = true }
+)
+
 -- browse themes
 vim.api.nvim_create_user_command('ThemeBrowse', function()
   require('telescope.builtin').colorscheme {

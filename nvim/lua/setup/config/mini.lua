@@ -1,5 +1,5 @@
-require('mini.cursorword').setup()
-require('mini.surround').setup()
+require('mini.cursorword').setup({})
+require('mini.surround').setup({})
 
 require('mini.ai').setup {
   custom_textobjects = {

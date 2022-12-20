@@ -4,29 +4,31 @@ local setup = function(opts)
   end
 
   require 'setup.settings'
-  require 'setup.theme'
-  require 'setup.keymaps'
+
+  require 'setup.autocmds'
   require 'setup.functions'
-  require 'setup.tmux'
+  require 'setup.keymaps'
   require 'setup.plugins'
+  require 'setup.theme'
+  require 'setup.tmux'
 
   -- plugin configs
   require 'setup.config.bufferline'
-  require 'setup.config.null-ls'
-  require 'setup.config.neoscroll'
-  require 'setup.config.gitsigns'
+  require 'setup.config.comment'
   require 'setup.config.diffview'
+  require 'setup.config.gitsigns'
   require 'setup.config.indent-blankline'
   require 'setup.config.lsp'
   require 'setup.config.lualine'
   require 'setup.config.mini'
   require 'setup.config.navigator'
+  require 'setup.config.neoscroll'
+  require 'setup.config.null-ls'
   require 'setup.config.nvim-tree'
   require 'setup.config.nvim-treesitter'
   require 'setup.config.telescope'
-  require 'setup.config.trouble'
-  require 'setup.config.comment'
   require 'setup.config.treesj'
+  require 'setup.config.trouble'
 end
 
 -- called on initial startup

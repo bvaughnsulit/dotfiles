@@ -11,3 +11,9 @@ vim.api.nvim_create_user_command('Gho', function()
 end, {})
 
 vim.keymap.set('n', '<leader>rr', "<cmd>so '$HOME/.config/nvim/init.lua<cr>'", {})
+
+-- write and source current file
+vim.keymap.set('n', '<leader>xx', function()
+  vim.cmd 'w'
+  vim.cmd 'so %'
+end)

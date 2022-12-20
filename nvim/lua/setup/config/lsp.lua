@@ -1,6 +1,11 @@
 local lspconfig = require 'lspconfig'
 local luasnip = require 'luasnip'
+require('luasnip.loaders.from_vscode').lazy_load()
 local cmp = require 'cmp'
+
+require('lsp_signature').setup {
+  hint_prefix = ' ',
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -23,7 +28,7 @@ local servers = {
 
 require('mason-lspconfig').setup { ensure_installed = servers }
 
--- function to call lsp format method using only null-ls
+-- call lsp format method using only null-ls
 local lsp_formatting = function(bufnr)
   vim.lsp.buf.format {
     filter = function(client)
@@ -33,7 +38,7 @@ local lsp_formatting = function(bufnr)
   }
 end
 
-local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+-- local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
 local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
@@ -152,7 +157,6 @@ cmp.setup {
   }, {
     { name = 'buffer' },
     { name = 'nvim_lua' },
-    { name = 'nvim_lsp_signature_help' },
   }),
   formatting = {
     format = function(entry, vim_item)
@@ -161,7 +165,6 @@ cmp.setup {
         nvim_lsp = '[LSP]',
         luasnip = '[LuaSnip]',
         nvim_lua = '[Lua]',
-        nvim_lsp_signature_help = '[LSP]',
       })[entry.source.name]
       return vim_item
     end,
@@ -214,3 +217,13 @@ vim.diagnostic.config {
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'single' })
+
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, {})
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, {})
+vim.keymap.set('n', '<leader>di', function()
+  vim.diagnostic.config {
+    virtual_text = not vim.diagnostic.config().virtual_text,
+  }
+end, {})
