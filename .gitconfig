@@ -1,0 +1,6 @@
+# This is Git's per-user configuration file.
+[user]
+	name = b. vaughn sulit
+	email = bvaughnsulit@gmail.com
+[core]
+	editor = nvim
