@@ -44,7 +44,7 @@ return require('packer').startup(function(use)
   }
   use 'jose-elias-alvarez/null-ls.nvim'
 
-  use { 'echasnovski/mini.nvim', branch = 'stable' }
+  use 'echasnovski/mini.nvim'
 
   --themes
   use 'marko-cerovac/material.nvim'

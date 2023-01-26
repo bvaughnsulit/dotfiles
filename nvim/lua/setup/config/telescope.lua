@@ -1,4 +1,7 @@
 local actions = require 'telescope.actions'
+local builtin = require 'telescope.builtin'
+local previewers = require 'telescope.previewers'
+
 require('telescope').setup {
   defaults = {
     layout_strategy = 'vertical',
@@ -42,7 +45,17 @@ require('telescope').setup {
     },
   },
 }
+
 require('telescope').load_extension 'fzf'
+
+local search_commits = function()
+  builtin.git_commits({
+    previewer = previewers.git_commit_diff_as_was.new({}),
+  })
+end
+
+vim.api.nvim_create_user_command('TelescopeSearchCommits', search_commits, {})
+
 
 vim.keymap.set('n', '<leader>vv', function()
   require('telescope.builtin').registers { initial_mode = 'normal' }

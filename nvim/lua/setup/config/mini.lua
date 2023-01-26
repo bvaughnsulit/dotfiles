@@ -1,6 +1,5 @@
 require('mini.cursorword').setup({})
 require('mini.surround').setup({})
-
 require('mini.ai').setup {
   custom_textobjects = {
     -- L = function(ai_type)
@@ -36,3 +35,4 @@ require('mini.ai').setup {
     -- end,
   },
 }
+

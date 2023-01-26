@@ -3,7 +3,7 @@ gui:
   scrollPastBottom: true # enable scrolling past the bottom
   sidePanelWidth: 0.25 # number from 0 to 1
   expandFocusedSidePanel: false
-  mainPanelSplitMode: 'horizontal' # one of 'horizontal' | 'flexible' | 'vertical'
+  mainPanelSplitMode: 'vertical' # one of 'horizontal' | 'flexible' | 'vertical'
 os:
   editCommand: 'nvim'
 git:
