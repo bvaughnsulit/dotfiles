@@ -1,14 +1,14 @@
 local setup = function(opts)
-  if opts.colorscheme ~= nil then
-    vim.cmd('colorscheme ' .. opts.colorscheme)
-  end
+  -- if opts.colorscheme ~= nil then
+  --   vim.cmd('colorscheme ' .. opts.colorscheme)
+  -- end
 
+  require 'setup.plugins'
   require 'setup.settings'
 
   require 'setup.autocmds'
   require 'setup.functions'
   require 'setup.keymaps'
-  require 'setup.plugins'
   require 'setup.theme'
   require 'setup.tmux'
 
