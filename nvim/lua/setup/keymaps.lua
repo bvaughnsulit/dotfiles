@@ -67,6 +67,8 @@ vim.keymap.set({ 'n' }, 'n', 'nzz', { silent = true })
 vim.keymap.set({ 'n' }, 'N', 'Nzz', { silent = true })
 
 vim.keymap.set('n', '<c-_>', '<cmd>nohls<CR>', opts)
+-- clear hl when starting a new search
+vim.keymap.set('n', '/', '<cmd>nohls<cr>/', {})
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
