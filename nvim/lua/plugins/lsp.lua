@@ -22,7 +22,7 @@ return {
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
-        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
+        vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = bufnr })
         vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })

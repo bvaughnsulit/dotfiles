@@ -10,7 +10,6 @@ return {
       require('mini.ai').setup {}
     end,
   },
-
   -- other themes
   -- 'marko-cerovac/material.nvim',
   -- 'https://gitlab.com/__tpb/monokai-pro.nvim',
@@ -41,4 +40,5 @@ return {
       require('nvim-autopairs').setup {}
     end,
   },
+  { 'eandrju/cellular-automaton.nvim', cmd = 'CellularAutomaton' },
 }

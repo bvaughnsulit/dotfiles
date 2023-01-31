@@ -14,4 +14,13 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = ' '
 
-require('lazy').setup 'plugins'
+require('lazy').setup('plugins', {
+  lazy = true,
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        'netrwPlugin',
+      },
+    },
+  },
+})
