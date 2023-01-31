@@ -51,6 +51,6 @@ return {
       use_diagnostic_signs = false, -- enabling this will use the signs defined in your lsp client
     }
 
-    vim.keymap.set('n', '<leader>dd', '<cmd>TroubleToggle<cr>', { silent = true, noremap = true })
+    vim.keymap.set('n', '<leader>da', '<cmd>TroubleToggle<cr>', { silent = true, noremap = true })
   end,
 }

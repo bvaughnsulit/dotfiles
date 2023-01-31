@@ -123,7 +123,7 @@ return {
 
       vim.keymap.set('n', '<leader>?', '<cmd>Telescope help_tags<cr>')
 
-      vim.keymap.set('n', '<leader>do', function()
+      vim.keymap.set('n', '<leader>dt', function()
         require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown {
           initial_mode = 'normal',
           no_sign = false,
