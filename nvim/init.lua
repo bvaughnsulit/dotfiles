@@ -3,32 +3,14 @@ local setup = function(opts)
   --   vim.cmd('colorscheme ' .. opts.colorscheme)
   -- end
 
-  require 'config.plugins'
+  require 'config.lazy'
   require 'config.settings'
 
   require 'config.autocmds'
   require 'config.functions'
   require 'config.keymaps'
-  require 'config.theme'
+  -- require 'config.theme'
   require 'config.tmux'
-
-  -- plugin configs
-  require 'plugins.bufferline'
-  require 'plugins.comment'
-  require 'plugins.diffview'
-  require 'plugins.gitsigns'
-  require 'plugins.indent-blankline'
-  require 'plugins.lsp'
-  require 'plugins.lualine'
-  require 'plugins.mini'
-  require 'plugins.navigator'
-  require 'plugins.neoscroll'
-  require 'plugins.null-ls'
-  require 'plugins.nvim-tree'
-  require 'plugins.nvim-treesitter'
-  require 'plugins.telescope'
-  require 'plugins.treesj'
-  require 'plugins.trouble'
 end
 
 -- called on initial startup
