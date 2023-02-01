@@ -1,15 +1,4 @@
 return {
-  {
-    'echasnovski/mini.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd 'colorscheme minischeme'
-      require('mini.cursorword').setup {}
-      require('mini.surround').setup {}
-      require('mini.ai').setup {}
-    end,
-  },
   -- other themes
   -- 'marko-cerovac/material.nvim',
   -- 'https://gitlab.com/__tpb/monokai-pro.nvim',
@@ -41,4 +30,14 @@ return {
     end,
   },
   { 'eandrju/cellular-automaton.nvim', cmd = 'CellularAutomaton' },
+  {
+    'rmagatti/auto-session',
+    lazy = false,
+    config = function()
+      require('auto-session').setup {
+        log_level = 'error',
+        auto_session_suppress_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+      }
+    end,
+  },
 }

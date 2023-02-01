@@ -46,3 +46,4 @@ vim.opt.pumheight = 10
 vim.opt.pumblend = 7
 vim.opt.shiftround = true
 vim.opt.wildmode = 'longest:full,full'
+vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'

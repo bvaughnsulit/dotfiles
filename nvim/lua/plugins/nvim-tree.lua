@@ -1,7 +1,8 @@
 return {
   'nvim-tree/nvim-tree.lua',
+  enabled = true,
   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  event = 'VeryLazy',
+  lazy = false,
   config = function()
     local opts = {
       auto_reload_on_write = true,

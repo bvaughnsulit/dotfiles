@@ -2,6 +2,7 @@ return {
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
     'nvim-telescope/telescope.nvim',
+    event = 'VeryLazy',
     version = '0.1.0',
     dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
@@ -49,6 +50,11 @@ return {
               ['<esc>'] = actions.close,
               -- ["<C-u>"] = false,
             },
+          },
+        },
+        extensions = {
+          file_browser = {
+            -- hijack_netrw = true,
           },
         },
       }
@@ -134,6 +140,13 @@ return {
           },
         })
       end)
+    end,
+  },
+  {
+    'nvim-telescope/telescope-file-browser.nvim',
+    event = 'VeryLazy',
+    config = function()
+      require('telescope').load_extension 'file_browser'
     end,
   },
 }
