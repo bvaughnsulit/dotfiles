@@ -1,5 +1,5 @@
-require 'config.lazy'
 require 'config.settings'
+require 'config.lazy'
 require 'config.autocmds'
 require 'config.functions'
 require 'config.keymaps'

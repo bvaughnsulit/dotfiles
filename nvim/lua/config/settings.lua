@@ -39,11 +39,24 @@ vim.opt.cmdheight = 0
 vim.opt.diffopt = 'filler,vertical,closeoff'
 vim.opt.fillchars = 'diff:╱,fold:╌,foldopen:,foldclose:,msgsep:╌,eob: '
 vim.opt.autoread = true
-vim.opt.conceallevel = 3
 vim.opt.confirm = true
 vim.opt.laststatus = 3
 vim.opt.pumheight = 10
 vim.opt.pumblend = 7
+vim.opt.winblend = 7
 vim.opt.shiftround = true
 vim.opt.wildmode = 'longest:full,full'
-vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.opt.conceallevel = 0
+vim.opt.sessionoptions = 'blank,buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions'
+-- vim.opt.list = true
+-- vim.opt.listchars = 'multispace:·,nbsp:·,trail:·'
+
+-- markdown-specific options
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown' },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+    vim.opt_local.conceallevel = 3
+  end,
+})

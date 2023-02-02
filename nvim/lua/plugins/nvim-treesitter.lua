@@ -27,6 +27,7 @@ return {
 
         -- List of parsers to ignore installing (for "all")
         ignore_install = {
+          'ada',
           'Glimmer and Ember',
           'Godot',
           'Godot Resources',
@@ -112,6 +113,9 @@ return {
           'yang',
           'zig',
           'java',
+          'jsonnet',
+          'hjson',
+          'jsonc',
         },
 
         highlight = {

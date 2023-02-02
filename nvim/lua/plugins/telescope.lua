@@ -146,7 +146,19 @@ return {
     'nvim-telescope/telescope-file-browser.nvim',
     event = 'VeryLazy',
     config = function()
-      require('telescope').load_extension 'file_browser'
+      local telescope = require 'telescope'
+      telescope.load_extension 'file_browser'
+      vim.keymap.set('n', '<leader>et', function()
+        telescope.extensions.file_browser.file_browser {
+          files = true,
+          depth = false,
+          auto_depth = true,
+          hidden = false,
+          respect_gitignore = true,
+          collapse_dirs = true,
+          use_fd = true,
+        }
+      end)
     end,
   },
 }

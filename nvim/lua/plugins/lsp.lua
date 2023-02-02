@@ -34,11 +34,20 @@ return {
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
         vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, {})
-        vim.keymap.set('n', '<leader>di', function()
+
+        -- toggle inline diagnostics
+        local toggle_inline_diagnostics = function()
           vim.diagnostic.config {
             virtual_text = not vim.diagnostic.config().virtual_text,
           }
-        end, { desc = 'toggle inline diagnostics' })
+        end
+        vim.keymap.set(
+          'n',
+          '<leader>di',
+          toggle_inline_diagnostics,
+          { desc = 'toggle inline diagnostics' }
+        )
+        vim.api.nvim_create_user_command('InlineDiagnosticsToggle', toggle_inline_diagnostics, {})
 
         -- format on save
         if client.supports_method 'textDocument/formatting' then
@@ -153,7 +162,8 @@ return {
           style = 'minimal',
         },
       }
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+      vim.lsp.handlers['textDocument/hover'] =
+        vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
       vim.lsp.handlers['textDocument/signatureHelp'] =
         vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'single' })
     end,
