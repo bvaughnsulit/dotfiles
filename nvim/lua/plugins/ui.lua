@@ -1,6 +1,7 @@
 return {
   {
     'rcarriga/nvim-notify',
+    enabled = false,
     init = function()
       local notify = require 'notify'
       notify.setup {
@@ -12,6 +13,7 @@ return {
         max_width = function()
           return math.floor(vim.o.columns * 0.75)
         end,
+        top_down = false,
       }
       vim.notify = notify
     end,

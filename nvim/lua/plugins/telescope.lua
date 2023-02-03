@@ -31,6 +31,7 @@ return {
               hidden = true,
             },
             buffers = {
+              -- TODO: possible to close buffers from picker??
               theme = 'dropdown',
               ignore_current_buffer = true,
               sort_mru = true,
@@ -73,7 +74,11 @@ return {
         require('telescope.builtin').registers { initial_mode = 'normal' }
       end, {})
 
-      vim.keymap.set('n', '<C-p>', [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]])
+      vim.keymap.set(
+        'n',
+        '<C-p>',
+        [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]]
+      )
 
       vim.keymap.set('n', '<C-f>', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
 
@@ -117,12 +122,14 @@ return {
       end)
 
       vim.keymap.set('n', '<leader>/f', function()
-        require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          layout_config = {
-            anchor = 'S',
-            width = 0.7,
-          },
-        })
+        require('telescope.builtin').current_buffer_fuzzy_find(
+          require('telescope.themes').get_dropdown {
+            layout_config = {
+              anchor = 'S',
+              width = 0.7,
+            },
+          }
+        )
       end, { desc = '[/] Fuzzily search in current buffer]' })
 
       vim.keymap.set('n', '<leader>km', '<cmd>Telescope keymaps<cr>')
@@ -140,6 +147,8 @@ return {
           },
         })
       end)
+
+      vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },
   {

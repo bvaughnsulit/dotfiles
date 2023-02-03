@@ -5,6 +5,7 @@ return {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'hrsh7th/cmp-nvim-lsp',
+      'folke/neodev.nvim',
     },
     config = function()
       -- things that will be set up when lsp attaches to a buffer
@@ -33,7 +34,6 @@ return {
         vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, {})
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
-        vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, {})
 
         -- toggle inline diagnostics
         local toggle_inline_diagnostics = function()
@@ -64,6 +64,7 @@ return {
       end
 
       -- lsp server setup
+      require('neodev').setup {}
       local lspconfig = require 'lspconfig'
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -117,13 +118,16 @@ return {
         capabilities = capabilities,
         settings = {
           Lua = {
-            runtime = { version = 'LuaJIT' },
+            -- runtime = { version = 'LuaJIT' },
             diagnostics = { globals = { 'vim' } },
             workspace = {
-              library = vim.api.nvim_get_runtime_file('', true),
+              -- library = vim.api.nvim_get_runtime_file('', true),
               checkThirdParty = false,
             },
-            telemetry = { enable = false },
+            completion = {
+              callSnippet = 'Replace',
+            },
+            -- telemetry = { enable = false },
           },
         },
       }

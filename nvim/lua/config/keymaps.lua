@@ -27,17 +27,9 @@ map(
   { desc = 'prepend selected lines' }
 )
 
--- move current line up and down
-map('n', '<M-j>', ':m .+1<CR>==')
-map('n', '<M-k>', ':m .-2<CR>==')
-
--- move selected line(s) up and down
-map('v', '<M-j>', ":m '>+1 <Home>silent<End><CR>gv=gv")
-map('v', '<M-k>', ":m '<-2 <Home>silent<End><CR>gv=gv")
-
--- yank to system clipboard
-map('n', '<leader>Y', '"+y$')
-map({ 'n', 'v' }, '<leader>y', '"+y', {})
+-- always yank to system clipboard
+map('n', 'Y', '"+y$')
+map({ 'n', 'v' }, 'y', '"+y', {})
 
 -- delete, change, put to black hole register
 map({ 'n', 'v' }, '<leader>xd', '"_d', {})
@@ -59,8 +51,8 @@ map('n', '<right>', '<>', {})
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- center cursor when moving through search results
-map({ 'n' }, 'n', 'nzz', { silent = true })
-map({ 'n' }, 'N', 'Nzz', { silent = true })
+-- map({ 'n' }, 'n', 'nzz', { silent = true })
+-- map({ 'n' }, 'N', 'Nzz', { silent = true })
 
 map('n', '<c-_>', '<cmd>nohls<CR>', {})
 -- clear hl when starting a new search
@@ -73,13 +65,13 @@ map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map('n', ']l', '<cmd>cnext<CR>', {})
 map('n', '[l', '<cmd>cprevious<CR>', {})
 
+-- i don't think these work right...
 -- always paste from yank register at matching indent level
 -- map({'n', 'x'}, 'p', '"0]p', {})
 -- map({'n', 'x'}, 'P', '"0[p', {})
-
 -- always paste at matching indent level
-map({ 'n', 'x' }, 'p', ']p', {})
-map({ 'n', 'x' }, 'P', '[p', {})
+-- map({ 'n', 'x' }, 'p', ']p', {})
+-- map({ 'n', 'x' }, 'P', '[p', {})
 
 map(
   'n',
@@ -100,3 +92,12 @@ map('n', '<S-left>', '<cmd>vertical resize -5<cr>', {})
 map('n', '<S-right>', '<cmd>vertical resize +5<cr>', {})
 map('n', '<s-up>', '<cmd>resize +2<cr>', {})
 map('n', '<s-down>', '<cmd>resize -2<cr>', {})
+
+-- UNDO BREAKPOINTS
+map('i', ',', ',<c-g>u')
+map('i', '.', '.<c-g>u')
+map('i', ';', ';<c-g>u')
+map('i', '<cr>', '<cr><c-g>u')
+
+map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
+map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
