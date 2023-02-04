@@ -101,3 +101,4 @@ map('i', '<cr>', '<cr><c-g>u')
 
 map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
+map('n', '<leader>qw', '<cmd>wqa<cr>', { desc = 'Save and Quit all' })

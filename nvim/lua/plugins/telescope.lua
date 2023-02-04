@@ -11,6 +11,22 @@ return {
       local previewers = require 'telescope.previewers'
 
       require('telescope').setup {
+        pickers = {
+          find_files = {
+            theme = 'dropdown',
+            hidden = true,
+          },
+          buffers = {
+            theme = 'dropdown',
+            ignore_current_buffer = true,
+            sort_mru = true,
+            mappings = {
+              n = {
+                ['dd'] = 'delete_buffer',
+              },
+            },
+          },
+        },
         defaults = {
           layout_strategy = 'vertical',
           path_display = {
@@ -20,22 +36,12 @@ return {
           },
           color_devicons = true,
           layout_config = {
+            anchor = 'N',
             mirror = true,
             prompt_position = 'top',
             width = 0.8,
             height = 0.95,
             preview_cutoff = 0,
-          },
-          pickers = {
-            find_files = { -- why doesn't this work??
-              hidden = true,
-            },
-            buffers = {
-              -- TODO: possible to close buffers from picker??
-              theme = 'dropdown',
-              ignore_current_buffer = true,
-              sort_mru = true,
-            },
           },
           file_ignore_patterns = {
             'package%-lock%.json',
@@ -55,6 +61,7 @@ return {
         },
         extensions = {
           file_browser = {
+            theme = 'dropdown',
             -- hijack_netrw = true,
           },
         },
@@ -148,6 +155,18 @@ return {
         })
       end)
 
+      -- browse themes
+      vim.api.nvim_create_user_command('ThemeBrowse', function()
+        require('telescope.builtin').colorscheme {
+          layout_config = {
+            height = 0.5,
+            preview = false,
+            width = 0.2,
+          },
+          enable_preview = true,
+        }
+      end, {})
+
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },
@@ -157,7 +176,7 @@ return {
     config = function()
       local telescope = require 'telescope'
       telescope.load_extension 'file_browser'
-      vim.keymap.set('n', '<leader>et', function()
+      vim.keymap.set('n', '<leader>eb', function()
         telescope.extensions.file_browser.file_browser {
           files = true,
           depth = false,
@@ -166,6 +185,8 @@ return {
           respect_gitignore = true,
           collapse_dirs = true,
           use_fd = true,
+          hide_parent_dir = true,
+          grouped = true,
         }
       end)
     end,
