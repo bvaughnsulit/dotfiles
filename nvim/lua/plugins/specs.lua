@@ -1,6 +1,6 @@
 return {
   -- other themes
-  -- 'marko-cerovac/material.nvim',
+  { 'marko-cerovac/material.nvim' },
   -- 'https://gitlab.com/__tpb/monokai-pro.nvim',
   -- 'sainnhe/gruvbox-material',
   -- 'ishan9299/nvim-solarized-lua',
@@ -11,25 +11,34 @@ return {
   -- 'ofirgall/ofirkai.nvim',
   -- 'nyoom-engineering/oxocarbon.nvim',
 
-  'tpope/vim-fugitive',
+  { 'tpope/vim-fugitive', cmd = 'G' },
   'JoosepAlviste/nvim-ts-context-commentstring',
   {
     'numToStr/Comment.nvim',
+    event = 'VeryLazy',
     config = function()
       require('Comment').setup {
         pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
       }
     end,
-    event = 'VeryLazy',
   },
 
   {
     'windwp/nvim-autopairs',
+    event = 'VeryLazy',
     config = function()
       require('nvim-autopairs').setup {}
     end,
   },
-  { 'eandrju/cellular-automaton.nvim', cmd = 'CellularAutomaton' },
+  {
+    'eandrju/cellular-automaton.nvim',
+    cmd = 'Oops',
+    config = function()
+      vim.api.nvim_create_user_command('Oops', function()
+        require('cellular-automaton').start_animation 'make_it_rain'
+      end, {})
+    end,
+  },
   {
     'rmagatti/auto-session',
     lazy = false,
@@ -71,9 +80,9 @@ return {
           TEST = { icon = ' ', color = 'test', alt = { 'TESTING', 'PASSED', 'FAILED' } },
         },
         highlight = {
-          keyword = "bg",
-          after = "",
-        }
+          keyword = 'bg',
+          after = '',
+        },
       }
     end,
     -- stylua: ignore

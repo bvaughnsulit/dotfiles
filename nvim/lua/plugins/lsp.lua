@@ -1,6 +1,7 @@
 return {
   {
     'neovim/nvim-lspconfig',
+    event = 'BufReadPre',
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
@@ -174,6 +175,7 @@ return {
   },
   {
     'ray-x/lsp_signature.nvim',
+    event = "BufReadPre",
     config = function()
       require('lsp_signature').setup {
         hint_prefix = ' ',
@@ -182,12 +184,15 @@ return {
   },
   {
     'williamboman/mason.nvim',
+    lazy = true,
+    cmd = 'Mason',
     config = function()
       require('mason').setup()
     end,
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
+    event = "BufReadPre",
     config = function()
       local null_ls = require 'null-ls'
 

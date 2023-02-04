@@ -1,5 +1,6 @@
 return {
   'akinsho/bufferline.nvim',
+  event = 'VeryLazy',
   version = 'v3.*',
   dependencies = 'nvim-tree/nvim-web-devicons',
   config = function()
@@ -26,5 +27,4 @@ return {
     vim.keymap.set({ 'n', 'v' }, '<a-[>', '<cmd>BufferLineCyclePrev<cr>', {})
     vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<cmd>BufferLinePick<cr>', {})
   end,
-  event = 'VeryLazy',
 }

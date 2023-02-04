@@ -15,7 +15,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ' '
 
 require('lazy').setup('plugins', {
-  lazy = true,
+  defaults = {
+    lazy = true,
+  },
   performance = {
     rtp = {
       disabled_plugins = {
@@ -25,4 +27,4 @@ require('lazy').setup('plugins', {
   },
 })
 
-vim.api.nvim_create_user_command('L', 'Lazy', {})
+vim.api.nvim_create_user_command('L', 'Lazy', {}) 

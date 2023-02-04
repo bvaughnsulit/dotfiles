@@ -2,15 +2,15 @@ return {
   'nvim-tree/nvim-tree.lua',
   enabled = true,
   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  lazy = false,
+  event = 'VeryLazy',
   config = function()
     local opts = {
       auto_reload_on_write = true,
       create_in_closed_folder = false,
-      disable_netrw = false,
+      disable_netrw = true,
       hijack_cursor = false,
       hijack_netrw = true,
-      hijack_unnamed_buffer_when_opening = false,
+      hijack_unnamed_buffer_when_opening = true,
       ignore_buffer_on_setup = false,
       open_on_setup = false,
       open_on_setup_file = false,
@@ -113,7 +113,7 @@ return {
         auto_open = true,
       },
       update_focused_file = {
-        enable = false,
+        enable = true,
         update_root = false,
         ignore_list = {},
       },

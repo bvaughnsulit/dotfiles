@@ -1,6 +1,6 @@
 return {
   'folke/trouble.nvim',
-  lazy = true,
+  event = 'BufReadPost',
   dependencies = 'nvim-tree/nvim-web-devicons',
   config = function()
     require('trouble').setup {

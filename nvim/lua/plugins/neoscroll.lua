@@ -3,6 +3,7 @@ return {
   -- 'karb94/neoscroll.nvim'
   'bvaughnsulit/neoscroll.nvim',
   branch = 'time-scale',
+  event = 'VeryLazy',
   config = function()
     require('neoscroll').setup {
       mappings = { '<C-u>', '<C-d>' },

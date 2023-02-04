@@ -1,5 +1,6 @@
 return {
   'numToStr/Navigator.nvim',
+  -- NOTE: could load on keys instead
   event = 'VeryLazy',
   config = function()
     require('Navigator').setup { disable_on_zoom = true }
