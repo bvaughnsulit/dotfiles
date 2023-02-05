@@ -43,4 +43,19 @@ return {
       vim.g.startuptime_tries = 10
     end,
   },
+  {
+    'petertriho/nvim-scrollbar',
+    event = 'BufReadPost',
+    -- dependencies = 'kevinhwang91/nvim-hlslens',
+    config = function()
+      require('scrollbar').setup {
+        show_in_active_only = true,
+        handlers = {
+          cursor = false,
+          diagnostic = false,
+        },
+      }
+      -- require('scrollbar.handlers.search').setup {}
+    end,
+  },
 }
