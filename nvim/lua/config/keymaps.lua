@@ -54,9 +54,9 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- map({ 'n' }, 'n', 'nzz', { silent = true })
 -- map({ 'n' }, 'N', 'Nzz', { silent = true })
 
+-- clear hl with esc
+map({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', {})
 map('n', '<c-_>', '<cmd>nohls<CR>', {})
--- clear hl when starting a new search
-map('n', '/', '<cmd>nohls<cr>/', {})
 
 -- Remap for dealing with word wrap
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -101,4 +101,4 @@ map('i', '<cr>', '<cr><c-g>u')
 
 map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
-map('n', '<leader>qw', '<cmd>wqa<cr>', { desc = 'Save and Quit all' })
+map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })

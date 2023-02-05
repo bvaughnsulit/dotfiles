@@ -18,9 +18,3 @@ vim.api.nvim_create_autocmd('BufEnter', {
   end,
   group = format_options_group,
 })
-
-vim.api.nvim_create_autocmd('VimEnter', {
-  callback = function()
-    require('nvim-tree.api').tree.open()
-  end,
-})

@@ -47,7 +47,8 @@ vim.opt.winblend = 7
 vim.opt.shiftround = true
 vim.opt.wildmode = 'longest:full,full'
 vim.opt.conceallevel = 0
-vim.opt.sessionoptions = 'blank,buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions'
+vim.opt.sessionoptions =
+  'blank,buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions,globals'
 -- vim.opt.list = true
 -- vim.opt.listchars = 'multispace:·,nbsp:·,trail:·'
 
