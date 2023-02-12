@@ -38,6 +38,18 @@ return {
           { desc = 'toggle inline diagnostics' }
         )
         vim.api.nvim_create_user_command('InlineDiagnosticsToggle', toggle_inline_diagnostics, {})
+
+        -- set up EslintFixAll on save and mapping
+        if client.name == 'eslint' then
+          local augroup = vim.api.nvim_create_augroup('EslintFix', {})
+          vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = augroup,
+            buffer = bufnr,
+            command = 'EslintFixAll',
+          })
+          vim.keymap.set('n', '<leader>bf', '<cmd>EslintFixAll<cr>', { buffer = bufnr })
+        end
       end
 
       -- lsp server setup
@@ -186,8 +198,6 @@ return {
         sources = {
           null_ls.builtins.formatting.stylua,
           null_ls.builtins.diagnostics.pylint,
-          -- null_ls.builtins.formatting.prettier,
-          -- null_ls.builtins.formatting.eslint_d,
         },
         on_attach = function(client, bufnr)
           if client.supports_method 'textDocument/formatting' then
