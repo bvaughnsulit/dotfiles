@@ -11,16 +11,6 @@ return {
     config = function()
       -- things that will be set up when lsp attaches to a buffer
       local on_attach = function(client, bufnr)
-        -- call lsp format method using only null-ls
-        local lsp_formatting = function(buf)
-          vim.lsp.buf.format {
-            filter = function(formatting_client)
-              return formatting_client.name == 'null-ls'
-            end,
-            bufnr = buf,
-          }
-        end
-
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
@@ -29,7 +19,6 @@ return {
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr })
-        vim.keymap.set('n', '<leader>bf', lsp_formatting, { buffer = bufnr })
 
         --diagnostics
         vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, {})
@@ -49,19 +38,6 @@ return {
           { desc = 'toggle inline diagnostics' }
         )
         vim.api.nvim_create_user_command('InlineDiagnosticsToggle', toggle_inline_diagnostics, {})
-
-        -- format on save
-        if client.supports_method 'textDocument/formatting' then
-          local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
-          vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = augroup,
-            buffer = bufnr,
-            callback = function()
-              lsp_formatting(bufnr)
-            end,
-          })
-        end
       end
 
       -- lsp server setup
@@ -175,7 +151,7 @@ return {
   },
   {
     'ray-x/lsp_signature.nvim',
-    event = "BufReadPre",
+    event = 'BufReadPre',
     config = function()
       require('lsp_signature').setup {
         hint_prefix = ' ',
@@ -192,15 +168,42 @@ return {
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
-    event = "BufReadPre",
+    event = 'BufReadPre',
     config = function()
       local null_ls = require 'null-ls'
 
-      local sources = {
-        null_ls.builtins.formatting.prettier,
-        null_ls.builtins.formatting.stylua,
+      -- call lsp format method using only null-ls
+      local lsp_formatting = function(buf)
+        vim.lsp.buf.format {
+          filter = function(formatting_client)
+            return formatting_client.name == 'null-ls'
+          end,
+          bufnr = buf,
+        }
+      end
+
+      null_ls.setup {
+        sources = {
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.diagnostics.pylint,
+          -- null_ls.builtins.formatting.prettier,
+          -- null_ls.builtins.formatting.eslint_d,
+        },
+        on_attach = function(client, bufnr)
+          if client.supports_method 'textDocument/formatting' then
+            local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+            vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              group = augroup,
+              buffer = bufnr,
+              callback = function()
+                lsp_formatting(bufnr)
+              end,
+            })
+            vim.keymap.set('n', '<leader>bf', lsp_formatting, { buffer = bufnr })
+          end
+        end,
       }
-      null_ls.setup { sources = sources }
     end,
   },
 }
