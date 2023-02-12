@@ -1,6 +1,6 @@
 return {
   {
-    dir = '~/dev/theme-select',
+    'bvaughnsulit/theme-select.nvim',
     lazy = false,
     priority = 999,
     cond = function()

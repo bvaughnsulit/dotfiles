@@ -21,6 +21,7 @@ return {
     }
 
     local run_custom_sort = debounce(function()
+      -- TODO: check if there are buffers to sort (e.g. > 1)
       require('bufferline').sort_buffers_by(function(a, b)
         return vim.fn.getbufinfo(a.id)[1].lastused > vim.fn.getbufinfo(b.id)[1].lastused
       end)

@@ -25,6 +25,7 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
+        -- TODO: can i truncate branch?
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = {
           {
@@ -34,6 +35,7 @@ return {
           },
         },
         lualine_x = { 'searchcount', 'location' },
+        -- TODO: remove progress
         lualine_y = { 'progress' },
         lualine_z = { 'filetype' },
       },

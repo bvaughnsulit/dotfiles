@@ -10,6 +10,12 @@ return {
       local builtin = require 'telescope.builtin'
       local previewers = require 'telescope.previewers'
 
+      -- TODO: use telescope for goto def
+      -- TODO: delta pager
+      -- TODO: git status builtin
+      -- TODO: show linenums in previewer
+      -- TODO: fuzzy over current buf
+      -- TODO: speed up file browser?
       require('telescope').setup {
         pickers = {
           find_files = {
@@ -26,15 +32,16 @@ return {
               },
             },
           },
+          lsp_references = {
+            fname_width = 60,
+            show_line = false,
+            trim_text = true,
+          },
         },
         defaults = {
           layout_strategy = 'vertical',
-          path_display = {
-            -- shorten = {
-            --   exclude = {1, -1}
-            -- }
-          },
           color_devicons = true,
+          dynamic_preview_title = true,
           layout_config = {
             anchor = 'N',
             mirror = true,
@@ -45,7 +52,8 @@ return {
           },
           file_ignore_patterns = {
             'package%-lock%.json',
-            '^.git/',
+            '%node_modules%',
+            '%.git/',
             '%.png$',
             '%.svg$',
             '%.gif$',
@@ -66,6 +74,15 @@ return {
           },
         },
       }
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TelescopePreviewerLoaded',
+        group = vim.api.nvim_create_augroup('telescope_nums', { clear = true }),
+        callback = function()
+          vim.opt_local.number = true
+          vim.opt.numberwidth = 5
+        end,
+      })
 
       require('telescope').load_extension 'fzf'
 
@@ -94,7 +111,6 @@ return {
           sort_mru = true,
           bufnr_width = 3,
           ignore_current_buffer = true,
-          initial_mode = 'normal',
           layout_config = { anchor = 'N' },
           path_display = function(_, path)
             local maxWidth = 60
