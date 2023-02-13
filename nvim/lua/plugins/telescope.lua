@@ -13,7 +13,6 @@ return {
       -- TODO: use telescope for goto def
       -- TODO: delta pager
       -- TODO: git status builtin
-      -- TODO: show linenums in previewer
       -- TODO: fuzzy over current buf
       -- TODO: speed up file browser?
       require('telescope').setup {
@@ -27,8 +26,8 @@ return {
             ignore_current_buffer = true,
             sort_mru = true,
             mappings = {
-              n = {
-                ['dd'] = 'delete_buffer',
+              i = {
+                ['<C-x>'] = 'delete_buffer',
               },
             },
           },
@@ -46,7 +45,7 @@ return {
             anchor = 'N',
             mirror = true,
             prompt_position = 'top',
-            width = 0.8,
+            width = 0.9,
             height = 0.95,
             preview_cutoff = 0,
           },
@@ -63,7 +62,6 @@ return {
           mappings = {
             i = {
               ['<esc>'] = actions.close,
-              -- ["<C-u>"] = false,
             },
           },
         },

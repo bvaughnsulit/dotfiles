@@ -4,6 +4,7 @@ gui:
   sidePanelWidth: 0.25 # number from 0 to 1
   expandFocusedSidePanel: false
   mainPanelSplitMode: 'vertical' # one of 'horizontal' | 'flexible' | 'vertical'
+  showFileTree: false # for rendering changes files in a tree format
 os:
   editCommand: 'nvim'
 git:

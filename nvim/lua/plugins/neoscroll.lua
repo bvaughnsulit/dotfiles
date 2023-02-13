@@ -2,6 +2,7 @@ return {
   -- fork of karb94/neoscroll.nvim until time-scale branch is merged to main
   -- 'karb94/neoscroll.nvim'
   'bvaughnsulit/neoscroll.nvim',
+  enabled = false,
   branch = 'time-scale',
   event = 'VeryLazy',
   config = function()
