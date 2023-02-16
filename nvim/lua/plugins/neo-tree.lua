@@ -2,7 +2,7 @@ return {
   'nvim-neo-tree/neo-tree.nvim',
   enabled = true,
   branch = 'v2.x',
-  event = 'BufReadPost',
+  event = 'VeryLazy',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-tree/nvim-web-devicons',
@@ -12,10 +12,6 @@ return {
     vim.g.neo_tree_remove_legacy_commands = 1
     require('neo-tree').setup {
       hide_root_node = true,
-      filtered_items = {
-        visible = true,
-        hide_dotfiles = false,
-      },
       event_handlers = {
         {
           event = 'file_opened',
@@ -32,9 +28,14 @@ return {
           },
           ['<tab>'] = { 'toggle_node' },
         },
-        filesystem = {
-          hijack_netrw_behavior = 'open_default',
+      },
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
         },
+        follow_current_file = true,
+        -- hijack_netrw_behavior = 'open_default',
       },
       vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {}),
     }
