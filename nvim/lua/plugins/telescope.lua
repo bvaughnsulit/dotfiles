@@ -50,7 +50,7 @@ return {
             anchor = 'N',
             mirror = true,
             prompt_position = 'top',
-            width = 0.9,
+            width = 0.8,
             height = 0.95,
             preview_cutoff = 0,
           },
@@ -152,7 +152,7 @@ return {
           require('telescope.themes').get_dropdown {
             layout_config = {
               anchor = 'S',
-              width = 0.7,
+              width = 0.9,
             },
           }
         )
@@ -197,7 +197,7 @@ return {
       telescope.load_extension 'file_browser'
       vim.keymap.set('n', '<leader>eb', function()
         telescope.extensions.file_browser.file_browser {
-          files = true,
+          files = false,
           depth = false,
           auto_depth = true,
           hidden = false,

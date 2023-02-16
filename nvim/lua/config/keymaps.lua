@@ -103,4 +103,4 @@ map('n', '<leader>xx', utils.save_and_source, { desc = 'Save and source current 
 
 cmd('Gho', utils.gh_browse)
 cmd('RelativeNumbersToggle', utils.toggle_rel_num)
-cmd('BdeleteAll', utils.delete_all_bufs)
+cmd('BDeleteAll', utils.delete_all_bufs)
