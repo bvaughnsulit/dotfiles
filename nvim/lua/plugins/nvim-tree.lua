@@ -1,6 +1,6 @@
 return {
   'nvim-tree/nvim-tree.lua',
-  enabled = true,
+  enabled = false,
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   event = 'VeryLazy',
   config = function()

@@ -1,7 +1,8 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
-  enabled = false,
+  enabled = true,
   branch = 'v2.x',
+  cmd = 'Neotree',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'nvim-tree/nvim-web-devicons',
@@ -18,6 +19,7 @@ return {
           hijack_netrw_behavior = 'open_default',
         },
       },
+      vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {}),
     }
   end,
 }

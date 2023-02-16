@@ -1,4 +1,6 @@
-local map = require('config.utils').map
+local utils = require 'config.utils'
+local map = utils.map
+local cmd = utils.create_cmd
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
@@ -82,12 +84,6 @@ map(
 
 map('x', '/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
 
-local toggle_relative_numbers = function()
-  vim.opt.relativenumber = not vim.opt.relativenumber:get()
-end
-
-vim.api.nvim_create_user_command('RelativeNumbersToggle', toggle_relative_numbers, {})
-
 map('n', '<S-left>', '<cmd>vertical resize -5<cr>', {})
 map('n', '<S-right>', '<cmd>vertical resize +5<cr>', {})
 map('n', '<s-up>', '<cmd>resize +2<cr>', {})
@@ -102,3 +98,9 @@ map('i', '<cr>', '<cr><c-g>u')
 map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
+
+map('n', '<leader>xx', utils.save_and_source, { desc = 'Save and source current file' })
+
+cmd('Gho', utils.gh_browse)
+cmd('RelativeNumbersToggle', utils.toggle_rel_num)
+cmd('BdeleteAll', utils.delete_all_bufs)

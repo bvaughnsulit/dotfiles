@@ -12,7 +12,7 @@ return {
       -- things that will be set up when lsp attaches to a buffer
       local on_attach = function(client, bufnr)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
+        vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = bufnr })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
         vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = bufnr })
         vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
@@ -63,7 +63,7 @@ return {
         'pyright',
         'tsserver',
         'eslint',
-        'sumneko_lua',
+        'lua_ls',
         'volar',
         'cssls',
         'dockerls',
@@ -102,7 +102,7 @@ return {
       }
 
       -- custom lua configs
-      lspconfig.sumneko_lua.setup {
+      lspconfig.lua_ls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         settings = {

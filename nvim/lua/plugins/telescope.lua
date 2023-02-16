@@ -36,6 +36,11 @@ return {
             show_line = false,
             trim_text = true,
           },
+          lsp_definitions = {
+            fname_width = 60,
+            show_line = false,
+            trim_text = true,
+          },
         },
         defaults = {
           layout_strategy = 'vertical',

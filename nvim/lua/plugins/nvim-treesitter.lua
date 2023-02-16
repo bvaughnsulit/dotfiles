@@ -8,9 +8,9 @@ return {
     event = 'BufReadPost',
   },
   {
-    -- TODO: why isn't this working
     'nvim-treesitter/nvim-treesitter-context',
     event = 'BufReadPost',
+    config = true,
   },
   {
     'nvim-treesitter/nvim-treesitter',

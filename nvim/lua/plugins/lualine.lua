@@ -25,8 +25,19 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        -- TODO: can i truncate branch?
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_b = {
+          {
+            'branch',
+            fmt = function(str, _)
+              local maxLen = 12
+              if string.len(str) > maxLen then
+                return string.sub(str, 1, maxLen) .. '...'
+              else
+                return str
+              end
+            end,
+          },
+        },
         lualine_c = {
           {
             'filename',
@@ -34,8 +45,7 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_x = { 'searchcount', 'location' },
-        -- TODO: remove progress
+        lualine_x = { 'searchcount', 'diagnostics', 'location' },
         lualine_y = { 'progress' },
         lualine_z = { 'filetype' },
       },
