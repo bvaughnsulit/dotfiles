@@ -10,7 +10,7 @@ return {
       local builtin = require 'telescope.builtin'
       local previewers = require 'telescope.previewers'
 
-      -- TODO: use telescope for goto def
+      -- T: autocompletions?
       -- TODO: delta pager
       -- TODO: git status builtin
       -- TODO: fuzzy over current buf

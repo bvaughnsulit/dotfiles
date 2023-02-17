@@ -1,3 +1,5 @@
+local utils = require 'config.utils'
+
 return {
   'nvim-neo-tree/neo-tree.nvim',
   enabled = true,
@@ -11,7 +13,64 @@ return {
   config = function()
     vim.g.neo_tree_remove_legacy_commands = 1
     require('neo-tree').setup {
+      default_component_configs = {
+        container = {
+          enable_character_fade = false,
+          width = '100%',
+          right_padding = 0,
+        },
+        indent = {
+          indent_size = 2,
+          padding = 1,
+          -- indent guides
+          with_markers = true,
+          indent_marker = '│',
+          last_indent_marker = '└',
+          highlight = 'NeoTreeIndentMarker',
+          -- expander config, needed for nesting files
+          with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = '',
+          expander_expanded = '',
+          expander_highlight = 'NeoTreeExpander',
+        },
+        icon = {
+          folder_closed = '',
+          folder_open = '',
+          folder_empty = '',
+          folder_empty_open = '',
+          default = '*',
+          highlight = 'NeoTreeFileIcon',
+        },
+        modified = {
+          symbol = '*',
+          highlight = 'NeoTreeModified',
+        },
+        name = {
+          trailing_slash = false,
+          use_git_status_colors = true,
+          highlight = 'NeoTreeFileName',
+        },
+        git_status = {
+          symbols = {
+            -- Change type
+            added = '✚',
+            deleted = '', -- '',
+            modified = '',
+            renamed = '➜',
+            -- Status type
+            untracked = '﬒',
+            ignored = '',
+            unstaged = '',
+            staged = '',
+            conflict = '',
+          },
+          align = 'right',
+        },
+      },
+
       hide_root_node = true,
+      enable_diagnostics = false,
+      enable_git_status = true,
       event_handlers = {
         {
           event = 'file_opened',
@@ -23,6 +82,8 @@ return {
       window = {
         width = 30,
         mappings = {
+          ['/'] = {},
+          ['f'] = { 'fuzzy_finder' },
           ['<space><space>'] = {
             'toggle_preview',
           },
@@ -37,22 +98,30 @@ return {
         follow_current_file = true,
         -- hijack_netrw_behavior = 'open_default',
       },
-      vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {}),
+      git_status = {
+        window = {
+          mappings = {
+            ['f'] = '',
+          },
+        },
+      },
+      log_level = 'trace', -- "trace", "debug", "info", "warn", "error", "fatal"
+      log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
     }
+    vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {})
+
+    local explore_diff_main = function(branch_name)
+      vim.cmd 'Neotree toggle git_base=origin/main git_status'
+    end
+
+    utils.create_cmd('GitDiffExplore', function()
+      explore_diff_main 'main'
+    end)
   end,
 }
 
---
+-- --
 -- local config = {
--- -- If a user has a sources list it will replace this one.
--- -- Only sources listed here will be loaded.
--- -- You can also add an external source by adding it's name to this list.
--- -- The name used here must be the same name you would use in a require() call.
--- sources = {
---     "filesystem",
---     "buffers",
---     "git_status",
--- },
 -- -- popup_border_style is for input and confirmation dialogs.
 -- -- Configurtaion of floating window is done in the individual source sections.
 -- -- "NC" is a special style that works well with NormalNC set
@@ -71,8 +140,6 @@ return {
 --                     -- Anything before this will be used. The last items to be processed are the untracked files.
 -- },
 -- hide_root_node = false, -- Hide the root node.
--- log_level = "info", -- "trace", "debug", "info", "warn", "error", "fatal"
--- log_to_file = false, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
 -- open_files_in_last_window = true, -- false = open files in top left window
 -- popup_border_style = "NC", -- "double", "none", "rounded", "shadow", "single" or "solid"
 -- resize_timer_interval = 500, -- in ms, needed for containers to redraw right aligned and faded content

@@ -1,6 +1,5 @@
 local utils = require 'config.utils'
 local map = utils.map
-local cmd = utils.create_cmd
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
@@ -57,6 +56,7 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- map({ 'n' }, 'N', 'Nzz', { silent = true })
 
 -- clear hl with esc
+-- TODO: add a toggle for this
 map({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', {})
 map('n', '<c-_>', '<cmd>nohls<CR>', {})
 
@@ -100,7 +100,3 @@ map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
 map('n', '<leader>xx', utils.save_and_source, { desc = 'Save and source current file' })
-
-cmd('Gho', utils.gh_browse)
-cmd('RelativeNumbersToggle', utils.toggle_rel_num)
-cmd('BDeleteAll', utils.delete_all_bufs)

@@ -10,10 +10,31 @@ return {
     },
     config = function()
       -- things that will be set up when lsp attaches to a buffer
+      local t = require 'telescope.builtin'
+      local t_dropdown = require('telescope.themes').get_dropdown
+
+      local telescope_def = function()
+        t.lsp_definitions(t_dropdown {
+          layout_config = {
+            anchor = 'N',
+            width = 0.9,
+          },
+        })
+      end
+
+      local telescope_ref = function()
+        t.lsp_references(t_dropdown {
+          layout_config = {
+            anchor = 'N',
+            width = 0.9,
+          },
+        })
+      end
+
       local on_attach = function(client, bufnr)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
-        vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = bufnr })
-        vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr })
+        vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })
+        vim.keymap.set('n', 'gr', telescope_ref, { buffer = bufnr })
         vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = bufnr })
         vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
