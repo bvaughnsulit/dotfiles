@@ -53,7 +53,6 @@ return {
         git_status = {
           symbols = {
             -- Change type
-            added = '✚',
             deleted = '', -- '',
             modified = '',
             renamed = '➜',
@@ -105,17 +104,17 @@ return {
           },
         },
       },
-      log_level = 'trace', -- "trace", "debug", "info", "warn", "error", "fatal"
+      log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
       log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
     }
     vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {})
 
     local explore_diff_main = function(branch_name)
-      vim.cmd 'Neotree toggle git_base=origin/main git_status'
+      vim.cmd('Neotree toggle git_base=origin/' .. branch_name .. ' git_status')
     end
 
     utils.create_cmd('GitDiffExplore', function()
-      explore_diff_main 'main'
+      explore_diff_main 'master'
     end)
   end,
 }

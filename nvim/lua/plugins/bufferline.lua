@@ -21,17 +21,18 @@ return {
     }
 
     local run_custom_sort = debounce(function()
+      -- todo: move to pos 1 instead of sort
       -- TODO: check if there are buffers to sort (e.g. > 1)
       require('bufferline').sort_buffers_by(function(a, b)
         return vim.fn.getbufinfo(a.id)[1].lastused > vim.fn.getbufinfo(b.id)[1].lastused
       end)
     end, 2000)
 
-    local bufferline_sort = vim.api.nvim_create_augroup('BufferlineSort', { clear = true })
-    vim.api.nvim_create_autocmd('BufEnter', {
-      callback = run_custom_sort,
-      group = bufferline_sort,
-    })
+    -- local bufferline_sort = vim.api.nvim_create_augroup('BufferlineSort', { clear = true })
+    -- vim.api.nvim_create_autocmd('BufEnter', {
+    --   callback = run_custom_sort,
+    --   group = bufferline_sort,
+    -- })
 
     vim.keymap.set({ 'n', 'v' }, ']b', '<cmd>BufferLineCycleNext<cr>', {})
     vim.keymap.set({ 'n', 'v' }, '<a-]>', '<cmd>BufferLineCycleNext<cr>', {})
