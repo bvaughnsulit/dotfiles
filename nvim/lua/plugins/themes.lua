@@ -1,6 +1,7 @@
 return {
   {
     'bvaughnsulit/theme-select.nvim',
+    dev = true,
     lazy = false,
     priority = 999,
     cond = function()
@@ -51,13 +52,13 @@ return {
         ['material-deep-ocean'] = {
           setup = function()
             vim.g.material_style = 'deep ocean'
-            vim.cmd 'colorscheme material'
+            vim.cmd('colorscheme material')
           end,
         },
         ['material-palenight'] = {
           setup = function()
             vim.g.material_style = 'palenight'
-            vim.cmd 'colorscheme material'
+            vim.cmd('colorscheme material')
           end,
         },
       },
