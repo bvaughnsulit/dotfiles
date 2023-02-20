@@ -6,16 +6,15 @@ return {
     version = '0.1.0',
     dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
-      local actions = require 'telescope.actions'
-      local builtin = require 'telescope.builtin'
-      local previewers = require 'telescope.previewers'
+      local actions = require('telescope.actions')
+      local builtin = require('telescope.builtin')
+      local previewers = require('telescope.previewers')
 
       -- T: autocompletions?
       -- TODO: delta pager
       -- TODO: git status builtin
       -- TODO: fuzzy over current buf
-      -- TODO: speed up file browser?
-      require('telescope').setup {
+      require('telescope').setup({
         pickers = {
           find_files = {
             theme = 'dropdown',
@@ -28,6 +27,13 @@ return {
             mappings = {
               i = {
                 ['<C-x>'] = 'delete_buffer',
+              },
+            },
+          },
+          help_tags = {
+            mappings = {
+              i = {
+                ['<CR>'] = 'select_vertical',
               },
             },
           },
@@ -76,7 +82,7 @@ return {
             -- hijack_netrw = true,
           },
         },
-      }
+      })
 
       vim.api.nvim_create_autocmd('User', {
         pattern = 'TelescopePreviewerLoaded',
@@ -87,19 +93,22 @@ return {
         end,
       })
 
-      require('telescope').load_extension 'fzf'
+      require('telescope').load_extension('fzf')
 
       local search_commits = function()
-        builtin.git_commits {
-          previewer = previewers.git_commit_diff_as_was.new {},
-        }
+        builtin.git_commits({
+          previewer = previewers.git_commit_diff_as_was.new({}),
+        })
       end
 
       vim.api.nvim_create_user_command('TelescopeSearchCommits', search_commits, {})
 
-      vim.keymap.set('n', '<leader>vv', function()
-        require('telescope.builtin').registers { initial_mode = 'normal' }
-      end, {})
+      vim.keymap.set(
+        'n',
+        '<leader>vv',
+        function() require('telescope.builtin').registers({ initial_mode = 'normal' }) end,
+        {}
+      )
 
       vim.keymap.set(
         'n',
@@ -110,7 +119,7 @@ return {
       vim.keymap.set('n', '<C-f>', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
 
       vim.keymap.set('n', '<C-b>', function()
-        require('telescope.builtin').buffers(require('telescope.themes').get_dropdown {
+        require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
           sort_mru = true,
           bufnr_width = 3,
           ignore_current_buffer = true,
@@ -131,60 +140,69 @@ return {
 
             local pathLen = string.len(relative_path)
             local maxPathLen = maxWidth - maxTailLen - spaceLen
-            if pathLen == 0 then
-              relative_path = '/'
-            end
+            if pathLen == 0 then relative_path = '/' end
             if pathLen > maxPathLen then
               local minStartIndex = pathLen - maxPathLen + 3
               local startIndex = string.find(relative_path, '/', minStartIndex)
-              if startIndex >= pathLen then
-                startIndex = minStartIndex
-              end
+              if startIndex >= pathLen then startIndex = minStartIndex end
               relative_path = '...' .. string.sub(relative_path, startIndex)
             end
             return tail .. spacing .. relative_path
           end,
-        })
+        }))
       end)
 
-      vim.keymap.set('n', '<leader>/f', function()
-        require('telescope.builtin').current_buffer_fuzzy_find(
-          require('telescope.themes').get_dropdown {
-            layout_config = {
-              anchor = 'S',
-              width = 0.9,
-            },
-          }
-        )
-      end, { desc = '[/] Fuzzily search in current buffer]' })
+      vim.keymap.set(
+        'n',
+        '<leader>/f',
+        function()
+          require('telescope.builtin').current_buffer_fuzzy_find(
+            require('telescope.themes').get_dropdown({
+              layout_config = {
+                anchor = 'S',
+                width = 0.9,
+              },
+            })
+          )
+        end,
+        { desc = '[/] Fuzzily search in current buffer]' }
+      )
 
       vim.keymap.set('n', '<leader>km', '<cmd>Telescope keymaps<cr>')
 
       vim.keymap.set('n', '<leader>?', '<cmd>Telescope help_tags<cr>')
 
-      vim.keymap.set('n', '<leader>dt', function()
-        require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown {
-          initial_mode = 'normal',
-          no_sign = false,
-          layout_config = {
-            anchor = 'S',
-            mirror = 'false',
-            width = 0.7,
-          },
-        })
-      end)
+      vim.keymap.set(
+        'n',
+        '<leader>dt',
+        function()
+          require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown({
+            initial_mode = 'normal',
+            no_sign = false,
+            layout_config = {
+              anchor = 'S',
+              mirror = 'false',
+              width = 0.7,
+            },
+          }))
+        end
+      )
 
       -- browse themes
-      vim.api.nvim_create_user_command('ThemeBrowse', function()
-        require('telescope.builtin').colorscheme {
-          layout_config = {
-            height = 0.5,
-            preview = false,
-            width = 0.2,
-          },
-          enable_preview = true,
-        }
-      end, {})
+      vim.api.nvim_create_user_command(
+        'ThemeBrowse',
+        function()
+          require('telescope.builtin').colorscheme({
+            layout_config = {
+              height = 0.5,
+              preview = false,
+              width = 0.2,
+            },
+            enable_preview = true,
+          })
+        end,
+        {}
+      )
 
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
@@ -193,21 +211,25 @@ return {
     'nvim-telescope/telescope-file-browser.nvim',
     event = 'VeryLazy',
     config = function()
-      local telescope = require 'telescope'
-      telescope.load_extension 'file_browser'
-      vim.keymap.set('n', '<leader>eb', function()
-        telescope.extensions.file_browser.file_browser {
-          files = false,
-          depth = false,
-          auto_depth = true,
-          hidden = false,
-          respect_gitignore = true,
-          collapse_dirs = true,
-          use_fd = true,
-          hide_parent_dir = true,
-          grouped = true,
-        }
-      end)
+      local telescope = require('telescope')
+      telescope.load_extension('file_browser')
+      vim.keymap.set(
+        'n',
+        '<leader>eb',
+        function()
+          telescope.extensions.file_browser.file_browser({
+            files = false,
+            depth = false,
+            auto_depth = true,
+            hidden = false,
+            respect_gitignore = true,
+            collapse_dirs = true,
+            use_fd = true,
+            hide_parent_dir = true,
+            grouped = true,
+          })
+        end
+      )
     end,
   },
 }

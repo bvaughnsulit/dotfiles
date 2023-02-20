@@ -14,7 +14,7 @@
     light = false
     line-numbers = true
     keep-plus-minus-markers = true
-    side-by-side = true
+    side-by-side = false
 
 [merge]
     conflictstyle = diff3

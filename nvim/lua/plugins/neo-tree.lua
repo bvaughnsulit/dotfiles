@@ -1,4 +1,4 @@
-local utils = require 'config.utils'
+local utils = require('config.utils')
 
 return {
   'nvim-neo-tree/neo-tree.nvim',
@@ -12,7 +12,7 @@ return {
   },
   config = function()
     vim.g.neo_tree_remove_legacy_commands = 1
-    require('neo-tree').setup {
+    require('neo-tree').setup({
       default_component_configs = {
         container = {
           enable_character_fade = false,
@@ -20,7 +20,7 @@ return {
           right_padding = 0,
         },
         indent = {
-          indent_size = 2,
+          indent_size = 1,
           padding = 1,
           -- indent guides
           with_markers = true,
@@ -73,9 +73,7 @@ return {
       event_handlers = {
         {
           event = 'file_opened',
-          handler = function(_)
-            require('neo-tree').close_all()
-          end,
+          handler = function(_) require('neo-tree').close_all() end,
         },
       },
       window = {
@@ -93,6 +91,7 @@ return {
         filtered_items = {
           visible = true,
           hide_dotfiles = false,
+          never_show = { '.DS_Store' },
         },
         follow_current_file = true,
         -- hijack_netrw_behavior = 'open_default',
@@ -106,16 +105,14 @@ return {
       },
       log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
       log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
-    }
+    })
     vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {})
 
     local explore_diff_main = function(branch_name)
       vim.cmd('Neotree toggle git_base=origin/' .. branch_name .. ' git_status')
     end
 
-    utils.create_cmd('GitDiffExplore', function()
-      explore_diff_main 'master'
-    end)
+    utils.create_cmd('GitDiffExplore', function() explore_diff_main('master') end)
   end,
 }
 
