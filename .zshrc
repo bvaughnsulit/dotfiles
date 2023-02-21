@@ -13,10 +13,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # export NODE_PATH=$NODE_PATH:`npm root --location=global`
 
-
-#asdf setup
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 

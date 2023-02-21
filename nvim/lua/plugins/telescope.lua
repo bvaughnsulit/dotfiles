@@ -118,6 +118,7 @@ return {
 
       vim.keymap.set('n', '<C-f>', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
 
+      -- TODO: why do d.ts files break this
       vim.keymap.set('n', '<C-b>', function()
         require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
           sort_mru = true,
