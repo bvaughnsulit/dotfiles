@@ -5,56 +5,55 @@ return {
     'numToStr/Comment.nvim',
     event = 'VeryLazy',
     config = function()
-      require('Comment').setup {
+      require('Comment').setup({
         pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-      }
+      })
     end,
   },
   {
     'windwp/nvim-autopairs',
     event = 'VeryLazy',
-    config = function()
-      require('nvim-autopairs').setup {}
-    end,
+    config = function() require('nvim-autopairs').setup({}) end,
   },
   {
     'eandrju/cellular-automaton.nvim',
     cmd = 'Oops',
     config = function()
-      vim.api.nvim_create_user_command('Oops', function()
-        require('cellular-automaton').start_animation 'make_it_rain'
-      end, {})
+      vim.api.nvim_create_user_command(
+        'Oops',
+        function() require('cellular-automaton').start_animation('make_it_rain') end,
+        {}
+      )
     end,
   },
   {
     'rmagatti/auto-session',
     lazy = false,
     config = function()
-      require('auto-session').setup {
+      require('auto-session').setup({
         log_level = 'error',
         auto_session_suppress_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
-      }
+      })
     end,
   },
   {
     'dstein64/vim-startuptime',
     cmd = 'StartupTime',
-    config = function()
-      vim.g.startuptime_tries = 10
-    end,
+    config = function() vim.g.startuptime_tries = 10 end,
   },
   {
     'petertriho/nvim-scrollbar',
     event = 'BufReadPost',
+    enabled = false,
     -- dependencies = 'kevinhwang91/nvim-hlslens',
     config = function()
-      require('scrollbar').setup {
+      require('scrollbar').setup({
         show_in_active_only = true,
         handlers = {
           cursor = false,
           diagnostic = false,
         },
-      }
+      })
       -- require('scrollbar.handlers.search').setup {}
     end,
   },

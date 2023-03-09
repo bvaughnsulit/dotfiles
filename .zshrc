@@ -28,6 +28,7 @@ alias vi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux' 
+alias nvim-color='nvim --cmd "+lua vim.g.set_scheme=true"'
 
 alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
 

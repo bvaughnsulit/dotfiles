@@ -1,4 +1,4 @@
-local utils = require 'config.utils'
+local utils = require('config.utils')
 local map = utils.map
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
@@ -35,7 +35,8 @@ map({ 'n', 'v' }, 'y', '"+y', {})
 -- delete, change, put to black hole register
 map({ 'n', 'v' }, '<leader>xd', '"_d', {})
 map({ 'n', 'v' }, '<leader>xc', '"_c', {})
-map({ 'x' }, '<leader>xp', '"_dP', {})
+map({ 'x' }, 'p', '"_dP', {})
+map({ 'x' }, '<leader>p', 'p', { desc = 'default p behavior' })
 
 --[[ WINDOWS ]]
 map('n', '<C-h>', '<cmd>wincmd h<cr>')
@@ -50,6 +51,9 @@ map('n', '<left>', '<>', {})
 map('n', '<right>', '<>', {})
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+map('n', '<C-o>', '<C-o>zz')
+map('n', '<C-i>', '<C-i>zz')
 
 -- center cursor when moving through search results
 -- map({ 'n' }, 'n', 'nzz', { silent = true })
@@ -100,3 +104,4 @@ map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
 map('n', '<leader>xx', utils.save_and_source, { desc = 'Save and source current file' })
+map('n', '<leader>tw', utils.toggle_wrap, { desc = 'Toggle wrap' })
