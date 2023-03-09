@@ -1,5 +1,11 @@
 return {
   {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1001,
+    config = function() vim.cmd('colorscheme tokyonight-moon') end,
+  },
+  {
     'bvaughnsulit/theme-select.nvim',
     dev = true,
     lazy = false,
@@ -12,19 +18,15 @@ return {
       end
     end,
     dependencies = {
-      'marko-cerovac/material.nvim',
-      'https://gitlab.com/__tpb/monokai-pro.nvim',
+      -- 'marko-cerovac/material.nvim',
+      -- { 'catppuccin/nvim', name = 'catppuccin' },
       'sainnhe/gruvbox-material',
-      'ishan9299/nvim-solarized-lua',
-      'shaunsingh/solarized.nvim',
-      { 'catppuccin/nvim', name = 'catppuccin' },
       'folke/tokyonight.nvim',
       'EdenEast/nightfox.nvim',
-      'ofirgall/ofirkai.nvim',
-      'nyoom-engineering/oxocarbon.nvim',
     },
     opts = {
       exclude = {
+        --defaults
         'ron',
         'blue',
         'darkblue',
@@ -47,20 +49,28 @@ return {
         'slate',
         'torte',
         'zellner',
+        --tokyonight
+        'tokyonight',
+        'tokyonight-day',
+        --nightfox
+        'terafox',
+        'dawnfox',
+        'dayfox',
+        'nordfox',
       },
       add = {
-        ['material-deep-ocean'] = {
-          setup = function()
-            vim.g.material_style = 'deep ocean'
-            vim.cmd('colorscheme material')
-          end,
-        },
-        ['material-palenight'] = {
-          setup = function()
-            vim.g.material_style = 'palenight'
-            vim.cmd('colorscheme material')
-          end,
-        },
+        -- ['material-deep-ocean'] = {
+        --   setup = function()
+        --     vim.g.material_style = 'deep ocean'
+        --     vim.cmd('colorscheme material')
+        --   end,
+        -- },
+        -- ['material-palenight'] = {
+        --   setup = function()
+        --     vim.g.material_style = 'palenight'
+        --     vim.cmd('colorscheme material')
+        --   end,
+        -- },
       },
     },
   },
