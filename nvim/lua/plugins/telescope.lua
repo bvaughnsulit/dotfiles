@@ -4,7 +4,10 @@ return {
     'nvim-telescope/telescope.nvim',
     event = 'VeryLazy',
     version = '0.1.0',
-    dependencies = { { 'nvim-lua/plenary.nvim' } },
+    dependencies = {
+      'debugloop/telescope-undo.nvim',
+      'nvim-lua/plenary.nvim',
+    },
     config = function()
       local actions = require('telescope.actions')
       local builtin = require('telescope.builtin')
@@ -14,6 +17,7 @@ return {
       -- TODO: delta pager
       -- TODO: git status builtin
       -- TODO: fuzzy over current buf
+      -- TODO: open last or go through history
       require('telescope').setup({
         pickers = {
           find_files = {
@@ -38,6 +42,7 @@ return {
             },
           },
           lsp_references = {
+            include_declaration = false,
             fname_width = 60,
             show_line = false,
             trim_text = true,
@@ -81,6 +86,7 @@ return {
             theme = 'dropdown',
             -- hijack_netrw = true,
           },
+          undo = {},
         },
       })
 
@@ -94,6 +100,7 @@ return {
       })
 
       require('telescope').load_extension('fzf')
+      require('telescope').load_extension('undo')
 
       local search_commits = function()
         builtin.git_commits({
@@ -113,10 +120,23 @@ return {
       vim.keymap.set(
         'n',
         '<C-p>',
+        -- TODO: make this wider
+        -- TODO: get rind of vimscript
         [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]]
       )
 
-      vim.keymap.set('n', '<C-f>', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
+      vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {})
+
+      vim.keymap.set(
+        'n',
+        '<leader>sbt',
+        function()
+          builtin.live_grep({
+            glob_pattern = '**/tests/**/*.py',
+          })
+        end,
+        {}
+      )
 
       -- TODO: why do d.ts files break this
       vim.keymap.set('n', '<C-b>', function()
@@ -205,6 +225,7 @@ return {
         {}
       )
 
+      vim.keymap.set('n', '<leader>:', require('telescope.builtin').commands)
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },

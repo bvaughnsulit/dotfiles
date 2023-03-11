@@ -10,25 +10,25 @@ return {
     },
     config = function()
       -- things that will be set up when lsp attaches to a buffer
-      local t = require 'telescope.builtin'
+      local t = require('telescope.builtin')
       local t_dropdown = require('telescope.themes').get_dropdown
 
       local telescope_def = function()
-        t.lsp_definitions(t_dropdown {
+        t.lsp_definitions(t_dropdown({
           layout_config = {
             anchor = 'N',
             width = 0.9,
           },
-        })
+        }))
       end
 
       local telescope_ref = function()
-        t.lsp_references(t_dropdown {
+        t.lsp_references(t_dropdown({
           layout_config = {
             anchor = 'N',
             width = 0.9,
           },
-        })
+        }))
       end
 
       local on_attach = function(client, bufnr)
@@ -48,9 +48,9 @@ return {
 
         -- toggle inline diagnostics
         local toggle_inline_diagnostics = function()
-          vim.diagnostic.config {
+          vim.diagnostic.config({
             virtual_text = not vim.diagnostic.config().virtual_text,
-          }
+          })
         end
         vim.keymap.set(
           'n',
@@ -63,7 +63,7 @@ return {
         -- set up EslintFixAll on save and mapping
         if client.name == 'eslint' then
           local augroup = vim.api.nvim_create_augroup('EslintFix', {})
-          vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+          vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = augroup,
             buffer = bufnr,
@@ -74,8 +74,8 @@ return {
       end
 
       -- lsp server setup
-      require('neodev').setup {}
-      local lspconfig = require 'lspconfig'
+      require('neodev').setup({})
+      local lspconfig = require('lspconfig')
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -96,34 +96,34 @@ return {
         'denols',
       }
 
-      require('mason-lspconfig').setup { ensure_installed = servers }
+      require('mason-lspconfig').setup({ ensure_installed = servers })
 
       for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup {
+        lspconfig[lsp].setup({
           on_attach = on_attach,
           capabilities = capabilities,
           single_file_support = true,
-        }
+        })
       end
 
       -- custom deno config
-      lspconfig.denols.setup {
+      lspconfig.denols.setup({
         on_attach = on_attach,
         capabilities = capabilities,
         single_file_support = false,
         root_dir = lspconfig.util.root_pattern('deno.json', 'deno.jsonc'),
-      }
+      })
 
       -- custom tsserver config
-      lspconfig.tsserver.setup {
+      lspconfig.tsserver.setup({
         on_attach = on_attach,
         capabilities = capabilities,
         single_file_support = false,
         root_dir = lspconfig.util.root_pattern('package.json', 'tsconfig.json'),
-      }
+      })
 
       -- custom lua configs
-      lspconfig.lua_ls.setup {
+      lspconfig.lua_ls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
         settings = {
@@ -140,17 +140,17 @@ return {
             -- telemetry = { enable = false },
           },
         },
-      }
+      })
 
       -- custom vue (volar) configs
-      lspconfig.volar.setup {
+      lspconfig.volar.setup({
         init_options = {
           typescript = {
             -- putting this as an absolute path feels unwise. need to find a better way.
             serverPath = '/Users/vaughn/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/tsserverlibrary.js',
           },
         },
-      }
+      })
 
       -- diagnostics
       -- currently configured to only apply highlights to line numbers, and not display signs
@@ -164,7 +164,7 @@ return {
       end
 
       -- configure display of diagnostics and floats
-      vim.diagnostic.config {
+      vim.diagnostic.config({
         signs = true,
         virtual_text = false,
         severity_sort = true,
@@ -175,7 +175,7 @@ return {
           border = 'rounded',
           style = 'minimal',
         },
-      }
+      })
       vim.lsp.handlers['textDocument/hover'] =
         vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
       vim.lsp.handlers['textDocument/signatureHelp'] =
@@ -186,54 +186,48 @@ return {
     'ray-x/lsp_signature.nvim',
     event = 'BufReadPre',
     config = function()
-      require('lsp_signature').setup {
-        hint_prefix = ' ',
-      }
+      require('lsp_signature').setup({
+        hint_prefix = ' ',
+      })
     end,
   },
   {
     'williamboman/mason.nvim',
     lazy = true,
     cmd = 'Mason',
-    config = function()
-      require('mason').setup()
-    end,
+    config = function() require('mason').setup() end,
   },
   {
     'jose-elias-alvarez/null-ls.nvim',
     event = 'BufReadPre',
     config = function()
-      local null_ls = require 'null-ls'
+      local null_ls = require('null-ls')
 
       -- call lsp format method using only null-ls
       local lsp_formatting = function(buf)
-        vim.lsp.buf.format {
-          filter = function(formatting_client)
-            return formatting_client.name == 'null-ls'
-          end,
+        vim.lsp.buf.format({
+          filter = function(formatting_client) return formatting_client.name == 'null-ls' end,
           bufnr = buf,
-        }
+        })
       end
 
-      null_ls.setup {
+      null_ls.setup({
         sources = {
           null_ls.builtins.formatting.stylua,
         },
         on_attach = function(client, bufnr)
-          if client.supports_method 'textDocument/formatting' then
+          if client.supports_method('textDocument/formatting') then
             local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
-            vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd('BufWritePre', {
               group = augroup,
               buffer = bufnr,
-              callback = function()
-                lsp_formatting(bufnr)
-              end,
+              callback = function() lsp_formatting(bufnr) end,
             })
             vim.keymap.set('n', '<leader>bf', lsp_formatting, { buffer = bufnr })
           end
         end,
-      }
+      })
     end,
   },
 }

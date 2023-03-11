@@ -57,4 +57,8 @@ return {
       -- require('scrollbar.handlers.search').setup {}
     end,
   },
+  {
+    'tpope/vim-sleuth',
+    event = 'BufReadPre',
+  },
 }

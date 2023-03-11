@@ -10,22 +10,18 @@ M.create_cmd = function(name, command, opts)
   vim.api.nvim_create_user_command(name, command, opts)
 end
 
-M.gh_browse = function()
-  vim.cmd '!gh browse'
-end
+M.gh_browse = function() vim.cmd('!gh browse') end
 
 M.save_and_source = function()
-  vim.cmd 'w'
-  vim.cmd 'so %'
+  vim.cmd('w')
+  vim.cmd('so %')
 end
 
-M.toggle_rel_num = function()
-  vim.opt.relativenumber = not vim.opt.relativenumber:get()
-end
+M.toggle_rel_num = function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end
 
-M.delete_all_bufs = function()
-  vim.cmd '%bd'
-end
+M.toggle_wrap = function() vim.opt.wrap = not vim.opt.wrap:get() end
+
+M.delete_all_bufs = function() vim.cmd('%bd') end
 
 -- libuv stuff
 local timers = {}
@@ -36,22 +32,14 @@ M.debounce = function(fn, ms)
   table.insert(timers, timer)
   return function(...)
     local args = { ... }
-    timer:start(
-      ms,
-      0,
-      vim.schedule_wrap(function()
-        fn(unpack(args))
-      end)
-    )
+    timer:start(ms, 0, vim.schedule_wrap(function() fn(unpack(args)) end))
   end
 end
 
 vim.api.nvim_create_autocmd('VimLeavePre', {
   callback = function()
     for _, timer in pairs(timers) do
-      if timer and not timer:is_closing() then
-        timer:close()
-      end
+      if timer and not timer:is_closing() then timer:close() end
     end
   end,
 })

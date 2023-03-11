@@ -6,7 +6,7 @@ return {
   version = 'v3.*',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
-    require('bufferline').setup {
+    require('bufferline').setup({
       options = {
         enforce_regular_tabs = false,
         modified_icon = '*',
@@ -18,14 +18,16 @@ return {
         tab_size = 20,
         persist_buffer_sort = true,
       },
-    }
+    })
 
     local run_custom_sort = debounce(function()
       -- todo: move to pos 1 instead of sort
       -- TODO: check if there are buffers to sort (e.g. > 1)
-      require('bufferline').sort_buffers_by(function(a, b)
-        return vim.fn.getbufinfo(a.id)[1].lastused > vim.fn.getbufinfo(b.id)[1].lastused
-      end)
+      require('bufferline').sort_buffers_by(
+        function(a, b)
+          return vim.fn.getbufinfo(a.id)[1].lastused > vim.fn.getbufinfo(b.id)[1].lastused
+        end
+      )
     end, 2000)
 
     -- local bufferline_sort = vim.api.nvim_create_augroup('BufferlineSort', { clear = true })

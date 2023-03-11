@@ -18,7 +18,7 @@ return {
           change = 'GitSignsChange',
           delete = 'GitSignsChange',
         }),
-        map.gen_integration.diagnostic(),
+        -- map.gen_integration.diagnostic(),
       },
       symbols = {
         encode = map.gen_encode_symbols.block('2x1'),

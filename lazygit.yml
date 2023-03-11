@@ -11,3 +11,8 @@ git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
+keybinding:
+  universal:
+    remove: 'X'
+    prevItem: '<c-p>'
+    nextItem: '<c-n>'
