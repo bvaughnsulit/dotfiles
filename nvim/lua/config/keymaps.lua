@@ -71,6 +71,10 @@ map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map('n', ']l', '<cmd>cnext<CR>', {})
 map('n', '[l', '<cmd>cprevious<CR>', {})
 
+-- stay in visual mode after indenting
+map('v', '<', '<gv')
+map('v', '>', '>gv')
+
 -- i don't think these work right...
 -- always paste from yank register at matching indent level
 -- map({'n', 'x'}, 'p', '"0]p', {})
@@ -86,7 +90,12 @@ map(
   { desc = 'Put empty line above', silent = true }
 )
 
-map('x', '/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
+map(
+  'x',
+  '/',
+  '<esc>/\\%V',
+  { silent = false, desc = 'Search inside visual selection' }
+)
 
 map('n', '<S-left>', '<cmd>vertical resize -5<cr>', {})
 map('n', '<S-right>', '<cmd>vertical resize +5<cr>', {})
@@ -103,5 +112,10 @@ map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
-map('n', '<leader>xx', utils.save_and_source, { desc = 'Save and source current file' })
+map(
+  'n',
+  '<leader>xx',
+  utils.save_and_source,
+  { desc = 'Save and source current file' }
+)
 map('n', '<leader>tw', utils.toggle_wrap, { desc = 'Toggle wrap' })
