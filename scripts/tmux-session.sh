@@ -8,7 +8,7 @@ if [[ -z $TMUX ]]; then
     tmux a -t ${dir}
   else
     printf "creating new session\n"
-    tmux new -s ${dir}\; send-keys "nvim ." ENTER
+    tmux new -s ${dir}\; send-keys "nvim" ENTER
   fi
 
 else
@@ -19,6 +19,6 @@ else
     printf "creating new session\n"
     tmux new -A -s ${dir} -d
     printf "attaching to new session\n"
-    tmux switch -t ${dir}\; send-keys "nvim ." ENTER
+    tmux switch -t ${dir}\; send-keys "nvim" ENTER
   fi
 fi
