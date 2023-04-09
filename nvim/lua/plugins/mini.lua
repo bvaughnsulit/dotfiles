@@ -9,6 +9,8 @@ return {
     require('mini.surround').setup({})
     require('mini.ai').setup({})
     require('mini.move').setup({})
+    -- require('mini.jump').setup({})
+
     local map = require('mini.map')
     map.setup({
       integrations = {

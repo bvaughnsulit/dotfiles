@@ -6,7 +6,9 @@ return {
     event = 'VeryLazy',
     config = function()
       require('Comment').setup({
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+        pre_hook = require(
+          'ts_context_commentstring.integrations.comment_nvim'
+        ).create_pre_hook(),
       })
     end,
   },
@@ -42,23 +44,26 @@ return {
     config = function() vim.g.startuptime_tries = 10 end,
   },
   {
-    'petertriho/nvim-scrollbar',
+    'tpope/vim-sleuth',
+    event = 'BufReadPre',
+  },
+  {
+    'tpope/vim-repeat',
+    event = 'VeryLazy',
+  },
+  {
+    'ggandor/leap.nvim',
     event = 'BufReadPost',
-    enabled = false,
-    -- dependencies = 'kevinhwang91/nvim-hlslens',
     config = function()
-      require('scrollbar').setup({
-        show_in_active_only = true,
-        handlers = {
-          cursor = false,
-          diagnostic = false,
-        },
-      })
-      -- require('scrollbar.handlers.search').setup {}
+      require('leap').add_default_mappings(true)
+      -- vim.keymap.del({ 'x', 'o' }, 'x')
+      -- vim.keymap.del({ 'x', 'o' }, 'X')
     end,
   },
   {
-    'tpope/vim-sleuth',
-    event = 'BufReadPre',
+    'ggandor/flit.nvim',
+    enabled = true,
+    event = 'BufReadPost',
+    config = function() require('flit').setup({ labeled_modes = 'nx' }) end,
   },
 }
