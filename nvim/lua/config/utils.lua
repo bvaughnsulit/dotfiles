@@ -1,7 +1,8 @@
 local M = {}
 
 M.map = function(mode, lhs, rhs, opts)
-  opts = vim.tbl_deep_extend('force', { noremap = true, silent = true }, opts or {})
+  opts =
+    vim.tbl_deep_extend('force', { noremap = true, silent = true }, opts or {})
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
@@ -17,9 +18,13 @@ M.save_and_source = function()
   vim.cmd('so %')
 end
 
-M.toggle_rel_num = function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end
+M.toggle_rel_num = function()
+  vim.opt.relativenumber = not vim.opt.relativenumber:get()
+end
 
 M.toggle_wrap = function() vim.opt.wrap = not vim.opt.wrap:get() end
+M.disable_diagnostics_in_buffer = function() vim.diagnostic.disable(0) end
+M.enable_diagnostics_in_buffer = function() vim.diagnostic.enable(0) end
 
 M.delete_all_bufs = function() vim.cmd('%bd') end
 

@@ -118,4 +118,5 @@ map(
   utils.save_and_source,
   { desc = 'Save and source current file' }
 )
+
 map('n', '<leader>tw', utils.toggle_wrap, { desc = 'Toggle wrap' })
