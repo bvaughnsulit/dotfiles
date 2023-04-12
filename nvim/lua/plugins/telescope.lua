@@ -64,7 +64,7 @@ return {
             anchor = 'N',
             mirror = true,
             prompt_position = 'top',
-            width = 0.8,
+            width = 0.9,
             height = 0.95,
             preview_cutoff = 0,
           },
@@ -146,6 +146,21 @@ return {
           })
         end,
         {}
+      )
+
+      vim.keymap.set(
+        'n',
+        '<leader>jj',
+        function()
+          require('telescope.builtin').jumplist(
+            require('telescope.themes').get_dropdown({
+              show_line = false,
+              layout_config = {
+                width = 0.8,
+              },
+            })
+          )
+        end
       )
 
       -- TODO: why do d.ts files break this
