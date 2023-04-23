@@ -54,16 +54,16 @@ return {
   {
     'ggandor/leap.nvim',
     event = 'BufReadPost',
-    config = function()
-      require('leap').add_default_mappings(true)
-      -- vim.keymap.del({ 'x', 'o' }, 'x')
-      -- vim.keymap.del({ 'x', 'o' }, 'X')
-    end,
   },
   {
     'ggandor/flit.nvim',
     enabled = true,
     event = 'BufReadPost',
     config = function() require('flit').setup({ labeled_modes = 'nx' }) end,
+  },
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    event = 'VeryLazy',
+    opts = { useDefaultKeymaps = true },
   },
 }

@@ -1,3 +1,6 @@
+local utils = require('config.utils')
+local map = utils.map
+
 return {
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
@@ -163,6 +166,19 @@ return {
           )
         end
       )
+
+      local view_text_obj_mappings = function()
+        require('telescope.builtin').keymaps(
+          require('telescope.themes').get_dropdown({
+            modes = { 'o' },
+            layout_config = {
+              width = 0.8,
+              height = 0.9,
+            },
+          })
+        )
+      end
+      utils.create_cmd('ViewTextObjectMappings', view_text_obj_mappings)
 
       -- TODO: why do d.ts files break this
       vim.keymap.set('n', '<C-b>', function()

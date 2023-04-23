@@ -51,12 +51,12 @@ return {
         'zellner',
         --tokyonight
         'tokyonight',
-        'tokyonight-day',
+        -- 'tokyonight-day',
         --nightfox
         'terafox',
-        'dawnfox',
-        'dayfox',
-        'nordfox',
+        -- 'dawnfox',
+        -- 'dayfox',
+        -- 'nordfox',
       },
       add = {
         -- ['material-deep-ocean'] = {
