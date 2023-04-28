@@ -6,7 +6,7 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     event = 'VeryLazy',
-    version = '0.1.0',
+    branch = '0.1.x',
     dependencies = {
       'debugloop/telescope-undo.nvim',
       'nvim-lua/plenary.nvim',
@@ -23,13 +23,6 @@ return {
       -- TODO: open last or go through history
       require('telescope').setup({
         pickers = {
-          find_files = {
-            theme = 'dropdown',
-            hidden = true,
-            layout_config = {
-              width = 0.9,
-            },
-          },
           buffers = {
             theme = 'dropdown',
             ignore_current_buffer = true,
@@ -74,7 +67,7 @@ return {
           file_ignore_patterns = {
             'package%-lock%.json',
             'static/',
-            '%node_modules%',
+            -- '%node_modules%',
             '%.git/',
             '%.png$',
             '%.svg$',
@@ -86,6 +79,8 @@ return {
             i = {
               ['<esc>'] = actions.close,
               ['<c-q>'] = actions.smart_add_to_qflist,
+              ['<up>'] = actions.cycle_history_prev,
+              ['<down>'] = actions.cycle_history_next,
             },
           },
         },
@@ -98,6 +93,7 @@ return {
         },
       })
 
+      -- show line numbers in preview window
       vim.api.nvim_create_autocmd('User', {
         pattern = 'TelescopePreviewerLoaded',
         group = vim.api.nvim_create_augroup('telescope_nums', { clear = true }),
@@ -126,7 +122,9 @@ return {
         'n',
         '<leader>vv',
         function()
-          require('telescope.builtin').registers({ initial_mode = 'normal' })
+          require('telescope.builtin').registers({
+            initial_mode = 'normal',
+          })
         end,
         {}
       )
@@ -134,9 +132,16 @@ return {
       vim.keymap.set(
         'n',
         '<C-p>',
-        -- TODO: make this wider
-        -- TODO: get rind of vimscript
-        [[<cmd>lua require('telescope.builtin').find_files({hidden=true})<cr>]]
+        function()
+          require('telescope.builtin').find_files(
+            require('telescope.themes').get_dropdown({
+              hidden = true,
+              layout_config = {
+                width = 0.9,
+              },
+            })
+          )
+        end
       )
 
       vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {})
@@ -167,7 +172,7 @@ return {
         end
       )
 
-      local view_text_obj_mappings = function()
+      local view_textobj_mappings = function()
         require('telescope.builtin').keymaps(
           require('telescope.themes').get_dropdown({
             modes = { 'o' },
@@ -178,9 +183,8 @@ return {
           })
         )
       end
-      utils.create_cmd('ViewTextObjectMappings', view_text_obj_mappings)
+      utils.create_cmd('ViewTextObjectMappings', view_textobj_mappings)
 
-      -- TODO: why do d.ts files break this
       vim.keymap.set('n', '<C-b>', function()
         require('telescope.builtin').buffers(
           require('telescope.themes').get_dropdown({
@@ -225,7 +229,6 @@ return {
           require('telescope.builtin').current_buffer_fuzzy_find(
             require('telescope.themes').get_dropdown({
               layout_config = {
-                anchor = 'S',
                 width = 0.9,
               },
             })
