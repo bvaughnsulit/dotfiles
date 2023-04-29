@@ -144,6 +144,8 @@ return {
         end
       )
 
+      vim.keymap.set('n', '<leader><up>', function() builtin.resume() end, {})
+
       vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {})
 
       vim.keymap.set(
