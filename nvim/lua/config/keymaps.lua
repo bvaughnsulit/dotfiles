@@ -1,6 +1,5 @@
 local utils = require('config.utils')
 
--- TODO: replace this
 local map = function(mode, lhs, rhs, opts)
   opts =
     vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
@@ -10,8 +9,12 @@ end
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
 -- \V - very nomagic
--- search with the contents of 0 (yank) register
-map('n', '<leader>/y', '/\\V<C-r>0<cr>')
+map(
+  'n',
+  '<leader>/y',
+  '/\\V<C-r>+<cr>',
+  { desc = 'search with contents of + register' }
+)
 
 map('n', '<leader>ra', ':%s/\\V<C-r>///gI<left><left><left>')
 map(
@@ -60,15 +63,10 @@ map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 map('n', '<C-o>', '<C-o>zz')
 map('n', '<C-i>', '<C-i>zz')
+map('n', '<C-d>', '<C-d>zz')
+map('n', '<C-u>', '<C-u>zz')
 
--- center cursor when moving through search results
--- map({ 'n' }, 'n', 'nzz', { silent = true })
--- map({ 'n' }, 'N', 'Nzz', { silent = true })
-
--- clear hl with esc
--- TODO: add a toggle for this
 map({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', {})
-map('n', '<c-_>', '<cmd>nohls<CR>', {})
 
 -- Remap for dealing with word wrap
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -115,8 +113,9 @@ map('i', ';', ';<c-g>u')
 map('i', '<cr>', '<cr><c-g>u')
 
 map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
+map('n', '<leader>w', '<cmd>w<cr>', { desc = ':w' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
-map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
+map('n', '<leader>qw', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
 map('n', '<leader>xx', function()
   vim.cmd('w')
@@ -146,7 +145,7 @@ utils.create_cmd_and_map(
 
 utils.create_cmd_and_map(
   'RelativeNumbersToggle',
-  nil,
+  '<leader>tn',
   function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end,
   'Toggle Relative Numbers'
 )

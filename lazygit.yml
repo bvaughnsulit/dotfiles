@@ -16,3 +16,6 @@ keybinding:
     remove: 'X'
     prevItem: '<c-p>'
     nextItem: '<c-n>'
+    createRebaseOptionsMenu: 'M'
+  branches:
+    mergeIntoCurrentBranch: 'm'

@@ -4,7 +4,6 @@ M.test_function = function(arg)
   require('notify').notify(arg or 'TESTING', 'ERROR', {})
 end
 
-
 ---@class User_Command
 ---@field name string
 ---@field opts table
