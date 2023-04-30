@@ -3,6 +3,7 @@ local debounce = require('config.utils').debounce
 return {
   'akinsho/bufferline.nvim',
   event = 'VeryLazy',
+  enabled = false,
   version = 'v3.*',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
@@ -25,7 +26,8 @@ return {
       -- TODO: check if there are buffers to sort (e.g. > 1)
       require('bufferline').sort_buffers_by(
         function(a, b)
-          return vim.fn.getbufinfo(a.id)[1].lastused > vim.fn.getbufinfo(b.id)[1].lastused
+          return vim.fn.getbufinfo(a.id)[1].lastused
+            > vim.fn.getbufinfo(b.id)[1].lastused
         end
       )
     end, 2000)

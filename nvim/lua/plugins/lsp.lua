@@ -1,3 +1,5 @@
+local utils = require('config.utils')
+
 return {
   {
     'neovim/nvim-lspconfig',
@@ -71,22 +73,15 @@ return {
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
 
-        -- toggle inline diagnostics
-        local toggle_inline_diagnostics = function()
-          vim.diagnostic.config({
-            virtual_text = not vim.diagnostic.config().virtual_text,
-          })
-        end
-        vim.keymap.set(
-          'n',
-          '<leader>di',
-          toggle_inline_diagnostics,
-          { desc = 'toggle inline diagnostics' }
-        )
-        vim.api.nvim_create_user_command(
+        utils.create_cmd_and_map(
           'InlineDiagnosticsToggle',
-          toggle_inline_diagnostics,
-          {}
+          '<leader>di',
+          function()
+            vim.diagnostic.config({
+              virtual_text = not vim.diagnostic.config().virtual_text,
+            })
+          end,
+          'toggle inline diagnostics'
         )
 
         -- set up EslintFixAll on save and mapping
@@ -115,7 +110,7 @@ return {
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
       local servers = {
-        'pyright',
+        -- 'pyright',
         'tsserver',
         'eslint',
         'lua_ls',
@@ -251,6 +246,7 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.stylua,
+          null_ls.builtins.diagnostics.pylint,
         },
         on_attach = function(client, bufnr)
           if client.supports_method('textDocument/formatting') then
