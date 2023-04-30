@@ -1,14 +1,66 @@
 local M = {}
 
+M.test_function = function(arg)
+  require('notify').notify(arg or 'TESTING', 'ERROR', {})
+end
+
 M.map = function(mode, lhs, rhs, opts)
   opts =
-    vim.tbl_deep_extend('force', { noremap = true, silent = true }, opts or {})
+    vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 M.create_cmd = function(name, command, opts)
   opts = opts or {}
   vim.api.nvim_create_user_command(name, command, opts)
+end
+
+---@class User_Command
+---@field name string
+---@field opts table
+
+---@class Mapping
+---@field mode table|string
+---@field lhs string
+---@field opts table
+
+---@param command? string|User_Command # Name of command as a string, or a table containing name and opts.
+---@param mapping? string|Mapping # Normal mode mapping as a string, or a table containing mode, lhs, and opts.
+---@param fn fun()
+---@param desc? string
+M.create_cmd_and_map = function(command, mapping, fn, desc)
+  local desc_with_fallback = desc
+  if not desc_with_fallback then
+    if command and command.name then
+      desc_with_fallback = command.name
+    elseif type(command) == 'string' then
+      desc_with_fallback = command
+    else
+      desc_with_fallback = ''
+    end
+  end
+
+  if type(command) == 'string' then
+    vim.api.nvim_create_user_command(command, fn, { desc = desc_with_fallback })
+  elseif type(command) == 'table' then
+    if command.name then
+      if not command.opts.desc then command.opts.desc = desc_with_fallback end
+      vim.api.nvim_create_user_command(command.name, fn, command.opts)
+    end
+  end
+
+  if type(mapping) == 'string' then
+    vim.keymap.set('n', mapping, fn, { desc = desc_with_fallback })
+  elseif type(mapping) == 'table' then
+    if mapping.lhs then
+      local opts = vim.tbl_deep_extend('force', {
+        remap = false,
+        silent = true,
+        desc = desc_with_fallback,
+      }, mapping.opts or {})
+      vim.keymap.set(mapping.mode or 'n', mapping.lhs, fn, opts)
+    end
+  end
 end
 
 M.gh_browse = function() vim.cmd('!gh browse') end
