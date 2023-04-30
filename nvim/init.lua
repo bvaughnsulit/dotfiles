@@ -1,6 +1,5 @@
-require 'config.options'
-require 'config.lazy'
-require 'config.autocmds'
-require 'config.keymaps'
-require 'config.commands'
-require 'config.tmux'
+require('config.options')
+require('config.lazy')
+require('config.autocmds')
+require('config.keymaps')
+require('config.tmux')

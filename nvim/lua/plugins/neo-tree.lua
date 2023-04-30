@@ -113,8 +113,12 @@ return {
       vim.cmd('Neotree toggle git_base=' .. branch_name .. ' git_status')
     end
 
-    utils.create_cmd('GitDiffExplore', function() explore_diff_main('master') end)
-    utils.map('n', '<leader>eg', function() explore_diff_main('master') end)
+    utils.create_cmd_and_map(
+      'GitDiffExplore',
+      '<leader>eg',
+      function() explore_diff_main('master') end,
+      'Explore Git Diff from Main'
+    )
   end,
 }
 

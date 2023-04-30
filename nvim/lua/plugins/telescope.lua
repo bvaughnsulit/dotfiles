@@ -1,5 +1,4 @@
 local utils = require('config.utils')
-local map = utils.map
 
 return {
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -174,18 +173,22 @@ return {
         end
       )
 
-      local view_textobj_mappings = function()
-        require('telescope.builtin').keymaps(
-          require('telescope.themes').get_dropdown({
-            modes = { 'o' },
-            layout_config = {
-              width = 0.8,
-              height = 0.9,
-            },
-          })
-        )
-      end
-      utils.create_cmd('ViewTextObjectMappings', view_textobj_mappings)
+      utils.create_cmd_and_map(
+        'ViewTextObjectMappings',
+        nil,
+        function()
+          require('telescope.builtin').keymaps(
+            require('telescope.themes').get_dropdown({
+              modes = { 'o' },
+              layout_config = {
+                width = 0.8,
+                height = 0.9,
+              },
+            })
+          )
+        end,
+        'View Operator Pending Maps'
+      )
 
       vim.keymap.set('n', '<C-b>', function()
         require('telescope.builtin').buffers(

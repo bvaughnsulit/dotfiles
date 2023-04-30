@@ -1,5 +1,11 @@
 local utils = require('config.utils')
-local map = utils.map
+
+-- TODO: replace this
+local map = function(mode, lhs, rhs, opts)
+  opts =
+    vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
@@ -112,11 +118,54 @@ map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>wq', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
-map(
-  'n',
-  '<leader>xx',
-  utils.save_and_source,
-  { desc = 'Save and source current file' }
+map('n', '<leader>xx', function()
+  vim.cmd('w')
+  vim.cmd('so %')
+end, { desc = 'Save and source current file' })
+
+utils.create_cmd_and_map(
+  'ToggleWrap',
+  '<leader>tw',
+  function() vim.opt.wrap = not vim.opt.wrap:get() end,
+  'Toggle line wrap'
 )
 
-map('n', '<leader>tw', utils.toggle_wrap, { desc = 'Toggle wrap' })
+utils.create_cmd_and_map(
+  'Gho',
+  nil,
+  function() vim.cmd('!gh browse') end,
+  'gh browse'
+)
+
+utils.create_cmd_and_map(
+  'BDeleteAll',
+  nil,
+  function() vim.cmd('%bd') end,
+  'Delete All Buffers'
+)
+
+utils.create_cmd_and_map(
+  'RelativeNumbersToggle',
+  nil,
+  function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end,
+  'Toggle Relative Numbers'
+)
+
+utils.create_cmd_and_map(
+  'RelativePathToClipboard',
+  nil,
+  function() vim.cmd("let @* = expand('%:.')") end,
+  'Copy Relative Filepath to Clipboard'
+)
+
+utils.create_cmd_and_map(
+  'EnableDiagnosticsCurrentBuffer',
+  nil,
+  function() vim.diagnostic.enable(0) end
+)
+
+utils.create_cmd_and_map(
+  'DisableDiagnosticsCurrentBuffer',
+  nil,
+  function() vim.diagnostic.disable(0) end
+)
