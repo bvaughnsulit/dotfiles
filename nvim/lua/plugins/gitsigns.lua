@@ -67,7 +67,8 @@ return {
         style = 'minimal',
         relative = 'cursor',
         row = 0,
-        col = 1,
+        col = 0,
+        anchor = 'SW',
       },
       yadm = {
         enable = false,
@@ -84,13 +85,27 @@ return {
         -- Navigation
         map('n', ']c', function()
           if vim.wo.diff then return ']c' end
-          vim.schedule(function() gs.next_hunk() end)
+          vim.schedule(
+            function()
+              gs.next_hunk({
+                wrap = false,
+                preview = true,
+              })
+            end
+          )
           return '<Ignore>'
         end, { expr = true })
 
         map('n', '[c', function()
           if vim.wo.diff then return '[c' end
-          vim.schedule(function() gs.prev_hunk() end)
+          vim.schedule(
+            function()
+              gs.prev_hunk({
+                wrap = false,
+                preview = true,
+              })
+            end
+          )
           return '<Ignore>'
         end, { expr = true })
 

@@ -11,7 +11,6 @@ return {
       'folke/neodev.nvim',
     },
     config = function()
-      -- things that will be set up when lsp attaches to a buffer
       local t = require('telescope.builtin')
       local t_dropdown = require('telescope.themes').get_dropdown
 
@@ -33,6 +32,7 @@ return {
         }))
       end
 
+      -- things that will be set up when lsp attaches to a buffer
       local on_attach = function(client, bufnr)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })
@@ -110,13 +110,13 @@ return {
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
       local servers = {
-        -- 'pyright',
+        'pyright',
         'tsserver',
         'eslint',
         'lua_ls',
         'volar',
         'cssls',
-        'dockerls',
+        -- 'dockerls',
         'html',
         'emmet_ls',
         'jsonls',
