@@ -39,6 +39,13 @@ return {
               },
             },
           },
+          commands = {
+            mappings = {
+              i = {
+                ['<leader><leader>'] = actions.close,
+              },
+            },
+          },
           lsp_references = {
             include_declaration = false,
             fname_width = 60,
@@ -280,7 +287,11 @@ return {
         {}
       )
 
-      vim.keymap.set('n', '<leader>:', require('telescope.builtin').commands)
+      vim.keymap.set(
+        'n',
+        '<leader><leader>',
+        require('telescope.builtin').commands
+      )
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },

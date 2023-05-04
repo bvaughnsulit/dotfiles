@@ -115,6 +115,7 @@ map('i', '<cr>', '<cr><c-g>u')
 map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>w', '<cmd>w<cr>', { desc = ':w' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
+map('n', '<leader>QQ', '<cmd>qa!<cr>', { desc = 'Force Quit all' })
 map('n', '<leader>qw', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
 map('n', '<leader>xx', function()
@@ -151,7 +152,7 @@ utils.create_cmd_and_map(
 )
 
 utils.create_cmd_and_map(
-  'RelativePathToClipboard',
+  'CopyRelativePathToClipboard',
   nil,
   function() vim.cmd("let @* = expand('%:.')") end,
   'Copy Relative Filepath to Clipboard'

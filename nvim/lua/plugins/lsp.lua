@@ -118,7 +118,7 @@ return {
         'cssls',
         -- 'dockerls',
         'html',
-        'emmet_ls',
+        -- 'emmet_ls',
         'jsonls',
         -- 'tailwindcss',
         'vimls',
@@ -215,9 +215,11 @@ return {
   {
     'ray-x/lsp_signature.nvim',
     event = 'BufReadPre',
+    enabled = true,
     config = function()
       require('lsp_signature').setup({
-        hint_prefix = ' ',
+        hint_enable = false,
+        fix_pos = true,
       })
     end,
   },

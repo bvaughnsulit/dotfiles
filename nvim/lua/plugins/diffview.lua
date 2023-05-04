@@ -1,11 +1,11 @@
 return {
   'sindrets/diffview.nvim',
   dependencies = 'nvim-lua/plenary.nvim',
-  cmd = "DiffviewOpen",
+  cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   config = function()
-    local actions = require 'diffview.actions'
+    local actions = require('diffview.actions')
 
-    require('diffview').setup {
+    require('diffview').setup({
       diff_binaries = false, -- Show diffs for binaries
       enhanced_diff_hl = true, -- See |diffview-config-enhanced_diff_hl|
       git_cmd = { 'git' }, -- The git executable followed by default args.
@@ -73,7 +73,7 @@ return {
       },
       default_args = { -- Default args prepended to the arg-list for the listed commands
         DiffviewOpen = {},
-        DiffviewFileHistory = {},
+        DiffviewFileHistory = { '%' },
       },
       hooks = {}, -- See |diffview-config-hooks|
       keymaps = {
@@ -91,11 +91,11 @@ return {
           ['g<C-x>'] = actions.cycle_layout, -- Cycle through available layouts.
           ['[x'] = actions.prev_conflict, -- In the merge_tool: jump to the previous conflict
           [']x'] = actions.next_conflict, -- In the merge_tool: jump to the next conflict
-          ['<leader>co'] = actions.conflict_choose 'ours', -- Choose the OURS version of a conflict
-          ['<leader>ct'] = actions.conflict_choose 'theirs', -- Choose the THEIRS version of a conflict
-          ['<leader>cb'] = actions.conflict_choose 'base', -- Choose the BASE version of a conflict
-          ['<leader>ca'] = actions.conflict_choose 'all', -- Choose all the versions of a conflict
-          ['dx'] = actions.conflict_choose 'none', -- Delete the conflict region
+          ['<leader>co'] = actions.conflict_choose('ours'), -- Choose the OURS version of a conflict
+          ['<leader>ct'] = actions.conflict_choose('theirs'), -- Choose the THEIRS version of a conflict
+          ['<leader>cb'] = actions.conflict_choose('base'), -- Choose the BASE version of a conflict
+          ['<leader>ca'] = actions.conflict_choose('all'), -- Choose all the versions of a conflict
+          ['dx'] = actions.conflict_choose('none'), -- Delete the conflict region
         },
         diff1 = { --[[ Mappings in single window diff layouts ]]
         },
@@ -103,14 +103,14 @@ return {
         },
         diff3 = {
           -- Mappings in 3-way diff layouts
-          { { 'n', 'x' }, '2do', actions.diffget 'ours' }, -- Obtain the diff hunk from the OURS version of the file
-          { { 'n', 'x' }, '3do', actions.diffget 'theirs' }, -- Obtain the diff hunk from the THEIRS version of the file
+          { { 'n', 'x' }, '2do', actions.diffget('ours') }, -- Obtain the diff hunk from the OURS version of the file
+          { { 'n', 'x' }, '3do', actions.diffget('theirs') }, -- Obtain the diff hunk from the THEIRS version of the file
         },
         diff4 = {
           -- Mappings in 4-way diff layouts
-          { { 'n', 'x' }, '1do', actions.diffget 'base' }, -- Obtain the diff hunk from the BASE version of the file
-          { { 'n', 'x' }, '2do', actions.diffget 'ours' }, -- Obtain the diff hunk from the OURS version of the file
-          { { 'n', 'x' }, '3do', actions.diffget 'theirs' }, -- Obtain the diff hunk from the THEIRS version of the file
+          { { 'n', 'x' }, '1do', actions.diffget('base') }, -- Obtain the diff hunk from the BASE version of the file
+          { { 'n', 'x' }, '2do', actions.diffget('ours') }, -- Obtain the diff hunk from the OURS version of the file
+          { { 'n', 'x' }, '3do', actions.diffget('theirs') }, -- Obtain the diff hunk from the THEIRS version of the file
         },
         file_panel = {
           ['j'] = actions.next_entry, -- Bring the cursor to the next file entry
@@ -171,6 +171,6 @@ return {
           ['q'] = actions.close,
         },
       },
-    }
+    })
   end,
 }
