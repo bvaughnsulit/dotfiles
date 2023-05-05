@@ -1,3 +1,5 @@
+local utils = require('config.utils')
+
 return {
   'lewis6991/gitsigns.nvim',
   event = 'BufReadPre',
@@ -35,7 +37,7 @@ return {
           linehl = 'GitSignsChangeLn',
         },
       },
-      base = 'master',
+      base = utils.get_default_branch_name(),
       signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
       numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
       linehl = false, -- Toggle with `:Gitsigns toggle_linehl`

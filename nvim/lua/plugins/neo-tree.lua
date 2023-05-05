@@ -109,14 +109,16 @@ return {
     })
     vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {})
 
-    local explore_diff_main = function(branch_name)
+    local branch_name = utils.get_default_branch_name()
+
+    local explore_diff_main = function()
       vim.cmd('Neotree toggle git_base=' .. branch_name .. ' git_status')
     end
 
     utils.create_cmd_and_map(
       'GitDiffExplore',
       '<leader>eg',
-      function() explore_diff_main('master') end,
+      function() explore_diff_main() end,
       'Explore Git Diff from Main'
     )
   end,

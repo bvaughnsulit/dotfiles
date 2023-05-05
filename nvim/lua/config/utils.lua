@@ -1,3 +1,4 @@
+local git_lazy = require('lazy.manage.git')
 local M = {}
 
 M.test_function = function(arg)
@@ -50,6 +51,13 @@ M.create_cmd_and_map = function(command, mapping, fn, desc)
       vim.keymap.set(mapping.mode or 'n', mapping.lhs, fn, opts)
     end
   end
+end
+
+M.get_default_branch_name = function()
+  local git_config = git_lazy.get_config('.')
+  local main = git_config['branch.main.remote']
+  local master = git_config['branch.master.remote']
+  return main or master
 end
 
 -- libuv stuff
