@@ -6,8 +6,44 @@ return {
     config = function() vim.cmd('colorscheme tokyonight-moon') end,
   },
   {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    config = function()
+      require('catppuccin').setup({
+        integrations = {
+          telescope = true,
+          lsp_trouble = true,
+          treesitter = true,
+          treesitter_context = true,
+          notify = true,
+          native_lsp = true,
+          dap = true,
+          cmp = true,
+          gitsigns = true,
+          leap = true,
+          mini = true,
+          neotree = true,
+          neotest = true,
+          illuminate = true,
+        },
+      })
+    end,
+  },
+  {
+    'marko-cerovac/material.nvim',
+  },
+  {
+    'sainnhe/gruvbox-material',
+  },
+  {
+    'folke/tokyonight.nvim',
+  },
+  {
+    'EdenEast/nightfox.nvim',
+  },
+  {
     'bvaughnsulit/theme-select.nvim',
-    dev = true,
+    dev = false,
     lazy = false,
     priority = 999,
     cond = function()
@@ -18,8 +54,9 @@ return {
       end
     end,
     dependencies = {
-      -- 'marko-cerovac/material.nvim',
-      -- { 'catppuccin/nvim', name = 'catppuccin' },
+      'folke/tokyonight.nvim',
+      'catppuccin/nvim',
+      'marko-cerovac/material.nvim',
       'sainnhe/gruvbox-material',
       'folke/tokyonight.nvim',
       'EdenEast/nightfox.nvim',
@@ -49,7 +86,6 @@ return {
         'slate',
         'torte',
         'zellner',
-        --tokyonight
         'tokyonight',
         -- 'tokyonight-day',
         --nightfox
@@ -59,18 +95,18 @@ return {
         -- 'nordfox',
       },
       add = {
-        -- ['material-deep-ocean'] = {
-        --   setup = function()
-        --     vim.g.material_style = 'deep ocean'
-        --     vim.cmd('colorscheme material')
-        --   end,
-        -- },
-        -- ['material-palenight'] = {
-        --   setup = function()
-        --     vim.g.material_style = 'palenight'
-        --     vim.cmd('colorscheme material')
-        --   end,
-        -- },
+        ['material-deep-ocean'] = {
+          setup = function()
+            vim.g.material_style = 'deep ocean'
+            vim.cmd('colorscheme material')
+          end,
+        },
+        ['material-palenight'] = {
+          setup = function()
+            vim.g.material_style = 'palenight'
+            vim.cmd('colorscheme material')
+          end,
+        },
       },
     },
   },
