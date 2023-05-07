@@ -1,5 +1,23 @@
 return {
   {
+    'github/copilot.vim',
+    event = 'VeryLazy',
+  },
+  {
+    'zbirenbaum/copilot.lua',
+    event = 'VeryLazy',
+    enabled = false,
+    config = function()
+      require('copilot').setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+        },
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
     'hrsh7th/nvim-cmp',
     event = 'VeryLazy',
     dependencies = {
@@ -10,15 +28,8 @@ return {
       'saadparwaiz1/cmp_luasnip',
       {
         'zbirenbaum/copilot-cmp',
-        dependencies = {
-          'zbirenbaum/copilot.lua',
-          config = function()
-            require('copilot').setup({
-              suggestion = { enabled = false },
-              panel = { enabled = false },
-            })
-          end,
-        },
+        enabled = false,
+        dependencies = { 'zbirenbaum/copilot.lua' },
         config = function()
           require('copilot_cmp').setup({
             formatters = {
@@ -37,7 +48,7 @@ return {
           expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         completion = {
-          completeopt = 'menu,menuone,noinsert',
+          -- completeopt = 'menu,menuone,noinsert',
           -- keyword_length = 2,
         },
         window = {
@@ -98,14 +109,12 @@ return {
           end,
         },
         experimental = {
-          ghost_text = {
-            hl_group = 'LspCodeLens',
-          },
+          ghost_text = false,
         },
         sorting = {
           priority_weight = 2,
           comparators = {
-            require('copilot_cmp.comparators').prioritize,
+            -- require('copilot_cmp.comparators').prioritize,
             -- Below is the default comparitor list and order for nvim-cmp
             cmp.config.compare.offset,
             -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
