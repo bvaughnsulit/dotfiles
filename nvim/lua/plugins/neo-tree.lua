@@ -12,7 +12,13 @@ return {
   },
   config = function()
     vim.g.neo_tree_remove_legacy_commands = 1
-    require('neo-tree').setup({
+    local neotree = require('neo-tree')
+    neotree.setup({
+      sources = {
+        'filesystem',
+        'git_status',
+        -- 'document_symbols',
+      },
       default_component_configs = {
         container = {
           enable_character_fade = false,
@@ -70,13 +76,14 @@ return {
       hide_root_node = true,
       enable_diagnostics = false,
       enable_git_status = true,
-      -- TODO: can event handler auto close for file explorer only?
-      -- event_handlers = {
-      --   {
-      --     event = 'file_opened',
-      --     handler = function(_) require('neo-tree').close_all() end,
-      --   },
-      -- },
+      event_handlers = {
+        {
+          event = 'file_opened',
+          handler = function(_)
+            require('neo-tree.sources.manager').close_all_except('git_status')
+          end,
+        },
+      },
       -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
       -- log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
       window = {
@@ -102,7 +109,8 @@ return {
       git_status = {
         window = {
           mappings = {
-            ['f'] = '',
+            ['f'] = 'noop',
+            ['gg'] = 'noop',
           },
         },
       },
@@ -119,5 +127,10 @@ return {
       end,
       'Explore Git Diff from Main'
     )
+
+    vim.api.nvim_create_autocmd('VimLeavePre', {
+      pattern = '*',
+      callback = function() vim.cmd('Neotree close') end,
+    })
   end,
 }
