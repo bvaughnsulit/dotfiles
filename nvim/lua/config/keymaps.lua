@@ -155,14 +155,14 @@ utils.create_cmd_and_map(
   'OpenFileInBrowser',
   nil,
   function() utils.open_file_in_gh() end,
-  'Open File in Browser'
+  'Open File in Github'
 )
 
 utils.create_cmd_and_map(
   'OpenRepoInBrowser',
   nil,
   function() utils.open_repo_in_gh() end,
-  'Open Repo in Browser'
+  'Open Github Repo in Browser'
 )
 
 utils.create_cmd_and_map(
