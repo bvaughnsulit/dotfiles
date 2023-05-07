@@ -53,11 +53,47 @@ M.create_cmd_and_map = function(command, mapping, fn, desc)
   end
 end
 
+---@alias branch 'main' | 'master'
+---@return branch | nil
 M.get_default_branch_name = function()
   local git_config = git_lazy.get_config('.')
-  local main = git_config['branch.main.remote']
-  local master = git_config['branch.master.remote']
-  return main or master
+  if git_config['branch.main.remote'] then
+    return 'main'
+  elseif git_config['branch.master.remote'] then
+    return 'master'
+  end
+end
+
+---@return string | nil
+M.get_gh_repo_url = function()
+  local git_config = git_lazy.get_config('.')
+  local repo_url = git_config['remote.origin.url']
+  if repo_url then return repo_url:sub(1, -5) end
+end
+
+---@return string | nil
+M.get_gh_file_url = function()
+  local path = vim.fn.expand('%:.')
+  local branch = M.get_default_branch_name()
+  local repo_url = M.get_gh_repo_url()
+  if repo_url then return repo_url .. '/blob/' .. branch .. '/' .. path end
+end
+
+---@return nil
+M.copy_gh_file_url = function()
+  local url = M.get_gh_file_url()
+  vim.fn.setreg('+', url)
+  vim.notify('Copied to clipboard: ' .. url)
+end
+
+M.open_file_in_gh = function()
+  local url = M.get_gh_file_url()
+  vim.cmd('silent !open ' .. url)
+end
+
+M.open_repo_in_gh = function()
+  local url = M.get_gh_repo_url()
+  vim.cmd('silent !open ' .. url)
 end
 
 -- libuv stuff
