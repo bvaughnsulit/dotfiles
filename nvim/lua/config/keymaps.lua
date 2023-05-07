@@ -131,13 +131,6 @@ utils.create_cmd_and_map(
 )
 
 utils.create_cmd_and_map(
-  'Gho',
-  nil,
-  function() vim.cmd('!gh browse') end,
-  'gh browse'
-)
-
-utils.create_cmd_and_map(
   'BDeleteAll',
   nil,
   function() vim.cmd('%bd') end,
@@ -152,10 +145,24 @@ utils.create_cmd_and_map(
 )
 
 utils.create_cmd_and_map(
-  'CopyRelativePathToClipboard',
+  'CopyPathToClipboard',
   nil,
-  function() vim.cmd("let @* = expand('%:.')") end,
+  function() utils.copy_gh_file_url() end,
   'Copy Relative Filepath to Clipboard'
+)
+
+utils.create_cmd_and_map(
+  'OpenFileInBrowser',
+  nil,
+  function() utils.open_file_in_gh() end,
+  'Open File in Github'
+)
+
+utils.create_cmd_and_map(
+  'OpenRepoInBrowser',
+  nil,
+  function() utils.open_repo_in_gh() end,
+  'Open Github Repo in Browser'
 )
 
 utils.create_cmd_and_map(
