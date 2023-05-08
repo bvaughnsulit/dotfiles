@@ -1,45 +1,9 @@
 return {
   {
-    'folke/tokyonight.nvim',
+    'rebelot/kanagawa.nvim',
     lazy = false,
     priority = 1001,
-    config = function() vim.cmd('colorscheme tokyonight-moon') end,
-  },
-  {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    config = function()
-      require('catppuccin').setup({
-        integrations = {
-          telescope = true,
-          lsp_trouble = true,
-          treesitter = true,
-          treesitter_context = true,
-          notify = true,
-          native_lsp = true,
-          dap = true,
-          cmp = true,
-          gitsigns = true,
-          leap = true,
-          mini = true,
-          neotree = true,
-          neotest = true,
-          illuminate = true,
-        },
-      })
-    end,
-  },
-  {
-    'marko-cerovac/material.nvim',
-  },
-  {
-    'sainnhe/gruvbox-material',
-  },
-  {
-    'folke/tokyonight.nvim',
-  },
-  {
-    'EdenEast/nightfox.nvim',
+    config = function() vim.cmd('colorscheme kanagawa-wave') end,
   },
   {
     'bvaughnsulit/theme-select.nvim',
@@ -55,11 +19,37 @@ return {
     end,
     dependencies = {
       'folke/tokyonight.nvim',
-      'catppuccin/nvim',
       'marko-cerovac/material.nvim',
       'sainnhe/gruvbox-material',
       'folke/tokyonight.nvim',
       'EdenEast/nightfox.nvim',
+      'rebelot/kanagawa.nvim',
+      'sainnhe/everforest',
+      'loctvl842/monokai-pro.nvim',
+      'maxmx03/fluoromachine.nvim',
+      {
+        'catppuccin/nvim',
+        name = 'catppuccin',
+        config = function()
+          require('catppuccin').setup({
+            integrations = {
+              telescope = true,
+              lsp_trouble = true,
+              treesitter = true,
+              treesitter_context = true,
+              notify = true,
+              dap = true,
+              cmp = true,
+              gitsigns = true,
+              leap = true,
+              mini = true,
+              neotree = true,
+              neotest = true,
+              illuminate = true,
+            },
+          })
+        end,
+      },
     },
     opts = {
       exclude = {
@@ -86,7 +76,13 @@ return {
         'slate',
         'torte',
         'zellner',
+        'sorbet',
+        'zaibatsu',
+        'retrobox',
+        --other
+        'material',
         'tokyonight',
+        'catppuccin',
         -- 'tokyonight-day',
         --nightfox
         'terafox',
