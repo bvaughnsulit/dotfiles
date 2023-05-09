@@ -31,6 +31,7 @@ alias tm='tmux new -A -s tmux'
 alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
 
 alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
+alias venv='source venv/bin/activate'
 
 # add computer-specific configs in a separate, non-committed file
 [[ ! -f ~/.zshrc_addtl ]] || source ~/.zshrc_addtl
