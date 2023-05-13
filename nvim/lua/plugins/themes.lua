@@ -27,6 +27,7 @@ return {
       'sainnhe/everforest',
       'loctvl842/monokai-pro.nvim',
       'maxmx03/fluoromachine.nvim',
+      { 'projekt0n/github-nvim-theme', branch = '0.0.x' },
       {
         'catppuccin/nvim',
         name = 'catppuccin',
@@ -89,6 +90,7 @@ return {
         -- 'dawnfox',
         -- 'dayfox',
         -- 'nordfox',
+        'everforest',
       },
       add = {
         ['material-deep-ocean'] = {
@@ -101,6 +103,13 @@ return {
           setup = function()
             vim.g.material_style = 'palenight'
             vim.cmd('colorscheme material')
+          end,
+        },
+        ['everforest-light'] = {
+          setup = function()
+            vim.opt.background = 'light'
+            vim.g.everforest_background = 'medium'
+            vim.cmd('colorscheme everforest')
           end,
         },
       },

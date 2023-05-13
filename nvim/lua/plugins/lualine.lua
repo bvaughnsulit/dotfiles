@@ -3,7 +3,7 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
   event = 'VeryLazy',
   config = function()
-    require('lualine').setup {
+    require('lualine').setup({
       options = {
         icons_enabled = true,
         theme = 'auto',
@@ -14,7 +14,7 @@ return {
           winbar = {},
         },
         ignore_focus = {
-          'NvimTree',
+          'neo-tree',
         },
         always_divide_middle = true,
         globalstatus = true,
@@ -76,6 +76,6 @@ return {
         lualine_z = {},
       },
       extensions = {},
-    }
+    })
   end,
 }

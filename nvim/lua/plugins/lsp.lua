@@ -37,39 +37,14 @@ return {
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })
         vim.keymap.set('n', 'gr', telescope_ref, { buffer = bufnr })
-        vim.keymap.set(
-          'n',
-          'gK',
-          vim.lsp.buf.signature_help,
-          { buffer = bufnr }
-        )
-        vim.keymap.set(
-          'n',
-          'gt',
-          vim.lsp.buf.type_definition,
-          { buffer = bufnr }
-        )
-        vim.keymap.set(
-          'n',
-          'gi',
-          vim.lsp.buf.implementation,
-          { buffer = bufnr }
-        )
-        vim.keymap.set(
-          'n',
-          '<leader>rn',
-          vim.lsp.buf.rename,
-          { buffer = bufnr }
-        )
-        vim.keymap.set(
-          'n',
-          '<leader>ca',
-          vim.lsp.buf.code_action,
-          { buffer = bufnr }
-        )
+        vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = bufnr })
+        vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
+        -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr })
 
         --diagnostics
-        vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, {})
+        vim.keymap.set('n', 'gK', vim.diagnostic.open_float, {})
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
 
@@ -93,12 +68,7 @@ return {
             buffer = bufnr,
             command = 'EslintFixAll',
           })
-          vim.keymap.set(
-            'n',
-            '<leader>bf',
-            '<cmd>EslintFixAll<cr>',
-            { buffer = bufnr }
-          )
+          vim.keymap.set('n', '<leader>bf', '<cmd>EslintFixAll<cr>', { buffer = bufnr })
         end
       end
 
@@ -183,8 +153,7 @@ return {
 
       -- diagnostics
       -- currently configured to only apply highlights to line numbers, and not display signs
-      local signs =
-        { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
+      local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
       for type, _ in pairs(signs) do
         local hl = 'DiagnosticSign' .. type
         vim.fn.sign_define(hl, {
@@ -238,9 +207,7 @@ return {
       -- call lsp format method using only null-ls
       local lsp_formatting = function(buf)
         vim.lsp.buf.format({
-          filter = function(formatting_client)
-            return formatting_client.name == 'null-ls'
-          end,
+          filter = function(formatting_client) return formatting_client.name == 'null-ls' end,
           bufnr = buf,
         })
       end
@@ -259,12 +226,7 @@ return {
               buffer = bufnr,
               callback = function() lsp_formatting(bufnr) end,
             })
-            vim.keymap.set(
-              'n',
-              '<leader>bf',
-              lsp_formatting,
-              { buffer = bufnr }
-            )
+            vim.keymap.set('n', '<leader>bf', lsp_formatting, { buffer = bufnr })
           end
         end,
       })

@@ -1,4 +1,5 @@
 local utils = require('config.utils')
+-- TODO: delta pager
 
 return {
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -9,18 +10,19 @@ return {
     dependencies = {
       'debugloop/telescope-undo.nvim',
       'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-live-grep-args.nvim',
     },
     config = function()
+      local telescope = require('telescope')
       local actions = require('telescope.actions')
       local builtin = require('telescope.builtin')
       local previewers = require('telescope.previewers')
 
-      -- T: autocompletions?
-      -- TODO: delta pager
-      -- TODO: git status builtin
-      -- TODO: fuzzy over current buf
-      -- TODO: open last or go through history
-      require('telescope').setup({
+      telescope.load_extension('fzf')
+      telescope.load_extension('undo')
+      telescope.load_extension('live_grep_args')
+
+      telescope.setup({
         pickers = {
           buffers = {
             theme = 'dropdown',
@@ -72,7 +74,7 @@ return {
           },
           file_ignore_patterns = {
             'package%-lock%.json',
-            'static/',
+            -- 'static/',
             -- '%node_modules%',
             '%.git/',
             '%.png$',
@@ -85,8 +87,8 @@ return {
             i = {
               ['<esc>'] = actions.close,
               ['<c-q>'] = actions.smart_add_to_qflist,
-              ['<up>'] = actions.cycle_history_prev,
-              ['<down>'] = actions.cycle_history_next,
+              -- ['<c-up>'] = actions.cycle_history_prev,
+              -- ['<c-down>'] = actions.cycle_history_next,
             },
           },
         },
@@ -109,20 +111,13 @@ return {
         end,
       })
 
-      require('telescope').load_extension('fzf')
-      require('telescope').load_extension('undo')
-
       local search_commits = function()
         builtin.git_commits({
           previewer = previewers.git_commit_diff_as_was.new({}),
         })
       end
 
-      vim.api.nvim_create_user_command(
-        'TelescopeSearchCommits',
-        search_commits,
-        {}
-      )
+      vim.api.nvim_create_user_command('TelescopeSearchCommits', search_commits, {})
 
       vim.keymap.set(
         'n',
@@ -139,14 +134,12 @@ return {
         'n',
         '<C-p>',
         function()
-          require('telescope.builtin').find_files(
-            require('telescope.themes').get_dropdown({
-              hidden = true,
-              layout_config = {
-                width = 0.9,
-              },
-            })
-          )
+          require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({
+            hidden = true,
+            layout_config = {
+              width = 0.9,
+            },
+          }))
         end
       )
 
@@ -169,14 +162,12 @@ return {
         'n',
         '<leader>jj',
         function()
-          require('telescope.builtin').jumplist(
-            require('telescope.themes').get_dropdown({
-              show_line = false,
-              layout_config = {
-                width = 0.8,
-              },
-            })
-          )
+          require('telescope.builtin').jumplist(require('telescope.themes').get_dropdown({
+            show_line = false,
+            layout_config = {
+              width = 0.8,
+            },
+          }))
         end
       )
 
@@ -185,14 +176,12 @@ return {
         'SearchGitDiffMain',
         '<leader>sg',
         function()
-          require('telescope.builtin').git_files(
-            require('telescope.themes').get_dropdown({
-              git_command = { 'git', 'diff', branch, '--name-only' },
-              layout_config = {
-                width = 0.8,
-              },
-            })
-          )
+          require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({
+            git_command = { 'git', 'diff', branch, '--name-only' },
+            layout_config = {
+              width = 0.8,
+            },
+          }))
         end
       )
 
@@ -200,54 +189,49 @@ return {
         'ViewTextObjectMappings',
         nil,
         function()
-          require('telescope.builtin').keymaps(
-            require('telescope.themes').get_dropdown({
-              modes = { 'o' },
-              layout_config = {
-                width = 0.8,
-                height = 0.9,
-              },
-            })
-          )
+          require('telescope.builtin').keymaps(require('telescope.themes').get_dropdown({
+            modes = { 'o' },
+            layout_config = {
+              width = 0.8,
+              height = 0.9,
+            },
+          }))
         end,
         'View Operator Pending Maps'
       )
 
       vim.keymap.set('n', '<C-b>', function()
-        require('telescope.builtin').buffers(
-          require('telescope.themes').get_dropdown({
-            sort_mru = true,
-            bufnr_width = 3,
-            ignore_current_buffer = true,
-            layout_config = { anchor = 'N' },
-            path_display = function(_, path)
-              local maxWidth = 60
-              local maxTailLen = 26
-              local spaceLen = 4
+        require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
+          sort_mru = true,
+          bufnr_width = 3,
+          ignore_current_buffer = true,
+          layout_config = { anchor = 'N' },
+          path_display = function(_, path)
+            local maxWidth = 60
+            local maxTailLen = 26
+            local spaceLen = 4
 
-              local tail = require('telescope.utils').path_tail(path)
-              local tailLen = string.len(tail)
-              local relative_path = string.sub(path, 1, -tailLen - 1)
-              if tailLen > maxTailLen then
-                tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
-                tailLen = string.len(tail)
-              end
-              local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
+            local tail = require('telescope.utils').path_tail(path)
+            local tailLen = string.len(tail)
+            local relative_path = string.sub(path, 1, -tailLen - 1)
+            if tailLen > maxTailLen then
+              tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
+              tailLen = string.len(tail)
+            end
+            local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
 
-              local pathLen = string.len(relative_path)
-              local maxPathLen = maxWidth - maxTailLen - spaceLen
-              if pathLen == 0 then relative_path = '/' end
-              if pathLen > maxPathLen then
-                local minStartIndex = pathLen - maxPathLen + 3
-                local startIndex =
-                  string.find(relative_path, '/', minStartIndex)
-                if startIndex >= pathLen then startIndex = minStartIndex end
-                relative_path = '...' .. string.sub(relative_path, startIndex)
-              end
-              return tail .. spacing .. relative_path
-            end,
-          })
-        )
+            local pathLen = string.len(relative_path)
+            local maxPathLen = maxWidth - maxTailLen - spaceLen
+            if pathLen == 0 then relative_path = '/' end
+            if pathLen > maxPathLen then
+              local minStartIndex = pathLen - maxPathLen + 3
+              local startIndex = string.find(relative_path, '/', minStartIndex)
+              if startIndex >= pathLen then startIndex = minStartIndex end
+              relative_path = '...' .. string.sub(relative_path, startIndex)
+            end
+            return tail .. spacing .. relative_path
+          end,
+        }))
       end)
 
       vim.keymap.set(
@@ -273,17 +257,15 @@ return {
         'n',
         '<leader>dt',
         function()
-          require('telescope.builtin').diagnostics(
-            require('telescope.themes').get_dropdown({
-              initial_mode = 'normal',
-              no_sign = false,
-              layout_config = {
-                anchor = 'S',
-                mirror = 'false',
-                width = 0.7,
-              },
-            })
-          )
+          require('telescope.builtin').diagnostics(require('telescope.themes').get_dropdown({
+            initial_mode = 'normal',
+            no_sign = false,
+            layout_config = {
+              anchor = 'S',
+              mirror = 'false',
+              width = 0.7,
+            },
+          }))
         end
       )
 
@@ -302,12 +284,14 @@ return {
         end,
         {}
       )
-
-      vim.keymap.set(
-        'n',
-        '<leader><leader>',
-        require('telescope.builtin').commands
+      utils.create_cmd_and_map(
+        'LiveGrepArgs',
+        '<leader>sf',
+        function() telescope.extensions.live_grep_args.live_grep_args() end,
+        'Telescope Live Grep Args'
       )
+
+      vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').commands)
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },

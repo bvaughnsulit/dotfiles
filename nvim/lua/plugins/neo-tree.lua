@@ -79,15 +79,14 @@ return {
       event_handlers = {
         {
           event = 'file_opened',
-          handler = function(_)
-            require('neo-tree.sources.manager').close_all_except('git_status')
-          end,
+          handler = function(_) require('neo-tree.sources.manager').close_all_except('git_status') end,
         },
       },
       -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
       -- log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
       window = {
-        width = 30,
+        width = '20%',
+        position = 'left',
         mappings = {
           ['/'] = {},
           ['f'] = { 'fuzzy_finder' },
@@ -122,9 +121,7 @@ return {
     utils.create_cmd_and_map(
       'GitDiffExplore',
       '<leader>eg',
-      function()
-        vim.cmd('Neotree toggle git_base=' .. branch_name .. ' git_status')
-      end,
+      function() vim.cmd('Neotree toggle git_base=' .. branch_name .. ' git_status') end,
       'Explore Git Diff from Main'
     )
 
