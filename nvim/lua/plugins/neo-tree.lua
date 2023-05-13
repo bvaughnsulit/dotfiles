@@ -19,6 +19,15 @@ return {
         'git_status',
         -- 'document_symbols',
       },
+      source_selector = {
+        winbar = true,
+        tab_labels = { -- falls back to source_name if nil
+          filesystem = '  Files ',
+          buffers = '  Buffers ',
+          git_status = '  Git ',
+          diagnostics = ' 裂Diagnostics ',
+        },
+      },
       default_component_configs = {
         container = {
           enable_character_fade = false,

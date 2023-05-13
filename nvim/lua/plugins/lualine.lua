@@ -11,7 +11,7 @@ return {
         section_separators = { left = '', right = '' },
         disabled_filetypes = {
           statusline = {},
-          winbar = {},
+          winbar = { 'dap-repl', 'neo-tree' },
         },
         ignore_focus = {
           'neo-tree',

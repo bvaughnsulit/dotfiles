@@ -68,7 +68,7 @@ return {
         'DapUIToggle',
         '<leader>dd',
         function() require('dapui').toggle({}) end,
-        'Toggle Dap UI'
+        'Toggle DAP UI'
       )
       -- utils.create_cmd_and_map(
       --   'BreakpointCondition',
