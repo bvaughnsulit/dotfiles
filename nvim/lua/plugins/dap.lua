@@ -27,48 +27,87 @@ return {
     config = function()
       local dap = require('dap')
       local dapui = require('dapui')
-      dapui.setup()
+      dapui.setup({
+        layouts = {
+          { -- 1
+            elements = {
+              {
+                id = 'scopes',
+                size = 0.25,
+              },
+              {
+                id = 'stacks',
+                size = 0.25,
+              },
+              {
+                id = 'watches',
+                size = 0.25,
+              },
+              {
+                id = 'console',
+                size = 0.25,
+              },
+            },
+            position = 'right',
+            size = 60,
+          },
+          { -- 2
+            elements = { {
+              id = 'console',
+              size = 1,
+            } },
+            position = 'right',
+            size = 0.35,
+          },
+        },
+      })
       require('dap.ext.vscode').load_launchjs()
-
       -- dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({}) end
       -- dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close({}) end
       -- dap.listeners.before.event_exited['dapui_config'] = function() dapui.close({}) end
 
       require('dap-python').setup()
-      require('dap-vscode-js').setup({
-        debugger_path = vim.fn.stdpath('data') .. '/mason/packages/js-debug',
-        adapters = {
-          'pwa-node',
-          'pwa-chrome',
-          'pwa-msedge',
-          'node-terminal',
-          'pwa-extensionHost',
+      -- require('dap-vscode-js').setup({
+      --   debugger_cmd = { 'js-debug-adapter' },
+      --   -- debugger_path = vim.fn.stdpath('data')
+      --   --   .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js',
+      --   adapters = {
+      --     'pwa-node',
+      --     'pwa-chrome',
+      --     'pwa-msedge',
+      --     'node-terminal',
+      --     'pwa-extensionHost',
+      --   },
+      -- })
+      dap.adapters['pwa-node'] = {
+        type = 'server',
+        host = 'localhost',
+        port = '${port}',
+        executable = {
+          command = 'js-debug-adapter',
+          args = { '${port}' },
         },
-      })
-      for _, language in ipairs({ 'typescript', 'javascript' }) do
-        require('dap').configurations[language] = {
-          {
-            type = 'pwa-node',
-            request = 'launch',
-            name = 'Launch file',
-            program = '${file}',
-            cwd = '${workspaceFolder}',
-          },
-          {
-            type = 'pwa-node',
-            request = 'attach',
-            name = 'Attach',
-            processId = require('dap.utils').pick_process,
-            cwd = '${workspaceFolder}',
-          },
-        }
-      end
+      }
 
       utils.create_cmd_and_map(
         'DapUIToggle',
         '<leader>dd',
-        function() require('dapui').toggle({}) end,
+        function()
+          require('dapui').toggle({
+            layout = 1,
+          })
+        end,
         'Toggle Dap UI'
+      )
+      utils.create_cmd_and_map('DapOpenConsole', '<leader>dt', function()
+        require('dapui').close()
+        require('dapui').open({ layout = 2 })
+      end, 'Toggle Dap UI')
+      utils.create_cmd_and_map(
+        'DapUIClose',
+        nil,
+        function() require('dapui').close() end,
+        'Close Dap UI'
       )
       -- utils.create_cmd_and_map(
       --   'BreakpointCondition',
@@ -141,7 +180,7 @@ return {
       )
       utils.create_cmd_and_map(
         'DapTerminate',
-        '<leader>dt',
+        '<leader>dx',
         function() require('dap').terminate() end,
         'Terminate'
       )
@@ -163,6 +202,10 @@ return {
         function() require('dap').goto_() end,
         'Go to line (no execute)'
       )
+      vim.api.nvim_create_autocmd('VimLeavePre', {
+        pattern = '*',
+        callback = function() dapui.close() end,
+      })
     end,
   },
 }
