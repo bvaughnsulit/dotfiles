@@ -184,7 +184,7 @@ return {
   {
     'ray-x/lsp_signature.nvim',
     event = 'BufReadPre',
-    enabled = true,
+    enabled = false,
     config = function()
       require('lsp_signature').setup({
         hint_enable = false,

@@ -94,7 +94,7 @@ return {
       -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
       -- log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
       window = {
-        width = '20%',
+        width = '30%',
         position = 'left',
         mappings = {
           ['/'] = {},

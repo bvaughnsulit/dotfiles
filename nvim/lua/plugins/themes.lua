@@ -1,9 +1,9 @@
 return {
   {
-    'rebelot/kanagawa.nvim',
+    'projekt0n/github-nvim-theme',
     lazy = false,
     priority = 1001,
-    config = function() vim.cmd('colorscheme kanagawa-wave') end,
+    config = function() vim.cmd('colorscheme github_light_colorblind') end,
   },
   {
     'bvaughnsulit/theme-select.nvim',
@@ -27,7 +27,7 @@ return {
       'sainnhe/everforest',
       'loctvl842/monokai-pro.nvim',
       'maxmx03/fluoromachine.nvim',
-      { 'projekt0n/github-nvim-theme', branch = '0.0.x' },
+      'projekt0n/github-nvim-theme',
       {
         'catppuccin/nvim',
         name = 'catppuccin',

@@ -6,9 +6,7 @@ return {
     event = 'VeryLazy',
     config = function()
       require('Comment').setup({
-        pre_hook = require(
-          'ts_context_commentstring.integrations.comment_nvim'
-        ).create_pre_hook(),
+        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
       })
     end,
   },
@@ -65,5 +63,11 @@ return {
     'chrisgrieser/nvim-various-textobjs',
     event = 'VeryLazy',
     opts = { useDefaultKeymaps = true },
+  },
+  {
+    '/local-config',
+    dev = true,
+    event = 'VeryLazy',
+    config = function() pcall(require, 'local-config') end,
   },
 }

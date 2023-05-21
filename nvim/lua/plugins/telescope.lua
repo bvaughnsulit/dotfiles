@@ -74,7 +74,7 @@ return {
           },
           file_ignore_patterns = {
             'package%-lock%.json',
-            -- 'static/',
+            'static/',
             -- '%node_modules%',
             '%.git/',
             '%.png$',
