@@ -13,11 +13,16 @@ return {
     config = true,
   },
   {
+    'stevearc/aerial.nvim',
+    event = 'VeryLazy',
+    config = function() require('aerial').setup({}) end,
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     event = 'BufReadPre',
     build = ':TSUpdate',
     config = function()
-      require('nvim-treesitter.configs').setup {
+      require('nvim-treesitter.configs').setup({
         -- A list of parser names, or "all"
         ensure_installed = 'all',
         context_commentstring = {
@@ -202,7 +207,7 @@ return {
             },
           },
         },
-      }
+      })
     end,
   },
 }
