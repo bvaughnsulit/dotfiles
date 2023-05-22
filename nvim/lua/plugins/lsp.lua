@@ -9,6 +9,41 @@ return {
       'williamboman/mason-lspconfig.nvim',
       'hrsh7th/cmp-nvim-lsp',
       'folke/neodev.nvim',
+      {
+        'SmiteshP/nvim-navbuddy',
+        dependencies = {
+          {
+            'SmiteshP/nvim-navic',
+            -- config = function()
+            --   local navic_group = vim.api.nvim_create_augroup('NavicGroup', { clear = true })
+            --   vim.api.nvim_create_autocmd('BufEnter', {
+            --     callback = function()
+            --       vim.b.navic_lazy_update_context = true
+            --     end,
+            --     group = navic_group,
+            --   })
+            -- end,
+          },
+          'MunifTanjim/nui.nvim',
+        },
+        config = function()
+          local navbuddy = require('nvim-navbuddy')
+          local actions = require('nvim-navbuddy.actions')
+          navbuddy.setup({
+            window = {
+              border = 'rounded',
+              sections = {
+                right = {
+                  preview = 'always',
+                },
+              },
+            },
+            lsp = {
+              auto_attach = true,
+            },
+          })
+        end,
+      },
     },
     config = function()
       local t = require('telescope.builtin')
@@ -34,6 +69,10 @@ return {
 
       -- things that will be set up when lsp attaches to a buffer
       local on_attach = function(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+          require('nvim-navic').attach(client, bufnr)
+        end
+
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })
         vim.keymap.set('n', 'gr', telescope_ref, { buffer = bufnr })

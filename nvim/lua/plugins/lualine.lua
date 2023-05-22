@@ -57,7 +57,7 @@ return {
           },
         },
         lualine_b = {},
-        lualine_c = {},
+        lualine_c = { 'navic', color_correction = nil, navic_opts = nil },
         lualine_x = {},
         lualine_y = {},
         lualine_z = {},
