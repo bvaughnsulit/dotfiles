@@ -1,13 +1,14 @@
+local utils = require('config.utils')
+
 return {
-  -- fork of karb94/neoscroll.nvim until time-scale branch is merged to main
-  -- 'karb94/neoscroll.nvim'
-  'bvaughnsulit/neoscroll.nvim',
-  enabled = false,
-  branch = 'time-scale',
+  'karb94/neoscroll.nvim',
+  enabled = true,
+  dev = false,
   event = 'VeryLazy',
   config = function()
-    require('neoscroll').setup {
-      mappings = { '<C-u>', '<C-d>' },
+    local neoscroll = require('neoscroll')
+    neoscroll.setup({
+      mappings = {},
       hide_cursor = false, -- Hide cursor while scrolling
       stop_eof = false, -- Stop at <EOF> when scrolling downwards
       respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
@@ -16,7 +17,19 @@ return {
       pre_hook = nil, -- Function to run before the scrolling animation starts
       post_hook = nil, -- Function to run after the scrolling animation ends
       performance_mode = false, -- Disable "Performance Mode" on all buffers.
-      time_scale = 0.4,
-    }
+    })
+
+    local duration = 100
+    utils.create_cmd_and_map(
+      nil,
+      '<c-u>',
+      function() neoscroll.scroll(-vim.wo.scroll, true, duration) end
+    )
+
+    utils.create_cmd_and_map(
+      nil,
+      '<c-d>',
+      function() neoscroll.scroll(vim.wo.scroll, true, duration) end
+    )
   end,
 }
