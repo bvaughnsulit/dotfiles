@@ -87,8 +87,8 @@ return {
             i = {
               ['<esc>'] = actions.close,
               ['<c-q>'] = actions.smart_add_to_qflist,
-              -- ['<c-up>'] = actions.cycle_history_prev,
-              -- ['<c-down>'] = actions.cycle_history_next,
+              ['<m-up>'] = actions.cycle_history_prev,
+              ['<m-down>'] = actions.cycle_history_next,
             },
           },
         },

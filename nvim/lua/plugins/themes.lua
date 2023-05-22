@@ -80,17 +80,21 @@ return {
         'sorbet',
         'zaibatsu',
         'retrobox',
+        'wildcharm',
         --other
+        'randomhue',
         'material',
         'tokyonight',
         'catppuccin',
-        -- 'tokyonight-day',
+        'tokyonight-day',
         --nightfox
         'terafox',
-        -- 'dawnfox',
-        -- 'dayfox',
+        'dawnfox',
+        'dayfox',
         -- 'nordfox',
         'everforest',
+        'github_dark_tritanopia',
+        'github_light_tritanopia',
       },
       add = {
         ['material-deep-ocean'] = {
