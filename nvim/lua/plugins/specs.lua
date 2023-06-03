@@ -1,6 +1,12 @@
 return {
+  {
+    '/local-config',
+    dev = true,
+    event = 'VeryLazy',
+    config = function() pcall(require, 'local-config') end,
+  },
   { 'tpope/vim-fugitive', cmd = 'G' },
-  'JoosepAlviste/nvim-ts-context-commentstring',
+  { 'JoosepAlviste/nvim-ts-context-commentstring' },
   {
     'numToStr/Comment.nvim',
     event = 'VeryLazy',
@@ -65,9 +71,38 @@ return {
     opts = { useDefaultKeymaps = true },
   },
   {
-    '/local-config',
-    dev = true,
+    'lewis6991/satellite.nvim',
     event = 'VeryLazy',
-    config = function() pcall(require, 'local-config') end,
+    config = function()
+      require('satellite').setup({
+        current_only = false,
+        winblend = 0,
+        zindex = 40,
+        excluded_filetypes = {},
+        width = 2,
+        handlers = {
+          search = {
+            enable = true,
+          },
+          diagnostic = {
+            enable = false,
+            signs = { '-', '=', '≡' },
+            min_severity = vim.diagnostic.severity.HINT,
+          },
+          gitsigns = {
+            enable = true,
+            signs = { -- can only be a single character (multibyte is okay)
+              add = '│',
+              change = '│',
+              delete = '-',
+            },
+          },
+          marks = {
+            enable = true,
+            show_builtins = false, -- shows the builtin marks like [ ] < >
+          },
+        },
+      })
+    end,
   },
 }
