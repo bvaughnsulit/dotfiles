@@ -17,11 +17,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
   desc = 'prevent comments when creating newline before or after comment',
 })
 
-vim.api.nvim_create_autocmd('VimEnter', {
-  pattern = '*',
-  callback = function() require('mini.map').open() end,
-})
-
 vim.api.nvim_create_autocmd('ColorScheme', {
   pattern = '*',
   callback = function() vim.cmd([[hi! default link MiniCursorword LspReferenceText]]) end,
