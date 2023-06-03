@@ -87,7 +87,7 @@ return {
       event_handlers = {
         {
           event = 'file_opened',
-          handler = function(_) require('neo-tree.sources.manager').close_all_except('git_status') end,
+          handler = function(_) require('neo-tree.sources.manager').close_all() end,
         },
       },
       -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
@@ -95,6 +95,11 @@ return {
       window = {
         width = '30%',
         position = 'left',
+        mappings = {
+          ['/'] = {},
+          ['<space><space>'] = { 'toggle_preview' },
+          ['<tab>'] = { 'toggle_node' },
+        },
       },
       filesystem = {
         filtered_items = {
@@ -106,12 +111,7 @@ return {
         hijack_netrw_behavior = 'open_default',
         window = {
           mappings = {
-            ['/'] = {},
             ['f'] = { 'fuzzy_finder' },
-            ['<space><space>'] = {
-              'toggle_preview',
-            },
-            ['<tab>'] = { 'toggle_node' },
           },
         },
       },
