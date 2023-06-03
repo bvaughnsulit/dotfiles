@@ -77,6 +77,7 @@ return {
         vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })
         vim.keymap.set('n', 'gr', telescope_ref, { buffer = bufnr })
         vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = bufnr })
+        vim.keymap.set('i', '<c-k>', vim.lsp.buf.signature_help, { buffer = bufnr })
         vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = bufnr })
         -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr })
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr })

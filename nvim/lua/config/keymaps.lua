@@ -1,20 +1,14 @@
 local utils = require('config.utils')
 
 local map = function(mode, lhs, rhs, opts)
-  opts =
-    vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
+  opts = vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
 -- \V - very nomagic
-map(
-  'n',
-  '<leader>/y',
-  '/\\V<C-r>+<cr>',
-  { desc = 'search with contents of + register' }
-)
+map('n', '<leader>/y', '/\\V<C-r>+<cr>', { desc = 'search with contents of + register' })
 
 map('n', '<leader>ra', ':%s/\\V<C-r>///gI<left><left><left>')
 map(
@@ -94,12 +88,7 @@ map(
   { desc = 'Put empty line above', silent = true }
 )
 
-map(
-  'x',
-  '/',
-  '<esc>/\\%V',
-  { silent = false, desc = 'Search inside visual selection' }
-)
+map('x', '/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
 
 map('n', '<S-left>', '<cmd>vertical resize -5<cr>', {})
 map('n', '<S-right>', '<cmd>vertical resize +5<cr>', {})
@@ -112,7 +101,6 @@ map('i', '.', '.<c-g>u')
 map('i', ';', ';<c-g>u')
 map('i', '<cr>', '<cr><c-g>u')
 
-map({ 'i', 'v', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save file' })
 map('n', '<leader>w', '<cmd>w<cr>', { desc = ':w' })
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>QQ', '<cmd>qa!<cr>', { desc = 'Force Quit all' })
@@ -130,12 +118,7 @@ utils.create_cmd_and_map(
   'Toggle line wrap'
 )
 
-utils.create_cmd_and_map(
-  'BDeleteAll',
-  nil,
-  function() vim.cmd('%bd') end,
-  'Delete All Buffers'
-)
+utils.create_cmd_and_map('BDeleteAll', nil, function() vim.cmd('%bd') end, 'Delete All Buffers')
 
 utils.create_cmd_and_map(
   'RelativeNumbersToggle',

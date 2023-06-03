@@ -95,6 +95,12 @@ return {
         'everforest',
         'github_dark_tritanopia',
         'github_light_tritanopia',
+        'monokai-pro',
+        'monokai-pro-default',
+        'monokai-pro-machine',
+        'monokai-pro-octagon',
+        'monokai-pro-spectrum',
+        'monokai-pro-ristretto',
       },
       add = {
         ['material-deep-ocean'] = {
@@ -103,19 +109,25 @@ return {
             vim.cmd('colorscheme material')
           end,
         },
+        -- ['material-light'] = {
+        --   setup = function()
+        --     vim.g.material_style = 'lighter'
+        --     vim.cmd('colorscheme material')
+        --   end,
+        -- },
         ['material-palenight'] = {
           setup = function()
             vim.g.material_style = 'palenight'
             vim.cmd('colorscheme material')
           end,
         },
-        ['everforest-light'] = {
-          setup = function()
-            vim.opt.background = 'light'
-            vim.g.everforest_background = 'medium'
-            vim.cmd('colorscheme everforest')
-          end,
-        },
+        -- ['everforest-light'] = {
+        --   setup = function()
+        --     vim.opt.background = 'light'
+        --     vim.g.everforest_background = 'medium'
+        --     vim.cmd('colorscheme everforest')
+        --   end,
+        -- },
       },
     },
   },
