@@ -15,7 +15,17 @@ return {
   {
     'stevearc/aerial.nvim',
     event = 'VeryLazy',
-    config = function() require('aerial').setup({}) end,
+    config = function()
+      require('aerial').setup({
+        layout = {
+          width = 0.35,
+          max_width = 0.5,
+        },
+        highlight_on_hover = true,
+        highlight_on_jump = 300,
+        autojump = true,
+      })
+    end,
   },
   {
     'nvim-treesitter/nvim-treesitter',

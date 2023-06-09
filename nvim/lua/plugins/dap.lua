@@ -28,24 +28,47 @@ return {
       local dap = require('dap')
       local dapui = require('dapui')
       dapui.setup({
+        controls = {
+          element = 'repl',
+          icons = {
+            disconnect = '',
+            pause = '',
+            play = '',
+            run_last = '',
+            step_back = '',
+            step_into = '',
+            step_out = '',
+            step_over = '',
+          },
+        },
+        expand_lines = false,
+        icons = {
+          collapsed = '',
+          current_frame = '',
+          expanded = '',
+        },
         layouts = {
           { -- 1
             elements = {
               {
+                id = 'console',
+                size = 0.45,
+              },
+              {
                 id = 'scopes',
-                size = 0.25,
+                size = 0.35,
               },
               {
                 id = 'stacks',
-                size = 0.25,
+                size = 0.08,
               },
               {
                 id = 'watches',
-                size = 0.25,
+                size = 0.08,
               },
               {
-                id = 'console',
-                size = 0.25,
+                id = 'repl',
+                size = 0.04,
               },
             },
             position = 'right',
@@ -101,7 +124,7 @@ return {
       )
       utils.create_cmd_and_map('DapOpenConsole', '<leader>dt', function()
         require('dapui').close()
-        require('dapui').open({ layout = 2 })
+        require('dapui').open({ layout = 1 })
       end, 'Toggle Dap UI')
       utils.create_cmd_and_map(
         'DapUIClose',
@@ -150,13 +173,13 @@ return {
       )
       utils.create_cmd_and_map(
         'DapStepOut',
-        '<leader>do',
+        '<leader>dO',
         function() require('dap').step_out() end,
         'Step Out'
       )
       utils.create_cmd_and_map(
         'DapStepOver',
-        '<leader>dO',
+        '<leader>do',
         function() require('dap').step_over() end,
         'Step Over'
       )

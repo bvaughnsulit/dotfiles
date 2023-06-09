@@ -1,6 +1,7 @@
 return {
   'lukas-reineke/indent-blankline.nvim',
   event = 'BufReadPost',
+  dependencies = 'nvim-treesitter/nvim-treesitter',
   config = function()
     require('indent_blankline').setup {
       indent_blankline_char = '▏',

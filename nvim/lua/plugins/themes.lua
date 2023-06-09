@@ -7,7 +7,7 @@ return {
   },
   {
     'bvaughnsulit/theme-select.nvim',
-    dev = false,
+    dev = true,
     lazy = false,
     priority = 999,
     cond = function()

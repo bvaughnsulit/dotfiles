@@ -73,6 +73,7 @@ return {
   {
     'lewis6991/satellite.nvim',
     event = 'VeryLazy',
+    dev = true,
     config = function()
       require('satellite').setup({
         current_only = false,
@@ -91,7 +92,7 @@ return {
           },
           gitsigns = {
             enable = true,
-            signs = { -- can only be a single character (multibyte is okay)
+            signs = {
               add = '│',
               change = '│',
               delete = '-',
@@ -103,6 +104,8 @@ return {
           },
         },
       })
+      vim.cmd([[hi! link ScrollView PmenuThumb]])
+      -- vim.cmd([[hi! link SearchCurrent SearchSV]])
     end,
   },
 }
