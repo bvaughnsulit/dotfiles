@@ -206,10 +206,13 @@ return {
           sort_mru = true,
           bufnr_width = 3,
           ignore_current_buffer = true,
-          layout_config = { anchor = 'N' },
+          layout_config = {
+            width = 0.9,
+            anchor = 'N',
+          },
           path_display = function(_, path)
-            local maxWidth = 60
-            local maxTailLen = 26
+            local maxWidth = 160
+            local maxTailLen = maxWidth / 2
             local spaceLen = 4
 
             local tail = require('telescope.utils').path_tail(path)
