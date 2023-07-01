@@ -56,16 +56,6 @@ return {
     event = 'VeryLazy',
   },
   {
-    'ggandor/leap.nvim',
-    event = 'BufReadPost',
-  },
-  {
-    'ggandor/flit.nvim',
-    enabled = true,
-    event = 'BufReadPost',
-    config = function() require('flit').setup({ labeled_modes = 'nx' }) end,
-  },
-  {
     'chrisgrieser/nvim-various-textobjs',
     event = 'VeryLazy',
     opts = { useDefaultKeymaps = true },
@@ -107,5 +97,75 @@ return {
       vim.cmd([[hi! link ScrollView PmenuThumb]])
       -- vim.cmd([[hi! link SearchCurrent SearchSV]])
     end,
+  },
+  {
+    'ggandor/leap.nvim',
+    enabled = false,
+    config = function()
+      require('leap').add_default_mappings()
+      -- vim.keymap.set({ 'n', 'x', 'o' }, 's', function()
+      --   local current_window = vim.fn.win_getid()
+      --   require('leap').leap({ target_windows = { current_window } })
+      -- end)
+    end,
+    event = 'BufReadPost',
+  },
+  {
+    'ggandor/flit.nvim',
+    enabled = false,
+    event = 'BufReadPost',
+    config = function() require('flit').setup({ labeled_modes = 'nx' }) end,
+  },
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    enabled = true,
+    opts = {
+      -- label = {
+      --   after = false,
+      --   before = true,
+      --   style = 'eol',
+      -- },
+      modes = {
+        search = {
+          enabled = false,
+        },
+      },
+    },
+    keys = {
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          -- default options: exact mode, multi window, all directions, with a backdrop
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'o', 'x' },
+        function() require('flash').treesitter() end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function() require('flash').remote() end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function() require('flash').treesitter_search() end,
+        desc = 'Flash Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = { 'c' },
+        function() require('flash').toggle() end,
+        desc = 'Toggle Flash Search',
+      },
+    },
   },
 }
