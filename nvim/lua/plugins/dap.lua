@@ -124,8 +124,14 @@ return {
       )
       utils.create_cmd_and_map('DapOpenConsole', '<leader>dt', function()
         require('dapui').close()
+        require('dapui').open({ layout = 2 })
+      end, 'Toggle Dap UI')
+
+      utils.create_cmd_and_map('DapOpenConsoleWithDebug', nil, function()
+        require('dapui').close()
         require('dapui').open({ layout = 1 })
       end, 'Toggle Dap UI')
+
       utils.create_cmd_and_map(
         'DapUIClose',
         nil,

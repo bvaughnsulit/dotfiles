@@ -19,17 +19,16 @@ return {
       performance_mode = false, -- Disable "Performance Mode" on all buffers.
     })
 
-    local duration = 100
     utils.create_cmd_and_map(
       nil,
       '<c-u>',
-      function() neoscroll.scroll(-vim.wo.scroll, true, duration) end
+      function() neoscroll.scroll(-vim.wo.scroll, true, 100) end
     )
 
     utils.create_cmd_and_map(
       nil,
       '<c-d>',
-      function() neoscroll.scroll(vim.wo.scroll, true, duration) end
+      function() neoscroll.scroll(vim.wo.scroll, true, 100) end
     )
   end,
 }
