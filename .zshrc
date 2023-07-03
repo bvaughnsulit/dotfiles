@@ -4,7 +4,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -19,7 +18,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 alias ls='ls -a'
-# alias vim='nvim'
 alias home='cd ~'
 alias gho='gh browse'
 
@@ -28,7 +26,9 @@ alias vi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux' 
+
 alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
+alias lazyvim='NVIM_APPNAME=LazyVim nvim'
 
 alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
 alias venv='source venv/bin/activate'
