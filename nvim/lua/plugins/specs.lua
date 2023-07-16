@@ -72,6 +72,9 @@ return {
         excluded_filetypes = {},
         width = 2,
         handlers = {
+          cursor = {
+            enable = false,
+          },
           search = {
             enable = true,
           },
@@ -129,6 +132,10 @@ return {
       modes = {
         search = {
           enabled = false,
+        },
+        char = {
+          autohide = true,
+          jump_labels = false,
         },
       },
     },
