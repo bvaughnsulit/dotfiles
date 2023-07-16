@@ -72,6 +72,10 @@ return {
       },
     },
     opts = {
+      default = {
+        light = 'github_light_colorblind',
+        dark = 'tokyonight',
+      },
       exclude = {
         --defaults
         'ron',

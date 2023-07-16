@@ -28,6 +28,9 @@ alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux' 
 
 alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
+alias nvim-dark='nvim --cmd "+lua vim.g.set_scheme=\"dark\""'
+alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
+
 alias lazyvim='NVIM_APPNAME=LazyVim nvim'
 alias nvim-plug='cd ~/.local/share/nvim/lazy/'
 
