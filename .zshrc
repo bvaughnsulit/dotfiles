@@ -29,6 +29,7 @@ alias tm='tmux new -A -s tmux'
 
 alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
 alias lazyvim='NVIM_APPNAME=LazyVim nvim'
+alias nvim-plug='cd ~/.local/share/nvim/lazy/'
 
 alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
 alias venv='source venv/bin/activate'

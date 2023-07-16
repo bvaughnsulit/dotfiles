@@ -7,7 +7,7 @@ return {
       options = {
         icons_enabled = true,
         theme = 'auto',
-        component_separators = { left = '', right = '' },
+        component_separators = { left = '', right = '' }, --
         section_separators = { left = '', right = '' },
         disabled_filetypes = {
           statusline = {},
@@ -45,8 +45,8 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_x = { 'searchcount', 'diagnostics', 'location' },
-        lualine_y = { 'progress' },
+        lualine_x = { 'searchcount', 'location' },
+        lualine_y = { 'location' },
         lualine_z = { 'filetype' },
       },
       winbar = {
@@ -56,7 +56,9 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_b = {},
+        lualine_b = {
+          'diagnostics',
+        },
         lualine_c = { 'navic', color_correction = nil, navic_opts = nil },
         -- lualine_c = { 'aerial' },
         lualine_x = {},

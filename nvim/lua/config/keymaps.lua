@@ -73,14 +73,6 @@ map('n', '[l', '<cmd>cprevious<CR>', {})
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
--- i don't think these work right...
--- always paste from yank register at matching indent level
--- map({'n', 'x'}, 'p', '"0]p', {})
--- map({'n', 'x'}, 'P', '"0[p', {})
--- always paste at matching indent level
--- map({ 'n', 'x' }, 'p', ']p', {})
--- map({ 'n', 'x' }, 'P', '[p', {})
-
 map(
   'n',
   '<cr>',
