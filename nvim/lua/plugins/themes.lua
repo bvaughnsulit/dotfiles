@@ -1,9 +1,22 @@
+local utils = require('config.utils')
+local is_system_dark_mode = utils.is_system_dark_mode()
+
 return {
   {
     'projekt0n/github-nvim-theme',
     lazy = false,
     priority = 1001,
-    config = function() vim.cmd('colorscheme github_light_colorblind') end,
+    config = function()
+      if not is_system_dark_mode then vim.cmd('colorscheme github_light_colorblind') end
+    end,
+  },
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1002,
+    config = function()
+      if is_system_dark_mode then vim.cmd('colorscheme tokyonight-night') end
+    end,
   },
   {
     'bvaughnsulit/theme-select.nvim',
@@ -34,7 +47,7 @@ return {
         config = function()
           require('catppuccin').setup({
             integrations = {
-              telescope = true,
+              telescope = { enabled = true },
               lsp_trouble = true,
               treesitter = true,
               treesitter_context = true,

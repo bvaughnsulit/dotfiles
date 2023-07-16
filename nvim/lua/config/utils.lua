@@ -1,9 +1,7 @@
 local git_lazy = require('lazy.manage.git')
 local M = {}
 
-M.test_function = function(arg)
-  require('notify').notify(arg or 'TESTING', 'ERROR', {})
-end
+M.test_function = function(arg) require('notify').notify(arg or 'TESTING', 'ERROR', {}) end
 
 ---@class User_Command
 ---@field name string
@@ -96,6 +94,16 @@ M.open_repo_in_gh = function()
   vim.cmd('silent !open ' .. url)
 end
 
+M.is_system_dark_mode = function()
+  if
+    string.find(
+      vim.fn.system('defaults read -globalDomain AppleInterfaceStyle 2>/dev/null'),
+      'Dark'
+    )
+  then
+    return true
+  else
+    return false
   end
 end
 
