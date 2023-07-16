@@ -15,6 +15,12 @@ return {
     lazy = false,
     priority = 1002,
     config = function()
+      require('tokyonight').setup({
+        styles = {
+          comments = { italic = false },
+          keywords = { italic = false },
+        },
+      })
       if is_system_dark_mode then vim.cmd('colorscheme tokyonight-night') end
     end,
   },
