@@ -1,8 +1,6 @@
 local git_lazy = require('lazy.manage.git')
 local M = {}
 
--- M.lazyvim = require('lazyvim.util')
-
 M.test_function = function(arg) require('notify').notify(arg or 'TESTING', 'ERROR', {}) end
 
 ---@class User_Command

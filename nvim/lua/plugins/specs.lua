@@ -175,7 +175,4 @@ return {
       },
     },
   },
-  {
-    'LazyVim/LazyVim',
-  },
 }
