@@ -151,3 +151,36 @@ utils.create_cmd_and_map(
   nil,
   function() vim.diagnostic.disable(0) end
 )
+
+utils.create_cmd_and_map(
+  'G',
+  '<leader>gg',
+  function()
+    utils.lazyvim.float_term('lazygit', {
+      cwd = utils.lazyvim.get_root(),
+      esc_esc = false,
+      ctrl_hjkl = false,
+      size = {
+        width = 0.95,
+        height = 0.95,
+      },
+    })
+  end,
+  'Lazygit (root dir)'
+)
+
+-- utils.create_cmd_and_map(nil, nil, function() vim.cmd('copen') end, 'Open Quickfix')
+-- utils.create_cmd_and_map(nil, nil, function() vim.cmd('lopen') end, 'Open Location list')
+
+utils.create_cmd_and_map(nil, '<leader><tab>c', function() vim.cmd('tabnew') end, 'New Tab')
+utils.create_cmd_and_map(nil, '<leader><tab>x', function() vim.cmd('tabclose') end, 'Close Tab')
+utils.create_cmd_and_map(nil, '<leader><tab>n', function() vim.cmd('tabnext') end, 'Next Tab')
+utils.create_cmd_and_map(nil, '<leader><tab>p', function() vim.cmd('tabp') end, 'Previous Tab')
+
+utils.create_cmd_and_map(nil, { mode = { 't' }, lhs = '<esc><esc>' }, '<c-\\><c-n>')
+utils.create_cmd_and_map(
+  'InspectHighlights',
+  nil,
+  function() vim.show_pos() end,
+  'Inspect highlights under cursor'
+)

@@ -34,7 +34,7 @@ alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 alias lazyvim='NVIM_APPNAME=LazyVim nvim'
 alias nvim-plug='cd ~/.local/share/nvim/lazy/'
 
-alias lazygit='lazygit --use-config-file="$HOME/dotfiles/lazygit.yml"'
+alias lg='lazygit'
 alias venv='source venv/bin/activate'
 
 # add computer-specific configs in a separate, non-committed file
