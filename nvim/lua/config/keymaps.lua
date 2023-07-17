@@ -152,23 +152,23 @@ utils.create_cmd_and_map(
   function() vim.diagnostic.disable(0) end
 )
 
-utils.create_cmd_and_map(
-  'G',
-  '<leader>gg',
-  function()
-    utils.lazyvim.float_term('lazygit', {
-      cwd = utils.lazyvim.get_root(),
-      esc_esc = false,
-      ctrl_hjkl = false,
-      size = {
-        width = 0.95,
-        height = 0.95,
-      },
-    })
-  end,
-  'Lazygit (root dir)'
-)
-
+-- utils.create_cmd_and_map(
+--   'G',
+--   '<leader>gg',
+--   function()
+--     utils.lazyvim.float_term('lazygit', {
+--       cwd = utils.lazyvim.get_root(),
+--       esc_esc = false,
+--       ctrl_hjkl = false,
+--       size = {
+--         width = 1,
+--         height = 1,
+--       },
+--     })
+--   end,
+--   'Lazygit (root dir)'
+-- )
+--
 -- utils.create_cmd_and_map(nil, nil, function() vim.cmd('copen') end, 'Open Quickfix')
 -- utils.create_cmd_and_map(nil, nil, function() vim.cmd('lopen') end, 'Open Location list')
 
