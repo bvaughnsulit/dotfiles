@@ -42,10 +42,10 @@ map({ 'x' }, '<leader>p', 'p', { desc = 'hello' })
 map({ 'x' }, 'p', '"_dP', {})
 
 --[[ WINDOWS ]]
-map('n', '<C-h>', '<cmd>wincmd h<cr>')
-map('n', '<C-l>', '<cmd>wincmd l<cr>')
-map('n', '<C-j>', '<cmd>wincmd j<cr>')
-map('n', '<C-k>', '<cmd>wincmd k<cr>')
+map({ 'n', 't' }, '<C-h>', '<cmd>wincmd h<cr>')
+map({ 'n', 't' }, '<C-l>', '<cmd>wincmd l<cr>')
+map({ 'n', 't' }, '<C-j>', '<cmd>wincmd j<cr>')
+map({ 'n', 't' }, '<C-k>', '<cmd>wincmd k<cr>')
 
 -- stop using arrow keys!!!
 map('n', '<up>', '<>', {})

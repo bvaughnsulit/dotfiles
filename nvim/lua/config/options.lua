@@ -55,6 +55,10 @@ vim.opt.sessionoptions =
   'blank,buffers,curdir,folds,tabpages,winsize,winpos,terminal,localoptions,globals'
 -- vim.opt.list = true
 -- vim.opt.listchars = 'multispace:·,nbsp:·,trail:·'
+vim.opt.grepprg = 'rg --vimgrep'
+vim.opt.sidescrolloff = 8
+vim.opt.spelllang = { 'en' }
+vim.opt.splitkeep = 'screen'
 
 -- markdown-specific options
 vim.api.nvim_create_autocmd('FileType', {

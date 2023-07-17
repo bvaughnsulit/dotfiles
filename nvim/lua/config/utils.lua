@@ -1,6 +1,8 @@
 local git_lazy = require('lazy.manage.git')
 local M = {}
 
+M.lazyvim = require('lazyvim.util')
+
 M.test_function = function(arg) require('notify').notify(arg or 'TESTING', 'ERROR', {}) end
 
 ---@class User_Command
@@ -14,7 +16,7 @@ M.test_function = function(arg) require('notify').notify(arg or 'TESTING', 'ERRO
 
 ---@param command? string|User_Command # Name of command as a string, or a table containing name and opts.
 ---@param mapping? string|Mapping # Normal mode mapping as a string, or a table containing mode, lhs, and opts.
----@param fn fun()
+---@param fn fun()|string
 ---@param desc? string
 M.create_cmd_and_map = function(command, mapping, fn, desc)
   local desc_with_fallback = desc

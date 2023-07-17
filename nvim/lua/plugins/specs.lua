@@ -5,7 +5,7 @@ return {
     event = 'VeryLazy',
     config = function() pcall(require, 'local-config') end,
   },
-  { 'tpope/vim-fugitive', cmd = 'G' },
+  { 'tpope/vim-fugitive' },
   { 'JoosepAlviste/nvim-ts-context-commentstring' },
   {
     'numToStr/Comment.nvim',
