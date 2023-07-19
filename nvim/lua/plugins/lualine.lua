@@ -45,7 +45,7 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_x = { 'searchcount', 'location' },
+        lualine_x = { 'searchcount' },
         lualine_y = { 'location' },
         lualine_z = { 'filetype' },
       },
