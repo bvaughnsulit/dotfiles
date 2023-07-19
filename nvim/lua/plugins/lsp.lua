@@ -14,15 +14,7 @@ return {
         dependencies = {
           {
             'SmiteshP/nvim-navic',
-            -- config = function()
-            --   local navic_group = vim.api.nvim_create_augroup('NavicGroup', { clear = true })
-            --   vim.api.nvim_create_autocmd('BufEnter', {
-            --     callback = function()
-            --       vim.b.navic_lazy_update_context = true
-            --     end,
-            --     group = navic_group,
-            --   })
-            -- end,
+            opts = { highlight = true },
           },
           'MunifTanjim/nui.nvim',
         },

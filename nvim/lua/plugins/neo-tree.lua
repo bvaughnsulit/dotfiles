@@ -149,6 +149,11 @@ return {
       'Close Neo-tree'
     )
 
+    vim.api.nvim_create_autocmd('TermClose', {
+      pattern = '*lazygit',
+      callback = function() require('neo-tree.sources.git_status').refresh() end,
+    })
+
     vim.api.nvim_create_autocmd('VimLeavePre', {
       pattern = '*',
       callback = function() vim.cmd('Neotree close') end,
