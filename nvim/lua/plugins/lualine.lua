@@ -1,3 +1,4 @@
+local utils = require('config.utils')
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
@@ -45,7 +46,7 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_x = { 'searchcount' },
+        lualine_x = {},
         lualine_y = { 'location' },
         lualine_z = { 'filetype' },
       },
@@ -63,7 +64,7 @@ return {
         -- lualine_c = { 'aerial' },
         lualine_x = {},
         lualine_y = {},
-        lualine_z = {},
+        lualine_z = { function() return utils.get_path_tail(vim.loop.cwd()) end },
       },
       inactive_winbar = {
         lualine_a = {},

@@ -107,4 +107,13 @@ M.is_system_dark_mode = function()
   end
 end
 
+M.get_path_tail = function(path)
+  for i = #path, 1, -1 do
+    if path:sub(i, i) == '/' then
+      return path:sub(i + 1, -1)
+    end
+  end
+  return path
+end
+
 return M
