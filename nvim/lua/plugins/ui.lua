@@ -16,6 +16,21 @@ return {
     end,
   },
   {
+    'stevearc/dressing.nvim',
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+  {
     'folke/noice.nvim',
     event = 'VeryLazy',
     opts = {
@@ -24,7 +39,8 @@ return {
         view = 'cmdline',
       },
       messages = {
-        view = 'mini',
+        enabled = true,
+        view = 'notify',
       },
       lsp = {
         progress = { enabled = false },
@@ -42,12 +58,35 @@ return {
       views = {
         mini = {
           position = {
-            col = '0%',
+            col = 0,
+            row = -2,
+          },
+          size = {
+            height = 'auto',
+            width = '50%',
           },
         },
         cmdline = {
           win_options = { winblend = 0 },
+          position = {
+            row = -1,
+          },
         },
+        virtualtext = {
+          hl_group = 'CurSearch',
+        },
+        popup = {
+          enter = false,
+        },
+        notify = {
+          replace = true,
+        },
+      },
+      routes = {
+        -- {
+        --   view = 'popup',
+        --   filter = {},
+        -- },
       },
     },
     dependencies = {
