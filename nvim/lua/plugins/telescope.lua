@@ -273,6 +273,19 @@ return {
         end
       )
 
+      utils.create_cmd_and_map(
+        nil,
+        '<leader>mm',
+        function()
+          require('telescope.builtin').marks(require('telescope.themes').get_dropdown({
+            layout_config = {
+              width = 0.8,
+            },
+          }))
+        end,
+        'View marks'
+      )
+
       -- browse themes
       vim.api.nvim_create_user_command(
         'ThemeBrowse',
