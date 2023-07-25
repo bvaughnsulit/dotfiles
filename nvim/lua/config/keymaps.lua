@@ -127,14 +127,21 @@ utils.create_cmd_and_map(
 )
 
 utils.create_cmd_and_map(
-  'OpenFileInBrowser',
+  'OpenFileInGitHub',
   nil,
   function() utils.open_file_in_gh() end,
   'Open File in Github'
 )
 
 utils.create_cmd_and_map(
-  'OpenRepoInBrowser',
+  'OpenFileInVSCode',
+  nil,
+  function() utils.open_file_in_vscode() end,
+  'Open File in VS Code'
+)
+
+utils.create_cmd_and_map(
+  'OpenRepoInGitHub',
   nil,
   function() utils.open_repo_in_gh() end,
   'Open Github Repo in Browser'

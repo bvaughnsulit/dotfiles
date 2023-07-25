@@ -21,7 +21,7 @@ return {
           keywords = { italic = false },
         },
       })
-      if is_system_dark_mode then vim.cmd('colorscheme tokyonight-night') end
+      if is_system_dark_mode then vim.cmd('colorscheme tokyonight') end
     end,
   },
   {

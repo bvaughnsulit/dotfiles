@@ -77,6 +77,12 @@ M.get_gh_file_url = function()
   if repo_url then return repo_url .. '/blob/' .. branch .. '/' .. path end
 end
 
+M.open_file_in_vscode = function()
+  local path = vim.fn.expand('%:p')
+  local line = vim.api.nvim_win_get_cursor(0)[1]
+  vim.cmd('!code -g ' .. path .. ':' .. line)
+end
+
 ---@return nil
 M.copy_gh_file_url = function()
   local url = M.get_gh_file_url()
@@ -109,9 +115,7 @@ end
 
 M.get_path_tail = function(path)
   for i = #path, 1, -1 do
-    if path:sub(i, i) == '/' then
-      return path:sub(i + 1, -1)
-    end
+    if path:sub(i, i) == '/' then return path:sub(i + 1, -1) end
   end
   return path
 end
