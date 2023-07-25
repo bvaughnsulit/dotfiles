@@ -80,7 +80,7 @@ end
 M.open_file_in_vscode = function()
   local path = vim.fn.expand('%:p')
   local line = vim.api.nvim_win_get_cursor(0)[1]
-  vim.cmd('!code -g ' .. path .. ':' .. line)
+  vim.cmd('silent !code -g ' .. path .. ':' .. line)
 end
 
 ---@return nil
