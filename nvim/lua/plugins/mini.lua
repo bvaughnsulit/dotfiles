@@ -20,5 +20,8 @@ return {
     })
     require('mini.ai').setup({})
     require('mini.move').setup({})
+    require('mini.operators').setup({
+      replace = { prefix = 'gp' },
+    })
   end,
 }
