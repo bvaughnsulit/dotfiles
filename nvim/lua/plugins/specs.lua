@@ -182,4 +182,8 @@ return {
       default_mappings = false,
     },
   },
+  {
+    'kevinhwang91/nvim-bqf',
+    event = 'VeryLazy',
+  },
 }
