@@ -5,12 +5,16 @@ gui:
   expandFocusedSidePanel: false
   mainPanelSplitMode: 'vertical' # one of 'horizontal' | 'flexible' | 'vertical'
   nerdFontsVersion: "3"
+  showFileTree: false
 os:
-  edit: 'nvim'
+  editPreset: 'nvim'
+  open: 'open -R {{filename}}'
 git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
+quitOnTopLevelReturn: true
+promptToReturnFromSubprocess: false
 keybinding:
   universal:
     remove: 'X'
