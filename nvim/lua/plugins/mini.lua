@@ -23,5 +23,15 @@ return {
     require('mini.operators').setup({
       replace = { prefix = 'gp' },
     })
+    require('mini.indentscope').setup({
+      draw = {
+        animation = require('mini.indentscope').gen_animation.none(),
+      },
+      options = {
+        indent_at_cursor = true,
+        try_as_border = true,
+      },
+      symbol = '▏',
+    })
   end,
 }
