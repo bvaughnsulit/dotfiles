@@ -1,5 +1,7 @@
 local utils = require('config.utils')
 
+local is_pinned = false
+
 return {
   'nvim-neo-tree/neo-tree.nvim',
   enabled = true,
@@ -80,14 +82,15 @@ return {
           align = 'right',
         },
       },
-
       hide_root_node = true,
       enable_diagnostics = false,
       enable_git_status = true,
       event_handlers = {
         {
           event = 'file_opened',
-          handler = function(_) require('neo-tree.sources.manager').close_all() end,
+          handler = function(_)
+            if not is_pinned then require('neo-tree.sources.manager').close_all() end
+          end,
         },
       },
       -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
@@ -99,6 +102,9 @@ return {
           ['/'] = {},
           ['<space><space>'] = { 'toggle_preview' },
           ['<tab>'] = { 'toggle_node' },
+          ['z'] = 'noop',
+          ['s'] = 'noop',
+          ['v'] = 'open_vsplit',
         },
       },
       filesystem = {
@@ -125,6 +131,13 @@ return {
       },
     })
     vim.keymap.set('n', '<leader>ee', '<cmd>Neotree toggle<cr>', {})
+
+    utils.create_cmd_and_map(
+      'ToggleIsExplorerPinned',
+      nil,
+      function() is_pinned = not is_pinned end,
+      'Toggle Neotree auto close'
+    )
 
     local branch_name = utils.get_default_branch_name()
 
