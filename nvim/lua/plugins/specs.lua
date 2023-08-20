@@ -102,42 +102,24 @@ return {
     end,
   },
   {
-    'ggandor/leap.nvim',
-    enabled = false,
-    config = function()
-      require('leap').add_default_mappings()
-      -- vim.keymap.set({ 'n', 'x', 'o' }, 's', function()
-      --   local current_window = vim.fn.win_getid()
-      --   require('leap').leap({ target_windows = { current_window } })
-      -- end)
-    end,
-    event = 'BufReadPost',
-  },
-  {
-    'ggandor/flit.nvim',
-    enabled = false,
-    event = 'BufReadPost',
-    config = function() require('flit').setup({ labeled_modes = 'nx' }) end,
-  },
-  {
     'folke/flash.nvim',
     event = 'VeryLazy',
     enabled = true,
     opts = {
-      -- label = {
-      --   after = false,
-      --   before = true,
-      --   style = 'eol',
-      -- },
+      label = {
+        uppercase = false,
+      },
       modes = {
         search = {
           enabled = false,
         },
         char = {
-          autohide = true,
-          jump_labels = false,
+          config = function(opts)
+            opts.jump_labels = vim.v.count == 0 and not vim.fn.mode(true):find('o')
+          end,
         },
       },
+      prompt = { enabled = false },
     },
     keys = {
       {
@@ -184,6 +166,10 @@ return {
   },
   {
     'kevinhwang91/nvim-bqf',
+    event = 'VeryLazy',
+  },
+  {
+    'abecodes/tabout.nvim',
     event = 'VeryLazy',
   },
 }
