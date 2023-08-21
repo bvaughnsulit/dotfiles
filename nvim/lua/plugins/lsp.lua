@@ -153,6 +153,19 @@ return {
         root_dir = lspconfig.util.root_pattern('package.json', 'tsconfig.json'),
       })
 
+      lspconfig.pyright.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        single_file_support = true,
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = 'off',
+            },
+          },
+        },
+      })
+
       -- custom lua configs
       lspconfig.lua_ls.setup({
         on_attach = on_attach,
