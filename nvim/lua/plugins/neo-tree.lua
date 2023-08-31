@@ -1,6 +1,6 @@
 local utils = require('config.utils')
 
-local is_pinned = false
+vim.g.IS_EXPLORER_PINNED = false
 
 return {
   'nvim-neo-tree/neo-tree.nvim',
@@ -89,7 +89,7 @@ return {
         {
           event = 'file_opened',
           handler = function(_)
-            if not is_pinned then require('neo-tree.sources.manager').close_all() end
+            if not vim.g.IS_EXPLORER_PINNED then require('neo-tree.sources.manager').close_all() end
           end,
         },
       },
@@ -104,6 +104,7 @@ return {
           ['<tab>'] = { 'toggle_node' },
           ['z'] = 'noop',
           ['s'] = 'noop',
+          ['y'] = 'noop',
           ['v'] = 'open_vsplit',
         },
       },
@@ -135,7 +136,7 @@ return {
     utils.create_cmd_and_map(
       'ToggleIsExplorerPinned',
       nil,
-      function() is_pinned = not is_pinned end,
+      function() vim.g.IS_EXPLORER_PINNED = not vim.g.IS_EXPLORER_PINNED end,
       'Toggle Neotree auto close'
     )
 
@@ -155,12 +156,10 @@ return {
       'Explore Document Symbols'
     )
 
-    utils.create_cmd_and_map(
-      'Close Neo-tree',
-      '<leader>eq',
-      function() vim.cmd('Neotree close') end,
-      'Close Neo-tree'
-    )
+    utils.create_cmd_and_map('Close Neo-tree', '<leader>eq', function()
+      vim.cmd('Neotree close')
+      vim.g.IS_EXPLORER_PINNED = false
+    end, 'Close Neo-tree')
 
     vim.api.nvim_create_autocmd('TermClose', {
       pattern = '*lazygit',
