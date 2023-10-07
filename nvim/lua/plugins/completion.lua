@@ -10,10 +10,10 @@ return {
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp-signature-help',
     },
+    ---@diagnostic disable missing-fields
     config = function()
       local cmp = require('cmp')
       local luasnip = require('luasnip')
-
       cmp.setup({
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,
@@ -40,24 +40,6 @@ return {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
           }),
-          ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
         }),
         sources = cmp.config.sources({
           { name = 'nvim_lsp_signature_help' },
@@ -81,23 +63,6 @@ return {
         experimental = {
           ghost_text = false,
         },
-        -- sorting = {
-        --   priority_weight = 2,
-        --   comparators = {
-        --     -- require('copilot_cmp.comparators').prioritize,
-        --     -- Below is the default comparitor list and order for nvim-cmp
-        --     cmp.config.compare.offset,
-        --     -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-        --     cmp.config.compare.exact,
-        --     cmp.config.compare.score,
-        --     cmp.config.compare.recently_used,
-        --     cmp.config.compare.locality,
-        --     cmp.config.compare.kind,
-        --     cmp.config.compare.sort_text,
-        --     cmp.config.compare.length,
-        --     cmp.config.compare.order,
-        --   },
-        -- },
       })
 
       -- Use cmdline & path source for ':'
@@ -124,10 +89,53 @@ return {
     dependencies = {
       'rafamadriz/friendly-snippets',
       config = function()
+        local luasnip = require('luasnip')
         require('luasnip.loaders.from_vscode').lazy_load()
-        require('luasnip').filetype_extend('typescript', { 'javascript', 'tsdoc' })
-        require('luasnip').filetype_extend('typescriptreact', { 'javascript', 'tsdoc' })
+        luasnip.filetype_extend('typescript', { 'javascript', 'tsdoc' })
+        luasnip.filetype_extend('typescriptreact', { 'javascript', 'tsdoc' })
+
+        vim.keymap.set('i', '<S-Tab>', function()
+          if luasnip.jumpable(-1) then luasnip.jump(-1) end
+        end)
       end,
     },
+  },
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup({
+        panel = { enabled = false },
+        enabled = true,
+        suggestion = {
+          auto_trigger = true,
+          debounce = 10,
+          keymap = {
+            accept = false,
+            accept_word = false,
+            accept_line = false,
+            next = '<M-]>',
+            prev = '<M-[>',
+            dismiss = '<C-]>',
+          },
+        },
+        filetypes = {},
+      })
+      vim.keymap.set('i', '<Tab>', function()
+        local luasnip = require('luasnip')
+        if luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
+        elseif require('copilot.suggestion').is_visible() then
+          require('copilot.suggestion').accept()
+        else
+          vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes('<Tab>', true, false, true),
+            'n',
+            false
+          )
+        end
+      end)
+    end,
   },
 }
