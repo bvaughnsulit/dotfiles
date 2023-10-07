@@ -81,6 +81,9 @@ return {
           },
           align = 'right',
         },
+        file_size = { enabled = false },
+        type = { enabled = false },
+        last_modified = { enabled = false },
       },
       hide_root_node = true,
       enable_diagnostics = false,
@@ -154,6 +157,13 @@ return {
       '<leader>es',
       function() vim.cmd('Neotree toggle document_symbols') end,
       'Explore Document Symbols'
+    )
+
+    utils.create_cmd_and_map(
+      'NeoTreePasteDefaultConfig',
+      nil,
+      function() neotree.paste_default_config() end,
+      ''
     )
 
     utils.create_cmd_and_map('Close Neo-tree', '<leader>eq', function()

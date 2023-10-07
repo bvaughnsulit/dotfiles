@@ -22,13 +22,13 @@ return {
     utils.create_cmd_and_map(
       nil,
       '<c-u>',
-      function() neoscroll.scroll(-vim.wo.scroll, true, 100) end
+      function() neoscroll.scroll(-vim.wo.scroll, true, 75) end
     )
 
     utils.create_cmd_and_map(
       nil,
       '<c-d>',
-      function() neoscroll.scroll(vim.wo.scroll, true, 100) end
+      function() neoscroll.scroll(vim.wo.scroll, true, 75) end
     )
   end,
 }
