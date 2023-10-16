@@ -63,7 +63,7 @@ return {
   {
     'lewis6991/satellite.nvim',
     event = 'VeryLazy',
-    dev = true,
+    dev = false,
     config = function()
       require('satellite').setup({
         current_only = false,
@@ -77,6 +77,7 @@ return {
           },
           search = {
             enable = true,
+            symbols = { '━', '🬋' },
           },
           diagnostic = {
             enable = false,
