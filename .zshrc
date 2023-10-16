@@ -36,6 +36,7 @@ alias nvim-plug='cd ~/.local/share/nvim/lazy/'
 
 alias lg='lazygit'
 alias venv='source venv/bin/activate'
+alias pr='gh pr checkout'
 
 # add computer-specific configs in a separate, non-committed file
 [[ ! -f ~/.zshrc_addtl ]] || source ~/.zshrc_addtl

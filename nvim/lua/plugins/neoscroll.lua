@@ -2,7 +2,7 @@ local utils = require('config.utils')
 
 return {
   'karb94/neoscroll.nvim',
-  enabled = true,
+  enabled = false,
   dev = false,
   event = 'VeryLazy',
   config = function()
@@ -25,10 +25,6 @@ return {
       function() neoscroll.scroll(-vim.wo.scroll, true, 75) end
     )
 
-    utils.create_cmd_and_map(
-      nil,
-      '<c-d>',
-      function() neoscroll.scroll(vim.wo.scroll, true, 75) end
-    )
+    utils.create_cmd_and_map(nil, '<c-d>', function() neoscroll.scroll(vim.wo.scroll, true, 75) end)
   end,
 }
