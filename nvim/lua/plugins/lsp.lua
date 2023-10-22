@@ -11,6 +11,7 @@ return {
       'folke/neodev.nvim',
       {
         'SmiteshP/nvim-navbuddy',
+        enabled = false,
         dependencies = {
           {
             'SmiteshP/nvim-navic',
@@ -61,9 +62,9 @@ return {
 
       -- things that will be set up when lsp attaches to a buffer
       local on_attach = function(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-          require('nvim-navic').attach(client, bufnr)
-        end
+        -- if client.server_capabilities.documentSymbolProvider then
+        --   require('nvim-navic').attach(client, bufnr)
+        -- end
 
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
         vim.keymap.set('n', 'gd', telescope_def, { buffer = bufnr })

@@ -124,10 +124,10 @@ return {
       })
       vim.keymap.set('i', '<Tab>', function()
         local luasnip = require('luasnip')
-        if luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        elseif require('copilot.suggestion').is_visible() then
+        if require('copilot.suggestion').is_visible() then
           require('copilot.suggestion').accept()
+        elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
         else
           vim.api.nvim_feedkeys(
             vim.api.nvim_replace_termcodes('<Tab>', true, false, true),

@@ -60,7 +60,7 @@ return {
         lualine_b = {
           'diagnostics',
         },
-        lualine_c = { 'navic', color_correction = nil, navic_opts = nil },
+        -- lualine_c = { 'navic', color_correction = nil, navic_opts = nil },
         -- lualine_c = { 'aerial' },
         lualine_x = {},
         lualine_y = {},
