@@ -31,7 +31,7 @@ alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
 alias nvim-dark='nvim --cmd "+lua vim.g.set_scheme=\"dark\""'
 alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 
-alias lazyvim='NVIM_APPNAME=lazyvim nvim'
+alias lvim='NVIM_APPNAME=lazyvim nvim'
 alias nvim-plug='cd ~/.local/share/nvim/lazy/'
 
 alias lg='lazygit'
