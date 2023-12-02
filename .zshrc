@@ -19,6 +19,7 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 
 alias ls='ls -a'
 alias home='cd ~'
+alias dot='cd ~/dotfiles'
 alias gho='gh browse'
 
 # tmux
