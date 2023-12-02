@@ -33,7 +33,7 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
-    dev = true,
+    -- dev = true,
     opts = {
       cmdline = {
         enabled = true,
@@ -93,6 +93,10 @@ return {
     dependencies = {
       'MunifTanjim/nui.nvim',
       'rcarriga/nvim-notify',
+    },
+    keys = {
+      { '<c-f>', false },
+      { '<c-b>', false },
     },
   },
 }

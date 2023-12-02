@@ -1,4 +1,5 @@
 return {
+  { 'akinsho/bufferline.nvim', enabled = false },
   {
     '/local-config',
     dev = true,
@@ -62,6 +63,7 @@ return {
   },
   {
     'lewis6991/satellite.nvim',
+    enabled = false,
     event = 'VeryLazy',
     dev = false,
     config = function()
