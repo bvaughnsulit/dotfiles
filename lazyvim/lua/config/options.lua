@@ -59,13 +59,3 @@ vim.opt.grepprg = 'rg --vimgrep'
 vim.opt.sidescrolloff = 8
 vim.opt.spelllang = { 'en' }
 vim.opt.splitkeep = 'screen'
-
--- markdown-specific options
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown' },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-    vim.opt_local.conceallevel = 3
-  end,
-})
