@@ -99,4 +99,26 @@ return {
       { '<c-b>', false },
     },
   },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    opts = {
+      indent = {
+        char = '▏',
+        tab_char = '▏',
+      },
+    },
+  },
+  {
+    'echasnovski/mini.indentscope',
+    opts = {
+      draw = {
+        animation = require('mini.indentscope').gen_animation.none(),
+      },
+      options = {
+        indent_at_cursor = true,
+        try_as_border = true,
+      },
+      symbol = '▏',
+    },
+  },
 }
