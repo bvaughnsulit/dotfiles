@@ -1,4 +1,5 @@
 local utils = require('config.utils')
+local lazyvim_utils = require('lazyvim.util')
 
 local map = function(mode, lhs, rhs, opts)
   opts = vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
@@ -181,13 +182,13 @@ vim.keymap.set('n', '<C-\\>', function()
   -- if no addtl pane exists (not zoomed, and rightmost), create and focus it
   vim.cmd([[ silent
       \ !tmux if-shell -F
-        \ '\#{?window_zoomed_flag,1,0}' 
+        \ '\#{?window_zoomed_flag,1,0}'
         \ 'resize-pane -Z'
         \ "if-shell -F
-          \ '\#{?pane_at_right,1,0}' 
+          \ '\#{?pane_at_right,1,0}'
           \ 'split-window -h -l 25\% ; select-pane -R'
-          \ '' " 
-        \ ';' 
+          \ '' "
+        \ ';'
       \ select-pane -R
     ]])
 end, { silent = true })
@@ -201,7 +202,7 @@ vim.keymap.set('n', '<leader>!!', function()
         \ '\#{?window_zoomed_flag,1,0}'
         \ 'resize-pane -Z'
         \ '' ';'
-      \ send-keys -t {top-right} '\!\!' Enter 
+      \ send-keys -t {top-right} '\!\!' Enter
     ]])
 end, { silent = true })
 
@@ -217,3 +218,22 @@ vim.keymap.set('n', '<c-w>o', function()
         \ 'resize-pane -Z'
     ]])
 end, { silent = true })
+
+utils.create_cmd_and_map('G', '<leader>gg', function()
+  local config_dir = '/Users/vaughn/dotfiles/lazygit/'
+  local base_config = config_dir .. 'lazygit.yml'
+  local light_config = base_config .. ',' .. config_dir .. 'light.yml'
+  lazyvim_utils.float_term({
+    'lazygit',
+    '-ucf',
+    utils.is_system_dark_mode() and base_config or light_config,
+  }, {
+    cwd = lazyvim_utils.get_root(),
+    esc_esc = false,
+    ctrl_hjkl = false,
+    size = {
+      width = 0.95,
+      height = 0.95,
+    },
+  })
+end, 'Lazygit (root dir)')
