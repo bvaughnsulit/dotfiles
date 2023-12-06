@@ -176,4 +176,12 @@ return {
     'abecodes/tabout.nvim',
     event = 'VeryLazy',
   },
+  {
+    'folke/which-key.nvim',
+    opts = {
+      defaults = {
+        ['<leader>w'] = 'which_key_ignore',
+      },
+    },
+  },
 }
