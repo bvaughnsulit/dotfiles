@@ -59,7 +59,10 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     event = 'VeryLazy',
-    opts = { useDefaultKeymaps = true },
+    opts = {
+      useDefaultKeymaps = true,
+      disabledKeymaps = { 'gc' },
+    },
   },
   {
     'lewis6991/satellite.nvim',
