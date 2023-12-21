@@ -34,6 +34,7 @@ return {
             [']a'] = '@parameter.inner',
             [']m'] = '@function.outer',
             [']]'] = '@block.outer',
+            [']c'] = nil,
           },
           goto_next_end = {
             [']M'] = '@function.outer',
@@ -43,6 +44,7 @@ return {
             ['[a'] = '@parameter.inner',
             ['[m'] = '@function.outer',
             ['[['] = '@block.outer',
+            [']c'] = nil,
           },
           goto_previous_end = {
             ['[M'] = '@function.outer',
