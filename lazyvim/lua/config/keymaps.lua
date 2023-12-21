@@ -53,6 +53,9 @@ map({ 'n', 't' }, '<C-l>', '<cmd>wincmd l<cr>')
 map({ 'n', 't' }, '<C-j>', '<cmd>wincmd j<cr>')
 map({ 'n', 't' }, '<C-k>', '<cmd>wincmd k<cr>')
 
+map({ 'i' }, '<M-h>', '<left>')
+map({ 'i' }, '<M-l>', '<right>')
+
 -- stop using arrow keys!!!
 map('n', '<up>', '<>', {})
 map('n', '<down>', '<>', {})
