@@ -22,11 +22,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   desc = 'overwrite mini cursorword highlight group',
 })
 
-vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-  group = augroup('checktime'),
-  command = 'checktime',
-})
-
 -- markdown-specific options
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },

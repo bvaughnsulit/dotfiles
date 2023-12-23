@@ -6,6 +6,11 @@ local map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+vim.keymap.del('n', '<leader>ww')
+vim.keymap.del('n', '<leader>wd')
+vim.keymap.del('n', '<leader>w-')
+vim.keymap.del('n', '<leader>w|')
+
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
 -- \V - very nomagic
@@ -47,6 +52,9 @@ map({ 'n', 't' }, '<C-h>', '<cmd>wincmd h<cr>')
 map({ 'n', 't' }, '<C-l>', '<cmd>wincmd l<cr>')
 map({ 'n', 't' }, '<C-j>', '<cmd>wincmd j<cr>')
 map({ 'n', 't' }, '<C-k>', '<cmd>wincmd k<cr>')
+
+map({ 'i' }, '<M-h>', '<left>')
+map({ 'i' }, '<M-l>', '<right>')
 
 -- stop using arrow keys!!!
 map('n', '<up>', '<>', {})

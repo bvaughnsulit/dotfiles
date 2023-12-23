@@ -45,7 +45,7 @@ return {
         virtual_text = false,
         float = {
           wrap = true,
-          max_width = 60,
+          max_width = 120,
           source = true,
           border = 'rounded',
           style = 'minimal',
@@ -64,6 +64,14 @@ return {
         eslint = {
           settings = {
             workingDirectory = { mode = 'location' },
+          },
+        },
+        ---@type lspconfig.options.tsserver
+        ---@diagnostic disable missing-field-in-table
+        tsserver = {
+          settings = {
+            typescript = {},
+            javascript = {},
           },
         },
       },

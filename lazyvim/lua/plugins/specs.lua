@@ -1,5 +1,6 @@
 return {
   { 'akinsho/bufferline.nvim', enabled = false },
+  { 'windwp/nvim-ts-autotag', enabled = false },
   {
     '/local-config',
     dev = true,
@@ -59,7 +60,10 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     event = 'VeryLazy',
-    opts = { useDefaultKeymaps = true },
+    opts = {
+      useDefaultKeymaps = true,
+      disabledKeymaps = { 'gc' },
+    },
   },
   {
     'lewis6991/satellite.nvim',
@@ -172,5 +176,13 @@ return {
   {
     'abecodes/tabout.nvim',
     event = 'VeryLazy',
+  },
+  {
+    'folke/which-key.nvim',
+    opts = {
+      defaults = {
+        ['<leader>w'] = 'which_key_ignore',
+      },
+    },
   },
 }
