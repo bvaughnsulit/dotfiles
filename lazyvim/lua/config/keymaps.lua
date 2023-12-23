@@ -231,12 +231,12 @@ utils.create_cmd_and_map('G', '<leader>gg', function()
   local config_dir = '/Users/vaughn/dotfiles/lazygit/'
   local base_config = config_dir .. 'lazygit.yml'
   local light_config = base_config .. ',' .. config_dir .. 'light.yml'
-  lazyvim_utils.float_term({
+  lazyvim_utils.terminal.open({
     'lazygit',
     '-ucf',
     utils.is_system_dark_mode() and base_config or light_config,
   }, {
-    cwd = lazyvim_utils.get_root(),
+    cwd = lazyvim_utils.root.get(),
     esc_esc = false,
     ctrl_hjkl = false,
     size = {
