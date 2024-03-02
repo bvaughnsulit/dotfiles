@@ -245,3 +245,10 @@ utils.create_cmd_and_map('G', '<leader>gg', function()
     },
   })
 end, 'Lazygit (root dir)')
+
+utils.create_cmd_and_map(
+  'WhichConfig',
+  nil,
+  function() vim.notify(vim.fn.stdpath('config')) end,
+  'Print Config Path'
+)

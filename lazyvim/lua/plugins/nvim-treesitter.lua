@@ -26,6 +26,7 @@ return {
           node_decremental = '<c-m>',
         },
       },
+      ignore_install = { 'angular', 'groovy' },
       textobjects = {
         move = {
           enable = true,
@@ -74,16 +75,17 @@ return {
   {
     'stevearc/aerial.nvim',
     event = 'VeryLazy',
-    config = function()
-      require('aerial').setup({
-        layout = {
-          width = 0.35,
-          max_width = 0.5,
-        },
-        highlight_on_hover = true,
-        highlight_on_jump = 300,
-        autojump = true,
-      })
-    end,
+    keys = {
+      { '<leader>es', '<cmd>AerialToggle<cr>' },
+    },
+    opts = {
+      layout = {
+        width = 0.35,
+        max_width = 0.5,
+      },
+      highlight_on_hover = true,
+      highlight_on_jump = 300,
+      autojump = true,
+    },
   },
 }

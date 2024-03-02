@@ -168,6 +168,17 @@ return {
     'chentoast/marks.nvim',
     event = 'VeryLazy',
     config = true,
+    keys = {
+      {
+        '<leader>mm',
+        mode = { 'n' },
+        function()
+          require('marks').mark_state:all_to_list()
+          vim.cmd('lopen')
+        end,
+        { desc = 'Toggle mark visual' },
+      },
+    },
   },
   {
     'kevinhwang91/nvim-bqf',
