@@ -1,11 +1,13 @@
 gui:
   scrollHeight: 2 # how many lines you scroll by
   scrollPastBottom: true # enable scrolling past the bottom
+  scrollOffMargin: 2
   sidePanelWidth: 0.25 # number from 0 to 1
   expandFocusedSidePanel: false
   mainPanelSplitMode: 'vertical' # one of 'horizontal' | 'flexible' | 'vertical'
   nerdFontsVersion: "3"
   showFileTree: false
+  border: 'single'
 os:
   editPreset: 'nvim'
   open: 'open -R {{filename}}'

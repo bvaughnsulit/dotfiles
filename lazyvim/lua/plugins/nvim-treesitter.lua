@@ -12,6 +12,10 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      config = function() end,
+    },
     keys = {
       { '<c-space>', false },
       { '<bs>', false },

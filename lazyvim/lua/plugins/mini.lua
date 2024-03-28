@@ -1,8 +1,6 @@
 return {
   'echasnovski/mini.nvim',
   version = false,
-  lazy = false,
-  priority = 1000,
   config = function()
     require('mini.cursorword').setup({})
     require('mini.surround').setup({
@@ -24,4 +22,8 @@ return {
       replace = { prefix = 'gp' },
     })
   end,
+  keys = {
+    { '<A-j>', nil, mode = { 'n', 'v' } },
+    { '<A-k>', nil, mode = { 'n', 'v' } },
+  },
 }
