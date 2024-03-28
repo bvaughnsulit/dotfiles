@@ -86,6 +86,7 @@ return {
       highlight_on_hover = true,
       highlight_on_jump = 300,
       autojump = true,
+      close_on_select = true,
     },
   },
 }

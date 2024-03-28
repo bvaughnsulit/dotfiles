@@ -5,7 +5,12 @@ return {
     'mfussenegger/nvim-dap',
     event = 'VeryLazy',
     dependencies = {
-      { 'rcarriga/nvim-dap-ui' },
+      {
+        'rcarriga/nvim-dap-ui',
+        dependencies = {
+          'nvim-neotest/nvim-nio',
+        },
+      },
       {
         'jay-babu/mason-nvim-dap.nvim',
         dependencies = 'mason.nvim',
