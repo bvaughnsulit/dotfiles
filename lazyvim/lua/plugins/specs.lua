@@ -1,6 +1,7 @@
 return {
   { 'akinsho/bufferline.nvim', enabled = false },
   { 'windwp/nvim-ts-autotag', enabled = false },
+  { 'RRethy/vim-illuminate', enabled = false },
   {
     '/local-config',
     dev = true,
@@ -67,7 +68,7 @@ return {
   },
   {
     'lewis6991/satellite.nvim',
-    enabled = false,
+    enabled = true,
     event = 'VeryLazy',
     dev = false,
     config = function()
