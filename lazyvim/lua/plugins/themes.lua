@@ -10,6 +10,7 @@ return {
     config = function()
       require('github-theme').setup({})
       if not is_system_dark_mode then vim.cmd('colorscheme github_light_colorblind') end
+      vim.cmd([[hi! default link Delimiter Special]])
     end,
   },
   {
