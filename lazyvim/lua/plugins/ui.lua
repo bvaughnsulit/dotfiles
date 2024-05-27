@@ -97,7 +97,6 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    version = '3.4', -- remove once bug is fixed
     opts = {
       indent = {
         char = '▏',
