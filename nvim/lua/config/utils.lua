@@ -74,7 +74,8 @@ M.get_gh_file_url = function()
   local path = vim.fn.expand('%:.')
   local branch = M.get_default_branch_name()
   local repo_url = M.get_gh_repo_url()
-  if repo_url then return repo_url .. '/blob/' .. branch .. '/' .. path end
+  local line_number = vim.api.nvim_win_get_cursor(0)[1]
+  if repo_url then return repo_url .. '/blob/' .. branch .. '/' .. path .. '\\#L' .. line_number end
 end
 
 M.open_file_in_vscode = function()

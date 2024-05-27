@@ -2,15 +2,18 @@ local utils = require('config.utils')
 -- TODO: delta pager
 
 return {
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
     'nvim-telescope/telescope.nvim',
-    event = 'VeryLazy',
-    branch = '0.1.x',
+    -- branch = '0.1.x',
     dependencies = {
       'debugloop/telescope-undo.nvim',
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-live-grep-args.nvim',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        config = function() require('telescope').load_extension('fzf') end,
+      },
     },
     config = function()
       local telescope = require('telescope')
@@ -18,7 +21,6 @@ return {
       local builtin = require('telescope.builtin')
       local previewers = require('telescope.previewers')
 
-      telescope.load_extension('fzf')
       telescope.load_extension('undo')
       telescope.load_extension('live_grep_args')
       telescope.load_extension('aerial')
@@ -271,19 +273,6 @@ return {
             },
           }))
         end
-      )
-
-      utils.create_cmd_and_map(
-        nil,
-        '<leader>mm',
-        function()
-          require('telescope.builtin').marks(require('telescope.themes').get_dropdown({
-            layout_config = {
-              width = 0.8,
-            },
-          }))
-        end,
-        'View marks'
       )
 
       -- browse themes

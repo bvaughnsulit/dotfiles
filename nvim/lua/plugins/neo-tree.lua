@@ -153,13 +153,6 @@ return {
     )
 
     utils.create_cmd_and_map(
-      'ExploreDocumentSymbols',
-      '<leader>es',
-      function() vim.cmd('Neotree toggle document_symbols') end,
-      'Explore Document Symbols'
-    )
-
-    utils.create_cmd_and_map(
       'NeoTreePasteDefaultConfig',
       nil,
       function() neotree.paste_default_config() end,

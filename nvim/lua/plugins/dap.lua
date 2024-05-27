@@ -5,7 +5,12 @@ return {
     'mfussenegger/nvim-dap',
     event = 'VeryLazy',
     dependencies = {
-      { 'rcarriga/nvim-dap-ui' },
+      {
+        'rcarriga/nvim-dap-ui',
+        dependencies = {
+          'nvim-neotest/nvim-nio',
+        },
+      },
       {
         'jay-babu/mason-nvim-dap.nvim',
         dependencies = 'mason.nvim',
@@ -19,6 +24,7 @@ return {
       },
       {
         'theHamsta/nvim-dap-virtual-text',
+        enabled = false,
         config = function() require('nvim-dap-virtual-text').setup() end,
       },
       'mxsdev/nvim-dap-vscode-js',

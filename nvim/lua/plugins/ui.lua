@@ -2,18 +2,14 @@ return {
   {
     'rcarriga/nvim-notify',
     enabled = true,
-    lazy = false,
-    init = function()
-      local notify = require('notify')
-      notify.setup({
-        timeout = 2000,
-        stages = 'slide',
-        max_height = function() return math.floor(vim.o.lines * 0.75) end,
-        max_width = function() return math.floor(vim.o.columns * 0.75) end,
-        top_down = false,
-      })
-      vim.notify = notify
-    end,
+    opts = {
+      timeout = 2000,
+      stages = 'static',
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
+      top_down = false,
+    },
+    init = function() vim.notify = require('notify') end,
   },
   {
     'stevearc/dressing.nvim',
@@ -33,7 +29,7 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
-    dev = true,
+    -- dev = true,
     opts = {
       cmdline = {
         enabled = true,
@@ -93,6 +89,32 @@ return {
     dependencies = {
       'MunifTanjim/nui.nvim',
       'rcarriga/nvim-notify',
+    },
+    keys = {
+      { '<c-f>', false },
+      { '<c-b>', false },
+    },
+  },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    opts = {
+      indent = {
+        char = '▏',
+        tab_char = '▏',
+      },
+    },
+  },
+  {
+    'echasnovski/mini.indentscope',
+    opts = {
+      draw = {
+        animation = require('mini.indentscope').gen_animation.none(),
+      },
+      options = {
+        indent_at_cursor = true,
+        try_as_border = true,
+      },
+      symbol = '▏',
     },
   },
 }

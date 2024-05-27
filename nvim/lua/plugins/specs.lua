@@ -1,4 +1,6 @@
 return {
+  { 'akinsho/bufferline.nvim', enabled = false },
+  { 'windwp/nvim-ts-autotag', enabled = false },
   {
     '/local-config',
     dev = true,
@@ -58,10 +60,14 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     event = 'VeryLazy',
-    opts = { useDefaultKeymaps = true },
+    opts = {
+      useDefaultKeymaps = true,
+      disabledKeymaps = { 'gc' },
+    },
   },
   {
     'lewis6991/satellite.nvim',
+    enabled = true,
     event = 'VeryLazy',
     dev = false,
     config = function()
@@ -162,6 +168,17 @@ return {
     'chentoast/marks.nvim',
     event = 'VeryLazy',
     config = true,
+    keys = {
+      {
+        '<leader>mm',
+        mode = { 'n' },
+        function()
+          require('marks').mark_state:all_to_list()
+          vim.cmd('lopen')
+        end,
+        { desc = 'Toggle mark visual' },
+      },
+    },
   },
   {
     'kevinhwang91/nvim-bqf',
@@ -170,5 +187,13 @@ return {
   {
     'abecodes/tabout.nvim',
     event = 'VeryLazy',
+  },
+  {
+    'folke/which-key.nvim',
+    opts = {
+      defaults = {
+        ['<leader>w'] = 'which_key_ignore',
+      },
+    },
   },
 }
