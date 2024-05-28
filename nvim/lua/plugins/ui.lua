@@ -98,6 +98,7 @@ return {
   {
     'lukas-reineke/indent-blankline.nvim',
     opts = {
+      scope = { enabled = false },
       indent = {
         char = '▏',
         tab_char = '▏',
@@ -106,6 +107,7 @@ return {
   },
   {
     'echasnovski/mini.indentscope',
+    event = 'LazyFile',
     opts = {
       draw = {
         animation = require('mini.indentscope').gen_animation.none(),
