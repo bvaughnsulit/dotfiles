@@ -10,6 +10,7 @@ vim.keymap.del('n', '<leader>ww')
 vim.keymap.del('n', '<leader>wd')
 vim.keymap.del('n', '<leader>w-')
 vim.keymap.del('n', '<leader>w|')
+vim.keymap.del('n', '<leader>wm')
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
