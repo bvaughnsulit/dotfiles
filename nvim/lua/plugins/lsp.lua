@@ -67,12 +67,13 @@ return {
             workingDirectory = { mode = 'location' },
           },
         },
-        ---@type lspconfig.options.tsserver
-        ---@diagnostic disable missing-field-in-table
-        tsserver = {
+        vtsls = {
           settings = {
-            typescript = {},
-            javascript = {},
+            typescript = {
+              format = {
+                enable = false,
+              },
+            },
           },
         },
       },
