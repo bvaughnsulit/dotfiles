@@ -5,6 +5,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
+    event = 'LazyFile',
     opts = {
       max_lines = 0,
       min_window_height = 40,
@@ -14,67 +15,69 @@ return {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      config = function() end,
+      config = function() return nil end,
     },
     keys = {
       { '<c-space>', false },
       { '<bs>', false },
     },
-    opts = {
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = 'gnn',
-          node_incremental = '<c-n>',
-          scope_incremental = 'grc',
-          node_decremental = '<c-m>',
-        },
-      },
-      ignore_install = { 'angular', 'groovy' },
-      textobjects = {
-        move = {
+    opts = function()
+      return {
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = {
           enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = {
-            [']a'] = '@parameter.inner',
-            [']m'] = '@function.outer',
-            [']]'] = '@block.outer',
-            [']c'] = nil,
-          },
-          goto_next_end = {
-            [']M'] = '@function.outer',
-            [']['] = '@block.outer',
-          },
-          goto_previous_start = {
-            ['[a'] = '@parameter.inner',
-            ['[m'] = '@function.outer',
-            ['[['] = '@block.outer',
-            [']c'] = nil,
-          },
-          goto_previous_end = {
-            ['[M'] = '@function.outer',
-            ['[]'] = '@block.outer',
+          keymaps = {
+            init_selection = 'gnn',
+            node_incremental = '<c-n>',
+            scope_incremental = 'grc',
+            node_decremental = '<c-m>',
           },
         },
-        swap = {
-          enable = true,
-          swap_next = {
-            ['<leader>a'] = '@parameter.inner',
+        ignore_install = { 'angular', 'groovy' },
+        textobjects = {
+          move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            goto_next_start = {
+              [']a'] = '@parameter.inner',
+              [']m'] = '@function.outer',
+              [']]'] = '@block.outer',
+            },
+            goto_next_end = {
+              [']M'] = '@function.outer',
+              [']['] = '@block.outer',
+            },
+            goto_previous_start = {
+              ['[a'] = '@parameter.inner',
+              ['[m'] = '@function.outer',
+              ['[['] = '@block.outer',
+            },
+            goto_previous_end = {
+              ['[M'] = '@function.outer',
+              ['[]'] = '@block.outer',
+            },
           },
-          swap_previous = {
-            ['<leader>A'] = '@parameter.inner',
+          swap = {
+            enable = true,
+            swap_next = {
+              ['<leader>a'] = '@parameter.inner',
+            },
+            swap_previous = {
+              ['<leader>A'] = '@parameter.inner',
+            },
+          },
+          lsp_interop = {
+            enable = true,
+            border = 'none',
+            peek_definition_code = {
+              ['<leader>df'] = '@function.outer',
+              ['<leader>dF'] = '@class.outer',
+            },
           },
         },
-        lsp_interop = {
-          enable = true,
-          border = 'none',
-          peek_definition_code = {
-            ['<leader>df'] = '@function.outer',
-            ['<leader>dF'] = '@class.outer',
-          },
-        },
-      },
-    },
+      }
+    end,
   },
   {
     'stevearc/aerial.nvim',
