@@ -1,6 +1,4 @@
 return {
-  { 'akinsho/bufferline.nvim', enabled = false },
-  { 'windwp/nvim-ts-autotag', enabled = false },
   {
     '/local-config',
     dev = true,
@@ -187,13 +185,5 @@ return {
   {
     'abecodes/tabout.nvim',
     event = 'VeryLazy',
-  },
-  {
-    'folke/which-key.nvim',
-    opts = {
-      defaults = {
-        ['<leader>w'] = 'which_key_ignore',
-      },
-    },
   },
 }
