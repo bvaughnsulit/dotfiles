@@ -1,5 +1,30 @@
 local utils = require('config.utils')
--- TODO: delta pager
+
+local custom_path_display = function(_, path)
+  local maxWidth = 160
+  local maxTailLen = maxWidth / 2
+  local spaceLen = 4
+
+  local tail = require('telescope.utils').path_tail(path)
+  local tailLen = string.len(tail)
+  local relative_path = string.sub(path, 1, -tailLen - 1)
+  if tailLen > maxTailLen then
+    tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
+    tailLen = string.len(tail)
+  end
+  local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
+
+  local pathLen = string.len(relative_path)
+  local maxPathLen = maxWidth - maxTailLen - spaceLen
+  if pathLen == 0 then relative_path = '/' end
+  if pathLen > maxPathLen then
+    local minStartIndex = pathLen - maxPathLen + 3
+    local startIndex = string.find(relative_path, '/', minStartIndex) or minStartIndex
+    if startIndex >= pathLen then startIndex = minStartIndex end
+    relative_path = '...' .. string.sub(relative_path, startIndex)
+  end
+  return tail .. spacing .. relative_path
+end
 
 return {
   {
@@ -203,42 +228,22 @@ return {
         'View Operator Pending Maps'
       )
 
-      vim.keymap.set('n', '<C-b>', function()
-        require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
-          sort_mru = true,
-          bufnr_width = 3,
-          ignore_current_buffer = true,
-          layout_config = {
-            width = 0.9,
-            anchor = 'N',
-          },
-          path_display = function(_, path)
-            local maxWidth = 160
-            local maxTailLen = maxWidth / 2
-            local spaceLen = 4
-
-            local tail = require('telescope.utils').path_tail(path)
-            local tailLen = string.len(tail)
-            local relative_path = string.sub(path, 1, -tailLen - 1)
-            if tailLen > maxTailLen then
-              tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
-              tailLen = string.len(tail)
-            end
-            local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
-
-            local pathLen = string.len(relative_path)
-            local maxPathLen = maxWidth - maxTailLen - spaceLen
-            if pathLen == 0 then relative_path = '/' end
-            if pathLen > maxPathLen then
-              local minStartIndex = pathLen - maxPathLen + 3
-              local startIndex = string.find(relative_path, '/', minStartIndex)
-              if startIndex >= pathLen then startIndex = minStartIndex end
-              relative_path = '...' .. string.sub(relative_path, startIndex)
-            end
-            return tail .. spacing .. relative_path
-          end,
-        }))
-      end)
+      vim.keymap.set(
+        'n',
+        '<C-b>',
+        function()
+          require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
+            sort_mru = true,
+            bufnr_width = 3,
+            ignore_current_buffer = true,
+            layout_config = {
+              width = 0.9,
+              anchor = 'N',
+            },
+            path_display = { 'filename_first' },
+          }))
+        end
+      )
 
       vim.keymap.set(
         'n',
