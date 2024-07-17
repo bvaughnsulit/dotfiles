@@ -46,6 +46,12 @@ return {
           ['vim.lsp.util.stylize_markdown'] = true,
           ['cmp.entry.get_documentation'] = true,
         },
+        signature = {
+          enabled = true,
+          auto_open = {
+            enabled = true,
+          },
+        },
       },
       presets = {
         long_message_to_split = true,
