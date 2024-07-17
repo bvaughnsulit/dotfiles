@@ -1,11 +1,14 @@
 return {
+  -- disabled specs
+  { 'akinsho/bufferline.nvim', enabled = false },
+  { 'windwp/nvim-ts-autotag', enabled = false },
+  { 'folke/which-key.nvim', enabled = false },
   {
     '/local-config',
     dev = true,
     event = 'VeryLazy',
     config = function() pcall(require, 'local-config') end,
   },
-  { 'tpope/vim-fugitive' },
   { 'JoosepAlviste/nvim-ts-context-commentstring' },
   {
     'numToStr/Comment.nvim',
@@ -43,11 +46,6 @@ return {
     end,
   },
   {
-    'dstein64/vim-startuptime',
-    cmd = 'StartupTime',
-    config = function() vim.g.startuptime_tries = 10 end,
-  },
-  {
     'tpope/vim-sleuth',
     event = 'BufReadPre',
   },
@@ -61,105 +59,6 @@ return {
     opts = {
       useDefaultKeymaps = true,
       disabledKeymaps = { 'gc' },
-    },
-  },
-  {
-    'lewis6991/satellite.nvim',
-    enabled = true,
-    event = 'VeryLazy',
-    dev = false,
-    config = function()
-      require('satellite').setup({
-        current_only = false,
-        winblend = 0,
-        zindex = 40,
-        excluded_filetypes = {},
-        width = 2,
-        handlers = {
-          cursor = {
-            enable = false,
-          },
-          search = {
-            enable = true,
-            symbols = { '━', '🬋' },
-          },
-          diagnostic = {
-            enable = false,
-            signs = { '-', '=', '≡' },
-            min_severity = vim.diagnostic.severity.HINT,
-          },
-          gitsigns = {
-            enable = true,
-            signs = {
-              add = '│',
-              change = '│',
-              delete = '-',
-            },
-          },
-          marks = {
-            enable = true,
-            show_builtins = false, -- shows the builtin marks like [ ] < >
-          },
-        },
-      })
-      vim.cmd([[hi! link ScrollView PmenuThumb]])
-      -- vim.cmd([[hi! link SearchCurrent SearchSV]])
-    end,
-  },
-  {
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-    enabled = true,
-    opts = {
-      label = {
-        uppercase = false,
-      },
-      modes = {
-        search = {
-          enabled = false,
-        },
-        char = {
-          config = function(opts)
-            opts.jump_labels = vim.v.count == 0 and not vim.fn.mode(true):find('o')
-          end,
-        },
-      },
-      prompt = { enabled = false },
-    },
-    keys = {
-      {
-        's',
-        mode = { 'n', 'x', 'o' },
-        function()
-          -- default options: exact mode, multi window, all directions, with a backdrop
-          require('flash').jump()
-        end,
-        desc = 'Flash',
-      },
-      {
-        'S',
-        mode = { 'n', 'o', 'x' },
-        function() require('flash').treesitter() end,
-        desc = 'Flash Treesitter',
-      },
-      {
-        'r',
-        mode = 'o',
-        function() require('flash').remote() end,
-        desc = 'Remote Flash',
-      },
-      {
-        'R',
-        mode = { 'o', 'x' },
-        function() require('flash').treesitter_search() end,
-        desc = 'Flash Treesitter Search',
-      },
-      {
-        '<c-s>',
-        mode = { 'c' },
-        function() require('flash').toggle() end,
-        desc = 'Toggle Flash Search',
-      },
     },
   },
   {
@@ -185,5 +84,42 @@ return {
   {
     'abecodes/tabout.nvim',
     event = 'VeryLazy',
+  },
+  {
+    'rcarriga/nvim-notify',
+    enabled = true,
+    opts = {
+      timeout = 2000,
+      stages = 'static',
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
+      top_down = false,
+    },
+    init = function() vim.notify = require('notify') end,
+  },
+  {
+    'stevearc/dressing.nvim',
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    opts = {
+      scope = { enabled = false },
+      indent = {
+        char = '▏',
+        tab_char = '▏',
+      },
+    },
   },
 }

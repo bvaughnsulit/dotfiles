@@ -1,32 +1,5 @@
 return {
   {
-    'rcarriga/nvim-notify',
-    enabled = true,
-    opts = {
-      timeout = 2000,
-      stages = 'static',
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
-      top_down = false,
-    },
-    init = function() vim.notify = require('notify') end,
-  },
-  {
-    'stevearc/dressing.nvim',
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.input(...)
-      end
-    end,
-  },
-  {
     'folke/noice.nvim',
     event = 'VeryLazy',
     -- dev = true,
@@ -99,30 +72,6 @@ return {
     keys = {
       { '<c-f>', false },
       { '<c-b>', false },
-    },
-  },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      scope = { enabled = false },
-      indent = {
-        char = '▏',
-        tab_char = '▏',
-      },
-    },
-  },
-  {
-    'echasnovski/mini.indentscope',
-    event = 'LazyFile',
-    opts = {
-      draw = {
-        animation = require('mini.indentscope').gen_animation.none(),
-      },
-      options = {
-        indent_at_cursor = true,
-        try_as_border = true,
-      },
-      symbol = '▏',
     },
   },
 }

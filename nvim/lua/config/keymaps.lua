@@ -6,11 +6,7 @@ local map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-vim.keymap.del('n', '<leader>ww')
-vim.keymap.del('n', '<leader>wd')
-vim.keymap.del('n', '<leader>w-')
-vim.keymap.del('n', '<leader>w|')
-vim.keymap.del('n', '<leader>wm')
+vim.keymap.del('n', '<leader>w')
 
 map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 
