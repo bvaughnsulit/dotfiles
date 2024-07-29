@@ -34,13 +34,15 @@ return {
       views = {
         mini = {
           position = {
-            col = 0,
-            row = -2,
+            col = -1,
+            row = 0,
           },
+          align = 'message-right',
           size = {
-            height = 'auto',
-            width = '50%',
+            height = 1,
+            width = 'auto',
           },
+          win_options = { winblend = 100 },
         },
         cmdline = {
           win_options = { winblend = 0 },
@@ -59,10 +61,19 @@ return {
         },
       },
       routes = {
-        -- {
-        --   view = 'popup',
-        --   filter = {},
-        -- },
+        {
+          view = 'mini',
+          filter = {
+            event = 'msg_show',
+            find = 'B written$',
+          },
+        },
+        {
+          view = 'cmdline',
+          filter = {
+            event = 'msg_showmode',
+          },
+        },
       },
     },
     dependencies = {

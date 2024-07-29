@@ -46,9 +46,9 @@ return {
             symbols = { modified = '*' },
           },
         },
-        lualine_x = {},
-        lualine_y = { 'location' },
-        lualine_z = { 'filetype' },
+        lualine_x = { 'location' },
+        lualine_y = { 'filetype' },
+        lualine_z = { function() return utils.get_path_tail(vim.loop.cwd()) end },
       },
       winbar = {
         lualine_a = {
@@ -60,11 +60,9 @@ return {
         lualine_b = {
           'diagnostics',
         },
-        -- lualine_c = { 'navic', color_correction = nil, navic_opts = nil },
-        -- lualine_c = { 'aerial' },
         lualine_x = {},
         lualine_y = {},
-        lualine_z = { function() return utils.get_path_tail(vim.loop.cwd()) end },
+        lualine_z = {},
       },
       inactive_winbar = {
         lualine_a = {},

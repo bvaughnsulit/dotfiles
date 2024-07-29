@@ -59,3 +59,4 @@ vim.opt.sidescrolloff = 8
 vim.opt.spelllang = { 'en' }
 vim.opt.splitkeep = 'screen'
 vim.opt.clipboard = ''
+vim.opt.shortmess:remove({ 'W' })
