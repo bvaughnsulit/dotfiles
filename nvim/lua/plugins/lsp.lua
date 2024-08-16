@@ -16,6 +16,7 @@ return {
             },
           }))
         end,
+        { nowait = true },
       }
       keys[#keys + 1] = {
         'gr',
@@ -27,6 +28,7 @@ return {
             },
           }))
         end,
+        { nowait = true },
       }
       keys[#keys + 1] = {
         'gt',
@@ -38,6 +40,7 @@ return {
             },
           }))
         end,
+        { nowait = true },
       }
     end,
     opts = {

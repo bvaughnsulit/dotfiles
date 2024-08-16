@@ -42,7 +42,7 @@ return {
             height = 1,
             width = 'auto',
           },
-          win_options = { winblend = 100 },
+          win_options = { winblend = 0 },
         },
         cmdline = {
           win_options = { winblend = 0 },
