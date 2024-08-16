@@ -67,6 +67,16 @@ return {
     config = true,
     keys = {
       {
+        "]'",
+        '<cmd>lua require("marks").next()<CR>',
+        { desc = 'Jump to next mark' },
+      },
+      {
+        "['",
+        '<cmd>lua require("marks").prev()<CR>',
+        { desc = 'Jump to previous mark' },
+      },
+      {
         '<leader>mm',
         mode = { 'n' },
         function()
