@@ -79,13 +79,16 @@ return {
             },
           },
         },
+        ts_ls = {
+          enabled = false,
+        },
       },
       setup = {
         eslint = function()
           require('lazyvim.util').lsp.on_attach(function(client)
             if client.name == 'eslint' then
               client.server_capabilities.documentFormattingProvider = true
-            elseif client.name == 'tsserver' then
+            elseif client.name == 'ts_ls' then
               client.server_capabilities.documentFormattingProvider = false
             end
           end)
