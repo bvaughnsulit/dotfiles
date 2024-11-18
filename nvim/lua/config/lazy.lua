@@ -35,3 +35,6 @@ require('lazy').setup({
     },
   },
 })
+require('lvim_config.config.keymaps')
+require('lvim_config.config.autocmds')
+require('lvim_config.config.options')

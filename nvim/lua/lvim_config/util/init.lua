@@ -10,7 +10,6 @@ local LazyUtil = require("lazy.core.util")
 ---@field plugin lazyvim.util.plugin
 ---@field extras lazyvim.util.extras
 ---@field inject lazyvim.util.inject
----@field news lazyvim.util.news
 ---@field json lazyvim.util.json
 ---@field lualine lazyvim.util.lualine
 ---@field mini lazyvim.util.mini
