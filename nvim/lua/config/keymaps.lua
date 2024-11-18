@@ -1,5 +1,5 @@
 local utils = require('config.utils')
-local lazyvim_utils = require('lazyvim.util')
+local lazyvim_utils = require('lvim_config.util')
 
 local map = function(mode, lhs, rhs, opts)
   opts = vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
