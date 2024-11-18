@@ -28,3 +28,5 @@ keybinding:
   commits:
     moveDownCommit: '<down>'
     moveUpCommit: '<up>'
+  files:
+    openMergeTool: t
