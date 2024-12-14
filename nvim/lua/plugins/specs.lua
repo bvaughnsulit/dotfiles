@@ -64,6 +64,11 @@ return {
   {
     'kevinhwang91/nvim-bqf',
     event = 'VeryLazy',
+    config = {
+      auto_preview = {
+        default = false,
+      },
+    },
   },
   {
     'abecodes/tabout.nvim',

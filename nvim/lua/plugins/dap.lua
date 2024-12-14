@@ -151,6 +151,21 @@ return {
       --   end,
       --   'Breakpoint Condition',
       -- )
+      require('dap').defaults.python.exception_breakpoints = { 'uncaught' }
+
+      utils.create_cmd_and_map(
+        'DapBreakOnUncaughtExceptions',
+        '<leader>de',
+        function() require('dap').defaults.python.exception_breakpoints = { 'uncaught' } end,
+        'Break on Uncaught Exceptions'
+      )
+      utils.create_cmd_and_map(
+        'DapBreakOnAllExceptions',
+        '<leader>dE',
+        function() require('dap').defaults.python.exception_breakpoints = { 'raised', 'uncaught' } end,
+        'Break on All Exceptions'
+      )
+
       utils.create_cmd_and_map(
         'DapToggleBreakpoint',
         '<leader>db',
