@@ -6,15 +6,11 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require('lvim_config.config').setup()
+
 require('lazy').setup({
   spec = {
-    -- add LazyVim and import its plugins
-    { 'LazyVim/LazyVim', import = 'lazyvim.plugins' },
-    -- import any extras modules here
-    -- { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.lang.json" },
-    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
-    -- import/override with your plugins
+    { import = 'lvim_config.plugins' },
     { import = 'plugins' },
   },
   defaults = {
@@ -39,3 +35,6 @@ require('lazy').setup({
     },
   },
 })
+require('lvim_config.config.keymaps')
+require('lvim_config.config.autocmds')
+require('lvim_config.config.options')

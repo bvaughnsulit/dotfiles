@@ -5,7 +5,7 @@ return {
   {
     'neovim/nvim-lspconfig',
     init = function()
-      local keys = require('lazyvim.plugins.lsp.keymaps').get()
+      local keys = require('lvim_config.plugins.lsp.keymaps').get()
       keys[#keys + 1] = {
         'gd',
         function()
@@ -85,7 +85,7 @@ return {
       },
       setup = {
         eslint = function()
-          require('lazyvim.util').lsp.on_attach(function(client)
+          require('lvim_config.util').lsp.on_attach(function(client)
             if client.name == 'eslint' then
               client.server_capabilities.documentFormattingProvider = true
             elseif client.name == 'ts_ls' then

@@ -1,5 +1,5 @@
 local utils = require('config.utils')
-local lazyvim_utils = require('lazyvim.util')
+local lazyvim_utils = require('lvim_config.util')
 
 local map = function(mode, lhs, rhs, opts)
   opts = vim.tbl_deep_extend('force', { remap = false, silent = true }, opts or {})
@@ -232,7 +232,7 @@ utils.create_cmd_and_map('G', '<leader>gg', function()
   local config_dir = '/Users/vaughn/dotfiles/lazygit/'
   local base_config = config_dir .. 'lazygit.yml'
   local light_config = base_config .. ',' .. config_dir .. 'light.yml'
-  lazyvim_utils.terminal.open({
+  Snacks.terminal.open({
     'lazygit',
     '-ucf',
     utils.is_system_dark_mode() and base_config or light_config,

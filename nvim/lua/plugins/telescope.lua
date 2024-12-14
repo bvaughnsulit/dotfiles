@@ -114,7 +114,9 @@ return {
           mappings = {
             i = {
               ['<esc>'] = actions.close,
-              ['<c-q>'] = actions.smart_add_to_qflist,
+              ['<c-q>'] = false,
+              ['<c-q>a'] = actions.smart_add_to_qflist,
+              ['<c-q>r'] = actions.smart_send_to_qflist,
               ['<m-up>'] = actions.cycle_history_prev,
               ['<m-down>'] = actions.cycle_history_next,
             },
