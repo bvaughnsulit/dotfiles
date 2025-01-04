@@ -4,9 +4,8 @@ local telescope_dropdown = require('telescope.themes').get_dropdown
 return {
   {
     'neovim/nvim-lspconfig',
-    init = function()
-      local keys = require('lvim_config.plugins.lsp.keymaps').get()
-      keys[#keys + 1] = {
+    keys = {
+      {
         'gd',
         function()
           telescope.lsp_definitions(telescope_dropdown({
@@ -17,8 +16,8 @@ return {
           }))
         end,
         { nowait = true },
-      }
-      keys[#keys + 1] = {
+      },
+      {
         'gr',
         function()
           telescope.lsp_references(telescope_dropdown({
@@ -29,8 +28,8 @@ return {
           }))
         end,
         { nowait = true },
-      }
-      keys[#keys + 1] = {
+      },
+      {
         'gt',
         function()
           telescope.lsp_type_definitions(telescope_dropdown({
@@ -41,8 +40,61 @@ return {
           }))
         end,
         { nowait = true },
-      }
-    end,
+      },
+      { 'K', function() return vim.lsp.buf.hover() end, desc = 'Hover' },
+      {
+        'gK',
+        function() return vim.lsp.buf.signature_help() end,
+        desc = 'Signature Help',
+      },
+      {
+        '<c-k>',
+        function() return vim.lsp.buf.signature_help() end,
+        mode = 'i',
+        desc = 'Signature Help',
+        -- has = 'signatureHelp',
+      },
+      {
+        '<leader>ca',
+        vim.lsp.buf.code_action,
+        desc = 'Code Action',
+        mode = { 'n', 'v' },
+        -- has = 'codeAction',
+      },
+      {
+        '<leader>cc',
+        vim.lsp.codelens.run,
+        desc = 'Run Codelens',
+        mode = { 'n', 'v' },
+        -- has = 'codeLens',
+      },
+      {
+        '<leader>cC',
+        vim.lsp.codelens.refresh,
+        desc = 'Refresh & Display Codelens',
+        mode = { 'n' },
+        -- has = 'codeLens',
+      },
+      {
+        '<leader>cR',
+        function() Snacks.rename.rename_file() end,
+        desc = 'Rename File',
+        mode = { 'n' },
+        -- has = { 'workspace/didRenameFiles', 'workspace/willRenameFiles' },
+      },
+      {
+        '<leader>cr',
+        vim.lsp.buf.rename,
+        desc = 'Rename',
+        -- has = 'rename',
+      },
+      {
+        '<leader>cA',
+        LazyVim.lsp.action.source,
+        desc = 'Source Action',
+        -- has = 'codeAction',
+      },
+    },
     opts = {
       inlay_hints = { enabled = false },
       diagnostics = {
@@ -89,13 +141,16 @@ return {
       },
       setup = {
         eslint = function()
-          require('lvim_config.util').lsp.on_attach(function(client)
-            if client.name == 'eslint' then
-              client.server_capabilities.documentFormattingProvider = true
-            elseif client.name == 'ts_ls' then
-              client.server_capabilities.documentFormattingProvider = false
-            end
-          end)
+          vim.api.nvim_create_autocmd('LspAttach', {
+            callback = function(args)
+              local client = vim.lsp.get_client_by_id(args.data.client_id)
+              if client and client.name == 'eslint' then
+                client.server_capabilities.documentFormattingProvider = true
+              elseif client and client.name == 'ts_ls' then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end,
+          })
         end,
       },
     },
