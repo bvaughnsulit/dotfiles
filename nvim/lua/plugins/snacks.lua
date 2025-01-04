@@ -1,3 +1,5 @@
+local utils = require('config.utils')
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -5,11 +7,22 @@ return {
   opts = function()
     ---@type snacks.Config
     return {
+      lazygit = {
+        enabled = true,
+        config = {
+          git = {
+            paging = {
+              pager = 'delta --paging=never '
+                .. (utils.is_system_dark_mode() and '--dark' or '--light'),
+            },
+          },
+        },
+      },
       notifier = { enabled = true },
       quickfile = { enabled = true },
       bigfile = { enabled = true },
       words = { enabled = true },
-      toggle = { map = LazyVim.safe_keymap_set },
+      -- toggle = { map = LazyVim.safe_keymap_set },
       statuscolumn = { enabled = false }, -- we set this in options.lua
       terminal = {
         win = {
@@ -25,4 +38,7 @@ return {
       },
     }
   end,
+  keys = {
+    { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
+  },
 }
