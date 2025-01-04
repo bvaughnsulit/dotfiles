@@ -1,0 +1,11 @@
+window-decoration = false
+auto-update = check
+font-family = "JetBrainsMonoNL NFM"
+font-size = 15.5
+window-inherit-font-size = false
+mouse-hide-while-typing = true
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+#font-thicken = true
+cursor-invert-fg-bg = true
