@@ -77,7 +77,7 @@ vim.opt.spelllang = { 'en' }
 vim.opt.splitkeep = 'screen'
 vim.opt.clipboard = ''
 vim.opt.relativenumber = true
-vim.opt.shortmess:append({ I = true, c = true, C = true })
+vim.opt.shortmess:append({ c = true, C = true })
 vim.opt.showmode = false
 vim.opt.undolevels = 10000
 vim.opt.winminwidth = 5

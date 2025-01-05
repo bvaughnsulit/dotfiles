@@ -1,13 +1,4 @@
 return {
-  {
-    "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<BS>", desc = "Decrement Selection", mode = "x" },
-        { "<c-space>", desc = "Increment Selection", mode = { "x", "n" } },
-      },
-    },
-  },
 
   -- Treesitter is a new parser generator tool that we can
   -- use in Neovim to power faster and more accurate
@@ -124,12 +115,5 @@ return {
         end
       end
     end,
-  },
-
-  -- Automatically add closing tags for HTML and JSX
-  {
-    "windwp/nvim-ts-autotag",
-    event = "LazyFile",
-    opts = {},
   },
 }
