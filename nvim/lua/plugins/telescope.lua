@@ -103,6 +103,7 @@ return {
           file_ignore_patterns = {
             'package%-lock%.json',
             'static/',
+            'public/',
             -- '%node_modules%',
             '%.git/',
             '%.png$',

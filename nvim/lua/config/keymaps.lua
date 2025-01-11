@@ -194,7 +194,7 @@ vim.keymap.set('n', '<C-\\>', function()
         \ 'resize-pane -Z'
         \ "if-shell -F
           \ '\#{?pane_at_right,1,0}'
-          \ 'split-window -h -l 25\% ; select-pane -R'
+          \ 'split-window -h -l 25\% ; split-window -v -l 80\%; select-pane -R'
           \ '' "
         \ ';'
       \ select-pane -R
