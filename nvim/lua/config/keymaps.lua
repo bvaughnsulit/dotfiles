@@ -16,6 +16,8 @@ map({ 'n', 'v' }, '<leader>bd', '<cmd>bdelete<cr>', {})
 -- \V - very nomagic
 map('n', '<leader>/y', '/\\V<C-r>+<cr>', { desc = 'search with contents of + register' })
 
+map('n', '<leader>:', ':lua print(vim.inspect())<left><left>')
+
 map('n', '<leader>ra', ':%s/\\V<C-r>///gI<left><left><left>')
 map(
   'v',
@@ -281,9 +283,6 @@ map('n', '<leader>K', '<cmd>norm! K<cr>', { desc = 'Keywordprg' })
 -- commenting
 map('n', 'gco', 'o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>', { desc = 'Add Comment Below' })
 map('n', 'gcO', 'O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>', { desc = 'Add Comment Above' })
-
--- lazy
-map('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
 
 -- formatting
 map(
