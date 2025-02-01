@@ -62,20 +62,6 @@ return {
         -- has = 'codeAction',
       },
       {
-        '<leader>cc',
-        vim.lsp.codelens.run,
-        desc = 'Run Codelens',
-        mode = { 'n', 'v' },
-        -- has = 'codeLens',
-      },
-      {
-        '<leader>cC',
-        vim.lsp.codelens.refresh,
-        desc = 'Refresh & Display Codelens',
-        mode = { 'n' },
-        -- has = 'codeLens',
-      },
-      {
         '<leader>cR',
         function() Snacks.rename.rename_file() end,
         desc = 'Rename File',
