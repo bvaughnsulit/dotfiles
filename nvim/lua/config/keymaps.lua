@@ -109,6 +109,9 @@ map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 map('n', '<leader>QQ', '<cmd>qa!<cr>', { desc = 'Force Quit all' })
 map('n', '<leader>qw', '<cmd>wqa<cr>', { desc = 'Quit and save all' })
 
+map('n', '<leader>co', '<cmd>copen<cr>', { desc = 'Open Quickfix' })
+map('n', '<leader>cc', '<cmd>cclose<cr>', { desc = 'Close Quickfix' })
+
 map('n', '<leader>xx', function()
   vim.cmd('w')
   vim.cmd('so %')
