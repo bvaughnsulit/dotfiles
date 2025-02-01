@@ -1,88 +1,5 @@
 return {
   {
-    'hrsh7th/nvim-cmp',
-    event = 'VeryLazy',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'saadparwaiz1/cmp_luasnip',
-    },
-    ---@diagnostic disable missing-fields
-    config = function()
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-      cmp.setup({
-        snippet = {
-          expand = function(args) luasnip.lsp_expand(args.body) end,
-        },
-        completion = {
-          -- completeopt = 'menu,menuone,noinsert',
-          -- keyword_length = 2,
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-n>'] = cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Insert,
-          }),
-          ['<C-p>'] = cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Insert,
-          }),
-          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-d>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'nvim_lua' },
-        }),
-        formatting = {
-          format = function(entry, vim_item)
-            vim_item.menu = ({
-              buffer = '[Buf]',
-              nvim_lsp = '[LSP]',
-              luasnip = '[Snip]',
-              nvim_lua = '[Lua]',
-            })[entry.source.name]
-            return vim_item
-          end,
-        },
-        experimental = {
-          ghost_text = false,
-        },
-      })
-
-      -- Use cmdline & path source for ':'
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-        }, {
-          { name = 'cmdline' },
-        }),
-      })
-
-      -- Use buffer source for `/`
-      cmp.setup.cmdline('/', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = 'buffer' },
-        },
-      })
-    end,
-  },
-  {
     'L3MON4D3/LuaSnip',
     dependencies = {
       'rafamadriz/friendly-snippets',
@@ -135,5 +52,47 @@ return {
         end
       end)
     end,
+  },
+  {
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    enabled = true,
+    version = 'v0.10.0',
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        preset = 'enter',
+        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono',
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+      completion = {
+        menu = { border = 'single' },
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          },
+        },
+        documentation = {
+          window = { border = 'single' },
+          auto_show = true,
+          auto_show_delay_ms = 300,
+        },
+      },
+      signature = {
+        window = { border = 'single' },
+        enabled = true,
+      },
+    },
+    opts_extend = { 'sources.default' },
   },
 }
