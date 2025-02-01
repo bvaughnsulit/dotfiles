@@ -1,6 +1,20 @@
 local utils = require('config.utils')
 local is_system_dark_mode = utils.is_system_dark_mode()
 
+local default_light_theme = 'github_light_colorblind'
+local default_dark_theme = 'tokyonight-moon'
+
+utils.create_cmd_and_map(
+  'DarkMode',
+  nil,
+  function() vim.cmd('colorscheme ' .. default_dark_theme) end
+)
+utils.create_cmd_and_map(
+  'LightMode',
+  nil,
+  function() vim.cmd('colorscheme ' .. default_light_theme) end
+)
+
 return {
   {
     'projekt0n/github-nvim-theme',
@@ -9,7 +23,9 @@ return {
     priority = 1000,
     config = function()
       require('github-theme').setup({})
-      if not is_system_dark_mode then vim.cmd('colorscheme github_light_colorblind') end
+      if not is_system_dark_mode and default_light_theme == 'github_light_colorblind' then
+        vim.cmd('colorscheme github_light_colorblind')
+      end
       vim.cmd([[hi! default link Delimiter Special]])
     end,
   },
@@ -20,11 +36,12 @@ return {
     config = function()
       require('tokyonight').setup({
         styles = {
-          comments = { italic = false },
           keywords = { italic = false },
         },
       })
-      if is_system_dark_mode then vim.cmd('colorscheme tokyonight') end
+      if is_system_dark_mode and default_dark_theme == 'tokyonight-moon' then
+        vim.cmd('colorscheme tokyonight-moon')
+      end
     end,
   },
   {
