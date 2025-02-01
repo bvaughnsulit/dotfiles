@@ -27,39 +27,20 @@ return {
       sections = {
         lualine_a = { 'mode' },
         lualine_b = {},
-        lualine_c = {
-          {
-            'filename',
-            path = 1,
-            symbols = { modified = '*' },
-          },
-        },
+        lualine_c = { 'branch' },
         lualine_x = { 'location' },
         lualine_y = { 'filetype' },
-        lualine_z = {
-          {
-            'branch',
-            fmt = function(str, _)
-              local maxLen = 24
-              if string.len(str) > maxLen then
-                return string.sub(str, 1, maxLen) .. '...'
-              else
-                return str
-              end
-            end,
-          },
-        },
+        lualine_z = {},
       },
       winbar = {
         lualine_a = { function() return utils.get_path_tail(vim.loop.cwd()) end },
-        lualine_b = {
+        lualine_b = { 'diagnostics' },
+        lualine_c = {
           {
             'filename',
             symbols = { modified = '*' },
+            path = 1,
           },
-        },
-        lualine_c = {
-          'diagnostics',
         },
         lualine_x = {},
         lualine_y = {},
