@@ -1,59 +1,5 @@
 return {
   {
-    'L3MON4D3/LuaSnip',
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-      config = function()
-        local luasnip = require('luasnip')
-        require('luasnip.loaders.from_vscode').lazy_load()
-        luasnip.filetype_extend('typescript', { 'javascript', 'tsdoc' })
-        luasnip.filetype_extend('typescriptreact', { 'javascript', 'tsdoc' })
-
-        vim.keymap.set('i', '<S-Tab>', function()
-          if luasnip.jumpable(-1) then luasnip.jump(-1) end
-        end)
-      end,
-    },
-  },
-  {
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup({
-        panel = { enabled = false },
-        enabled = true,
-        suggestion = {
-          auto_trigger = true,
-          debounce = 10,
-          keymap = {
-            accept = false,
-            accept_word = false,
-            accept_line = false,
-            next = '<M-]>',
-            prev = '<M-[>',
-            dismiss = '<C-]>',
-          },
-        },
-        filetypes = {},
-      })
-      vim.keymap.set('i', '<Tab>', function()
-        local luasnip = require('luasnip')
-        if require('copilot.suggestion').is_visible() then
-          require('copilot.suggestion').accept()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        else
-          vim.api.nvim_feedkeys(
-            vim.api.nvim_replace_termcodes('<Tab>', true, false, true),
-            'n',
-            false
-          )
-        end
-      end)
-    end,
-  },
-  {
     'saghen/blink.cmp',
     dependencies = 'rafamadriz/friendly-snippets',
     enabled = true,
@@ -94,5 +40,40 @@ return {
       },
     },
     opts_extend = { 'sources.default' },
+  },
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup({
+        panel = { enabled = false },
+        enabled = true,
+        suggestion = {
+          auto_trigger = true,
+          debounce = 10,
+          keymap = {
+            accept = false,
+            accept_word = false,
+            accept_line = false,
+            next = '<M-]>',
+            prev = '<M-[>',
+            dismiss = '<C-]>',
+          },
+        },
+        filetypes = {},
+      })
+      vim.keymap.set('i', '<Tab>', function()
+        if require('copilot.suggestion').is_visible() then
+          require('copilot.suggestion').accept()
+        else
+          vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes('<Tab>', true, false, true),
+            'n',
+            false
+          )
+        end
+      end)
+    end,
   },
 }
