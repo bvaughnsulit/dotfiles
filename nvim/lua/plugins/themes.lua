@@ -14,6 +14,13 @@ utils.create_cmd_and_map(
   nil,
   function() vim.cmd('colorscheme ' .. default_light_theme) end
 )
+utils.create_cmd_and_map('ToggleLightDarkMode', nil, function()
+  if vim.g.colors_name == default_light_theme then
+    vim.cmd('colorscheme ' .. default_dark_theme)
+  else
+    vim.cmd('colorscheme ' .. default_light_theme)
+  end
+end)
 
 return {
   {
