@@ -4,6 +4,9 @@ return {
   'folke/snacks.nvim',
   priority = 1000,
   lazy = false,
+  init = function()
+    _G.logger = function(...) Snacks.debug.inspect(...) end
+  end,
   opts = function()
     ---@type snacks.Config
     return {
