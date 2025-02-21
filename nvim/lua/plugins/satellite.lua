@@ -1,7 +1,7 @@
 return {
   {
     'lewis6991/satellite.nvim',
-    enabled = true,
+    enabled = false,
     event = 'VeryLazy',
     dev = false,
     config = function()

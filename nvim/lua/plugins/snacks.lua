@@ -42,6 +42,6 @@ return {
     }
   end,
   keys = {
-    { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
+    { '<leader>gg', function() Snacks.lazygit.open() end, desc = 'Lazygit' },
   },
 }
