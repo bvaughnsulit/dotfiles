@@ -63,6 +63,18 @@ M.get_default_branch_name = function()
 end
 
 ---@return string | nil
+M.get_merge_base_hash = function()
+  local result = vim
+    .system({ 'git', 'merge-base', M.get_default_branch_name(), 'HEAD' }, { text = true })
+    :wait()
+  if result.code ~= 0 then
+    vim.notify('Error getting merge base hash')
+    return
+  end
+  return result.stdout:sub(1, -2)
+end
+
+---@return string | nil
 M.get_gh_repo_url = function()
   local git_config = git_lazy.get_config('.')
   local repo_url = git_config['remote.origin.url']

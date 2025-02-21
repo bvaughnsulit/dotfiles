@@ -143,12 +143,19 @@ return {
       'Toggle Neotree auto close'
     )
 
-    local branch_name = utils.get_default_branch_name()
+    local toggle_git_explorer = function()
+      require('neo-tree.command').execute({
+        source = 'git_status',
+        action = 'focus',
+        git_base = utils.get_merge_base_hash(),
+        toggle = true,
+      })
+    end
 
     utils.create_cmd_and_map(
       'GitDiffExplore',
       '<leader>eg',
-      function() vim.cmd('Neotree toggle git_base=' .. branch_name .. ' git_status') end,
+      toggle_git_explorer,
       'Explore Git Diff from Main'
     )
 

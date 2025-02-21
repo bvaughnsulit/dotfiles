@@ -12,7 +12,7 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '│' },
       },
-      base = utils.get_default_branch_name(),
+      base = utils.get_merge_base_hash(),
       signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
       numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
       linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
@@ -98,6 +98,13 @@ return {
 
         -- Text object
         -- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+      end,
+    })
+
+    vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+      group = utils.augroup('gitsigns_refresh'),
+      callback = function()
+        if vim.o.buftype ~= 'nofile' then require('gitsigns').refresh() end
       end,
     })
   end,
