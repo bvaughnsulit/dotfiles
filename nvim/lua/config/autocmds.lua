@@ -1,4 +1,4 @@
-local function augroup(name) return vim.api.nvim_create_augroup('user_' .. name, { clear = true }) end
+local augroup = require('config.utils').augroup
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.highlight.on_yank({ timeout = 500, higroup = 'visual' }) end,

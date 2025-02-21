@@ -121,4 +121,6 @@ M.get_path_tail = function(path)
   return path
 end
 
+M.augroup = function(name) return vim.api.nvim_create_augroup('user_' .. name, { clear = true }) end
+
 return M
