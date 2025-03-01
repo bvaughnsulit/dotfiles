@@ -117,109 +117,77 @@ return {
         end,
       })
 
-      vim.keymap.set(
-        'n',
-        '<C-p>',
-        function()
-          require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({
-            hidden = true,
+      local find_files = function()
+        require('telescope.builtin').find_files(require('telescope.themes').get_dropdown({
+          hidden = true,
+          layout_config = {
+            width = 0.9,
+          },
+        }))
+      end
+
+      local buffers = function()
+        require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
+          sort_mru = true,
+          bufnr_width = 3,
+          ignore_current_buffer = true,
+          layout_config = {
+            width = 0.9,
+            anchor = 'N',
+          },
+          path_display = { 'filename_first' },
+        }))
+      end
+
+      local lsp_definitions = function()
+        builtin.lsp_definitions(telescope_dropdown({
+          layout_config = {
+            anchor = 'N',
+            width = 0.9,
+          },
+        }))
+      end
+
+      local lsp_references = function()
+        builtin.lsp_references(telescope_dropdown({
+          layout_config = {
+            anchor = 'N',
+            width = 0.9,
+          },
+        }))
+      end
+
+      local lsp_type_definitions = function()
+        builtin.lsp_type_definitions(telescope_dropdown({
+          layout_config = {
+            anchor = 'N',
+            width = 0.9,
+          },
+        }))
+      end
+
+      local buffer_fuzzy = function()
+        require('telescope.builtin').current_buffer_fuzzy_find(
+          require('telescope.themes').get_dropdown({
             layout_config = {
               width = 0.9,
             },
-          }))
-        end,
-        { desc = 'Find Files' }
-      )
+          })
+        )
+      end
 
-      vim.keymap.set(
-        'n',
-        '<C-b>',
-        function()
-          require('telescope.builtin').buffers(require('telescope.themes').get_dropdown({
-            sort_mru = true,
-            bufnr_width = 3,
-            ignore_current_buffer = true,
-            layout_config = {
-              width = 0.9,
-              anchor = 'N',
-            },
-            path_display = { 'filename_first' },
-          }))
-        end,
-        { desc = 'Buffers' }
-      )
-
-      vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {
-        desc = 'Live Grep',
+      pickers.register_picker('telescope', {
+        find_files = find_files,
+        buffers = buffers,
+        live_grep = builtin.live_grep,
+        lsp_definitions = lsp_definitions,
+        lsp_references = lsp_references,
+        lsp_type_definitions = lsp_type_definitions,
+        buffer_fuzzy = buffer_fuzzy,
+        keymaps = builtin.keymaps,
+        help_tags = builtin.help_tags,
+        commands = builtin.commands,
       })
-
-      vim.keymap.set(
-        'n',
-        'gd',
-        function()
-          builtin.lsp_definitions(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        {
-          desc = 'Goto Definition',
-          nowait = true,
-        }
-      )
-      vim.keymap.set(
-        'n',
-        'gr',
-        function()
-          builtin.lsp_references(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        {
-          desc = 'Goto References',
-          nowait = true,
-        }
-      )
-
-      vim.keymap.set(
-        'n',
-        'gt',
-        function()
-          builtin.lsp_type_definitions(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        {
-          desc = 'Goto Type Definition',
-          nowait = true,
-        }
-      )
-
-      vim.keymap.set('n', '<leader>km', '<cmd>Telescope keymaps<cr>')
-      vim.keymap.set('n', '<leader>?', '<cmd>Telescope help_tags<cr>')
-      vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').commands)
-      vim.keymap.set(
-        'n',
-        '<leader>/f',
-        function()
-          require('telescope.builtin').current_buffer_fuzzy_find(
-            require('telescope.themes').get_dropdown({
-              layout_config = {
-                width = 0.9,
-              },
-            })
-          )
-        end,
-        { desc = '[/] Fuzzily search in current buffer]' }
-      )
 
       -- other maps
       vim.keymap.set('n', '<leader><up>', function() builtin.resume() end, {
