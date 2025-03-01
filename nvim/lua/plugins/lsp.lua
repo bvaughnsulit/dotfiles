@@ -1,46 +1,7 @@
-local telescope = require('telescope.builtin')
-local telescope_dropdown = require('telescope.themes').get_dropdown
-
 return {
   {
     'neovim/nvim-lspconfig',
     keys = {
-      {
-        'gd',
-        function()
-          telescope.lsp_definitions(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        { nowait = true },
-      },
-      {
-        'gr',
-        function()
-          telescope.lsp_references(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        { nowait = true },
-      },
-      {
-        'gt',
-        function()
-          telescope.lsp_type_definitions(telescope_dropdown({
-            layout_config = {
-              anchor = 'N',
-              width = 0.9,
-            },
-          }))
-        end,
-        { nowait = true },
-      },
       { 'K', function() return vim.lsp.buf.hover() end, desc = 'Hover' },
       {
         'gK',

@@ -1,35 +1,9 @@
 local utils = require('config.utils')
-
-local custom_path_display = function(_, path)
-  local maxWidth = 160
-  local maxTailLen = maxWidth / 2
-  local spaceLen = 4
-
-  local tail = require('telescope.utils').path_tail(path)
-  local tailLen = string.len(tail)
-  local relative_path = string.sub(path, 1, -tailLen - 1)
-  if tailLen > maxTailLen then
-    tail = string.sub(tail, 1, maxTailLen - 3) .. '...'
-    tailLen = string.len(tail)
-  end
-  local spacing = string.rep(' ', (maxTailLen + spaceLen) - tailLen)
-
-  local pathLen = string.len(relative_path)
-  local maxPathLen = maxWidth - maxTailLen - spaceLen
-  if pathLen == 0 then relative_path = '/' end
-  if pathLen > maxPathLen then
-    local minStartIndex = pathLen - maxPathLen + 3
-    local startIndex = string.find(relative_path, '/', minStartIndex) or minStartIndex
-    if startIndex >= pathLen then startIndex = minStartIndex end
-    relative_path = '...' .. string.sub(relative_path, startIndex)
-  end
-  return tail .. spacing .. relative_path
-end
+local pickers = require('config.pickers')
 
 return {
   {
     'nvim-telescope/telescope.nvim',
-    -- branch = '0.1.x',
     dependencies = {
       'debugloop/telescope-undo.nvim',
       'nvim-lua/plenary.nvim',
@@ -49,6 +23,7 @@ return {
       telescope.load_extension('undo')
       telescope.load_extension('live_grep_args')
       telescope.load_extension('aerial')
+      local telescope_dropdown = require('telescope.themes').get_dropdown
 
       telescope.setup({
         pickers = {
@@ -142,25 +117,6 @@ return {
         end,
       })
 
-      local search_commits = function()
-        builtin.git_commits({
-          previewer = previewers.git_commit_diff_as_was.new({}),
-        })
-      end
-
-      vim.api.nvim_create_user_command('TelescopeSearchCommits', search_commits, {})
-
-      vim.keymap.set(
-        'n',
-        '<leader>vv',
-        function()
-          require('telescope.builtin').registers({
-            initial_mode = 'normal',
-          })
-        end,
-        {}
-      )
-
       vim.keymap.set(
         'n',
         '<C-p>',
@@ -171,64 +127,8 @@ return {
               width = 0.9,
             },
           }))
-        end
-      )
-
-      vim.keymap.set('n', '<leader><up>', function() builtin.resume() end, {})
-
-      vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {})
-
-      vim.keymap.set(
-        'n',
-        '<leader>sbt',
-        function()
-          builtin.live_grep({
-            glob_pattern = '**/tests/**/*.py',
-          })
         end,
-        {}
-      )
-
-      vim.keymap.set(
-        'n',
-        '<leader>jj',
-        function()
-          require('telescope.builtin').jumplist(require('telescope.themes').get_dropdown({
-            show_line = false,
-            layout_config = {
-              width = 0.8,
-            },
-          }))
-        end
-      )
-
-      local branch = utils.get_default_branch_name()
-      utils.create_cmd_and_map(
-        'SearchGitDiffMain',
-        '<leader>sg',
-        function()
-          require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({
-            git_command = { 'git', 'diff', branch, '--name-only' },
-            layout_config = {
-              width = 0.8,
-            },
-          }))
-        end
-      )
-
-      utils.create_cmd_and_map(
-        'ViewTextObjectMappings',
-        nil,
-        function()
-          require('telescope.builtin').keymaps(require('telescope.themes').get_dropdown({
-            modes = { 'o' },
-            layout_config = {
-              width = 0.8,
-              height = 0.9,
-            },
-          }))
-        end,
-        'View Operator Pending Maps'
+        { desc = 'Find Files' }
       )
 
       vim.keymap.set(
@@ -245,9 +145,67 @@ return {
             },
             path_display = { 'filename_first' },
           }))
-        end
+        end,
+        { desc = 'Buffers' }
       )
 
+      vim.keymap.set('n', '<C-f>', function() builtin.live_grep({}) end, {
+        desc = 'Live Grep',
+      })
+
+      vim.keymap.set(
+        'n',
+        'gd',
+        function()
+          builtin.lsp_definitions(telescope_dropdown({
+            layout_config = {
+              anchor = 'N',
+              width = 0.9,
+            },
+          }))
+        end,
+        {
+          desc = 'Goto Definition',
+          nowait = true,
+        }
+      )
+      vim.keymap.set(
+        'n',
+        'gr',
+        function()
+          builtin.lsp_references(telescope_dropdown({
+            layout_config = {
+              anchor = 'N',
+              width = 0.9,
+            },
+          }))
+        end,
+        {
+          desc = 'Goto References',
+          nowait = true,
+        }
+      )
+
+      vim.keymap.set(
+        'n',
+        'gt',
+        function()
+          builtin.lsp_type_definitions(telescope_dropdown({
+            layout_config = {
+              anchor = 'N',
+              width = 0.9,
+            },
+          }))
+        end,
+        {
+          desc = 'Goto Type Definition',
+          nowait = true,
+        }
+      )
+
+      vim.keymap.set('n', '<leader>km', '<cmd>Telescope keymaps<cr>')
+      vim.keymap.set('n', '<leader>?', '<cmd>Telescope help_tags<cr>')
+      vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').commands)
       vim.keymap.set(
         'n',
         '<leader>/f',
@@ -263,9 +221,83 @@ return {
         { desc = '[/] Fuzzily search in current buffer]' }
       )
 
-      vim.keymap.set('n', '<leader>km', '<cmd>Telescope keymaps<cr>')
+      -- other maps
+      vim.keymap.set('n', '<leader><up>', function() builtin.resume() end, {
+        desc = 'Resume Last',
+      })
 
-      vim.keymap.set('n', '<leader>?', '<cmd>Telescope help_tags<cr>')
+      vim.keymap.set(
+        'n',
+        '<leader>sbt',
+        function()
+          builtin.live_grep({
+            glob_pattern = '**/tests/**/*.py',
+          })
+        end,
+        { desc = 'Search Python Tests' }
+      )
+
+      vim.keymap.set(
+        'n',
+        '<leader>jj',
+        function()
+          require('telescope.builtin').jumplist(require('telescope.themes').get_dropdown({
+            show_line = false,
+            layout_config = {
+              width = 0.8,
+            },
+          }))
+        end,
+        { desc = 'Jump List' }
+      )
+
+      local search_commits = function()
+        builtin.git_commits({
+          previewer = previewers.git_commit_diff_as_was.new({}),
+        })
+      end
+      vim.api.nvim_create_user_command('TelescopeSearchCommits', search_commits, {})
+
+      vim.keymap.set(
+        'n',
+        '<leader>vv',
+        function()
+          require('telescope.builtin').registers({
+            initial_mode = 'normal',
+          })
+        end,
+        { desc = 'View Registers' }
+      )
+
+      local branch = utils.get_default_branch_name()
+      utils.create_cmd_and_map(
+        'SearchGitDiffMain',
+        '<leader>sg',
+        function()
+          require('telescope.builtin').git_files(require('telescope.themes').get_dropdown({
+            git_command = { 'git', 'diff', branch, '--name-only' },
+            layout_config = {
+              width = 0.8,
+            },
+          }))
+        end,
+        'Search Git Status Files'
+      )
+
+      utils.create_cmd_and_map(
+        'ViewTextObjectMappings',
+        nil,
+        function()
+          require('telescope.builtin').keymaps(require('telescope.themes').get_dropdown({
+            modes = { 'o' },
+            layout_config = {
+              width = 0.8,
+              height = 0.9,
+            },
+          }))
+        end,
+        'View Operator Pending Maps'
+      )
 
       vim.keymap.set(
         'n',
@@ -305,7 +337,6 @@ return {
         'Telescope Live Grep Args'
       )
 
-      vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').commands)
       vim.api.nvim_create_user_command('T', 'Telescope', {})
     end,
   },
