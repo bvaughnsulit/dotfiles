@@ -1,4 +1,5 @@
 local utils = require('config.utils')
+local pickers = require('config.pickers')
 
 return {
   'folke/snacks.nvim',
@@ -39,9 +40,33 @@ return {
           -- },
         },
       },
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+            },
+          },
+        },
+      },
     }
   end,
   keys = {
     { '<leader>gg', function() Snacks.lazygit.open() end, desc = 'Lazygit' },
   },
+  config = function(_, opts)
+    require('snacks').setup(opts)
+    pickers.register_picker('snacks', {
+      find_files = function() Snacks.picker.files() end,
+      buffers = function() Snacks.picker.buffers() end,
+      live_grep = function() Snacks.picker.grep() end,
+      lsp_definitions = function() Snacks.picker.lsp_definitions() end,
+      lsp_references = function() Snacks.picker.lsp_references() end,
+      lsp_type_definitions = function() Snacks.picker.lsp_type_definitions() end,
+      buffer_fuzzy = function() Snacks.picker.lines() end,
+      keymaps = function() Snacks.picker.keymaps() end,
+      help_tags = function() Snacks.picker.help() end,
+      commands = function() Snacks.picker.commands() end,
+    })
+  end,
 }
