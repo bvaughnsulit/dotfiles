@@ -15,7 +15,6 @@ M.register_picker = function(picker_name, functions)
     for fn_name, fn in pairs(functions) do
         if type(fn) ~= "function" or not M.maps[fn_name] then
             vim.notify("Picker " .. picker_name .. " contains invalid function: " .. fn_name)
-            return
         end
     end
 
@@ -50,6 +49,7 @@ M.maps = {
     help_tags = { "<leader>?", "Help Tags" },
     commands = { "<leader><leader>", "Commands" },
     buffer_fuzzy = { "<leader>/f", "Current Buffer Fuzzy Search" },
+    pickers = { "<leader>pp", "Pickers" },
 }
 
 local call = function(fn_name, ...)

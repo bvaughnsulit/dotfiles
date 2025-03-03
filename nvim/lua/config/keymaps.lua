@@ -31,7 +31,7 @@ map({ "n", "v" }, "y", '"+y', {})
 -- delete, change, put to black hole register
 map({ "n", "v" }, "<leader>xd", '"_d', {})
 map({ "n", "v" }, "<leader>xc", '"_c', {})
-map({ "x" }, "<leader>p", "p", { desc = "hello" })
+-- map({ "x" }, "<leader>p", "p", { desc = "hello" })
 map({ "x" }, "p", '"_dP', {})
 
 --[[ WINDOWS ]]

@@ -40,10 +40,39 @@ return {
                 },
             },
             picker = {
+                layout = {
+                    layout = {
+                        backdrop = false,
+                        row = 1,
+                        width = 0.95,
+                        min_width = 80,
+                        height = 0.95,
+                        border = "none",
+                        box = "vertical",
+                        {
+                            box = "vertical",
+                            border = "rounded",
+                            title = "{title} {live} {flags}",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                        },
+                        { win = "preview", title = "{preview}", height = 0.7, border = "rounded" },
+                    },
+                },
+                previewers = {
+                    diff = {
+                        builtin = false,
+                        cmd = { "delta" },
+                    },
+                },
                 win = {
                     input = {
                         keys = {
                             ["<Esc>"] = { "close", mode = { "n", "i" } },
+                            ["<c-c>"] = { "<Esc>", mode = { "i" } },
+                            ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
+                            ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
                         },
                     },
                 },
@@ -55,6 +84,11 @@ return {
             "<leader>gg",
             function() Snacks.lazygit.open() end,
             desc = "Lazygit",
+        },
+        {
+            "<leader>ps",
+            function() Snacks.picker.lazy() end,
+            desc = "Plugin specs",
         },
     },
     config = function(_, opts)
@@ -70,6 +104,7 @@ return {
             keymaps = function() Snacks.picker.keymaps() end,
             help_tags = function() Snacks.picker.help() end,
             commands = function() Snacks.picker.commands() end,
+            pickers = function() Snacks.picker.pickers() end,
         })
     end,
 }
