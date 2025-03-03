@@ -54,11 +54,18 @@ end
 ---@alias branch 'main' | 'master'
 ---@return branch | nil
 M.get_default_branch_name = function()
-    local git_config = git_lazy.get_config(".")
+    local root = Snacks.git.get_root()
+    if not root then
+        vim.notify("Error getting default branch name: no git root found")
+        return
+    end
+    local git_config = git_lazy.get_config(root)
     if git_config["branch.main.remote"] then
         return "main"
     elseif git_config["branch.master.remote"] then
         return "master"
+    else
+        logger("Error getting default branch name from config " .. vim.inspect(git_config))
     end
 end
 
@@ -74,7 +81,12 @@ end
 
 ---@return string | nil
 M.get_gh_repo_url = function()
-    local git_config = git_lazy.get_config(".")
+    local root = Snacks.git.get_root()
+    if not root then
+        vim.notify("Error getting default branch name: no git root found")
+        return
+    end
+    local git_config = git_lazy.get_config(root)
     local repo_url = git_config["remote.origin.url"]
     if repo_url then return repo_url:sub(1, -5) end
 end
