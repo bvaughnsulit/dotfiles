@@ -60,10 +60,19 @@ return {
                         { win = "preview", title = "{preview}", height = 0.7, border = "rounded" },
                     },
                 },
+                formatters = {
+                    file = {
+                        filename_first = true,
+                        truncate = 100,
+                    },
+                },
                 previewers = {
                     diff = {
                         builtin = false,
                         cmd = { "delta" },
+                    },
+                    git = {
+                        builtin = false,
                     },
                 },
                 win = {
@@ -73,6 +82,7 @@ return {
                             ["<c-c>"] = { "<Esc>", mode = { "i" } },
                             ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
+                            ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
                         },
                     },
                 },
@@ -90,12 +100,22 @@ return {
             function() Snacks.picker.lazy() end,
             desc = "Plugin specs",
         },
+        {
+            "<leader>pg",
+            function() Snacks.picker.git_status() end,
+            desc = "Pick Git status",
+        },
+        {
+            "<leader>pb",
+            function() Snacks.picker.git_branches() end,
+            desc = "Pick Git branch",
+        },
     },
     config = function(_, opts)
         require("snacks").setup(opts)
         pickers.register_picker("snacks", {
             find_files = function() Snacks.picker.files() end,
-            buffers = function() Snacks.picker.buffers() end,
+            buffers = function() Snacks.picker.buffers({ current = false }) end,
             live_grep = function() Snacks.picker.grep() end,
             lsp_definitions = function() Snacks.picker.lsp_definitions() end,
             lsp_references = function() Snacks.picker.lsp_references() end,
@@ -104,6 +124,7 @@ return {
             keymaps = function() Snacks.picker.keymaps() end,
             help_tags = function() Snacks.picker.help() end,
             commands = function() Snacks.picker.commands() end,
+
             pickers = function() Snacks.picker.pickers() end,
         })
     end,
