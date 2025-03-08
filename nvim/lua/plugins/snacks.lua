@@ -123,8 +123,14 @@ return {
             buffer_fuzzy = function() Snacks.picker.lines() end,
             keymaps = function() Snacks.picker.keymaps() end,
             help_tags = function() Snacks.picker.help() end,
-            commands = function() Snacks.picker.commands() end,
-
+            commands = function()
+                Snacks.picker.commands({
+                    confirm = function(picker, item)
+                        picker:close()
+                        if item and item.cmd then vim.schedule(function() vim.cmd(item.cmd) end) end
+                    end,
+                })
+            end,
             pickers = function() Snacks.picker.pickers() end,
         })
     end,
