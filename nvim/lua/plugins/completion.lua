@@ -43,7 +43,6 @@ return {
     },
     {
         "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
         event = "InsertEnter",
         config = function()
             require("copilot").setup({
@@ -54,7 +53,7 @@ return {
                     debounce = 10,
                     keymap = {
                         accept = false,
-                        accept_word = false,
+                        accept_word = "<M-Tab>",
                         accept_line = false,
                         next = "<M-]>",
                         prev = "<M-[>",
@@ -65,7 +64,7 @@ return {
             })
             vim.keymap.set("i", "<Tab>", function()
                 if require("copilot.suggestion").is_visible() then
-                    require("copilot.suggestion").accept()
+                    require("copilot.suggestion").accept_line()
                 else
                     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
                 end
