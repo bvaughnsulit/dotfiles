@@ -80,6 +80,16 @@ M.get_merge_base_hash = function()
 end
 
 ---@return string | nil
+M.get_commit_hash = function()
+    local result = vim.system({ "git", "rev-parse", "HEAD" }, { text = true }):wait()
+    if result.code ~= 0 then
+        vim.notify("Error getting commit hash")
+        return
+    end
+    return result.stdout:sub(1, -2)
+end
+
+---@return string | nil
 M.get_gh_repo_url = function()
     local root = Snacks.git.get_root()
     if not root then
@@ -94,10 +104,10 @@ end
 ---@return string | nil
 M.get_gh_file_url = function()
     local path = vim.fn.expand("%:.")
-    local branch = M.get_default_branch_name()
+    local hash = M.get_commit_hash()
     local repo_url = M.get_gh_repo_url()
     local line_number = vim.api.nvim_win_get_cursor(0)[1]
-    if repo_url then return repo_url .. "/blob/" .. branch .. "/" .. path .. "\\#L" .. line_number end
+    if repo_url then return repo_url .. "/blob/" .. hash .. "/" .. path .. "\\#L" .. line_number end
 end
 
 M.open_file_in_vscode = function()

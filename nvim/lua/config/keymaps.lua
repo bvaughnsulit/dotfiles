@@ -119,10 +119,10 @@ utils.create_cmd_and_map(
 )
 
 utils.create_cmd_and_map(
-    "CopyPathToClipboard",
+    "CopyGitHubUrlToClipboard",
     nil,
     function() utils.copy_gh_file_url() end,
-    "Copy Relative Filepath to Clipboard"
+    "Copy GitHub URL to Clipboard"
 )
 
 utils.create_cmd_and_map("OpenFileInGitHub", nil, function() utils.open_file_in_gh() end, "Open File in Github")
