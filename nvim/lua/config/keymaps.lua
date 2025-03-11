@@ -106,7 +106,7 @@ utils.create_cmd_and_map("BDeleteAll", nil, function() vim.cmd("%bd") end, "Dele
 
 utils.create_cmd_and_map(
     "RelativeNumbersToggle",
-    "<leader>tn",
+    "",
     function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end,
     "Toggle Relative Numbers"
 )
@@ -131,10 +131,11 @@ utils.create_cmd_and_map("DisableDiagnosticsCurrentBuffer", nil, function() vim.
 -- utils.create_cmd_and_map(nil, nil, function() vim.cmd('copen') end, 'Open Quickfix')
 -- utils.create_cmd_and_map(nil, nil, function() vim.cmd('lopen') end, 'Open Location list')
 
-utils.create_cmd_and_map(nil, "<leader><tab>c", function() vim.cmd("tabnew") end, "New Tab")
-utils.create_cmd_and_map(nil, "<leader><tab>x", function() vim.cmd("tabclose") end, "Close Tab")
-utils.create_cmd_and_map(nil, "<leader><tab>n", function() vim.cmd("tabnext") end, "Next Tab")
-utils.create_cmd_and_map(nil, "<leader><tab>p", function() vim.cmd("tabp") end, "Previous Tab")
+utils.create_cmd_and_map(nil, "<leader>tc", function() vim.cmd("tabnew") end, "New Tab")
+utils.create_cmd_and_map(nil, "<leader>tx", function() vim.cmd("tabclose") end, "Close Tab")
+utils.create_cmd_and_map(nil, "<leader>tn", function() vim.cmd("tabnext") end, "Next Tab")
+utils.create_cmd_and_map(nil, "<leader>tp", function() vim.cmd("tabp") end, "Previous Tab")
+utils.create_cmd_and_map(nil, "<leader>to", function() vim.cmd("tabonly") end, "Close Other Tabs")
 
 utils.create_cmd_and_map(nil, { mode = { "t" }, lhs = "<esc><esc>" }, "<c-\\><c-n>")
 utils.create_cmd_and_map("InspectHighlights", nil, function() vim.show_pos() end, "Inspect highlights under cursor")
@@ -199,10 +200,6 @@ map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", {
 -- buffers
 map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>bd", function() Snacks.bufdelete() end, { desc = "Delete Buffer" })
-map("n", "<leader>bo", function() Snacks.bufdelete.other() end, { desc = "Delete Other Buffers" })
-map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -270,14 +267,6 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 LazyVim.ui.maximize():map("<leader>wm")
 
--- tabs
-map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
-map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
-map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
-map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
 -- native snippets. only needed on < 0.11, as 0.11 creates these by default
 if vim.fn.has("nvim-0.11") == 0 then
