@@ -1,6 +1,19 @@
 local utils = require("config.utils")
 local pickers = require("config.pickers")
 
+local default_excludes = {
+    "package-lock.json",
+    "**/static/**",
+    "**/public/**",
+    -- '%node_modules%',
+    "*.git/",
+    "*.png$",
+    "*.svg$",
+    "*.gif$",
+    "*.jpg$",
+    "*.jpeg$",
+}
+
 --- @type fun(win: snacks.win)
 local custom_close = function(win)
     if vim.fn.mode():sub(1, 1) == "n" or win:line() == "" then
@@ -61,7 +74,7 @@ return {
                         {
                             box = "vertical",
                             border = "rounded",
-                            title = "{title} {live} {flags}",
+                            title = "{title}",
                             title_pos = "center",
                             { win = "input", height = 1, border = "bottom" },
                             { win = "list", border = "none" },
@@ -124,16 +137,54 @@ return {
     },
     config = function(_, opts)
         require("snacks").setup(opts)
+
+        local grep_nvim_plugins_source = function()
+            Snacks.picker.grep(
+                --- @type snacks.picker.grep.Config
+                {
+                    hidden = true,
+                    cwd = "~/.local/share/nvim/lazy",
+                }
+            )
+        end
+        utils.create_cmd_and_map("GrepNvimPlugins", nil, grep_nvim_plugins_source, "")
+
         pickers.register_picker("snacks", {
-            find_files = function() Snacks.picker.files() end,
+            find_files = function()
+                Snacks.picker.files(
+                    ---@type snacks.picker.files.Config
+                    {
+                        hidden = true,
+                    }
+                )
+            end,
+
             buffers = function() Snacks.picker.buffers({ current = false }) end,
-            live_grep = function() Snacks.picker.grep() end,
+
+            live_grep = function()
+                Snacks.picker.grep(
+                    --- @type snacks.picker.grep.Config
+                    {
+                        hidden = true,
+                        ignored = false,
+                        cwd = Snacks.git.get_root(),
+                        exclude = default_excludes,
+                    }
+                )
+            end,
+
             lsp_definitions = function() Snacks.picker.lsp_definitions() end,
+
             lsp_references = function() Snacks.picker.lsp_references() end,
+
             lsp_type_definitions = function() Snacks.picker.lsp_type_definitions() end,
+
             buffer_fuzzy = function() Snacks.picker.lines() end,
+
             keymaps = function() Snacks.picker.keymaps() end,
+
             help_tags = function() Snacks.picker.help() end,
+
             commands = function()
                 Snacks.picker.commands({
                     confirm = function(picker, item)
@@ -142,6 +193,7 @@ return {
                     end,
                 })
             end,
+
             pickers = function() Snacks.picker.pickers() end,
         })
     end,
