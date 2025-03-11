@@ -69,13 +69,6 @@ map("n", "[l", "<cmd>cprevious<CR>", {})
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
-map(
-    "n",
-    "<cr>",
-    "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>",
-    { desc = "Put empty line above", silent = true }
-)
-
 map("x", "/", "<esc>/\\%V", { silent = false, desc = "Search inside visual selection" })
 
 map("n", "<S-left>", "<cmd>vertical resize -5<cr>", {})
