@@ -1,6 +1,15 @@
 local utils = require("config.utils")
 local pickers = require("config.pickers")
 
+--- @type fun(win: snacks.win)
+local custom_close = function(win)
+    if vim.fn.mode():sub(1, 1) == "n" or win:line() == "" then
+        win.opts.actions.close.action(win)
+    else
+        vim.cmd.stopinsert()
+    end
+end
+
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -78,8 +87,10 @@ return {
                 win = {
                     input = {
                         keys = {
-                            ["<Esc>"] = { "close", mode = { "n", "i" } },
-                            ["<c-c>"] = { "<Esc>", mode = { "i" } },
+                            ---@diagnostic disable-next-line: assign-type-mismatch
+                            ["<Esc>"] = { custom_close, mode = { "n", "i" } },
+                            ---@diagnostic disable-next-line: assign-type-mismatch
+                            ["<c-c>"] = { custom_close, mode = { "n", "i" } },
                             ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
                             ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
