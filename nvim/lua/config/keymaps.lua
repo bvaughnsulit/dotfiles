@@ -106,7 +106,7 @@ utils.create_cmd_and_map("BDeleteAll", nil, function() vim.cmd("%bd") end, "Dele
 
 utils.create_cmd_and_map(
     "RelativeNumbersToggle",
-    "",
+    nil,
     function() vim.opt.relativenumber = not vim.opt.relativenumber:get() end,
     "Toggle Relative Numbers"
 )
@@ -215,6 +215,7 @@ map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
 -- commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
+map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Comment At End Of Line" }) -- TODO how to return cursor to original position?
 
 map({ "n", "v" }, "<leader>cf", function() LazyVim.format({ force = true }) end, { desc = "Format" })
 

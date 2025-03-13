@@ -50,6 +50,7 @@ M.maps = {
     commands = { "<leader><leader>", "Commands" },
     buffer_fuzzy = { "<leader>/f", "Current Buffer Fuzzy Search" },
     pickers = { "<leader>pp", "Pickers" },
+    resume = { "<leader><up>", "Resume Last Picker" },
 }
 
 local call = function(fn_name, ...)
@@ -69,7 +70,7 @@ local call = function(fn_name, ...)
 end
 
 for name, opts in pairs(M.maps) do
-    vim.keymap.set("n", opts[1], function() call(name) end, {
+    vim.keymap.set({ "n", "v" }, opts[1], function() call(name) end, {
         desc = opts[2],
     })
 end

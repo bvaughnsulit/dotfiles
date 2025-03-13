@@ -7,11 +7,12 @@ local default_excludes = {
     "**/public/**",
     -- '%node_modules%',
     "*.git/",
-    "*.png$",
-    "*.svg$",
-    "*.gif$",
-    "*.jpg$",
-    "*.jpeg$",
+    "*.png",
+    "*.svg",
+    "*.gif",
+    "*.jpg",
+    "*.jpeg",
+    "*.csv",
 }
 
 --- @type fun(win: snacks.win)
@@ -195,6 +196,8 @@ return {
             end,
 
             pickers = function() Snacks.picker.pickers() end,
+
+            resume = function() Snacks.picker.resume() end,
         })
     end,
 }

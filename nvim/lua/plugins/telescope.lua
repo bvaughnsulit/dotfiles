@@ -186,11 +186,7 @@ return {
                 help_tags = builtin.help_tags,
                 commands = builtin.commands,
                 pickers = builtin.builtin,
-            })
-
-            -- other maps
-            vim.keymap.set("n", "<leader><up>", function() builtin.resume() end, {
-                desc = "Resume Last",
+                resume = builtin.resume,
             })
 
             vim.keymap.set(

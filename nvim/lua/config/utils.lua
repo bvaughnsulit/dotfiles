@@ -1,8 +1,6 @@
 local git_lazy = require("lazy.manage.git")
 local M = {}
 
-M.test_function = function(arg) require("notify").notify(arg or "TESTING", "ERROR", {}) end
-
 ---@class User_Command
 ---@field name string
 ---@field opts table
@@ -28,7 +26,7 @@ M.create_cmd_and_map = function(command, mapping, fn, desc)
         end
     end
 
-    if type(command) == "string" then
+    if type(command) == "string" and #command > 0 then
         vim.api.nvim_create_user_command(command, fn, { desc = desc_with_fallback })
     elseif type(command) == "table" then
         if command.name then
@@ -37,7 +35,7 @@ M.create_cmd_and_map = function(command, mapping, fn, desc)
         end
     end
 
-    if type(mapping) == "string" then
+    if type(mapping) == "string" and #mapping > 0 then
         vim.keymap.set("n", mapping, fn, { desc = desc_with_fallback })
     elseif type(mapping) == "table" then
         if mapping.lhs then
@@ -104,7 +102,7 @@ end
 ---@return string | nil
 M.get_gh_file_url = function()
     local path = vim.fn.expand("%:.")
-    local hash = M.get_commit_hash()
+    local hash = M.get_merge_base_hash()
     local repo_url = M.get_gh_repo_url()
     local line_number = vim.api.nvim_win_get_cursor(0)[1]
     if repo_url then return repo_url .. "/blob/" .. hash .. "/" .. path .. "\\#L" .. line_number end
