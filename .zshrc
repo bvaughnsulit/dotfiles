@@ -15,7 +15,7 @@ export NVM_DIR="$HOME/.nvm"
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
 alias ls='ls -a'
 alias home='cd ~'
