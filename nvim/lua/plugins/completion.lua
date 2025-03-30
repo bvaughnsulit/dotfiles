@@ -3,7 +3,7 @@ return {
         "saghen/blink.cmp",
         dependencies = "rafamadriz/friendly-snippets",
         enabled = true,
-        version = "v0.10.0",
+        version = "1.*",
 
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
@@ -38,6 +38,7 @@ return {
                 window = { border = "single" },
                 enabled = true,
             },
+            cmdline = { completion = { menu = { auto_show = true } } },
         },
         opts_extend = { "sources.default" },
     },
