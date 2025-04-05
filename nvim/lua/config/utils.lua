@@ -1,4 +1,3 @@
-local git_lazy = require("lazy.manage.git")
 local M = {}
 
 ---@class User_Command
@@ -52,19 +51,23 @@ end
 ---@alias branch 'main' | 'master'
 ---@return branch | nil
 M.get_default_branch_name = function()
-    local root = Snacks.git.get_root()
-    if not root then
-        vim.notify("Error getting default branch name: no git root found")
+    local result = vim.system({
+        "git",
+        "for-each-ref",
+        "--format=%(refname:short)",
+        "refs/heads/main",
+        "refs/heads/master",
+    }, { text = true }):wait()
+
+    if result.code ~= 0 then
+        vim.notify("Error getting git refs")
         return
     end
-    local git_config = git_lazy.get_config(root)
-    if git_config["branch.main.remote"] then
-        return "main"
-    elseif git_config["branch.master.remote"] then
-        return "master"
-    else
-        logger("Error getting default branch name from config " .. vim.inspect(git_config))
+    if result.stdout == "" then
+        vim.notify("No main or master branch found")
+        return
     end
+    return result.stdout:sub(1, -2)
 end
 
 ---@return string | nil
@@ -89,14 +92,18 @@ end
 
 ---@return string | nil
 M.get_gh_repo_url = function()
-    local root = Snacks.git.get_root()
-    if not root then
-        vim.notify("Error getting default branch name: no git root found")
+    local result = vim.system({
+        "git",
+        "config",
+        "--get",
+        "remote.origin.url",
+    }, { text = true }):wait()
+
+    if result.code ~= 0 or result.stdout == "" then
+        vim.notify("Error getting git remote URL")
         return
     end
-    local git_config = git_lazy.get_config(root)
-    local repo_url = git_config["remote.origin.url"]
-    if repo_url then return repo_url:sub(1, -5) end
+    if result.stdout then return result.stdout:sub(1, -6) end
 end
 
 ---@return string | nil
