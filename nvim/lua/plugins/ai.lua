@@ -39,6 +39,11 @@ return {
                             description = "Send",
                         },
                     },
+                    roles = {
+                        ---@type string|fun(adapter: CodeCompanion.Adapter): string
+                        llm = function(adapter) return "🤖 " .. adapter.formatted_name end,
+                        user = "👤 Me",
+                    },
                 },
             },
             adapters = {
