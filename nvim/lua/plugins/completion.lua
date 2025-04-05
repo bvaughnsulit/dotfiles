@@ -38,7 +38,15 @@ return {
                 window = { border = "single" },
                 enabled = true,
             },
-            cmdline = { completion = { menu = { auto_show = true } } },
+            cmdline = {
+                completion = {
+                    list = { selection = { preselect = false } },
+                    ghost_text = { enabled = false },
+                    menu = {
+                        auto_show = true,
+                    },
+                },
+            },
         },
         opts_extend = { "sources.default" },
     },
@@ -62,6 +70,9 @@ return {
                     },
                 },
                 filetypes = {},
+                logger = {
+                    -- file_log_level = vim.log.levels.TRACE,
+                },
             })
             vim.keymap.set("i", "<Tab>", function()
                 if require("copilot.suggestion").is_visible() then

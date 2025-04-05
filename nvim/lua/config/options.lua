@@ -84,7 +84,6 @@ vim.opt.winminwidth = 5
 vim.opt.smoothscroll = true
 vim.opt.jumpoptions = "view"
 vim.opt.virtualedit = "block"
-vim.opt.startofline = true
 
 vim.g.markdown_recommended_style = 0
 vim.g.autoformat = true
