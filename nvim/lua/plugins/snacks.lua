@@ -160,7 +160,7 @@ return {
                 )
             end,
 
-            buffers = function() Snacks.picker.buffers({ current = false }) end,
+            -- buffers = function() Snacks.picker.buffers({ current = false }) end,
 
             live_grep = function()
                 Snacks.picker.grep(
