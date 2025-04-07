@@ -160,7 +160,15 @@ return {
                 )
             end,
 
-            -- buffers = function() Snacks.picker.buffers({ current = false }) end,
+            -- buffers = function()
+            --     Snacks.picker.buffers(
+            --         --- @type snacks.picker.buffers.Config
+            --         {
+            --             current = false,
+            --             -- sort = { fields = {} },
+            --         }
+            --     )
+            -- end,
 
             live_grep = function()
                 Snacks.picker.grep(
