@@ -1,7 +1,9 @@
 local utils = require("config.utils")
 return {
+    ---@type LazySpec
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
+    commit = "640260d7c2d9",
     event = "VeryLazy",
     config = function()
         require("lualine").setup({
