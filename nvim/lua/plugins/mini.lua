@@ -33,6 +33,13 @@ return {
             require("mini.operators").setup({
                 replace = { prefix = "gp" },
             })
+
+            local trailspace = require("mini.trailspace")
+            trailspace.setup({})
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = vim.api.nvim_create_augroup("Mini", {}),
+                callback = function(event) trailspace.trim() end,
+            })
         end,
         keys = {
             { "<A-j>", nil, mode = { "n", "v" } },
