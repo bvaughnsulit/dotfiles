@@ -104,7 +104,8 @@ return {
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
-                if vim.o.buftype ~= "nofile" then require("gitsigns").refresh() end
+                local hash = utils.get_merge_base_hash()
+                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(hash, true) end
             end,
         })
     end,
