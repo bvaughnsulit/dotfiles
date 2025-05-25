@@ -26,7 +26,7 @@ alias gho='gh browse'
 alias vi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmls='tmux new -A -s tmux \; choose-session'
-alias tm='tmux new -A -s tmux' 
+alias tm='tmux new -A -s tmux'
 
 alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
 alias nvim-dark='nvim --cmd "+lua vim.g.set_scheme=\"dark\""'
@@ -39,6 +39,8 @@ alias plugs='cd ~/.local/share/nvim/lazy/'
 alias lg='lazygit'
 alias venv='source venv/bin/activate'
 alias pr='gh pr checkout'
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
 
 # add computer-specific configs in a separate, non-committed file
 [[ ! -f ~/.zshrc_addtl ]] || source ~/.zshrc_addtl
