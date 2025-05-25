@@ -5,7 +5,11 @@ return {
     event = "LazyFile",
     dependencies = {
       "mason.nvim",
-      { "williamboman/mason-lspconfig.nvim", config = function() end },
+      {
+        "williamboman/mason-lspconfig.nvim",
+        version = "v1.32.0", -- pinning until i have time to fix breaking changes
+        config = function() end,
+      },
     },
     opts = function()
       ---@class PluginLspOpts

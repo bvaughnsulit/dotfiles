@@ -1,3 +1,5 @@
+local utils = require("config.utils")
+
 return {
     {
         "echasnovski/mini.nvim",
@@ -36,10 +38,19 @@ return {
 
             local trailspace = require("mini.trailspace")
             trailspace.setup({})
+
             vim.api.nvim_create_autocmd("BufWritePre", {
                 group = vim.api.nvim_create_augroup("Mini", {}),
-                callback = function(event) trailspace.trim() end,
+                callback = function(event)
+                    if vim.g.minitrailspace_disable then return end
+                    trailspace.trim()
+                end,
             })
+
+            utils.create_cmd_and_map("ToggleTrailspace", nil, function()
+                vim.g.minitrailspace_disable = not vim.g.minitrailspace_disable
+                vim.notify("MiniTrailspace is " .. (vim.g.minitrailspace_disable and "disabled" or "enabled"))
+            end, "Toggle trailing whitespace highlighting")
         end,
         keys = {
             { "<A-j>", nil, mode = { "n", "v" } },
