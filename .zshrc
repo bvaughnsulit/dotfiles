@@ -44,3 +44,9 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 # add computer-specific configs in a separate, non-committed file
 [[ ! -f ~/.zshrc_addtl ]] || source ~/.zshrc_addtl
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/vaughn/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
