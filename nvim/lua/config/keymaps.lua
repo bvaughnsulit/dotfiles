@@ -120,7 +120,12 @@ utils.create_cmd_and_map(
 
 utils.create_cmd_and_map("OpenFileInGitHub", nil, function() utils.open_file_in_gh() end, "Open File in Github")
 
-utils.create_cmd_and_map("OpenFileInVSCode", nil, function() utils.open_file_in_vscode() end, "Open File in VS Code")
+utils.create_cmd_and_map(
+    "OpenFileInVSCode",
+    "<leader>vs",
+    function() utils.open_file_in_vscode() end,
+    "Open File in VS Code"
+)
 
 utils.create_cmd_and_map("OpenRepoInGitHub", nil, function() utils.open_repo_in_gh() end, "Open Github Repo in Browser")
 
@@ -137,7 +142,7 @@ utils.create_cmd_and_map(nil, "<leader>tn", function() vim.cmd("tabnext") end, "
 utils.create_cmd_and_map(nil, "<leader>tp", function() vim.cmd("tabp") end, "Previous Tab")
 utils.create_cmd_and_map(nil, "<leader>to", function() vim.cmd("tabonly") end, "Close Other Tabs")
 
-utils.create_cmd_and_map(nil, { mode = { "t" }, lhs = "<esc><esc>" }, "<c-\\><c-n>")
+vim.keymap.set({ "t" }, "<esc><esc>", "<C-\\><C-N>", { silent = true })
 utils.create_cmd_and_map("InspectHighlights", nil, function() vim.show_pos() end, "Inspect highlights under cursor")
 
 -- open and focus tmux pane

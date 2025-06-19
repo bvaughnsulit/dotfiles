@@ -135,6 +135,10 @@ return {
             function() Snacks.picker.git_branches() end,
             desc = "Pick Git branch",
         },
+        {
+            "<leader>\\\\",
+            function() Snacks.terminal.toggle() end,
+        },
     },
     config = function(_, opts)
         require("snacks").setup(opts)
