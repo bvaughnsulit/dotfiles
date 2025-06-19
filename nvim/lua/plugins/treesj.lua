@@ -6,7 +6,7 @@ return {
         require("treesj").setup({
             use_default_keymaps = false,
             check_syntax_error = true,
-            max_join_length = nil,
+            max_join_length = math.huge,
             cursor_behavior = "hold",
             notify = true,
         })
