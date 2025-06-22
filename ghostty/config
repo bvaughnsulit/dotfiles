@@ -9,3 +9,4 @@ window-padding-y = 0
 window-padding-balance = true
 #font-thicken = true
 cursor-invert-fg-bg = true
+desktop-notifications = true
