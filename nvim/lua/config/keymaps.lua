@@ -280,3 +280,18 @@ if vim.fn.has("nvim-0.11") == 0 then
     return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<S-Tab>"
   end, { expr = true, desc = "Jump Previous" })
 end
+
+utils.create_cmd_and_map(
+    "FocusFloat",
+  "<leader>ff",
+    function()
+        for _, winid in ipairs(vim.api.nvim_list_wins()) do
+            local config = vim.api.nvim_win_get_config(winid)
+            if config.relative ~= "" and config.focusable and not config.hide then
+                vim.api.nvim_set_current_win(winid)
+                break
+            end
+        end
+    end,
+    "Focus Floating Window"
+)
