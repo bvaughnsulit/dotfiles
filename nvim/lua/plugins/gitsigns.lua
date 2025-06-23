@@ -3,8 +3,8 @@ local utils = require("config.utils")
 return {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    config = function()
-        require("gitsigns").setup({
+    opts = function()
+        local opts = {
             signs = {
                 add = { text = "│" },
                 change = { text = "│" },
@@ -48,7 +48,7 @@ return {
                 anchor = "SW",
             },
             on_attach = function(bufnr)
-                local gs = package.loaded.gitsigns
+                local gitsigns = require("gitsigns")
 
                 local function map(mode, l, r, opts)
                     opts = opts or {}
@@ -56,51 +56,35 @@ return {
                     vim.keymap.set(mode, l, r, opts)
                 end
 
-                -- Navigation
                 map("n", "]c", function()
                     if vim.wo.diff then return "]c" end
-                    vim.schedule(
-                        function()
-                            gs.next_hunk({
-                                wrap = false,
-                                preview = true,
-                            })
-                        end
-                    )
+                    vim.schedule(function() gitsigns.nav_hunk("next", { wrap = false, preview = true }) end)
                     return "<Ignore>"
                 end, { expr = true })
 
                 map("n", "[c", function()
                     if vim.wo.diff then return "[c" end
-                    vim.schedule(
-                        function()
-                            gs.prev_hunk({
-                                wrap = false,
-                                preview = true,
-                            })
-                        end
-                    )
+                    vim.schedule(function() gitsigns.nav_hunk("prev", { wrap = false, preview = true }) end)
                     return "<Ignore>"
                 end, { expr = true })
 
                 -- Actions
+                map("n", "<leader>hh", function() gitsigns.preview_hunk() end)
+                map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end)
                 map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
                 map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
-                -- map('n', '<leader>hS', gs.stage_buffer)
-                map("n", "<leader>hu", gs.undo_stage_hunk)
-                -- map('n', '<leader>hR', gs.reset_buffer)
-                map("n", "<leader>gh", gs.preview_hunk)
-                map("n", "<leader>gb", function() gs.blame_line({ full = true }) end)
-                -- map('n', '<leader>tb', gs.toggle_current_line_blame)
-                -- map('n', '<leader>hd', gs.diffthis)
-                -- map('n', '<leader>hD', function() gs.diffthis('~') end)
-                map("n", "<leader>gx", gs.toggle_deleted)
+                -- map("n", "<leader>hu", gitsigns.undo_stage_hunk)
+                -- map("n", "<leader>gx", gitsigns.toggle_deleted)
+                -- map('n', '<leader>hS', gitsigns.stage_buffer)
+                -- map('n', '<leader>hR', gitsigns.reset_buffer)
+                -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+                -- map('n', '<leader>hd', gitsigns.diffthis)
+                -- map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
 
                 -- Text object
                 -- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
             end,
-        })
-
+        }
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
@@ -108,5 +92,6 @@ return {
                 if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(hash, true) end
             end,
         })
+        return opts
     end,
 }
