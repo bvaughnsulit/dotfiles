@@ -34,6 +34,28 @@ return {
     opts = function()
         ---@type snacks.Config
         return {
+            styles = {
+                lazygit = {
+                    width = 0,
+                    height = 0,
+                    relative = "editor",
+                    keys = {
+                        term_normal = false,
+                        t_q = {
+                            "q",
+                            function() Snacks.lazygit.open() end,
+                            mode = "t",
+                            expr = true,
+                        },
+                        t_esc = {
+                            "<Esc>",
+                            function() Snacks.lazygit.open() end,
+                            mode = "t",
+                            expr = true,
+                        },
+                    },
+                },
+            },
             lazygit = {
                 enabled = true,
                 config = {
