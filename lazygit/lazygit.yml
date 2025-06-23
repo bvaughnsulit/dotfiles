@@ -8,6 +8,8 @@ gui:
   nerdFontsVersion: "3"
   showFileTree: false
   border: 'single'
+  enlargedSideViewLocation: top
+  portraitMode: always
 os:
   editPreset: 'nvim'
   open: 'open -R {{filename}}'
