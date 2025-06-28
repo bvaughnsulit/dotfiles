@@ -12,10 +12,11 @@ return {
         "nvim-tree/nvim-web-devicons",
         "MunifTanjim/nui.nvim",
     },
-    config = function()
-        vim.g.neo_tree_remove_legacy_commands = 1
+    opts = function()
         local neotree = require("neo-tree")
-        neotree.setup({
+        ---@diagnostic disable missing-fields
+        ---@type neotree.Config?
+        local opts = {
             sources = {
                 "filesystem",
                 "git_status",
@@ -23,6 +24,7 @@ return {
             },
             source_selector = {
                 winbar = true,
+                show_scrolled_off_parent_node = true,
                 sources = {
                     { source = "filesystem" },
                     { source = "git_status" },
@@ -32,47 +34,20 @@ return {
             default_component_configs = {
                 container = {
                     enable_character_fade = false,
-                    width = "100%",
-                    right_padding = 0,
                 },
                 indent = {
                     indent_size = 1,
-                    padding = 1,
-                    -- indent guides
-                    with_markers = true,
                     indent_marker = "│",
                     last_indent_marker = "└",
-                    highlight = "NeoTreeIndentMarker",
-                    -- expander config, needed for nesting files
-                    with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-                    expander_collapsed = "",
-                    expander_expanded = "",
-                    expander_highlight = "NeoTreeExpander",
-                },
-                icon = {
-                    folder_closed = "",
-                    folder_open = "",
-                    folder_empty = "",
-                    folder_empty_open = "",
-                    default = "*",
-                    highlight = "NeoTreeFileIcon",
                 },
                 modified = {
                     symbol = "*",
-                    highlight = "NeoTreeModified",
-                },
-                name = {
-                    trailing_slash = false,
-                    use_git_status_colors = true,
-                    highlight = "NeoTreeFileName",
                 },
                 git_status = {
                     symbols = {
-                        -- Change type
                         deleted = "", -- '',
                         modified = "",
                         renamed = "➜",
-                        -- Status type
                         untracked = "﬒",
                         ignored = "",
                         unstaged = "󰝦",
@@ -84,9 +59,11 @@ return {
                 file_size = { enabled = false },
                 type = { enabled = false },
                 last_modified = { enabled = false },
+                symlink_target = { enabled = true },
             },
             hide_root_node = true,
-            enable_diagnostics = false,
+            -- enable_diagnostics = false,
+            use_popups_for_input = true,
             enable_git_status = true,
             event_handlers = {
                 {
@@ -96,18 +73,17 @@ return {
                     end,
                 },
             },
-            -- log_level = 'error', -- "trace", "debug", "info", "warn", "error", "fatal"
-            -- log_to_file = true, -- true, false, "/path/to/file.log", use :NeoTreeLogs to show the file
             window = {
-                width = "25%",
+                width = "0.25",
                 position = "left",
                 mappings = {
                     ["/"] = {},
-                    ["<space><space>"] = { "toggle_preview" },
+                    ["p"] = { "toggle_preview" },
                     ["<tab>"] = { "toggle_node" },
                     ["z"] = "noop",
                     ["s"] = "noop",
                     ["y"] = "noop",
+                    ["e"] = "noop",
                     ["v"] = "open_vsplit",
                 },
             },
@@ -117,8 +93,10 @@ return {
                     hide_dotfiles = false,
                     never_show = { ".DS_Store" },
                 },
-                follow_current_file = { enabled = true },
-                hijack_netrw_behavior = "open_default",
+                follow_current_file = {
+                    enabled = true,
+                    leave_dirs_open = true,
+                },
                 window = {
                     mappings = {
                         ["f"] = { "fuzzy_finder" },
@@ -130,10 +108,18 @@ return {
                     mappings = {
                         ["f"] = "noop",
                         ["gg"] = "noop",
+                        ["a"] = "git_add_all",
+                        ["c"] = "git_commit",
+                        ["P"] = "git_push",
+                        ["X"] = "git_revert_file",
+                        ["<space>"] = "git_add_file",
+                        ["<c-space>"] = "git_unstage_file",
                     },
                 },
             },
-        })
+        }
+        ---@diagnostic enable missing-fields
+
         vim.keymap.set("n", "<leader>ee", "<cmd>Neotree toggle<cr>", {})
 
         utils.create_cmd_and_map(
@@ -149,12 +135,11 @@ return {
                 action = "focus",
                 git_base = utils.get_merge_base_hash(),
                 toggle = true,
+                reveal = true,
             })
         end
 
         utils.create_cmd_and_map("GitDiffExplore", "<leader>eg", toggle_git_explorer, "Explore Git Diff from Main")
-
-        utils.create_cmd_and_map("NeoTreePasteDefaultConfig", nil, function() neotree.paste_default_config() end, "")
 
         utils.create_cmd_and_map("Close Neo-tree", "<leader>eq", function()
             vim.cmd("Neotree close")
@@ -170,5 +155,6 @@ return {
             pattern = "*",
             callback = function() vim.cmd("Neotree close") end,
         })
+        return opts
     end,
 }
