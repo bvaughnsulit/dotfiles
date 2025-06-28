@@ -1,6 +1,8 @@
 return {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    ---@type wk.Opts
+    ---@diagnostic disable-next-line: missing-fields
     opts = {
         preset = "classic",
         delay = function(ctx) return 500 end,
@@ -27,7 +29,11 @@ return {
     keys = {
         {
             "<leader>kk",
-            function() require("which-key").show() end,
+            function()
+                require("which-key").show({
+                    loop = true,
+                })
+            end,
             desc = "Show which-key menu",
         },
     },

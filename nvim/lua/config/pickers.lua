@@ -40,12 +40,12 @@ end
 
 M.maps = {
     find_files = { "<C-p>", "Find Files" },
-    buffers = { "<C-b>", "Buffers" },
+    buffers = { "<C-b>", "Buffers", mode = { "n", "v", "t" } },
     live_grep = { "<C-f>", "Live Grep" },
     lsp_definitions = { "gd", "Go to Definition" },
     lsp_references = { "gr", "Go to References" },
     lsp_type_definitions = { "gt", "Go to Type Definition" },
-    keymaps = { "<leader>km", "Keymaps" },
+    keymaps = { "<leader>fm", "[F]ind [M]appings" },
     help_tags = { "<leader>?", "Help Tags" },
     commands = { "<leader><leader>", "Commands" },
     buffer_fuzzy = { "<leader>/f", "Current Buffer Fuzzy Search" },
@@ -70,7 +70,7 @@ local call = function(fn_name, ...)
 end
 
 for name, opts in pairs(M.maps) do
-    vim.keymap.set({ "n", "v" }, opts[1], function() call(name) end, {
+    vim.keymap.set(opts.mode or { "n", "v" }, opts[1], function() call(name) end, {
         desc = opts[2],
     })
 end

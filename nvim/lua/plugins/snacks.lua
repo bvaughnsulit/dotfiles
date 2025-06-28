@@ -47,12 +47,6 @@ return {
                             mode = "t",
                             expr = true,
                         },
-                        t_esc = {
-                            "<Esc>",
-                            function() Snacks.lazygit.open() end,
-                            mode = "t",
-                            expr = true,
-                        },
                     },
                 },
             },
@@ -70,12 +64,11 @@ return {
             quickfile = { enabled = true },
             bigfile = { enabled = true },
             words = { enabled = true },
+            input = { enabled = true },
             -- toggle = { map = LazyVim.safe_keymap_set },
             statuscolumn = { enabled = false }, -- we set this in options.lua
             terminal = {
                 win = {
-                    height = 0.95,
-                    width = 0.95,
                     -- keys = {
                     --   nav_h = { '<C-h>', term_nav('h'), desc = 'Go to Left Window', expr = true, mode = 't' },
                     --   nav_j = { '<C-j>', term_nav('j'), desc = 'Go to Lower Window', expr = true, mode = 't' },

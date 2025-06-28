@@ -67,7 +67,10 @@ return {
                     settings = {
                         python = {
                             analysis = {
-                                typeCheckingMode = "off",
+                                --- @type ("off" | "basic" | "standard" | "strict")
+                                typeCheckingMode = "basic",
+                                --- @type ("openFilesOnly" | "workspace")
+                                diagnosticMode = "openFilesOnly",
                             },
                         },
                     },

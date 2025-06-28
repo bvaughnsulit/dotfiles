@@ -3,6 +3,9 @@ return {
         "folke/noice.nvim",
         event = "VeryLazy",
         -- dev = true,
+        ---@module "noice"
+        ---@type NoiceConfig
+        ---@diagnostic disable-next-line: missing-fields
         opts = {
             cmdline = {
                 enabled = true,
