@@ -9,7 +9,7 @@ gui:
   showFileTree: false
   border: 'single'
   enlargedSideViewLocation: top
-  portraitMode: always
+  portraitMode: auto
 os:
   editPreset: 'nvim'
   open: 'open -R {{filename}}'
@@ -17,7 +17,7 @@ git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
-quitOnTopLevelReturn: true
+quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 keybinding:
   universal:
