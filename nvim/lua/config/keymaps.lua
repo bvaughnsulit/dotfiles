@@ -142,7 +142,6 @@ utils.create_cmd_and_map(nil, "<leader>tn", function() vim.cmd("tabnext") end, "
 utils.create_cmd_and_map(nil, "<leader>tp", function() vim.cmd("tabp") end, "Previous Tab")
 utils.create_cmd_and_map(nil, "<leader>to", function() vim.cmd("tabonly") end, "Close Other Tabs")
 
-vim.keymap.set({ "t" }, "<esc><esc>", "<C-\\><C-N>", { silent = true })
 utils.create_cmd_and_map("InspectHighlights", nil, function() vim.show_pos() end, "Inspect highlights under cursor")
 
 -- open and focus tmux pane
