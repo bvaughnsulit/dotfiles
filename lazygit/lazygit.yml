@@ -19,6 +19,7 @@ git:
     pager: delta --dark --paging=never
 quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
+notARepository: quit
 keybinding:
   universal:
     remove: 'X'
