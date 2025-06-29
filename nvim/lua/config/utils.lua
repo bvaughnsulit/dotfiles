@@ -169,44 +169,101 @@ M.get_dotfiles_root = function()
     return Snacks.git.get_root(result.stdout:sub(1, -2))
 end
 
+M.hide_buffer = function(buf)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-\\><c-n><c-o>", true, true, true), "", false)
+end
+
+---@class TerminalOpts
+---@field q_to_go_back? ("t"|"n")[]
+---@field auto_insert? boolean
+---@field win_config? vim.api.keyset.win_config
+---@field job_opts? table # options to pass to `vim.fn.jobstart`
+---@see vim.fn.jobstart
+---@see vim.api.nvim_open_win
+
 ---@param cmd string|string[]
 ---@param name string
----@param win_opts vim.api.keyset.win_config
----@param job_opts? table
----@see vim.fn.jobstart for job options fields
-M.toggle_persistent_terminal = function(cmd, name, win_opts, job_opts)
-    local buffer_name = name
+---@param opts? TerminalOpts
+M.toggle_persistent_terminal = function(cmd, name, opts)
+    opts = opts or {}
+    local buffer_name = "terminal://" .. name
     local job_opts_merged = vim.tbl_deep_extend("force", {
         term = true,
         stdout_buffered = true,
-    }, job_opts or {})
+    }, opts.job_opts or {})
 
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         -- Check if the buffer already exists
         if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
             -- If the buffer exists, check if it's already open in a window
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-                if vim.api.nvim_win_get_buf(win) == buf then
-                    vim.api.nvim_win_set_config(win, win_opts)
-                    vim.api.nvim_set_current_win(win)
-                    vim.cmd.startinsert()
+            for _, window in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_get_buf(window) == buf and opts.win_config then
+                    vim.api.nvim_win_set_config(window, opts.win_config)
+                    vim.api.nvim_set_current_win(window)
                     return
                 end
             end
 
-            -- Otherwise, open the buffer in a new window
-            vim.api.nvim_open_win(buf, true, win_opts)
-            vim.cmd.startinsert()
+            -- Otherwise, open the buffer
+            if opts.win_config then
+                vim.api.nvim_open_win(buf, true, opts.win_config)
+            else
+                vim.api.nvim_win_set_buf(0, buf)
+            end
             return
         end
     end
 
     -- If the buffer does not exist, create and open it
     local buf = vim.api.nvim_create_buf(true, false)
-    vim.api.nvim_open_win(buf, true, win_opts)
+
+    if opts.win_config then
+        vim.api.nvim_open_win(buf, true, opts.win_config)
+    else
+        vim.api.nvim_win_set_buf(0, buf)
+    end
     vim.fn.jobstart(cmd, job_opts_merged)
     vim.api.nvim_buf_set_name(buf, buffer_name)
-    vim.cmd.startinsert()
+
+    for _, i in ipairs(opts.q_to_go_back or {}) do
+        if i == "n" then
+            vim.keymap.set(
+                "n",
+                "q",
+                function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-o>", true, true, true), "", false) end,
+                { buffer = buf, desc = "Go back to previous location" }
+            )
+        end
+
+        if i == "t" then
+            vim.keymap.set(
+                "t",
+                "q",
+                function()
+                    vim.api.nvim_feedkeys(
+                        vim.api.nvim_replace_termcodes("<c-\\><c-n><c-o>", true, true, true),
+                        "",
+                        false
+                    )
+                end,
+                { buffer = buf, desc = "Go back to previous location" }
+            )
+        end
+    end
+
+    if opts.auto_insert then
+        vim.api.nvim_create_autocmd("BufEnter", {
+            buffer = buf,
+            group = M.augroup(name .. "_terminal_enter"),
+            callback = function()
+                vim.schedule(function()
+                    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+                    vim.cmd.startinsert()
+                end)
+            end,
+        })
+        vim.cmd.startinsert()
+    end
 end
 
 return M
