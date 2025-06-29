@@ -155,6 +155,20 @@ end
 
 M.augroup = function(name) return vim.api.nvim_create_augroup("user_" .. name, { clear = true }) end
 
+M.get_dotfiles_root = function()
+    local result = vim.system({
+        "readlink",
+        "-f",
+        vim.fn.stdpath("config"),
+    }, { text = true }):wait()
+
+    if result.code ~= 0 then
+        vim.notify("Error following nvim config symlink")
+        return
+    end
+    return Snacks.git.get_root(result.stdout:sub(1, -2))
+end
+
 ---@param cmd string|string[]
 ---@param name string
 ---@param win_opts vim.api.keyset.win_config
