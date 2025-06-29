@@ -294,3 +294,23 @@ utils.create_cmd_and_map(
     end,
     "Focus Floating Window"
 )
+
+vim.keymap.set("n", "<leader>gg", function()
+    local dotfiles_root = utils.get_dotfiles_root()
+    local lazygit_config = dotfiles_root .. "/lazygit/lazygit.yml"
+    if (not utils.is_system_dark_mode()) then
+        lazygit_config = lazygit_config .. "," .. dotfiles_root .. "/lazygit/light.yml"
+    end
+
+    utils.toggle_persistent_terminal(
+        "lazygit",
+        "Lazygit",
+        {
+            q_to_go_back = { "n", "t" },
+            auto_insert = true,
+            job_opts = { env = {
+                LG_CONFIG_FILE=lazygit_config,
+            } },
+        }
+    )
+end, { desc = "Open Lazygit Terminal" })

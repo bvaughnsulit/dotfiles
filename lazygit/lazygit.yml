@@ -11,7 +11,7 @@ gui:
   enlargedSideViewLocation: top
   portraitMode: auto
 os:
-  editPreset: 'nvim'
+  editPreset: 'nvim-remote'
   open: 'open -R {{filename}}'
 git:
   paging:
