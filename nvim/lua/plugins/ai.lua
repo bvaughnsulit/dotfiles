@@ -120,38 +120,17 @@ When given a task:
 4. Provide exactly one complete reply per conversation turn.
 ]]
 
-vim.keymap.set("n", "<leader>aa", function()
-    local buffer_name = "Claude Code"
-    local win_opts = {
-        height = 10,
-        split = "below",
-    }
-
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-        -- Check if the buffer already exists
-        if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
-            -- If the buffer exists, check if it's already open in a window
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-                if vim.api.nvim_win_get_buf(win) == buf then
-                    vim.api.nvim_set_current_win(win)
-                    vim.cmd.startinsert()
-                    return
-                end
-            end
-
-            -- Otherwise, open the buffer in a new window
-            vim.api.nvim_open_win(buf, true, win_opts)
-            vim.cmd.startinsert()
-            return
-        end
-    end
-
-    local buf = vim.api.nvim_create_buf(true, false)
-    vim.api.nvim_open_win(buf, true, win_opts)
-    vim.fn.jobstart("claude", { term = true })
-    vim.api.nvim_buf_set_name(buf, buffer_name)
-    vim.cmd.startinsert()
-end, { desc = "Open AI Agent" })
+vim.keymap.set(
+    "n",
+    "<leader>aa",
+    function()
+        utils.toggle_persistent_terminal("gemini", "Gemini", {
+            height = 10,
+            split = "below",
+        })
+    end,
+    { desc = "Open AI Agent" }
+)
 
 return {
     {

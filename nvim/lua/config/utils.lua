@@ -155,4 +155,44 @@ end
 
 M.augroup = function(name) return vim.api.nvim_create_augroup("user_" .. name, { clear = true }) end
 
+---@param cmd string|string[]
+---@param name string
+---@param win_opts vim.api.keyset.win_config
+---@param job_opts? table
+---@see vim.fn.jobstart for job options fields
+M.toggle_persistent_terminal = function(cmd, name, win_opts, job_opts)
+    local buffer_name = name
+    local job_opts_merged = vim.tbl_deep_extend("force", {
+        term = true,
+        stdout_buffered = true,
+    }, job_opts or {})
+
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        -- Check if the buffer already exists
+        if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
+            -- If the buffer exists, check if it's already open in a window
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_get_buf(win) == buf then
+                    vim.api.nvim_win_set_config(win, win_opts)
+                    vim.api.nvim_set_current_win(win)
+                    vim.cmd.startinsert()
+                    return
+                end
+            end
+
+            -- Otherwise, open the buffer in a new window
+            vim.api.nvim_open_win(buf, true, win_opts)
+            vim.cmd.startinsert()
+            return
+        end
+    end
+
+    -- If the buffer does not exist, create and open it
+    local buf = vim.api.nvim_create_buf(true, false)
+    vim.api.nvim_open_win(buf, true, win_opts)
+    vim.fn.jobstart(cmd, job_opts_merged)
+    vim.api.nvim_buf_set_name(buf, buffer_name)
+    vim.cmd.startinsert()
+end
+
 return M
