@@ -14,6 +14,8 @@ return {
     },
     opts = function()
         local neotree = require("neo-tree")
+        local def = require("neo-tree.defaults")
+
         ---@diagnostic disable missing-fields
         ---@type neotree.Config?
         local opts = {
@@ -37,8 +39,10 @@ return {
                 },
                 indent = {
                     indent_size = 1,
-                    indent_marker = "│",
-                    last_indent_marker = "└",
+                    -- indent_marker = "│",
+                    -- last_indent_marker = "└",
+                    indent_marker = "▏",
+                    last_indent_marker = "▏",
                 },
                 modified = {
                     symbol = "*",
@@ -78,16 +82,31 @@ return {
                 position = "left",
                 mappings = {
                     ["/"] = {},
-                    ["p"] = { "toggle_preview" },
                     ["<tab>"] = { "toggle_node" },
                     ["z"] = "noop",
                     ["s"] = "noop",
                     ["y"] = "noop",
                     ["e"] = "noop",
                     ["v"] = "open_vsplit",
+                    ["p"] = {
+                        "toggle_preview",
+                        config = { use_float = true, use_image_nvim = false },
+                    },
+                    ["c"] = {
+                        "add",
+                        config = {
+                            ---@type ("none"|"relative"|"absolute")
+                            show_path = "relative",
+                        },
+                    },
+                    ["X"] = "delete",
+                    ["c"] = "copy_to_clipboard",
+                    ["x"] = "cut_to_clipboard",
+                    ["P"] = "paste_from_clipboard",
                 },
             },
             filesystem = {
+                bind_to_cwd = false,
                 filtered_items = {
                     visible = true,
                     hide_dotfiles = false,
