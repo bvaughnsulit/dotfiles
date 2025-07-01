@@ -124,9 +124,14 @@ vim.keymap.set(
     "n",
     "<leader>aa",
     function()
-        utils.toggle_persistent_terminal("gemini", "Gemini", {
-            height = 10,
-            split = "below",
+        utils.toggle_persistent_terminal("claude", "claude", {
+            q_to_go_back = { "n" },
+            start_insert = true,
+            auto_insert = false,
+            win_config = {
+                height = 10,
+                split = "below",
+            },
         })
     end,
     { desc = "Open AI Agent" }

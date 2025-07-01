@@ -295,6 +295,13 @@ utils.create_cmd_and_map(
     "Focus Floating Window"
 )
 
+vim.keymap.set(
+    "t",
+    "<c-o>",
+    "<C-\\><C-n><C-o>",
+    { desc = "Jump to Normal Mode and Go Back" }
+)
+
 vim.keymap.set("n", "<leader>gg", function()
     local dotfiles_root = utils.get_dotfiles_root()
     local lazygit_config = dotfiles_root .. "/lazygit/lazygit.yml"
@@ -308,6 +315,13 @@ vim.keymap.set("n", "<leader>gg", function()
         {
             q_to_go_back = { "n", "t" },
             auto_insert = true,
+            win_config = {
+                relative = "editor",
+                height = vim.o.lines - 2,
+                width = vim.o.columns,
+                row = 1,
+                col = 1,
+            },
             job_opts = { env = {
                 LG_CONFIG_FILE=lazygit_config,
             } },

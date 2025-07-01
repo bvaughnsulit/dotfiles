@@ -169,12 +169,21 @@ M.get_dotfiles_root = function()
     return Snacks.git.get_root(result.stdout:sub(1, -2))
 end
 
-M.hide_buffer = function(buf)
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-\\><c-n><c-o>", true, true, true), "", false)
+M.jump_from_term_buffer = function()
+    local mode = vim.api.nvim_get_mode().mode --[[@as "n"|"t"|string]]
+    local cmd = ""
+    if mode == "n" or mode == "nt" then
+        cmd = "<c-o>"
+    elseif mode == "t" then
+        cmd = "<c-\\><c-n><c-o>"
+    else
+        return
+    end
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, true, true), "", false)
 end
 
 ---@class TerminalOpts
----@field q_to_go_back? ("t"|"n")[]
+---@field q_to_go_back? ("t"|"n")[] | nil
 ---@field auto_insert? boolean
 ---@field win_config? vim.api.keyset.win_config
 ---@field job_opts? table # options to pass to `vim.fn.jobstart`
@@ -197,6 +206,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
             -- If the buffer exists, check if it's already open in a window
             for _, window in ipairs(vim.api.nvim_list_wins()) do
+                -- If already open in a window, just switch to it and update the config
                 if vim.api.nvim_win_get_buf(window) == buf and opts.win_config then
                     vim.api.nvim_win_set_config(window, opts.win_config)
                     vim.api.nvim_set_current_win(window)
@@ -225,30 +235,27 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
     vim.fn.jobstart(cmd, job_opts_merged)
     vim.api.nvim_buf_set_name(buf, buffer_name)
 
-    for _, i in ipairs(opts.q_to_go_back or {}) do
-        if i == "n" then
-            vim.keymap.set(
-                "n",
-                "q",
-                function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-o>", true, true, true), "", false) end,
-                { buffer = buf, desc = "Go back to previous location" }
-            )
-        end
-
-        if i == "t" then
-            vim.keymap.set(
-                "t",
-                "q",
-                function()
-                    vim.api.nvim_feedkeys(
-                        vim.api.nvim_replace_termcodes("<c-\\><c-n><c-o>", true, true, true),
-                        "",
-                        false
-                    )
-                end,
-                { buffer = buf, desc = "Go back to previous location" }
-            )
-        end
+    -- set the buffer options
+    if opts.q_to_go_back then
+        vim.keymap.set(opts.q_to_go_back, "q", function()
+            local win = vim.api.nvim_win_get_config(0)
+            local is_closeable = win.relative ~= ""
+            if not is_closeable then
+                -- check if the window is full screen
+                local ui_lines = (vim.o.tabline ~= "" and 1 or 0) + (vim.o.laststatus ~= 0 and 1 or 0) + vim.o.cmdheight
+                local full_width = vim.o.columns == win.width
+                local full_height = vim.o.lines - ui_lines == win.height
+                is_closeable = not (full_width and full_height)
+            end
+            if is_closeable then
+                vim.api.nvim_win_close(0, false)
+            else
+                M.jump_from_term_buffer()
+            end
+        end, {
+            buffer = buf,
+            desc = "Hide buffer",
+        })
     end
 
     if opts.auto_insert then
