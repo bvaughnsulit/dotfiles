@@ -34,49 +34,14 @@ return {
     opts = function()
         ---@type snacks.Config
         return {
-            styles = {
-                lazygit = {
-                    width = 0,
-                    height = 0,
-                    relative = "editor",
-                    keys = {
-                        term_normal = false,
-                        t_q = {
-                            "q",
-                            function() Snacks.lazygit.open() end,
-                            mode = "t",
-                            expr = true,
-                        },
-                    },
-                },
-            },
-            lazygit = {
-                enabled = true,
-                config = {
-                    git = {
-                        paging = {
-                            pager = "delta --paging=never " .. (utils.is_system_dark_mode() and "--dark" or "--light"),
-                        },
-                    },
-                },
-            },
+            lazygit = { enabled = false },
             notifier = { enabled = true },
             quickfile = { enabled = true },
             bigfile = { enabled = true },
             words = { enabled = true },
             input = { enabled = true },
-            -- toggle = { map = LazyVim.safe_keymap_set },
-            statuscolumn = { enabled = false }, -- we set this in options.lua
-            terminal = {
-                win = {
-                    -- keys = {
-                    --   nav_h = { '<C-h>', term_nav('h'), desc = 'Go to Left Window', expr = true, mode = 't' },
-                    --   nav_j = { '<C-j>', term_nav('j'), desc = 'Go to Lower Window', expr = true, mode = 't' },
-                    --   nav_k = { '<C-k>', term_nav('k'), desc = 'Go to Upper Window', expr = true, mode = 't' },
-                    --   nav_l = { '<C-l>', term_nav('l'), desc = 'Go to Right Window', expr = true, mode = 't' },
-                    -- },
-                },
-            },
+            statuscolumn = { enabled = false },
+            scope = { enabled = true },
             picker = {
                 layout = {
                     layout = {
@@ -127,14 +92,25 @@ return {
                     },
                 },
             },
+            styles = {
+                lazygit = {
+                    width = 0,
+                    height = 0,
+                    relative = "editor",
+                    keys = {
+                        term_normal = false,
+                        t_q = {
+                            "q",
+                            function() Snacks.lazygit.open() end,
+                            mode = "t",
+                            expr = true,
+                        },
+                    },
+                },
+            },
         }
     end,
     keys = {
-        {
-            "<leader>gg",
-            function() Snacks.lazygit.open() end,
-            desc = "Lazygit",
-        },
         {
             "<leader>ps",
             function() Snacks.picker.lazy() end,

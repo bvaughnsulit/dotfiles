@@ -1,27 +1,25 @@
 return {
-    -- disabled specs
-    { "akinsho/bufferline.nvim", enabled = false },
-    { "windwp/nvim-ts-autotag", enabled = false },
     {
         "/local-config",
         dev = true,
         event = "VeryLazy",
         config = function() pcall(require, "local-config") end,
     },
-    { "JoosepAlviste/nvim-ts-context-commentstring" },
     {
         "numToStr/Comment.nvim",
         event = "VeryLazy",
-        config = function()
-            require("Comment").setup({
+        dependencies = {
+            "JoosepAlviste/nvim-ts-context-commentstring",
+        },
+        opts = function()
+            return {
                 pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-            })
+            }
         end,
     },
     {
         "windwp/nvim-autopairs",
         event = "VeryLazy",
-        config = function() require("nvim-autopairs").setup({}) end,
     },
     {
         "eandrju/cellular-automaton.nvim",
@@ -37,7 +35,6 @@ return {
     {
         "rmagatti/auto-session",
         lazy = false,
-
         ---@module "auto-session"
         ---@type AutoSession.Config
         opts = {
@@ -69,7 +66,7 @@ return {
     {
         "kevinhwang91/nvim-bqf",
         event = "VeryLazy",
-        config = {
+        opts = {
             auto_preview = {
                 default = false,
             },
@@ -107,5 +104,12 @@ return {
     {
         "mbbill/undotree",
         cmd = "UndotreeToggle",
+    },
+    {
+        "kevinhwang91/nvim-ufo",
+        event = "VeryLazy",
+        dependencies = {
+            "kevinhwang91/promise-async",
+        },
     },
 }

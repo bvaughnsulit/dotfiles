@@ -43,7 +43,7 @@ vim.opt.cmdheight = 0
 vim.opt.diffopt = "filler,vertical,closeoff"
 vim.opt.fillchars = {
     diff = "╱",
-    fold = "╌",
+    fold = " ",
     foldopen = "",
     foldclose = "",
     foldsep = " ",
@@ -61,7 +61,6 @@ vim.opt.wildmode = "longest:full,full"
 vim.opt.conceallevel = 0
 vim.opt.sessionoptions = {
     "buffers",
-    "curdir",
     "tabpages",
     "winsize",
     "help",
