@@ -68,9 +68,9 @@ return {
                         python = {
                             analysis = {
                                 --- @type ("off" | "basic" | "standard" | "strict")
-                                typeCheckingMode = "basic",
+                                typeCheckingMode = "standard",
                                 --- @type ("openFilesOnly" | "workspace")
-                                diagnosticMode = "openFilesOnly",
+                                diagnosticMode = "workspace",
                             },
                         },
                     },
@@ -107,6 +107,14 @@ return {
                     })
                 end,
             },
+        },
+    },
+    {
+        "folke/neoconf.nvim",
+        lazy = false,
+        opts = {
+            local_settings = ".__bvs__neoconf.json",
+            import = { vscode = false },
         },
     },
     {
