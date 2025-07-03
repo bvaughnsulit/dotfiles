@@ -30,9 +30,14 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = {},
                 lualine_c = { "branch" },
-                lualine_x = { "location" },
+                lualine_x = {
+                    "progress",
+                    "location",
+                },
                 lualine_y = { "filetype" },
-                lualine_z = {},
+                lualine_z = {
+                    function() return require("osv").is_running() and "DEBUG" or "" end,
+                },
             },
             winbar = {
                 lualine_a = {

@@ -36,6 +36,7 @@ alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 alias lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias nvim-min='NVIM_APPNAME=minimal-nvim nvim'
 alias plugs='cd ~/.local/share/nvim/lazy/'
+alias nvim-debug="INIT_DEBUG=true nvim"
 
 alias lg='lazygit'
 alias venv='source venv/bin/activate'
