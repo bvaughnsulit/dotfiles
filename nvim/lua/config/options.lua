@@ -8,6 +8,7 @@ vim.g.loaded_ruby_provider = 0
 
 vim.opt.number = true
 vim.opt.mouse = "a"
+vim.opt.mousemodel = "extend"
 vim.opt.updatetime = 200
 vim.opt.tabstop = 4
 -- vim.opt.softtabstop = 4
@@ -95,4 +96,3 @@ vim.g.autoformat = true
 -- vim.g.root_spec = { 'lsp', { '.git', 'lua' }, 'cwd' }
 -- vim.opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
 -- vim.opt.formatoptions = 'jcroqlnt' -- tcqj
--- vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]

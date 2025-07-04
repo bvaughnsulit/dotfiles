@@ -40,7 +40,6 @@ return {
             bigfile = { enabled = true },
             words = { enabled = true },
             input = { enabled = true },
-            statuscolumn = { enabled = false },
             scope = { enabled = true },
             picker = {
                 layout = {
