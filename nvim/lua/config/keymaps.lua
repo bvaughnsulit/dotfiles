@@ -82,7 +82,8 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 map("i", "<cr>", "<cr><c-g>u")
 
-map("n", "<leader>w", "<cmd>w<cr>", { desc = ":w" })
+map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
+map("n", "<leader>W", "<cmd>w<cr><cmd>restart<cr>", { desc = "Save and restart" })
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 map("n", "<leader>QQ", "<cmd>qa!<cr>", { desc = "Force Quit all" })
 map("n", "<leader>qw", "<cmd>wqa<cr>", { desc = "Quit and save all" })
@@ -94,6 +95,8 @@ map("n", "<leader>xx", function()
     vim.cmd("w")
     vim.cmd("so %")
 end, { desc = "Save and source current file" })
+
+map("n", "<leader>,r", ":restart<cr>", { desc = "Restart Neovim" })
 
 utils.create_cmd_and_map(
     "ToggleWrap",
