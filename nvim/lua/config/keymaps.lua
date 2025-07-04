@@ -17,6 +17,14 @@ map({ "n", "v" }, "<leader>bd", "<cmd>bdelete<cr>", {})
 map("n", "<leader>/y", "/\\V<C-r>+<cr>", { desc = "search with contents of + register" })
 
 map("n", "<leader>:", ":lua print(vim.inspect())<left><left>")
+map({ "n", "v" }, "zf", "za", { desc = "Toggle fold" })
+map({ "n" }, "zF", "zA", { desc = "Toggle fold recursively" })
+
+map({ "n" }, "<cr>", "za", { desc = "Toggle fold" })
+map({ "n" }, "<a-cr>", "zA", { desc = "Toggle fold recursively" })
+
+map({ "n", "v" }, "za", "zf", { desc = "Create fold" })
+map({ "n", "v" }, "zA", "zF", { desc = "Create fold" })
 
 map("n", "<leader>ra", ":%s/\\V<C-r>///gI<left><left><left>")
 map("v", "<leader>ra", ":s/\\V<C-r>///gI<left><left><left>", { desc = "replace with last search in selected area" })
