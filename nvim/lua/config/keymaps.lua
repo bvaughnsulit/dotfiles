@@ -279,52 +279,40 @@ map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 
+-- lazyvim end
+-- stylua: ignore end
 
-utils.create_cmd_and_map(
-    "FocusFloat",
-  "<leader>ff",
-    function()
-        for _, winid in ipairs(vim.api.nvim_list_wins()) do
-            local config = vim.api.nvim_win_get_config(winid)
-            if config.relative ~= "" and config.focusable and not config.hide then
-                vim.api.nvim_set_current_win(winid)
-                break
-            end
+utils.create_cmd_and_map("FocusFloat", "<leader>ff", function()
+    for _, winid in ipairs(vim.api.nvim_list_wins()) do
+        local config = vim.api.nvim_win_get_config(winid)
+        if config.relative ~= "" and config.focusable and not config.hide then
+            vim.api.nvim_set_current_win(winid)
+            break
         end
-    end,
-    "Focus Floating Window"
-)
+    end
+end, "Focus Floating Window")
 
-vim.keymap.set(
-    "t",
-    "<c-o>",
-    "<C-\\><C-n><C-o>",
-    { desc = "Jump to Normal Mode and Go Back" }
-)
+vim.keymap.set("t", "<c-o>", "<C-\\><C-n><C-o>", { desc = "Jump to Normal Mode and Go Back" })
 
 vim.keymap.set("n", "<leader>gg", function()
     local dotfiles_root = utils.get_dotfiles_root()
     local lazygit_config = dotfiles_root .. "/lazygit/lazygit.yml"
-    if (not utils.is_system_dark_mode()) then
+    if not utils.is_system_dark_mode() then
         lazygit_config = lazygit_config .. "," .. dotfiles_root .. "/lazygit/light.yml"
     end
 
-    utils.toggle_persistent_terminal(
-        "lazygit",
-        "Lazygit",
-        {
-            q_to_go_back = { "n", "t" },
-            auto_insert = true,
-            win_config = {
-                relative = "editor",
-                height = vim.o.lines - 2,
-                width = vim.o.columns,
-                row = 1,
-                col = 1,
-            },
-            job_opts = { env = {
-                LG_CONFIG_FILE=lazygit_config,
-            } },
-        }
-    )
+    utils.toggle_persistent_terminal("lazygit", "Lazygit", {
+        q_to_go_back = { "n", "t" },
+        auto_insert = true,
+        win_config = {
+            relative = "editor",
+            height = vim.o.lines - 2,
+            width = vim.o.columns,
+            row = 1,
+            col = 1,
+        },
+        job_opts = { env = {
+            LG_CONFIG_FILE = lazygit_config,
+        } },
+    })
 end, { desc = "Open Lazygit Terminal" })
