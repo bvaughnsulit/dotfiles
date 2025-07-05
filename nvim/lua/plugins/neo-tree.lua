@@ -139,7 +139,21 @@ return {
         }
         ---@diagnostic enable missing-fields
 
-        vim.keymap.set("n", "<leader>ee", "<cmd>Neotree toggle<cr>", {})
+        vim.keymap.set(
+            "n",
+            "<leader>ee",
+            function()
+                require("neo-tree.command").execute({
+                    source = "filesystem",
+                    action = "focus",
+                    git_base = utils.get_merge_base_hash(),
+                    toggle = true,
+                    reveal = true,
+                    dir = Snacks.git.get_root(require("neo-tree.sources.manager").get_path_to_reveal(false)),
+                })
+            end,
+            {}
+        )
 
         utils.create_cmd_and_map(
             "ToggleIsExplorerPinned",
