@@ -110,17 +110,17 @@ return {
                 desc = "Continue",
             },
             {
-                "<leader>di",
+                "<right>",
                 function() require("dap").step_into() end,
                 desc = "Step Into",
             },
             {
-                "<leader>dO",
+                "<left>",
                 function() require("dap").step_out() end,
                 desc = "Step Out",
             },
             {
-                "<leader>do",
+                "<down>",
                 function() require("dap").step_over() end,
                 desc = "Step Over",
             },
@@ -224,13 +224,13 @@ return {
         },
     },
     {
-        {
-            "jbyuki/one-small-step-for-vimkind",
-            init = function()
-                if vim.fn.getenv("INIT_DEBUG") == "true" then
-                    require("osv").launch({ port = 8086, blocking = true })
-                end
-            end,
-        },
+        "jbyuki/one-small-step-for-vimkind",
+        init = function()
+            if vim.fn.getenv("INIT_DEBUG") == "true" then require("osv").launch({ port = 8086, blocking = true }) end
+        end,
+    },
+    {
+        "mfussenegger/nluarepl",
+        event = "VeryLazy",
     },
 }
