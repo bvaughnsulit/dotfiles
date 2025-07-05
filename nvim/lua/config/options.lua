@@ -88,7 +88,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldtext = "getline(v:foldstart) .. ' '"
-vim.opt.foldcolumn = "0"
+vim.opt.foldcolumn = "1"
 
 vim.g.markdown_recommended_style = 0
 vim.g.autoformat = true

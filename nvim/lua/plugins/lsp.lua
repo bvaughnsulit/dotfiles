@@ -118,6 +118,9 @@ return {
                                 client.server_capabilities.documentFormattingProvider = false
                             end
 
+                            vim.o.foldlevel = 99
+                            vim.o.foldmethod = "expr"
+                            vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
                             if client and client:supports_method("textDocument/foldingRange") then
                                 local win = vim.api.nvim_get_current_win()
                                 vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
