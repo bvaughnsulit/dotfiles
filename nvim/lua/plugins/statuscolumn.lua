@@ -26,10 +26,18 @@ return {
                 Lnum = function(args)
                     if args.button == "l" then
                         if args.mods:find("a") then
-                            require("gitsigns").blame_line({ full = true })
+                            vim.ui.input({
+                                prompt = "Log message: ",
+                            }, function(input)
+                                if input then
+                                    require("dap").toggle_breakpoint(nil, nil, input ~= "" and input or "Logpoint")
+                                end
+                            end)
                         else
-                            builtin.toggle_breakpoint({ mods = "" })
+                            require("dap").toggle_breakpoint()
                         end
+                    elseif args.button == "r" then
+                        require("gitsigns").blame_line({ full = true })
                     end
                 end,
 
