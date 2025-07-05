@@ -6,10 +6,7 @@ return {
         local builtin = require("statuscol.builtin")
         local opts = {
             segments = {
-                {
-                    text = { builtin.foldfunc },
-                    click = "v:lua.ScFa",
-                },
+                -- { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
                 {
                     text = { "%s" },
                     click = "v:lua.ScSa",
