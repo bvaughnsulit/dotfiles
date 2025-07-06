@@ -31,6 +31,7 @@ return {
                 lualine_b = {},
                 lualine_c = { "branch" },
                 lualine_x = {
+                    "searchcount",
                     "progress",
                     "location",
                 },
