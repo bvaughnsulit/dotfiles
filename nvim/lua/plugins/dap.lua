@@ -183,15 +183,39 @@ return {
                             break
                         end
                     end
-
                     if not session_exists then vim.cmd(":DapNew nluarepl") end
-                    local width = math.floor(vim.o.columns * 0.3)
 
-                    vim.cmd(width .. " vsplit dap-eval://lua")
-                    vim.keymap.set("n", "q", function()
-                        require("dap").repl.close()
-                        vim.cmd("hide")
-                    end, { buffer = 0, silent = true })
+                    local eval_bufnr = nil
+                    for _, win in ipairs(vim.fn.getwininfo()) do
+                        if vim.fn.getbufinfo(win.bufnr)[1].name:find("dap-eval://lua", 1, true) then
+                            eval_bufnr = win.bufnr
+                            break
+                        end
+                    end
+
+                    if eval_bufnr == nil then
+                        -- Create a new eval buffer if it doesn't exist
+                        local width = math.floor(vim.o.columns * 0.3)
+
+                        vim.cmd(width .. " vsplit dap-eval://lua")
+                        vim.api.nvim_buf_set_lines(0, 0, 1, false, { "debug_info()" })
+                        vim.cmd("w")
+
+                        vim.keymap.set("n", "q", function()
+                            require("dap").repl.close()
+                            vim.cmd("hide")
+                        end, { buffer = 0, silent = true })
+                    else
+                        -- if it already exists, execute the lines in the eval buffer
+                        vim.bo[eval_bufnr].modified = false
+                        local repl = require("dap.repl")
+                        local lines = vim.api.nvim_buf_get_lines(eval_bufnr, 0, -1, true)
+                        local lines_str = table.concat(lines, "\n")
+                        if lines_str ~= "" then
+                            repl.execute(lines_str)
+                            repl.open()
+                        end
+                    end
                 end,
                 desc = "Start nluarepl DAP and open eval buffer",
             },

@@ -273,4 +273,30 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
     end
 end
 
+M.debug_info = function(...)
+    local wins = vim.deepcopy(vim.fn.getwininfo(), true)
+    local info = {}
+
+    for i, win in ipairs(wins) do
+        local buf_info = vim.deepcopy(vim.fn.getbufinfo(win.bufnr)[1], true)
+        local filetype = vim.api.nvim_get_option_value("filetype", { buf = win.bufnr })
+
+        if filetype ~= "dap-repl" and not buf_info.name:find("dap-eval://", 1, true) then
+            local filename = M.get_path_tail(buf_info.name)
+            local title = string.len(filename) > 0 and filename or filetype
+
+            local key = "[" .. win.winnr .. ":" .. win.bufnr .. "] " .. title
+
+            info[key] = {
+                win_info = win,
+                buf_info = buf_info,
+                buf_name = buf_info.name,
+                filetype = filetype,
+            }
+        end
+    end
+    return info
+end
+_G.debug_info = M.debug_info
+
 return M
