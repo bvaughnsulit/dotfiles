@@ -78,6 +78,29 @@ return {
                     },
                 },
             },
+            ---@type table<string, NoiceCommand>
+            commands = {
+                customHistory = {
+                    view = "popup",
+                    opts = { enter = true, format = "details" },
+                    filter = {
+                        any = {
+                            { event = "notify" },
+                            { error = true },
+                            { warning = true },
+                            { event = "msg_show", kind = { "" } },
+                            { event = "lsp", kind = "message" },
+                        },
+                    },
+                    filter_opts = { reverse = true },
+                },
+                customAll = {
+                    view = "popup",
+                    opts = { enter = true, format = "details" },
+                    filter = {},
+                    filter_opts = { reverse = true },
+                },
+            },
         },
         dependencies = {
             "MunifTanjim/nui.nvim",
@@ -86,6 +109,16 @@ return {
         keys = {
             { "<c-f>", false },
             { "<c-b>", false },
+            {
+                "<leader>,m",
+                function() require("noice").cmd("customHistory") end,
+                desc = "Message History",
+            },
+            {
+                "<leader>,M",
+                function() require("noice").cmd("customAll") end,
+                desc = "All Messages",
+            },
         },
     },
 }
