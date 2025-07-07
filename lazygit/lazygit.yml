@@ -10,6 +10,7 @@ gui:
   border: 'single'
   enlargedSideViewLocation: top
   portraitMode: auto
+  useHunkModeInStagingView: true
 os:
   editPreset: 'nvim-remote'
   open: 'open -R {{filename}}'
