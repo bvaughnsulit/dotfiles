@@ -165,8 +165,6 @@ return {
             -- end,
 
             live_grep = function()
-                local settings = require("neoconf").get("config", require("config.defaults"))
-
                 local default_exclude = {
                     "package-lock.json",
                     "*.git/",
@@ -176,7 +174,8 @@ return {
                     "*.jpg",
                     "*.jpeg",
                 }
-                local grep_exclude = vim.tbl_extend("force", default_exclude, settings.grep_exclude or {})
+                local grep_exclude =
+                    vim.tbl_extend("force", default_exclude, require("config.settings").grep_exclude or {})
 
                 Snacks.picker.grep(
                     --- @type snacks.picker.grep.Config

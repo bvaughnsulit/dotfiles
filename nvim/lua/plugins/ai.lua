@@ -120,22 +120,26 @@ When given a task:
 4. Provide exactly one complete reply per conversation turn.
 ]]
 
-vim.keymap.set(
-    "n",
-    "<leader>aa",
-    function()
-        utils.toggle_persistent_terminal("claude", "claude", {
-            q_to_go_back = { "n" },
-            start_insert = true,
-            auto_insert = false,
-            win_config = {
-                height = 10,
-                split = "below",
-            },
-        })
-    end,
-    { desc = "Open AI Agent" }
-)
+local agents = {
+    claude = {
+        name = "Claude",
+        cmd = "claude",
+    },
+    gemini = {
+        name = "Gemini",
+        cmd = "gemini",
+    },
+}
+
+vim.keymap.set("n", "<leader>aa", function()
+    local agent = agents[require("config.settings").agent]
+    utils.toggle_persistent_terminal(agent.cmd, agent.name, {
+        q_to_go_back = { "n" },
+        start_insert = true,
+        auto_insert = false,
+        win_config = { height = 10, split = "below" },
+    })
+end, { desc = "Open AI Agent" })
 
 return {
     {
