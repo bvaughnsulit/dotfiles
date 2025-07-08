@@ -185,6 +185,7 @@ end
 ---@class TerminalOpts
 ---@field q_to_go_back? ("t"|"n")[] | nil
 ---@field auto_insert? boolean
+---@field on_create? fun(bufnr: number): nil
 ---@field win_config? vim.api.keyset.win_config
 ---@field job_opts? table # options to pass to `vim.fn.jobstart`
 ---@see vim.fn.jobstart
@@ -271,6 +272,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         })
         vim.cmd.startinsert()
     end
+    if opts.on_create then opts.on_create(buf) end
 end
 
 M.debug_info = function(...)

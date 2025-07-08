@@ -137,6 +137,7 @@ vim.keymap.set("n", "<leader>aa", function()
         q_to_go_back = { "n" },
         start_insert = true,
         auto_insert = false,
+        on_create = function(bufnr) end,
         win_config = { height = 10, split = "below" },
     })
 end, { desc = "Open AI Agent" })
