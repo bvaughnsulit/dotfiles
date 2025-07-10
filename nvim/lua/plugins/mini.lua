@@ -38,6 +38,7 @@ return {
 
             local trailspace = require("mini.trailspace")
             trailspace.setup({})
+            vim.g.minitrailspace_disable = true
 
             vim.api.nvim_create_autocmd("BufWritePre", {
                 group = vim.api.nvim_create_augroup("Mini", {}),

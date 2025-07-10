@@ -33,6 +33,15 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+vim.api.nvim_create_autocmd("TermOpen", {
+    group = augroup("term_open"),
+    callback = function()
+        vim.opt_local.number = false
+        vim.opt_local.wrap = true
+    end,
+    desc = "Configure terminal buffer",
+})
+
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     group = augroup("checktime"),
     callback = function()
@@ -75,12 +84,8 @@ vim.api.nvim_create_autocmd("FileType", {
         "tsplayground",
     },
     callback = function(event)
-        vim.bo[event.buf].buflisted = false
         vim.schedule(function()
-            vim.keymap.set("n", "q", function()
-                vim.cmd("close")
-                pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-            end, {
+            vim.keymap.set("n", "q", function() vim.cmd("close") end, {
                 buffer = event.buf,
                 silent = true,
                 desc = "Quit buffer",

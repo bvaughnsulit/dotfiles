@@ -58,7 +58,7 @@ return {
                         staged = "󰝥",
                         conflict = "",
                     },
-                    align = "right",
+                    align = "left",
                 },
                 file_size = { enabled = false },
                 type = { enabled = false },

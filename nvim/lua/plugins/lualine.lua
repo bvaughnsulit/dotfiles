@@ -31,6 +31,14 @@ return {
                 lualine_b = {},
                 lualine_c = { "branch" },
                 lualine_x = {
+                    function()
+                        local dap_sessions = {}
+                        for _, session in ipairs(require("dap").sessions()) do
+                            table.insert(dap_sessions, session.config.type or session.config.name)
+                        end
+                        if #dap_sessions == 0 then return "" end
+                        return ":" .. table.concat(dap_sessions, ",")
+                    end,
                     "searchcount",
                     "progress",
                     "location",

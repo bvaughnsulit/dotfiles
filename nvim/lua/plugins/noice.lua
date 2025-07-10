@@ -80,16 +80,12 @@ return {
             },
             ---@type table<string, NoiceCommand>
             commands = {
-                customHistory = {
+                filterTest = {
                     view = "popup",
                     opts = { enter = true, format = "details" },
                     filter = {
                         any = {
-                            { event = "notify" },
-                            { error = true },
-                            { warning = true },
-                            { event = "msg_show", kind = { "" } },
-                            { event = "lsp", kind = "message" },
+                            { event = { "msg_ruler", "msg_showcmd" } },
                         },
                     },
                     filter_opts = { reverse = true },
@@ -97,7 +93,11 @@ return {
                 customAll = {
                     view = "popup",
                     opts = { enter = true, format = "details" },
-                    filter = {},
+                    filter = {
+                        ["not"] = {
+                            event = { "msg_ruler", "msg_showcmd" },
+                        },
+                    },
                     filter_opts = { reverse = true },
                 },
             },
@@ -110,12 +110,12 @@ return {
             { "<c-f>", false },
             { "<c-b>", false },
             {
-                "<leader>,m",
-                function() require("noice").cmd("customHistory") end,
+                "<leader>,M",
+                function() require("noice").cmd("filterTest") end,
                 desc = "Message History",
             },
             {
-                "<leader>,M",
+                "<leader>,m",
                 function() require("noice").cmd("customAll") end,
                 desc = "All Messages",
             },

@@ -262,7 +262,6 @@ Snacks.toggle.option("background", { off = "light", on = "dark" , name = "Dark B
 
 -- lazygit
 if vim.fn.executable("lazygit") == 1 then
-  map("n", "<leader>gG", function() Snacks.lazygit() end, { desc = "Lazygit (cwd)" })
   map("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc = "Git Blame Line" })
   map("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "Git Browse" })
   map("n", "<leader>gf", function() Snacks.lazygit.log_file() end, { desc = "Lazygit Current File History" })

@@ -84,7 +84,7 @@ return {
                                 --- @type ("off" | "basic" | "standard" | "strict")
                                 typeCheckingMode = "standard",
                                 --- @type ("openFilesOnly" | "workspace")
-                                diagnosticMode = "workspace",
+                                diagnosticMode = "openFilesOnly",
                             },
                         },
                     },
@@ -135,10 +135,12 @@ return {
     {
         "folke/neoconf.nvim",
         lazy = false,
-        opts = {
-            local_settings = ".__bvs__neoconf.json",
-            import = { vscode = false },
-        },
+        init = function()
+            require("neoconf").setup({
+                local_settings = ".__bvs__neoconf.json",
+                import = { vscode = false },
+            })
+        end,
     },
     {
         "mfussenegger/nvim-lint",

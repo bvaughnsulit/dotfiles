@@ -262,7 +262,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
     if opts.auto_insert then
         vim.api.nvim_create_autocmd("BufEnter", {
             buffer = buf,
-            group = M.augroup(name .. "_terminal_enter"),
+            group = M.augroup(buf .. "_terminal_enter"),
             callback = function()
                 vim.schedule(function()
                     vim.api.nvim_win_set_cursor(0, { 1, 0 })

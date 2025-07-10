@@ -20,8 +20,29 @@ return {
         lazy = false,
         dev = false,
         priority = 1000,
-        config = function()
-            require("github-theme").setup({})
+        ---@type GhTheme.Config
+        opts = {
+            options = {
+                modules = {
+                    dapui = true,
+                    diagnostic = true,
+                    fzf = true,
+                    gitsigns = true,
+                    indent_blankline = true,
+                    lsp_trouble = true,
+                    mini = true,
+                    native_lsp = true,
+                    neotree = true,
+                    notify = true,
+                    telescope = true,
+                    treesitter = true,
+                    treesitter_context = true,
+                    whichkey = true,
+                },
+            },
+        },
+        config = function(_, opts)
+            require("github-theme").setup(opts)
             if not is_system_dark_mode and default_light_theme == "github_light_colorblind" then
                 vim.cmd("colorscheme github_light_colorblind")
             end

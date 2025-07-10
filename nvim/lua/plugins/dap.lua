@@ -4,11 +4,6 @@ return {
     {
         "mfussenegger/nvim-dap",
         event = "VeryLazy",
-        -- TODO
-        -- DAP repl completion
-        -- widgets
-        -- dap.status()
-        -- events/listeners
         dependencies = {
             "rcarriga/nvim-dap-ui",
             "mxsdev/nvim-dap-vscode-js",
@@ -58,7 +53,7 @@ return {
             --     'pwa-extensionHost',
             --   },
             -- })
-            require("dap").defaults.python.exception_breakpoints = { "uncaught" }
+            require("dap").defaults.python.exception_breakpoints = {}
             dap.adapters["pwa-node"] = {
                 type = "server",
                 port = "${port}",
@@ -82,6 +77,25 @@ return {
             vim.api.nvim_create_autocmd("VimLeavePre", {
                 pattern = "*",
                 callback = function() dapui.close() end,
+            })
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = { "dap-*", "dapui_*" },
+                group = utils.augroup("dap_ui_mappings"),
+                callback = function(event)
+                    vim.schedule(function()
+                        vim.keymap.set("n", "q", function() dapui.close() end, {
+                            buffer = event.buf,
+                            silent = true,
+                            desc = "Close DAP UI",
+                        })
+                    end)
+                end,
+            })
+            vim.api.nvim_create_autocmd("FileType", {
+                group = utils.augroup("dap_repl_console"),
+                pattern = { "dap-repl", "dapui_console" },
+                callback = function() vim.opt_local.wrap = true end,
             })
         end,
         keys = {
@@ -266,15 +280,15 @@ return {
                         },
                         {
                             id = "stacks",
-                            size = 0.08,
+                            size = 0.05,
                         },
                         {
                             id = "watches",
-                            size = 0.08,
+                            size = 0.05,
                         },
                         {
                             id = "repl",
-                            size = 0.04,
+                            size = 0.1,
                         },
                     },
                     position = "right",
