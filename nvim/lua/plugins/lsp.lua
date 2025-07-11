@@ -46,91 +46,91 @@ return {
                 -- has = 'codeAction',
             },
         },
-        opts = {
-            inlay_hints = { enabled = false },
-            diagnostics = {
-                virtual_text = false,
-                signs = {
-                    text = {
-                        [vim.diagnostic.severity.ERROR] = "",
-                        [vim.diagnostic.severity.WARN] = "",
-                        [vim.diagnostic.severity.INFO] = "",
-                        [vim.diagnostic.severity.HINT] = "",
-                    },
-                    numhl = {
-                        [vim.diagnostic.severity.ERROR] = "DiagnosticError",
-                        [vim.diagnostic.severity.WARN] = "DiagnosticWarn",
-                        [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
-                        [vim.diagnostic.severity.HINT] = "DiagnosticHint",
-                    },
-                },
-                float = {
-                    wrap = true,
-                    max_width = 120,
-                    source = true,
-                    border = "rounded",
-                    style = "minimal",
-                },
-            },
-            servers = {
-                pyright = {
-                    root_dir = function(fname)
-                        local util = require("lspconfig.util")
-                        return util.root_pattern(".git")(fname)
-                    end,
-                    settings = {
-                        python = {
-                            analysis = {
-                                --- @type ("off" | "basic" | "standard" | "strict")
-                                typeCheckingMode = "standard",
-                                --- @type ("openFilesOnly" | "workspace")
-                                diagnosticMode = "openFilesOnly",
-                            },
+        opts = function()
+            local opts = {
+                inlay_hints = { enabled = false },
+                diagnostics = {
+                    virtual_text = false,
+                    signs = {
+                        text = {
+                            [vim.diagnostic.severity.ERROR] = "",
+                            [vim.diagnostic.severity.WARN] = "",
+                            [vim.diagnostic.severity.INFO] = "",
+                            [vim.diagnostic.severity.HINT] = "",
+                        },
+                        numhl = {
+                            [vim.diagnostic.severity.ERROR] = "DiagnosticError",
+                            [vim.diagnostic.severity.WARN] = "DiagnosticWarn",
+                            [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+                            [vim.diagnostic.severity.HINT] = "DiagnosticHint",
                         },
                     },
-                },
-                eslint = {
-                    settings = {
-                        workingDirectory = { mode = "location" },
+                    float = {
+                        wrap = true,
+                        max_width = 120,
+                        source = true,
+                        border = "rounded",
+                        style = "minimal",
                     },
                 },
-                vtsls = {
-                    settings = {
-                        typescript = {
-                            format = {
-                                enable = false,
-                            },
-                        },
-                    },
-                },
-                ts_ls = {
-                    enabled = false,
-                },
-            },
-            setup = {
-                eslint = function()
-                    vim.api.nvim_create_autocmd("LspAttach", {
-                        callback = function(args)
-                            local client = vim.lsp.get_client_by_id(args.data.client_id)
-                            if client and client.name == "eslint" then
-                                client.server_capabilities.documentFormattingProvider = true
-                            elseif client and client.name == "ts_ls" then
-                                client.server_capabilities.documentFormattingProvider = false
-                            end
-
-                            vim.o.foldlevel = 99
-                            vim.o.foldmethod = "expr"
-                            vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                            if client and client:supports_method("textDocument/foldingRange") then
-                                local win = vim.api.nvim_get_current_win()
-                                vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-                            end
-                            vim.cmd([[hi! default link Folded LspInlayHint]])
+                servers = {
+                    pyright = {
+                        root_dir = function(fname)
+                            local util = require("lspconfig.util")
+                            return util.root_pattern(".git")(fname)
                         end,
-                    })
+                        settings = {
+                            python = {
+                                analysis = {
+                                    --- @type ("off" | "basic" | "standard" | "strict")
+                                    typeCheckingMode = "standard",
+                                    --- @type ("openFilesOnly" | "workspace")
+                                    diagnosticMode = "openFilesOnly",
+                                },
+                            },
+                        },
+                    },
+                    eslint = {
+                        settings = {
+                            workingDirectory = { mode = "location" },
+                        },
+                    },
+                    vtsls = {
+                        settings = {
+                            typescript = {
+                                format = {
+                                    enable = false,
+                                },
+                            },
+                        },
+                    },
+                    ts_ls = {
+                        enabled = false,
+                    },
+                },
+            }
+
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client and client.name == "eslint" then
+                        client.server_capabilities.documentFormattingProvider = true
+                    elseif client and client.name == "ts_ls" then
+                        client.server_capabilities.documentFormattingProvider = false
+                    end
+
+                    vim.o.foldlevel = 99
+                    vim.o.foldmethod = "expr"
+                    vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                    if client and client:supports_method("textDocument/foldingRange") then
+                        local win = vim.api.nvim_get_current_win()
+                        vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                    end
+                    vim.cmd([[hi! default link Folded LspInlayHint]])
                 end,
-            },
-        },
+            })
+            return opts
+        end,
     },
     {
         "folke/neoconf.nvim",
