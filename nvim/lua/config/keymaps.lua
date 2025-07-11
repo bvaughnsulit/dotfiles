@@ -1,4 +1,5 @@
 local utils = require("config.utils")
+local git = require("config.git")
 
 local map = function(mode, lhs, rhs, opts)
     opts = vim.tbl_deep_extend("force", { remap = false, silent = true }, opts or {})
@@ -93,6 +94,7 @@ map("i", "<cr>", "<cr><c-g>u")
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>W", "<cmd>w<cr><cmd>restart<cr>", { desc = "Save and restart" })
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "<leader>qr", "<cmd>restart<cr>", { desc = "Restart" })
 map("n", "<leader>QQ", "<cmd>qa!<cr>", { desc = "Force Quit all" })
 map("n", "<leader>qw", "<cmd>wqa<cr>", { desc = "Quit and save all" })
 
@@ -264,7 +266,6 @@ Snacks.toggle.option("background", { off = "light", on = "dark" , name = "Dark B
 if vim.fn.executable("lazygit") == 1 then
   map("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc = "Git Blame Line" })
   map("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "Git Browse" })
-  map("n", "<leader>gf", function() Snacks.lazygit.log_file() end, { desc = "Lazygit Current File History" })
   map("n", "<leader>gl", function() Snacks.lazygit.log({ cwd = LazyVim.root.git() }) end, { desc = "Lazygit Log" })
   map("n", "<leader>gL", function() Snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
 end
@@ -293,25 +294,10 @@ end, "Focus Floating Window")
 
 vim.keymap.set("t", "<c-o>", "<C-\\><C-n><C-o>", { desc = "Jump to Normal Mode and Go Back" })
 
-vim.keymap.set("n", "<leader>gg", function()
-    local dotfiles_root = utils.get_dotfiles_root()
-    local lazygit_config = dotfiles_root .. "/lazygit/lazygit.yml"
-    if not utils.is_system_dark_mode() then
-        lazygit_config = lazygit_config .. "," .. dotfiles_root .. "/lazygit/light.yml"
-    end
-
-    utils.toggle_persistent_terminal("lazygit", "Lazygit", {
-        q_to_go_back = { "n", "t" },
-        auto_insert = true,
-        win_config = {
-            relative = "editor",
-            height = vim.o.lines - 2,
-            width = vim.o.columns,
-            row = 1,
-            col = 1,
-        },
-        job_opts = { env = {
-            LG_CONFIG_FILE = lazygit_config,
-        } },
-    })
-end, { desc = "Open Lazygit Terminal" })
+vim.keymap.set("n", "<leader>gg", git.toggle_lazygit, { desc = "Open Lazygit Terminal" })
+vim.keymap.set(
+    "n",
+    "<leader>gf",
+    function() git.toggle_lazygit({ "-f", vim.trim(vim.api.nvim_buf_get_name(0)) }) end,
+    { desc = "Open Lazygit Terminal" }
+)
