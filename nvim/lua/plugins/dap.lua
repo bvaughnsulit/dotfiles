@@ -26,18 +26,6 @@ return {
         config = function()
             local dap = require("dap")
             local dapui = require("dapui")
-            dap.listeners.after.event_initialized["dapui_config"] = function()
-                -- dapui.open({ layout = 1 })
-            end
-
-            dap.listeners.after.event_initialized["nvim_config"] = function(session, body)
-                local config_name = session.config.name
-                vim.notify(config_name .. " DAP session started")
-            end
-            dap.listeners.after.event_terminated["nvim-config"] = function(session, body)
-                local config_name = session.config.name
-                vim.notify(config_name .. " DAP session terminated")
-            end
 
             require("dap.ext.vscode").load_launchjs()
             require("dap-python").setup()

@@ -4,6 +4,8 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
     opts = function()
+        ---@type Gitsigns.Config
+        ---@diagnostic disable: missing-fields
         local opts = {
             signs = {
                 add = { text = "│" },
@@ -63,6 +65,8 @@ return {
                 -- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
             end,
         }
+        ---@diagnostic enable: missing-fields
+
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
