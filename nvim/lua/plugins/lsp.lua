@@ -46,6 +46,7 @@ return {
                 -- has = 'codeAction',
             },
         },
+        ---@diagnostic disable missing-fields
         opts = function()
             local opts = {
                 inlay_hints = { enabled = false },
@@ -73,14 +74,32 @@ return {
                         style = "minimal",
                     },
                 },
+                ---@type table<string, lspconfig.Config>
                 servers = {
                     pyright = {
+                        enabled = false,
                         root_dir = function(fname)
                             local util = require("lspconfig.util")
                             return util.root_pattern(".git")(fname)
                         end,
                         settings = {
                             python = {
+                                analysis = {
+                                    --- @type ("off" | "basic" | "standard" | "strict")
+                                    typeCheckingMode = "standard",
+                                    --- @type ("openFilesOnly" | "workspace")
+                                    diagnosticMode = "openFilesOnly",
+                                },
+                            },
+                        },
+                    },
+                    basedpyright = {
+                        root_dir = function(fname)
+                            local util = require("lspconfig.util")
+                            return util.root_pattern(".git")(fname)
+                        end,
+                        settings = {
+                            basedpyright = {
                                 analysis = {
                                     --- @type ("off" | "basic" | "standard" | "strict")
                                     typeCheckingMode = "standard",
@@ -131,6 +150,7 @@ return {
             })
             return opts
         end,
+        ---@diagnostic enable missing-fields
     },
     {
         "folke/neoconf.nvim",
