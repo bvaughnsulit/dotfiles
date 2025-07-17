@@ -123,11 +123,11 @@ When given a task:
 local agents = {
     claude = {
         name = "Claude",
-        cmd = "claude",
+        cmd = { "claude" },
     },
     gemini = {
         name = "Gemini",
-        cmd = "gemini",
+        cmd = { "gemini" },
     },
 }
 
@@ -138,7 +138,7 @@ vim.keymap.set("n", "<leader>aa", function()
         start_insert = true,
         auto_insert = false,
         on_create = function(bufnr) end,
-        win_config = { height = 10, split = "below" },
+        win_config = { split = "below" },
     })
 end, { desc = "Open AI Agent" })
 

@@ -23,6 +23,7 @@ promptToReturnFromSubprocess: false
 notARepository: quit
 keybinding:
   universal:
+    quit: ''
     remove: 'X'
     prevItem: '<c-p>'
     nextItem: '<c-n>'

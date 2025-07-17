@@ -95,7 +95,6 @@ return {
                     ["<leader>ct"] = actions.conflict_choose("theirs"), -- Choose the THEIRS version of a conflict
                     ["<leader>cb"] = actions.conflict_choose("base"), -- Choose the BASE version of a conflict
                     ["<leader>ca"] = actions.conflict_choose("all"), -- Choose all the versions of a conflict
-                    ["dx"] = actions.conflict_choose("none"), -- Delete the conflict region
                 },
                 diff1 = { --[[ Mappings in single window diff layouts ]]
                 },

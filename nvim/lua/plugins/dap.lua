@@ -127,8 +127,21 @@ return {
             },
             {
                 "<leader>dc",
-                function() require("dap").continue() end,
+                function()
+                    require("dapui").close()
+                    require("dapui").open({ layout = 1 })
+                    require("dap").continue()
+                end,
                 desc = "Continue",
+            },
+            {
+                "<leader>dr",
+                function()
+                    require("dapui").close()
+                    require("dapui").open({ layout = 1 })
+                    require("dap").run_last()
+                end,
+                desc = "Run Last",
             },
             {
                 "<right>",
