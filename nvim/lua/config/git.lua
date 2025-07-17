@@ -11,7 +11,7 @@ M.toggle_lazygit = function(args)
     local cmd = vim.list_extend({ "lazygit" }, args or {})
 
     utils.toggle_persistent_terminal(cmd, "Lazygit", {
-        q_to_go_back = { "n", "t" },
+        q_to_go_back = { "n" },
         auto_insert = true,
         win_config = {
             relative = "editor",

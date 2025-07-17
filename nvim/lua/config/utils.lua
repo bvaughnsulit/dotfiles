@@ -182,6 +182,23 @@ M.jump_from_term_buffer = function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, true, true), "", false)
 end
 
+M.safe_close_win = function(win_id)
+    local win = vim.api.nvim_win_get_config(win_id)
+    local is_closeable = win.relative ~= ""
+    if not is_closeable then
+        -- check if the window is full screen
+        local ui_lines = (vim.o.tabline ~= "" and 1 or 0) + (vim.o.laststatus ~= 0 and 1 or 0) + vim.o.cmdheight
+        local full_width = vim.o.columns == win.width
+        local full_height = vim.o.lines - ui_lines == win.height
+        is_closeable = not (full_width and full_height)
+    end
+    if is_closeable then
+        vim.api.nvim_win_close(win_id, false)
+    else
+        require("mini.bufremove").unshow_in_window(win_id)
+    end
+end
+
 ---@class TerminalOpts
 ---@field q_to_go_back? ("t"|"n")[] | nil
 ---@field auto_insert? boolean
@@ -196,7 +213,7 @@ end
 ---@param opts? TerminalOpts
 M.toggle_persistent_terminal = function(cmd, name, opts)
     opts = opts or {}
-    local buffer_name = "terminal://" .. name
+    local buffer_name = "term://" .. name
     local job_opts_merged = vim.tbl_deep_extend("force", {
         term = true,
         stdout_buffered = true,
@@ -238,22 +255,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
 
     -- set the buffer options
     if opts.q_to_go_back then
-        vim.keymap.set(opts.q_to_go_back, "q", function()
-            local win = vim.api.nvim_win_get_config(0)
-            local is_closeable = win.relative ~= ""
-            if not is_closeable then
-                -- check if the window is full screen
-                local ui_lines = (vim.o.tabline ~= "" and 1 or 0) + (vim.o.laststatus ~= 0 and 1 or 0) + vim.o.cmdheight
-                local full_width = vim.o.columns == win.width
-                local full_height = vim.o.lines - ui_lines == win.height
-                is_closeable = not (full_width and full_height)
-            end
-            if is_closeable then
-                vim.api.nvim_win_close(0, false)
-            else
-                M.jump_from_term_buffer()
-            end
-        end, {
+        vim.keymap.set(opts.q_to_go_back, "q", function() M.safe_close_win(0) end, {
             buffer = buf,
             desc = "Hide buffer",
         })

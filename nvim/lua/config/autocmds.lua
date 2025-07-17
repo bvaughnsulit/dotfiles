@@ -1,4 +1,5 @@
-local augroup = require("config.utils").augroup
+local utils = require("config.utils")
+local augroup = utils.augroup
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function() vim.highlight.on_yank({ timeout = 500, higroup = "visual" }) end,
@@ -38,6 +39,12 @@ vim.api.nvim_create_autocmd("TermOpen", {
     callback = function()
         vim.opt_local.number = false
         vim.opt_local.wrap = true
+        vim.keymap.set(
+            "t",
+            "qq",
+            function() utils.safe_close_win(0) end,
+            { buffer = 0, silent = true, desc = "Exit terminal mode" }
+        )
     end,
     desc = "Configure terminal buffer",
 })
