@@ -293,6 +293,8 @@ utils.create_cmd_and_map("FocusFloat", "<leader>ff", function()
 end, "Focus Floating Window")
 
 vim.keymap.set("t", "<c-o>", "<C-\\><C-n><C-o>", { desc = "Jump to Normal Mode and Go Back" })
+vim.keymap.set("t", "qq", function() utils.safe_close_win(0) end, { silent = true, desc = "Hide terminal buffer" })
+vim.keymap.set("t", "<c-\\><c-\\>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
 vim.keymap.set("n", "<leader>gg", git.toggle_lazygit, { desc = "Open Lazygit Terminal" })
 vim.keymap.set(
