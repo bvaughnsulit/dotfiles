@@ -142,13 +142,6 @@ utils.create_cmd_and_map(
 
 utils.create_cmd_and_map("OpenRepoInGitHub", nil, function() utils.open_repo_in_gh() end, "Open Github Repo in Browser")
 
-utils.create_cmd_and_map("EnableDiagnosticsCurrentBuffer", nil, function() vim.diagnostic.enable(0) end)
-
-utils.create_cmd_and_map("DisableDiagnosticsCurrentBuffer", nil, function() vim.diagnostic.disable(0) end)
-
--- utils.create_cmd_and_map(nil, nil, function() vim.cmd('copen') end, 'Open Quickfix')
--- utils.create_cmd_and_map(nil, nil, function() vim.cmd('lopen') end, 'Open Location list')
-
 utils.create_cmd_and_map(nil, "<leader>tc", function() vim.cmd("tabnew") end, "New Tab")
 utils.create_cmd_and_map(nil, "<leader>tx", function() vim.cmd("tabclose") end, "Close Tab")
 utils.create_cmd_and_map(nil, "]t", function() vim.cmd("tabnext") end, "Next Tab")
@@ -201,6 +194,7 @@ vim.keymap.set("n", "<c-w>o", function()
 end, { silent = true })
 
 utils.create_cmd_and_map("WhichConfig", nil, function() vim.notify(vim.fn.stdpath("config")) end, "Print Config Path")
+map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Comment At End Of Line" }) -- TODO how to return cursor to original position?
 
 --
 -- TODO: clean up below, pasted from lazyvim
@@ -214,10 +208,6 @@ map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
 map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
 map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
 
--- buffers
-map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
@@ -226,13 +216,9 @@ map("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Prev Search R
 map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 
---keywordprg
-map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
-
 -- commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
-map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Comment At End Of Line" }) -- TODO how to return cursor to original position?
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
@@ -245,8 +231,6 @@ map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
 map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
 map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
-map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- stylua: ignore start
 
@@ -254,30 +238,17 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 LazyVim.format.snacks_toggle():map("<leader>uf")
 LazyVim.format.snacks_toggle(true):map("<leader>uF")
 Snacks.toggle.option("spell", { name = "Spelling"}):map("<leader>us")
-Snacks.toggle.option("wrap", {name = "Wrap"}):map("<leader>uw")
-Snacks.toggle.option("relativenumber", { name = "Relative Number"}):map("<leader>uL")
 Snacks.toggle.diagnostics():map("<leader>ud")
 Snacks.toggle.line_number():map("<leader>ul")
 Snacks.toggle.option("conceallevel", {off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2}):map("<leader>uc")
 Snacks.toggle.treesitter():map("<leader>uT")
 Snacks.toggle.option("background", { off = "light", on = "dark" , name = "Dark Background"}):map("<leader>ub")
 
--- lazygit
-if vim.fn.executable("lazygit") == 1 then
-  map("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc = "Git Blame Line" })
-  map("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "Git Browse" })
-  map("n", "<leader>gl", function() Snacks.lazygit.log({ cwd = LazyVim.root.git() }) end, { desc = "Lazygit Log" })
-  map("n", "<leader>gL", function() Snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
-end
-
+map("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "Git Browse" })
 
 -- highlights under cursor
 map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
 map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
-
--- windows
-map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 
 -- lazyvim end
 -- stylua: ignore end
