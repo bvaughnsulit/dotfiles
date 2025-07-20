@@ -293,7 +293,7 @@ return {
                         },
                     },
                     position = "right",
-                    size = 60,
+                    size = 0.35,
                 },
                 { -- 2
                     elements = {

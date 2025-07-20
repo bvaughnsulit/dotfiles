@@ -224,9 +224,8 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
             -- If the buffer exists, check if it's already open in a window
             for _, window in ipairs(vim.api.nvim_list_wins()) do
-                -- If already open in a window, just switch to it and update the config
-                if vim.api.nvim_win_get_buf(window) == buf and opts.win_config then
-                    vim.api.nvim_win_set_config(window, opts.win_config)
+                -- If already open in a window, just switch to it
+                if vim.api.nvim_win_get_buf(window) == buf then
                     vim.api.nvim_set_current_win(window)
                     return
                 end

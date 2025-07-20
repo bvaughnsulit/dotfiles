@@ -64,10 +64,10 @@ vim.opt.sessionoptions = {
     "buffers",
     "tabpages",
     "winsize",
-    "help",
-    "globals",
-    "skiprtp",
     "folds",
+    "globals",
+    "winsize",
+    "tabpages",
 }
 vim.opt.list = false
 -- vim.opt.listchars = 'multispace:·,nbsp:·,trail:·'

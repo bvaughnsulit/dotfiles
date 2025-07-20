@@ -151,8 +151,8 @@ utils.create_cmd_and_map("DisableDiagnosticsCurrentBuffer", nil, function() vim.
 
 utils.create_cmd_and_map(nil, "<leader>tc", function() vim.cmd("tabnew") end, "New Tab")
 utils.create_cmd_and_map(nil, "<leader>tx", function() vim.cmd("tabclose") end, "Close Tab")
-utils.create_cmd_and_map(nil, "<leader>tn", function() vim.cmd("tabnext") end, "Next Tab")
-utils.create_cmd_and_map(nil, "<leader>tp", function() vim.cmd("tabp") end, "Previous Tab")
+utils.create_cmd_and_map(nil, "]t", function() vim.cmd("tabnext") end, "Next Tab")
+utils.create_cmd_and_map(nil, "[t", function() vim.cmd("tabp") end, "Previous Tab")
 utils.create_cmd_and_map(nil, "<leader>to", function() vim.cmd("tabonly") end, "Close Other Tabs")
 
 utils.create_cmd_and_map("InspectHighlights", nil, function() vim.show_pos() end, "Inspect highlights under cursor")
@@ -282,7 +282,7 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 -- lazyvim end
 -- stylua: ignore end
 
-utils.create_cmd_and_map("FocusFloat", "<leader>ff", function()
+utils.create_cmd_and_map("FocusFloat", "<c-w>f", function()
     for _, winid in ipairs(vim.api.nvim_list_wins()) do
         local config = vim.api.nvim_win_get_config(winid)
         if config.relative ~= "" and config.focusable and not config.hide then
