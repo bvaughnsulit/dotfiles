@@ -303,3 +303,29 @@ vim.keymap.set(
     function() git.toggle_lazygit({ "-f", vim.trim(vim.api.nvim_buf_get_name(0)) }) end,
     { desc = "Open Lazygit Terminal" }
 )
+
+vim.keymap.set("n", "<leader>\\c", function()
+    vim.ui.input({
+        prompt = "Command:",
+    }, function(input)
+        if input then
+            local cmd = { "zsh" }
+            utils.toggle_persistent_terminal(cmd, input, {
+                q_to_go_back = { "n" },
+                auto_insert = false,
+                win_config = {
+                    split = "right",
+                    width = math.floor(vim.o.columns * 0.4),
+                },
+                job_opts = {},
+            })
+            -- TODO: this is a hack, figure out the right way to do this
+            vim.cmd.startinsert()
+            vim.api.nvim_feedkeys(
+                vim.api.nvim_replace_termcodes(input .. "<cr><c-\\><c-n>", true, false, true),
+                "n",
+                false
+            )
+        end
+    end)
+end)
