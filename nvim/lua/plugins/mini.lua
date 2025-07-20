@@ -14,6 +14,7 @@ return {
                     indent_at_cursor = true,
                     try_as_border = true,
                 },
+                mappings = {},
                 symbol = "▏",
             })
             require("mini.cursorword").setup({})
@@ -34,6 +35,23 @@ return {
             require("mini.move").setup({})
             require("mini.operators").setup({
                 replace = { prefix = "gp" },
+            })
+            require("mini.bracketed").setup({
+                conflict = { suffix = "x", options = {} },
+
+                indent = { suffix = "" },
+                jump = { suffix = "" },
+                comment = { suffix = "" },
+                diagnostic = { suffix = "" },
+                treesitter = { suffix = "" },
+                location = { suffix = "" },
+                quickfix = { suffix = "" },
+                file = { suffix = "" },
+                oldfile = { suffix = "" },
+                buffer = { suffix = "" },
+                undo = { suffix = "" },
+                window = { suffix = "" },
+                yank = { suffix = "" },
             })
 
             local trailspace = require("mini.trailspace")
@@ -56,6 +74,8 @@ return {
         keys = {
             { "<A-j>", nil, mode = { "n", "v" } },
             { "<A-k>", nil, mode = { "n", "v" } },
+            { "<A-o>", function() require("mini.bracketed").jump("backward", { wrap = false }) end },
+            { "<A-i>", function() require("mini.bracketed").jump("forward", { wrap = false }) end },
         },
     },
 }
