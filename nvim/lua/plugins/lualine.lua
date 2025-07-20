@@ -1,23 +1,44 @@
 local utils = require("config.utils")
 return {
-    ---@type LazySpec
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
     commit = "640260d7c2d9",
     event = "VeryLazy",
-    config = function()
-        require("lualine").setup({
+    opts = function()
+        local is_top_right_win = function()
+            local winnr = vim.api.nvim_get_current_win()
+            local win_info = vim.fn.getwininfo(winnr)[1]
+            local win_pos = vim.api.nvim_win_get_position(winnr)
+
+            local hits_max_width = (vim.o.columns - (win_pos[2] + win_info.width)) < 3
+            if win_info.winbar == 1 and win_pos[1] == 0 then return hits_max_width end
+            return false
+        end
+
+        local tab_component = {
+            "tabs",
+            cond = function()
+                -- return #vim.api.nvim_list_tabpages() > 1
+                return is_top_right_win()
+            end,
+            show_modified_status = false,
+        }
+
+        local opts = {
             options = {
-                icons_enabled = true,
-                theme = "auto",
                 component_separators = { left = "", right = "" }, --
-                section_separators = { left = "", right = "" },
                 disabled_filetypes = {
                     statusline = {},
                     winbar = { "dap-repl", "neo-tree" },
                 },
                 ignore_focus = {
                     "neo-tree",
+                    "aerial",
+                    "dap-repl",
+                    "dapui_console",
+                    "dapui_scopes",
+                    "dapui_watches",
+                    "dapui_stacks",
                 },
                 always_divide_middle = true,
                 globalstatus = true,
@@ -29,7 +50,12 @@ return {
             sections = {
                 lualine_a = { "mode" },
                 lualine_b = {},
-                lualine_c = { "branch" },
+                lualine_c = {
+                    {
+                        "branch",
+                        icon = "󰘬",
+                    },
+                },
                 lualine_x = {
                     function()
                         local dap_sessions = {}
@@ -60,7 +86,7 @@ return {
                         path = 1,
                     },
                 },
-                lualine_x = {},
+                lualine_x = { tab_component },
                 lualine_y = {},
                 lualine_z = {},
             },
@@ -73,11 +99,12 @@ return {
                         symbols = { modified = "*" },
                     },
                 },
-                lualine_x = {},
+                lualine_x = { tab_component },
                 lualine_y = {},
                 lualine_z = {},
             },
             extensions = {},
-        })
+        }
+        return opts
     end,
 }
