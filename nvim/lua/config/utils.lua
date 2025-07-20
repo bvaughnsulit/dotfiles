@@ -282,35 +282,36 @@ M.debug_info = function(buf_opts, win_opts)
     local wins = vim.deepcopy(vim.fn.getwininfo(), true)
     local info = {}
 
-    for i, win in ipairs(wins) do
+    for _, win in ipairs(wins) do
         local buf_info = vim.deepcopy(vim.fn.getbufinfo(win.bufnr)[1], true)
         local filetype = vim.api.nvim_get_option_value("filetype", { buf = win.bufnr })
-        local default_buf_opts = { "buftype" }
-        local default_win_opts = {}
-
-        local buf_opts_values = {}
-        local win_opts_values = {}
-
-        for _, opt in ipairs(vim.list_extend(default_buf_opts, buf_opts or {})) do
-            local value = vim.api.nvim_get_option_value(opt, { buf = win.bufnr })
-            buf_opts_values[opt] = value
-        end
-        buf_info["buf_opts"] = buf_opts_values
-
-        for _, opt in ipairs(vim.list_extend(default_win_opts, win_opts or {})) do
-            local value = vim.api.nvim_get_option_value(opt, { win = win.winid })
-            win_opts_values[opt] = value
-        end
-        win["win_opts"] = win_opts_values
 
         if filetype ~= "dap-repl" and not buf_info.name:find("dap-eval://", 1, true) then
-            local filename = M.get_path_tail(buf_info.name)
-            local title = string.len(filename) > 0 and filename or filetype
+            local default_buf_opts = { "buftype" }
+            local buf_opts_values = {}
+            for _, opt in ipairs(vim.list_extend(default_buf_opts, buf_opts or {})) do
+                local value = vim.api.nvim_get_option_value(opt, { buf = win.bufnr })
+                buf_opts_values[opt] = value
+            end
+            buf_info["buf_opts"] = buf_opts_values
 
-            local key = "[" .. win.winnr .. ":" .. win.bufnr .. "] " .. title
+            local default_win_opts = {}
+            local win_opts_values = {}
+            for _, opt in ipairs(vim.list_extend(default_win_opts, win_opts or {})) do
+                local value = vim.api.nvim_get_option_value(opt, { win = win.winid })
+                win_opts_values[opt] = value
+            end
+            win["win_opts"] = win_opts_values
+            win["win_config"] = vim.api.nvim_win_get_config(win.winid)
+
+            local filename = #buf_info.name > 0 and M.get_path_tail(buf_info.name) or nil
+            local win_title = win["win_config"].title and win["win_config"].title[1][1] or nil
+
+            local key = "[" .. win.winnr .. ":" .. win.bufnr .. "] " .. (filename or win_title or filetype or "")
 
             info[key] = {
                 win_info = win,
+                win_pos = vim.inspect(vim.api.nvim_win_get_position(win.winid)),
                 buf_info = buf_info,
                 buf_name = buf_info.name,
                 filetype = filetype,
