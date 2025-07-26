@@ -7,8 +7,7 @@ return {
         "nvim-treesitter/nvim-treesitter-context",
         event = "LazyFile",
         opts = {
-            max_lines = 10,
-            min_window_height = 40,
+            max_lines = "40%",
             multline_threshold = 3,
             ensure_installed = { "dart" },
         },

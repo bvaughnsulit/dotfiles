@@ -37,7 +37,7 @@ return {
                 replace = { prefix = "gp" },
             })
             require("mini.bracketed").setup({
-                conflict = { suffix = "x", options = {} },
+                conflict = { suffix = "x", options = { wrap = false } },
 
                 indent = { suffix = "" },
                 jump = { suffix = "" },
