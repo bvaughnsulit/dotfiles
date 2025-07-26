@@ -108,6 +108,8 @@ end, { desc = "Save and source current file" })
 
 map("n", "<leader>,r", ":restart<cr>", { desc = "Restart Neovim" })
 
+map("n", "gf", "gF", { desc = "Go to file under cursor at line" })
+
 utils.create_cmd_and_map(
     "ToggleWrap",
     "<leader>tw",
