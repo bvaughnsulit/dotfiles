@@ -6,7 +6,7 @@ return {
         config = function() pcall(require, "local-config") end,
     },
     {
-        "numToStr/Comment.nvim",
+        "https://github.com/numToStr/Comment.nvim",
         event = "VeryLazy",
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
@@ -54,7 +54,7 @@ return {
         cmd = "G",
     },
     {
-        "chrisgrieser/nvim-various-textobjs",
+        "https://github.com/chrisgrieser/nvim-various-textobjs",
         event = "VeryLazy",
         opts = {
             keymaps = {

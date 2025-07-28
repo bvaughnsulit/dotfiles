@@ -51,7 +51,7 @@ return {
         opts_extend = { "sources.default" },
     },
     {
-        "zbirenbaum/copilot.lua",
+        "https://github.com/zbirenbaum/copilot.lua",
         event = "InsertEnter",
         config = function()
             require("copilot").setup({
