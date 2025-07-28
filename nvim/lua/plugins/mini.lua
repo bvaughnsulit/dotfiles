@@ -2,7 +2,7 @@ local utils = require("config.utils")
 
 return {
     {
-        "echasnovski/mini.nvim",
+        "https://github.com/echasnovski/mini.nvim",
         version = false,
         event = "VeryLazy",
         config = function()
@@ -35,6 +35,7 @@ return {
             require("mini.move").setup({})
             require("mini.operators").setup({
                 replace = { prefix = "gp" },
+                exchange = { prefix = "gX" },
             })
             require("mini.bracketed").setup({
                 conflict = { suffix = "x", options = { wrap = false } },
