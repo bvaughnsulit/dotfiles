@@ -1,4 +1,6 @@
 local utils = require("config.utils")
+local git = require("config.git")
+
 return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -54,6 +56,17 @@ return {
                     {
                         "branch",
                         icon = "󰘬",
+                    },
+                    {
+                        function()
+                            local git_base = git.get_git_base()
+                            if git_base == "HEAD" then
+                                return "(HEAD)"
+                            else
+                                -- TODO: make this work with other branch names
+                                return "(" .. git.get_default_branch_name() .. "...HEAD)"
+                            end
+                        end,
                     },
                 },
                 lualine_x = {

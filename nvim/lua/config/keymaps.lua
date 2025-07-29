@@ -1,5 +1,4 @@
 local utils = require("config.utils")
-local git = require("config.git")
 
 local map = function(mode, lhs, rhs, opts)
     opts = vim.tbl_deep_extend("force", { remap = false, silent = true }, opts or {})
@@ -269,11 +268,16 @@ vim.keymap.set("t", "<c-o>", "<C-\\><C-n><C-o>", { desc = "Jump to Normal Mode a
 vim.keymap.set("t", "qq", function() utils.safe_close_win(0) end, { silent = true, desc = "Hide terminal buffer" })
 vim.keymap.set("t", "<c-\\><c-\\>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
-vim.keymap.set("n", "<leader>gg", git.toggle_lazygit, { desc = "Open Lazygit Terminal" })
+vim.keymap.set(
+    "n",
+    "<leader>gg",
+    function() require("config.git").toggle_lazygit() end,
+    { desc = "Open Lazygit Terminal" }
+)
 vim.keymap.set(
     "n",
     "<leader>gf",
-    function() git.toggle_lazygit({ "-f", vim.trim(vim.api.nvim_buf_get_name(0)) }) end,
+    function() require("config.git").toggle_lazygit({ "-f", vim.trim(vim.api.nvim_buf_get_name(0)) }) end,
     { desc = "Open Lazygit Terminal" }
 )
 

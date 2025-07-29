@@ -231,21 +231,20 @@ return {
                 end,
                 { desc = "View Registers" }
             )
-
-            local branch = utils.get_default_branch_name()
-            utils.create_cmd_and_map(
-                "SearchGitDiffMain",
-                "<leader>sg",
-                function()
-                    require("telescope.builtin").git_files(require("telescope.themes").get_dropdown({
-                        git_command = { "git", "diff", branch, "--name-only" },
-                        layout_config = {
-                            width = 0.8,
-                        },
-                    }))
-                end,
-                "Search Git Status Files"
-            )
+            -- local branch = utils.get_default_branch_name()
+            -- utils.create_cmd_and_map(
+            --     "SearchGitDiffMain",
+            --     "<leader>sg",
+            --     function()
+            --         require("telescope.builtin").git_files(require("telescope.themes").get_dropdown({
+            --             git_command = { "git", "diff", branch, "--name-only" },
+            --             layout_config = {
+            --                 width = 0.8,
+            --             },
+            --         }))
+            --     end,
+            --     "Search Git Status Files"
+            -- )
 
             utils.create_cmd_and_map(
                 "ViewTextObjectMappings",

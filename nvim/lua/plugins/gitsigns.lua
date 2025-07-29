@@ -1,4 +1,5 @@
 local utils = require("config.utils")
+local git = require("config.git")
 
 return {
     "lewis6991/gitsigns.nvim",
@@ -14,7 +15,7 @@ return {
                 topdelete = { text = "‾" },
                 changedelete = { text = "│" },
             },
-            base = utils.get_merge_base_hash(),
+            base = git.get_git_base(),
             diff_opts = {
                 internal = true,
             },
@@ -70,8 +71,7 @@ return {
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
-                local hash = utils.get_merge_base_hash()
-                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(hash, true) end
+                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(git.get_git_base(), true) end
             end,
         })
         return opts

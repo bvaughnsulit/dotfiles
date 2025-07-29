@@ -146,7 +146,7 @@ return {
                 require("neo-tree.command").execute({
                     source = "filesystem",
                     action = "focus",
-                    git_base = utils.get_merge_base_hash(),
+                    git_base = git.get_git_base(),
                     toggle = true,
                     reveal = true,
                     dir = Snacks.git.get_root(require("neo-tree.sources.manager").get_path_to_reveal(false)),
@@ -166,7 +166,7 @@ return {
             require("neo-tree.command").execute({
                 source = "git_status",
                 action = "focus",
-                git_base = utils.get_merge_base_hash(),
+                git_base = git.get_git_base(),
                 toggle = true,
                 reveal = true,
             })

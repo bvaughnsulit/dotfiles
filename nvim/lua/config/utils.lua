@@ -48,38 +48,6 @@ M.create_cmd_and_map = function(command, mapping, fn, desc)
     end
 end
 
----@alias branch 'main' | 'master'
----@return branch | nil
-M.get_default_branch_name = function()
-    local result = vim.system({
-        "git",
-        "for-each-ref",
-        "--format=%(refname:short)",
-        "refs/heads/main",
-        "refs/heads/master",
-    }, { text = true }):wait()
-
-    if result.code ~= 0 then
-        vim.notify("Error getting git refs")
-        return
-    end
-    if result.stdout == "" then
-        vim.notify("No main or master branch found")
-        return
-    end
-    return result.stdout:sub(1, -2)
-end
-
----@return string | nil
-M.get_merge_base_hash = function()
-    local result = vim.system({ "git", "merge-base", M.get_default_branch_name(), "HEAD" }, { text = true }):wait()
-    if result.code ~= 0 then
-        vim.notify("Error getting merge base hash")
-        return
-    end
-    return result.stdout:sub(1, -2)
-end
-
 ---@return string | nil
 M.get_commit_hash = function()
     local result = vim.system({ "git", "rev-parse", "HEAD" }, { text = true }):wait()
@@ -109,7 +77,7 @@ end
 ---@return string | nil
 M.get_gh_file_url = function()
     local path = vim.fn.expand("%:.")
-    local hash = M.get_merge_base_hash()
+    local hash = require("config.git").get_merge_base_hash()
     local repo_url = M.get_gh_repo_url()
     local line_number = vim.api.nvim_win_get_cursor(0)[1]
     if repo_url then return repo_url .. "/blob/" .. hash .. "/" .. path .. "\\#L" .. line_number end
