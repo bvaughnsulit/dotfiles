@@ -46,7 +46,7 @@ return {
                 -- has = 'codeAction',
             },
         },
-        ---@diagnostic disable missing-fields
+        ---@diagnostic disable: missing-fields
         opts = function()
             local opts = {
                 inlay_hints = { enabled = false },
@@ -80,6 +80,7 @@ return {
                         enabled = false,
                         root_dir = function(fname)
                             local util = require("lspconfig.util")
+                            ---@diagnostic disable-next-line: redundant-return-value
                             return util.root_pattern(".git")(fname)
                         end,
                         settings = {
@@ -96,6 +97,7 @@ return {
                     basedpyright = {
                         root_dir = function(fname)
                             local util = require("lspconfig.util")
+                            ---@diagnostic disable-next-line: redundant-return-value
                             return util.root_pattern(".git")(fname)
                         end,
                         settings = {
@@ -150,7 +152,7 @@ return {
             })
             return opts
         end,
-        ---@diagnostic enable missing-fields
+        ---@diagnostic enable: missing-fields
     },
     {
         "folke/neoconf.nvim",

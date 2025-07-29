@@ -66,11 +66,15 @@ return {
     {
         "kevinhwang91/nvim-bqf",
         event = "VeryLazy",
+        ---@diagnostic disable: missing-fields
+        ---@module "bqf"
+        ---@type BqfConfig
         opts = {
-            auto_preview = {
-                default = false,
+            preview = {
+                auto_preview = false,
             },
         },
+        ---@diagnostic enable: missing-fields
     },
     {
         "abecodes/tabout.nvim",
@@ -108,13 +112,13 @@ return {
     {
         "pwntester/octo.nvim",
         cmd = "Octo",
-        ---@diagnostic disable missing-fields
+        ---@diagnostic disable: missing-fields
         ---@module "octo"
         ---@type OctoConfig
         opts = {
             picker = "fzf-lua",
         },
-        ---@diagnostic enable missing-fields
+        ---@diagnostic enable: missing-fields
         keys = {
             { "<leader>gG", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
             { "<leader>gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },

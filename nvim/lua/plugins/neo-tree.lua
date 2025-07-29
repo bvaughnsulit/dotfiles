@@ -1,4 +1,5 @@
 local utils = require("config.utils")
+local git = require("config.git")
 
 vim.g.IS_EXPLORER_PINNED = false
 
@@ -16,7 +17,7 @@ return {
         local neotree = require("neo-tree")
         local def = require("neo-tree.defaults")
 
-        ---@diagnostic disable missing-fields
+        ---@diagnostic disable: missing-fields
         ---@type neotree.Config?
         local opts = {
             sources = {
@@ -78,7 +79,7 @@ return {
                 },
             },
             window = {
-                width = "0.25",
+                width = 0.25,
                 position = "left",
                 mappings = {
                     ["/"] = {},
@@ -100,7 +101,7 @@ return {
                         },
                     },
                     ["X"] = "delete",
-                    ["c"] = "copy_to_clipboard",
+                    -- ["c"] = "copy_to_clipboard",
                     ["x"] = "cut_to_clipboard",
                     ["P"] = "paste_from_clipboard",
                 },
@@ -137,7 +138,7 @@ return {
                 },
             },
         }
-        ---@diagnostic enable missing-fields
+        ---@diagnostic enable: missing-fields
 
         vim.keymap.set(
             "n",
