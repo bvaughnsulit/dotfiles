@@ -59,12 +59,11 @@ return {
                     },
                     {
                         function()
-                            local git_base = git.get_git_base()
-                            if git_base == "HEAD" then
-                                return "(HEAD)"
-                            else
-                                -- TODO: make this work with other branch names
+                            local git_base = git.get_git_base().name
+                            if git_base == "merge_base" then
                                 return "(" .. git.get_default_branch_name() .. "...HEAD)"
+                            else
+                                return "(" .. git_base .. ")"
                             end
                         end,
                     },

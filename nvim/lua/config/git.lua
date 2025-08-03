@@ -1,20 +1,50 @@
 local M = {}
 
-local git_base = ""
+local git_base = "merge_base"
 
 M.get_git_base = function()
-    if git_base == "" then git_base = M.get_merge_base_hash() or "HEAD" end
-    return git_base
+    local hash
+    if string.lower(git_base) == "head" then
+        hash = nil
+    elseif git_base == "merge_base" then
+        hash = M.get_merge_base_hash()
+    else
+        hash = M.get_rev_hash(git_base)
+    end
+    return {
+        name = git_base,
+        hash = hash,
+    }
 end
 
 M.change_git_base = function()
     vim.ui.select({
-        M.get_default_branch_name() .. "..." .. "HEAD",
+        "merge_base",
         "HEAD",
+        "custom",
     }, { prompt = "Select a git base" }, function(selection)
         if selection then
-            git_base = selection
-            require("gitsigns").change_base(selection, true)
+            if selection == "custom" then
+                vim.ui.input({
+                    prompt = "Enter custom git base",
+                }, function(input)
+                    if input and type(M.get_rev_hash(vim.trim(input))) == "string" then
+                        git_base = vim.trim(input)
+                        ---@diagnostic disable-next-line: param-type-mismatch
+                        require("gitsigns").change_base(M.get_git_base().hash, true)
+                        vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
+                    else
+                        vim.notify("Invalid git base hash: " .. input, vim.log.levels.WARN)
+                    end
+                end)
+            else
+                git_base = selection
+                ---@diagnostic disable-next-line: param-type-mismatch
+                require("gitsigns").change_base(M.get_git_base().hash, true)
+                vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
+            end
+        else
+            vim.notify("Invalid selection", vim.log.levels.WARN)
         end
     end)
 end
@@ -74,7 +104,18 @@ M.get_merge_base_hash = function()
     local result = vim.system({ "git", "merge-base", M.get_default_branch_name(), "HEAD" }, { text = true }):wait()
     if result.code ~= 0 then
         vim.notify("Error getting merge base hash")
-        return
+        return nil
+    end
+    return result.stdout:sub(1, -2)
+end
+
+---@param rev string
+---@return string | nil
+M.get_rev_hash = function(rev)
+    local result = vim.system({ "git", "rev-parse", rev }, { text = true }):wait()
+    if result.code ~= 0 then
+        vim.notify("Error getting rev hash for " .. git_base)
+        return nil
     end
     return result.stdout:sub(1, -2)
 end

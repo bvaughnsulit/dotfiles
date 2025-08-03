@@ -15,7 +15,7 @@ return {
                 topdelete = { text = "‾" },
                 changedelete = { text = "│" },
             },
-            base = git.get_git_base(),
+            base = git.get_git_base().hash,
             diff_opts = {
                 internal = true,
             },
@@ -71,7 +71,7 @@ return {
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
-                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(git.get_git_base(), true) end
+                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(git.get_git_base().hash, true) end
             end,
         })
         return opts
