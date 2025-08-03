@@ -8,12 +8,22 @@ return {
         ---@type Gitsigns.Config
         ---@diagnostic disable: missing-fields
         local opts = {
+            trouble = false,
             signs = {
                 add = { text = "│" },
                 change = { text = "│" },
                 delete = { text = "_" },
                 topdelete = { text = "‾" },
                 changedelete = { text = "│" },
+                untracked = { text = "┆" },
+            },
+            signs_staged = {
+                add = { text = "▐" },
+                change = { text = "▌" },
+                delete = { text = "▄" },
+                topdelete = { text = "▀" },
+                changedelete = { text = "▌" },
+                untracked = { text = "▌" },
             },
             base = git.get_git_base().hash,
             diff_opts = {
@@ -39,13 +49,31 @@ return {
 
                 map("n", "]c", function()
                     if vim.wo.diff then return "]c" end
-                    vim.schedule(function() gitsigns.nav_hunk("next", { wrap = false, preview = true }) end)
+                    vim.schedule(
+                        function()
+                            gitsigns.nav_hunk("next", {
+                                wrap = false,
+                                preview = true,
+                                foldopen = true,
+                                target = "all",
+                            })
+                        end
+                    )
                     return "<Ignore>"
                 end, { expr = true })
 
                 map("n", "[c", function()
                     if vim.wo.diff then return "[c" end
-                    vim.schedule(function() gitsigns.nav_hunk("prev", { wrap = false, preview = true }) end)
+                    vim.schedule(
+                        function()
+                            gitsigns.nav_hunk("prev", {
+                                wrap = false,
+                                preview = true,
+                                foldopen = true,
+                                target = "all",
+                            })
+                        end
+                    )
                     return "<Ignore>"
                 end, { expr = true })
 
@@ -54,6 +82,12 @@ return {
                 map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end)
                 map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
                 map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
+                map(
+                    { "n", "v" },
+                    "<leader>gl",
+                    function() gitsigns.setqflist("all") end,
+                    { desc = "Send all hunks to quickfix list" }
+                )
                 -- map("n", "<leader>hu", gitsigns.undo_stage_hunk)
                 -- map("n", "<leader>gx", gitsigns.toggle_deleted)
                 -- map('n', '<leader>hS', gitsigns.stage_buffer)

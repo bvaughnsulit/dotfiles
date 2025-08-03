@@ -200,11 +200,8 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
             end
 
             -- Otherwise, open the buffer
-            if opts.win_config then
-                vim.api.nvim_open_win(buf, true, opts.win_config)
-            else
-                vim.api.nvim_win_set_buf(0, buf)
-            end
+            if opts.win_config then vim.api.nvim_open_win(buf, true, opts.win_config) end
+            vim.api.nvim_win_set_buf(0, buf)
             return
         end
     end

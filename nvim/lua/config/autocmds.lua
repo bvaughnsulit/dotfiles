@@ -9,9 +9,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
-        vim.opt.formatoptions:remove("c")
-        vim.opt.formatoptions:remove("r")
-        vim.opt.formatoptions:remove("o")
+        vim.opt.formatoptions:remove("c") -- autowrap comments
+        vim.opt.formatoptions:prepend("r") -- continue comment on enter
+        vim.opt.formatoptions:prepend("o") -- continue comment on o/O
+        vim.opt.formatoptions:prepend("/") -- only continue full line comments
     end,
     group = augroup("format_options"),
     desc = "prevent comments when creating newline before or after comment",

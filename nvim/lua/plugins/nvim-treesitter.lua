@@ -10,6 +10,7 @@ return {
             max_lines = "40%",
             multline_threshold = 3,
             ensure_installed = { "dart" },
+            multiwindow = true,
         },
         keys = {
             { "<leader>tc", "<cmd>TSContextToggle<cr>" },
@@ -42,7 +43,7 @@ return {
                 textobjects = {
                     move = {
                         enable = true,
-                        set_jumps = true, -- whether to set jumps in the jumplist
+                        set_jumps = true,
                         goto_previous_start = {
                             ["[a"] = "@parameter.inner",
                             ["[m"] = "@function.outer",
