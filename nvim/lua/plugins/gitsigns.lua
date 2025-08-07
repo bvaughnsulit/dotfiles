@@ -81,7 +81,7 @@ return {
                 map("n", "<leader>hh", function() gitsigns.preview_hunk() end)
                 map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end)
                 map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-                map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
+                map({ "n", "v" }, "<leader>hr", function() gitsigns.reset_hunk() end)
                 map(
                     { "n", "v" },
                     "<leader>gl",
