@@ -1,37 +1,61 @@
+local utils = require("config.utils")
+
 return {
     {
         "pwntester/octo.nvim",
         cmd = "Octo",
-        ---@diagnostic disable: missing-fields
-        ---@module "octo"
-        ---@type OctoConfig
-        opts = {
-            picker = "snacks",
-            picker_config = {
-                snacks = {
-                    actions = {
-                        pull_requests = {
-                            {
-                                name = "merge_pr",
-                                fn = function() end,
-                                lhs = "<C-r>",
-                                mode = { "n", "i" },
-                                desc = "noop",
-                            },
-                            {
-                                name = "noop",
-                                fn = function() end,
-                                lhs = "<C-r>",
-                                mode = { "n", "i" },
-                                desc = "noop",
+        opts = function()
+            ---@diagnostic disable: missing-fields
+            ---@module "octo"
+            ---@type OctoConfig
+            local opts = {
+                picker = "snacks",
+                picker_config = {
+                    snacks = {
+                        actions = {
+                            pull_requests = {
+                                {
+                                    name = "merge_pr",
+                                    fn = function() end,
+                                    lhs = "<C-r>",
+                                    mode = { "n", "i" },
+                                    desc = "noop",
+                                },
+                                {
+                                    name = "noop",
+                                    fn = function() end,
+                                    lhs = "<C-r>",
+                                    mode = { "n", "i" },
+                                    desc = "noop",
+                                },
                             },
                         },
                     },
                 },
-            },
-            mappings_disable_default = true,
-        },
+                mappings_disable_default = true,
+            }
+
+            vim.api.nvim_create_autocmd("BufModifiedSet", {
+                pattern = { "octo://*" },
+                group = utils.augroup("octo_buf"),
+                callback = function(event)
+                    if not vim.bo[event.buf].modified then
+                        vim.bo.modifiable = false
+                        vim.schedule(function()
+                            vim.keymap.set("n", "<leader>E", function() vim.bo.modifiable = true end, {
+                                buffer = event.buf,
+                                silent = true,
+                                desc = "Enable editing",
+                            })
+                        end)
+                    end
+                end,
+            })
+
+            return opts
+        end,
         ---@diagnostic enable: missing-fields
+        ---
         keys = {
             { "<leader>gG", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
             { "<leader>gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },
