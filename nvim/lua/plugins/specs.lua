@@ -109,19 +109,4 @@ return {
         "mbbill/undotree",
         cmd = "UndotreeToggle",
     },
-    {
-        "pwntester/octo.nvim",
-        cmd = "Octo",
-        ---@diagnostic disable: missing-fields
-        ---@module "octo"
-        ---@type OctoConfig
-        opts = {
-            picker = "fzf-lua",
-        },
-        ---@diagnostic enable: missing-fields
-        keys = {
-            { "<leader>gG", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
-            { "<leader>gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },
-        },
-    },
 }
