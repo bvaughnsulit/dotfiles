@@ -102,3 +102,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "json", "jsonc", "json5" },
     callback = function() vim.opt_local.conceallevel = 0 end,
 })
+
+vim.api.nvim_create_autocmd("CmdwinEnter", {
+    group = augroup("cmdwin_enter"),
+    callback = function(event)
+        vim.wo.foldenable = false
+        vim.schedule(function()
+            vim.keymap.set("n", "q", function() vim.cmd("close") end, {
+                buffer = event.buf,
+                silent = true,
+                desc = "Quit buffer",
+            })
+        end)
+    end,
+    desc = "",
+})
