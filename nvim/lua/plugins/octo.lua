@@ -50,6 +50,7 @@ return {
                         end)
                     end
                 end,
+                desc = "Disable editing on octo buffers by default",
             })
 
             return opts

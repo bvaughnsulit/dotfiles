@@ -2,12 +2,13 @@ local utils = require("config.utils")
 local augroup = utils.augroup
 
 vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "hl on yank",
     callback = function() vim.highlight.on_yank({ timeout = 500, higroup = "visual" }) end,
     group = augroup("hl_on_yank"),
-    desc = "hl on yank",
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
+    desc = "prevent comments when creating newline before or after comment",
     callback = function()
         vim.opt.formatoptions:remove("c") -- autowrap comments
         vim.opt.formatoptions:prepend("r") -- continue comment on enter
@@ -15,13 +16,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.opt.formatoptions:prepend("/") -- only continue full line comments
     end,
     group = augroup("format_options"),
-    desc = "prevent comments when creating newline before or after comment",
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
+    desc = "overwrite mini cursorword highlight group",
     pattern = "*",
     callback = function() vim.cmd([[hi! default link MiniCursorword LspReferenceText]]) end,
-    desc = "overwrite mini cursorword highlight group",
 })
 
 -- wrap and check for spell in text filetypes
@@ -36,12 +36,12 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("TermOpen", {
+    desc = "Configure terminal buffer",
     group = augroup("term_open"),
     callback = function()
         vim.opt_local.number = false
         vim.opt_local.wrap = true
     end,
-    desc = "Configure terminal buffer",
 })
 
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -51,8 +51,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end,
 })
 
--- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
+    desc = "Go to last location when opening a buffer",
     group = augroup("last_loc"),
     callback = function(event)
         local exclude = { "gitcommit" }
@@ -65,8 +65,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
--- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
+    desc = "Close buffers with 'q' in specific filetypes",
     group = augroup("close_with_q"),
     pattern = {
         "checkhealth",
@@ -96,8 +96,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- Fix conceallevel for json files
 vim.api.nvim_create_autocmd({ "FileType" }, {
+    desc = "Set conceallevel to 0 for JSON files",
     group = augroup("json_conceal"),
     pattern = { "json", "jsonc", "json5" },
     callback = function() vim.opt_local.conceallevel = 0 end,
