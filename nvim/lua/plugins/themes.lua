@@ -4,13 +4,21 @@ local is_system_dark_mode = utils.is_system_dark_mode()
 local default_light_theme = "github_light_colorblind"
 local default_dark_theme = "tokyonight-moon"
 
-utils.create_cmd_and_map("DarkMode", nil, function() vim.cmd("colorscheme " .. default_dark_theme) end)
-utils.create_cmd_and_map("LightMode", nil, function() vim.cmd("colorscheme " .. default_light_theme) end)
+local set_dark_mode = function()
+    vim.o.background = "dark"
+    vim.cmd("colorscheme " .. default_dark_theme)
+end
+
+local set_light_mode = function()
+    vim.o.background = "light"
+    vim.cmd("colorscheme " .. default_light_theme)
+end
+
 utils.create_cmd_and_map("ToggleLightDarkMode", nil, function()
     if vim.g.colors_name == default_light_theme then
-        vim.cmd("colorscheme " .. default_dark_theme)
+        set_light_mode()
     else
-        vim.cmd("colorscheme " .. default_light_theme)
+        set_dark_mode()
     end
 end)
 
@@ -43,9 +51,7 @@ return {
         },
         config = function(_, opts)
             require("github-theme").setup(opts)
-            if not is_system_dark_mode and default_light_theme == "github_light_colorblind" then
-                vim.cmd("colorscheme github_light_colorblind")
-            end
+            if not is_system_dark_mode and default_light_theme == "github_light_colorblind" then set_light_mode() end
             vim.cmd([[hi! default link Delimiter Special]])
         end,
     },
@@ -59,9 +65,7 @@ return {
                     keywords = { italic = false },
                 },
             })
-            if is_system_dark_mode and default_dark_theme == "tokyonight-moon" then
-                vim.cmd("colorscheme tokyonight-moon")
-            end
+            if is_system_dark_mode and default_dark_theme == "tokyonight-moon" then set_dark_mode() end
         end,
     },
     {
