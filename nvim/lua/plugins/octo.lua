@@ -58,8 +58,10 @@ return {
         ---@diagnostic enable: missing-fields
         ---
         keys = {
-            { "<leader>gG", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
-            { "<leader>gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },
+            { "<leader>Gg", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
+            { "<leader>Gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },
+            { "<leader>Gp", "<cmd>:Octo pr<cr>", desc = "View PR for current branch" },
+            { "<leader>Gc", "<cmd>:Octo pr checks<cr>", desc = "View PR checks" },
         },
     },
 }

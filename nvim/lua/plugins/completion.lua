@@ -21,7 +21,16 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
             },
             completion = {
-                menu = { border = "single" },
+                menu = {
+                    border = "single",
+                    draw = {
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                            { "kind" },
+                        },
+                    },
+                },
+                trigger = { show_on_backspace = true },
                 list = {
                     selection = {
                         preselect = false,

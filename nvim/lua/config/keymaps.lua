@@ -20,14 +20,14 @@ map("n", "<leader>:", ":lua print(vim.inspect())<left><left>")
 map({ "n", "v" }, "zf", "za", { desc = "Toggle fold" })
 map({ "n" }, "zF", "zA", { desc = "Toggle fold recursively" })
 
-map("n", "<cr>", function()
+map("n", "<tab>", function()
     if vim.wo.foldenable then
         return "za"
     else
-        return "<cr>"
+        return "<tab>"
     end
 end, { expr = true, silent = true, desc = "Toggle fold" })
-map("n", "<a-cr>", "zA", { desc = "Toggle fold recursively" })
+map("n", "<a-tab>", "zA", { desc = "Toggle fold recursively" })
 
 map({ "n", "v" }, "za", "zf", { desc = "Create fold" })
 map({ "n", "v" }, "zA", "zF", { desc = "Create fold" })
@@ -234,10 +234,11 @@ local diagnostic_goto = function(next, severity)
     return function() go({ severity = severity }) end
 end
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+map("n", "]d", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+map("n", "[d", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+map("n", "]D", diagnostic_goto(true), { desc = "Next Diagnostic" })
+map("n", "[D", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+
 
 -- stylua: ignore start
 

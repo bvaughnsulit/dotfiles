@@ -1,6 +1,6 @@
 return {
     {
-        "neovim/nvim-lspconfig",
+        "https://github.com/neovim/nvim-lspconfig.git",
         keys = {
             {
                 "K",
@@ -137,6 +137,8 @@ return {
                     if client and client.name == "eslint" then
                         client.server_capabilities.documentFormattingProvider = true
                     elseif client and client.name == "ts_ls" then
+                        client.server_capabilities.documentFormattingProvider = false
+                    elseif client and client.name == "vtsls" then
                         client.server_capabilities.documentFormattingProvider = false
                     end
 

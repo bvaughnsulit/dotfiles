@@ -260,7 +260,7 @@ M.debug_info = function(buf_opts, win_opts)
             end
             buf_info["buf_opts"] = buf_opts_values
 
-            local default_win_opts = {}
+            local default_win_opts = { "foldenable" }
             local win_opts_values = {}
             for _, opt in ipairs(vim.list_extend(default_win_opts, win_opts or {})) do
                 local value = vim.api.nvim_get_option_value(opt, { win = win.winid })
