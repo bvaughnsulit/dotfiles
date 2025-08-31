@@ -2,6 +2,7 @@ window-decoration = false
 auto-update = check
 font-family = "JetBrainsMonoNL NFM"
 font-size = 15.5
+font-feature = "-calt,-liga,-dlig"
 window-inherit-font-size = false
 mouse-hide-while-typing = true
 window-padding-x = 0
