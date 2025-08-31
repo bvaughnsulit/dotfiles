@@ -38,7 +38,7 @@ return {
             notifier = { enabled = true },
             quickfile = { enabled = true },
             bigfile = { enabled = true },
-            words = { enabled = true },
+            words = { enabled = false },
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
