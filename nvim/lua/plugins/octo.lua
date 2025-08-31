@@ -60,8 +60,35 @@ return {
         keys = {
             { "<leader>Gg", "<cmd>:Octo actions<cr>", desc = "Open Octo" },
             { "<leader>Gs", "<cmd>:Octo pr list states=OPEN<cr>", desc = "Search Open PRs" },
-            { "<leader>Gp", "<cmd>:Octo pr<cr>", desc = "View PR for current branch" },
-            { "<leader>Gc", "<cmd>:Octo pr checks<cr>", desc = "View PR checks" },
+            {
+                "<leader>Gp",
+                function()
+                    vim.notify("Loading PR for current branch...", vim.log.levels.INFO)
+                    vim.cmd("Octo pr")
+                end,
+                desc = "View PR for current branch",
+            },
+            {
+                "<leader>Gc",
+                function()
+                    vim.notify("Loading checks for current pr...", vim.log.levels.INFO)
+                    vim.cmd("Octo pr checks")
+                end,
+                desc = "View PR checks",
+            },
+            {
+                "<leader>Go",
+                function()
+                    vim.notify("Opening PR in browser", vim.log.levels.INFO)
+                    vim.cmd("Octo pr browser")
+                end,
+                desc = "Open PR in browser",
+            },
+            {
+                "<leader>Gy",
+                function() vim.cmd("Octo pr url") end,
+                desc = "Copy PR URL to clipboard",
+            },
         },
     },
 }
