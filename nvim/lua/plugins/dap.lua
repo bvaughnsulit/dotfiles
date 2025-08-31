@@ -29,25 +29,18 @@ return {
 
             require("dap.ext.vscode").load_launchjs()
             require("dap-python").setup()
-            -- require('dap-vscode-js').setup({
-            --   debugger_cmd = { 'js-debug-adapter' },
-            --   -- debugger_path = vim.fn.stdpath('data')
-            --   --   .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js',
-            --   adapters = {
-            --     'pwa-node',
-            --     'pwa-chrome',
-            --     'pwa-msedge',
-            --     'node-terminal',
-            --     'pwa-extensionHost',
-            --   },
-            -- })
             require("dap").defaults.python.exception_breakpoints = {}
+
             dap.adapters["pwa-node"] = {
                 type = "server",
+                host = "localhost",
                 port = "${port}",
                 executable = {
-                    command = "js-debug-adapter",
-                    args = { "${port}" },
+                    command = "node",
+                    args = {
+                        vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+                        "${port}",
+                    },
                 },
             }
 
