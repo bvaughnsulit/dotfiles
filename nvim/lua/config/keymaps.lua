@@ -20,14 +20,14 @@ map("n", "<leader>:", ":lua print(vim.inspect())<left><left>")
 map({ "n", "v" }, "zf", "za", { desc = "Toggle fold" })
 map({ "n" }, "zF", "zA", { desc = "Toggle fold recursively" })
 
-map("n", "<tab>", function()
+map("n", "<cr>", function()
     if vim.wo.foldenable then
         return "za"
     else
-        return "<tab>"
+        return "<cr>"
     end
 end, { expr = true, silent = true, desc = "Toggle fold" })
-map("n", "<a-tab>", "zA", { desc = "Toggle fold recursively" })
+map("n", "<a-cr>", "zA", { desc = "Toggle fold recursively" })
 
 map({ "n", "v" }, "za", "zf", { desc = "Create fold" })
 map({ "n", "v" }, "zA", "zF", { desc = "Create fold" })
