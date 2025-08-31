@@ -35,7 +35,7 @@ alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 
 alias lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias nvim-min='NVIM_APPNAME=minimal-nvim nvim'
-alias plugs='cd ~/.local/share/nvim/lazy/'
+alias plug='cd $(fd . ~/.local/share/nvim/lazy/ --type dir --max-depth 1 | fzf)' 
 alias nvim-debug="INIT_DEBUG=true nvim"
 
 alias lg='lazygit'
@@ -52,3 +52,9 @@ fpath=(~/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND='fd . ~ --type dir --follow --max-depth 5 -E Library/'
+export FZF_DEFAULT_OPTS='--layout reverse'
+export FZF_COMPLETION_TRIGGER='//'
+alias cdf='cd $(fzf)'
