@@ -80,7 +80,7 @@ return {
                 "<leader>Go",
                 function()
                     vim.notify("Opening PR in browser", vim.log.levels.INFO)
-                    vim.cmd("Octo pr browser")
+                    vim.cmd("silent !gh pr view --web")
                 end,
                 desc = "Open PR in browser",
             },

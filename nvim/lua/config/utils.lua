@@ -96,6 +96,13 @@ M.copy_gh_file_url = function()
     vim.notify("Copied to clipboard: " .. url)
 end
 
+---@return nil
+M.cwd_filename_to_clipboard = function()
+    local filename = vim.fn.expand("%:.")
+    vim.fn.setreg("+", filename)
+    vim.notify("Copied to clipboard: " .. filename)
+end
+
 M.open_file_in_gh = function()
     local url = M.get_gh_file_url()
     vim.cmd("silent !open " .. url)

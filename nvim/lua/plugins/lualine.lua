@@ -108,6 +108,7 @@ return {
                     {
                         "filename",
                         symbols = { modified = "*" },
+                        path = 1,
                     },
                 },
                 lualine_x = { tab_component },

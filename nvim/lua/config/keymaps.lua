@@ -312,3 +312,11 @@ vim.keymap.set("n", "<leader>\\c", function()
         end
     end)
 end)
+
+vim.keymap.set(
+    "n",
+    "<leader>rf",
+    utils.cwd_filename_to_clipboard,
+    { desc = "Copy Filename to Clipboard relative to CWD" }
+)
+
