@@ -9,6 +9,9 @@ vim.opt.rtp:prepend(lazypath)
 require("lvim_config.config").setup()
 
 require("lazy").setup({
+    rocks = {
+        enabled = false,
+    },
     spec = {
         { import = "lvim_config.plugins" },
         { import = "plugins" },
