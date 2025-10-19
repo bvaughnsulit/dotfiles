@@ -7,7 +7,6 @@ return {
       "mason.nvim",
       {
         "williamboman/mason-lspconfig.nvim",
-        version = "v1.32.0", -- pinning until i have time to fix breaking changes
         config = function() end,
       },
     },
@@ -104,15 +103,13 @@ return {
           return
         end
 
-        require("lspconfig")[server].setup(server_opts)
+        vim.lsp.config(server, server_opts)
+        -- require("lspconfig")[server].setup(server_opts)
       end
 
       -- get all the servers that are available through mason-lspconfig
       local have_mason, mlsp = pcall(require, "mason-lspconfig")
       local all_mslp_servers = {}
-      if have_mason then
-        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-      end
 
       local ensure_installed = {} ---@type string[]
       for server, server_opts in pairs(servers) do
