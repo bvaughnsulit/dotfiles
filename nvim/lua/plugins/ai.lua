@@ -131,21 +131,88 @@ local agents = {
     },
 }
 
-vim.keymap.set("n", "<leader>aa", function()
-    local agent = agents[require("config.settings").agent]
-    utils.toggle_persistent_terminal(agent.cmd, agent.name, {
-        q_to_go_back = { "n" },
-        start_insert = true,
-        auto_insert = false,
-        on_create = function(bufnr) end,
-        win_config = { split = "below" },
-    })
-end, { desc = "Open AI Agent" })
+-- vim.keymap.set("n", "<leader>aa", function()
+--     local agent = agents[require("config.settings").agent]
+--     utils.toggle_persistent_terminal(agent.cmd, agent.name, {
+--         q_to_go_back = { "n" },
+--         start_insert = true,
+--         auto_insert = false,
+--         on_create = function(bufnr) end,
+--         win_config = { split = "below" },
+--     })
+-- end, { desc = "Open AI Agent" })
 
 return {
     {
+        "https://github.com/CopilotC-Nvim/CopilotChat.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
+    {
+        "https://github.com/folke/sidekick.nvim",
+        ---@class sidekick.Config
+        opts = {
+            nes = { false },
+            cli = {
+                mux = {
+                    enabled = false,
+                },
+            },
+        },
+        keys = {
+            {
+                "<tab>",
+                function()
+                    -- if there is a next edit, jump to it, otherwise apply it if any
+                    if not require("sidekick").nes_jump_or_apply() then
+                        return "<Tab>" -- fallback to normal tab
+                    end
+                end,
+                expr = true,
+                desc = "Goto/Apply Next Edit Suggestion",
+            },
+            {
+                "<c-.>",
+                function() require("sidekick.cli").focus() end,
+                mode = { "n", "x", "i", "t" },
+                desc = "Sidekick Switch Focus",
+            },
+            {
+                "<leader>aa",
+                function() require("sidekick.cli").toggle() end,
+                desc = "Sidekick Toggle CLI",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>as",
+                function()
+                    require("sidekick.cli").select()
+                    -- Or to select only installed tools:
+                    -- require("sidekick.cli").select({ filter = { installed = true } })
+                end,
+                desc = "Sidekick Select CLI",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>aC",
+                function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end,
+                desc = "Sidekick Claude Toggle",
+                mode = { "n", "v" },
+            },
+            {
+                "<leader>ap",
+                function() require("sidekick.cli").prompt() end,
+                desc = "Sidekick Ask Prompt",
+                mode = { "n", "v" },
+            },
+        },
+    },
+    {
         "olimorris/codecompanion.nvim",
         event = "VeryLazy",
+        enabled = false,
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
