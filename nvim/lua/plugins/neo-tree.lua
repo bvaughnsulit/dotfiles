@@ -89,6 +89,13 @@ return {
                     ["y"] = "noop",
                     ["e"] = "noop",
                     ["v"] = "open_vsplit",
+                    ["d"] = {
+                        "copy",
+                        config = {
+                            ---@type ("none"|"relative"|"absolute")
+                            show_path = "relative",
+                        },
+                    },
                     ["p"] = {
                         "toggle_preview",
                         config = { use_float = true, use_image_nvim = false },

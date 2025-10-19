@@ -63,6 +63,7 @@ return {
         "https://github.com/zbirenbaum/copilot.lua",
         event = "InsertEnter",
         config = function()
+            --- @type CopilotConfig
             require("copilot").setup({
                 panel = { enabled = false },
                 enabled = true,
@@ -82,6 +83,7 @@ return {
                 logger = {
                     -- file_log_level = vim.log.levels.TRACE,
                 },
+                copilot_model = "",
             })
             vim.keymap.set("i", "<Tab>", function()
                 if require("copilot.suggestion").is_visible() then
