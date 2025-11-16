@@ -77,12 +77,12 @@ return {
                 ---@type table<string, lspconfig.Config>
                 servers = {
                     pyright = {
-                        enabled = false,
-                        root_dir = function(fname)
-                            local util = require("lspconfig.util")
-                            ---@diagnostic disable-next-line: redundant-return-value
-                            return util.root_pattern(".git")(fname)
-                        end,
+                        -- root_dir = function(fname)
+                        --     local util = require("lspconfig.util")
+                        --     ---@diagnostic disable-next-line: redundant-return-value
+                        --     return util.root_pattern(".git")(fname)
+                        -- end,
+                        root_markers = { ".git" },
                         settings = {
                             python = {
                                 analysis = {
@@ -95,11 +95,13 @@ return {
                         },
                     },
                     basedpyright = {
-                        root_dir = function(fname)
-                            local util = require("lspconfig.util")
-                            ---@diagnostic disable-next-line: redundant-return-value
-                            return util.root_pattern(".git")(fname)
-                        end,
+                        enabled = false,
+                        -- root_dir = function(fname)
+                        --     local util = require("lspconfig.util")
+                        --     ---@diagnostic disable-next-line: redundant-return-value
+                        --     return util.root_pattern(".git")(fname)
+                        -- end,
+                        root_markers = { ".git" },
                         settings = {
                             basedpyright = {
                                 analysis = {
