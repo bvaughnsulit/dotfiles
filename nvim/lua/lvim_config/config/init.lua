@@ -27,76 +27,76 @@ local defaults = {
     -- Same but for Neovim's news.txt
     neovim = false,
   },
-  -- icons used by other plugins
-  -- stylua: ignore
-  icons = {
-    misc = {
-      dots = "󰇘",
+    -- icons used by other plugins
+    -- stylua: ignore
+    icons = {
+        misc = {
+            dots = "󰇘",
+        },
+        ft = {
+            octo = "",
+        },
+        dap = {
+            Stopped             = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+            Breakpoint          = " ",
+            BreakpointCondition = " ",
+            BreakpointRejected  = { " ", "DiagnosticError" },
+            LogPoint            = ".>",
+        },
+        diagnostics = {
+            Error = " ",
+            Warn  = " ",
+            Hint  = " ",
+            Info  = " ",
+        },
+        git = {
+            added    = " ",
+            modified = " ",
+            removed  = " ",
+        },
+        kinds = {
+            Array         = " ",
+            Boolean       = "󰨙 ",
+            Class         = " ",
+            Codeium       = "󰘦 ",
+            Color         = " ",
+            Control       = " ",
+            Collapsed     = " ",
+            Constant      = "󰏿 ",
+            Constructor   = " ",
+            Copilot       = " ",
+            Enum          = " ",
+            EnumMember    = " ",
+            Event         = " ",
+            Field         = " ",
+            File          = " ",
+            Folder        = " ",
+            Function      = "󰊕 ",
+            Interface     = " ",
+            Key           = " ",
+            Keyword       = " ",
+            Method        = "󰊕 ",
+            Module        = " ",
+            Namespace     = "󰦮 ",
+            Null          = " ",
+            Number        = "󰎠 ",
+            Object        = " ",
+            Operator      = " ",
+            Package       = " ",
+            Property      = " ",
+            Reference     = " ",
+            Snippet       = " ",
+            String        = " ",
+            Struct        = "󰆼 ",
+            Supermaven    = " ",
+            TabNine       = "󰏚 ",
+            Text          = " ",
+            TypeParameter = " ",
+            Unit          = " ",
+            Value         = " ",
+            Variable      = "󰀫 ",
+        },
     },
-    ft = {
-      octo = "",
-    },
-    dap = {
-      Stopped             = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-      Breakpoint          = " ",
-      BreakpointCondition = " ",
-      BreakpointRejected  = { " ", "DiagnosticError" },
-      LogPoint            = ".>",
-    },
-    diagnostics = {
-      Error = " ",
-      Warn  = " ",
-      Hint  = " ",
-      Info  = " ",
-    },
-    git = {
-      added    = " ",
-      modified = " ",
-      removed  = " ",
-    },
-    kinds = {
-      Array         = " ",
-      Boolean       = "󰨙 ",
-      Class         = " ",
-      Codeium       = "󰘦 ",
-      Color         = " ",
-      Control       = " ",
-      Collapsed     = " ",
-      Constant      = "󰏿 ",
-      Constructor   = " ",
-      Copilot       = " ",
-      Enum          = " ",
-      EnumMember    = " ",
-      Event         = " ",
-      Field         = " ",
-      File          = " ",
-      Folder        = " ",
-      Function      = "󰊕 ",
-      Interface     = " ",
-      Key           = " ",
-      Keyword       = " ",
-      Method        = "󰊕 ",
-      Module        = " ",
-      Namespace     = "󰦮 ",
-      Null          = " ",
-      Number        = "󰎠 ",
-      Object        = " ",
-      Operator      = " ",
-      Package       = " ",
-      Property      = " ",
-      Reference     = " ",
-      Snippet       = " ",
-      String        = " ",
-      Struct        = "󰆼 ",
-      Supermaven    = " ",
-      TabNine       = "󰏚 ",
-      Text          = " ",
-      TypeParameter = " ",
-      Unit          = " ",
-      Value         = " ",
-      Variable      = "󰀫 ",
-    },
-  },
   ---@type table<string, string[]|boolean>?
   kind_filter = {
     default = {
@@ -186,9 +186,6 @@ function M.setup(opts)
       if lazy_clipboard ~= nil then
         vim.opt.clipboard = lazy_clipboard
       end
-
-      LazyVim.format.setup()
-      LazyVim.root.setup()
 
       vim.api.nvim_create_user_command("LazyExtras", function()
         LazyVim.extras.show()

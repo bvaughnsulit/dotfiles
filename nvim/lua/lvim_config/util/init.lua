@@ -13,7 +13,6 @@ local LazyUtil = require("lazy.core.util")
 ---@field json lazyvim.util.json
 ---@field lualine lazyvim.util.lualine
 ---@field mini lazyvim.util.mini
----@field pick lazyvim.util.pick
 ---@field cmp lazyvim.util.cmp
 local M = {}
 
