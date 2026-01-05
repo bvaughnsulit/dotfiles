@@ -30,7 +30,7 @@ return {
                 component_separators = { left = "", right = "" }, --
                 disabled_filetypes = {
                     statusline = {},
-                    winbar = { "dap-repl", "neo-tree" },
+                    winbar = { "dap-repl", "neo-tree", "sidekick_terminal" },
                 },
                 ignore_focus = {
                     "neo-tree",
@@ -40,6 +40,7 @@ return {
                     "dapui_scopes",
                     "dapui_watches",
                     "dapui_stacks",
+                    "sidekick_terminal",
                 },
                 always_divide_middle = true,
                 globalstatus = true,

@@ -188,7 +188,7 @@ vim.keymap.set("n", "<leader>!!", function()
 end, { silent = true })
 
 -- wincmd o also zooms tmux pane
-vim.keymap.set("n", "<c-w>o", function()
+vim.keymap.set({ "n", "t" }, "<c-w>o", function()
     -- default behavior
     vim.cmd("only")
     -- if unzoomed, zoom
@@ -319,4 +319,3 @@ vim.keymap.set(
     utils.cwd_filename_to_clipboard,
     { desc = "Copy Filename to Clipboard relative to CWD" }
 )
-

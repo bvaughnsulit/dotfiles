@@ -18,6 +18,8 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
+export DOTFILES_DIR="$HOME/dotfiles"
+
 alias ls='ls -a'
 alias home='cd ~'
 alias dot='cd ~/dotfiles'
