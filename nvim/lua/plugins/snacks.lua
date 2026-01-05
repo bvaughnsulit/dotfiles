@@ -98,7 +98,7 @@ return {
         },
         {
             "<leader>pg",
-            function() Snacks.picker.git_status() end,
+            function() Snacks.picker.git_diff({ base = require("config.git").get_git_base().hash }) end,
             desc = "Pick Git status",
         },
         {
@@ -177,7 +177,7 @@ return {
 
             buffer_fuzzy = function() Snacks.picker.lines() end,
 
-            keymaps = function() Snacks.picker.keymaps() end,
+            keymaps = function() Snacks.picker.keymaps({ plugs = true }) end,
 
             help_tags = function() Snacks.picker.help() end,
 
