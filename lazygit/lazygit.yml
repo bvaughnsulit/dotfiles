@@ -20,9 +20,9 @@ os:
   editInTerminal: false
   open: 'open -R {{filename}}'
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
 quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 notARepository: quit
@@ -39,4 +39,4 @@ keybinding:
     moveDownCommit: '<down>'
     moveUpCommit: '<up>'
   files:
-    openMergeTool: t
+    openMergeOptions: t
