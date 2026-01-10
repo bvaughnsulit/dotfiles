@@ -1,15 +1,19 @@
+# https://ghostty.org/docs/config/reference
+
 window-decoration = false
 auto-update = check
 font-family = "JetBrainsMonoNL NFM"
 font-size = 15.5
-font-feature = "-calt,-liga,-dlig"
+font-feature = "-calt,-liga,-dlig" # disable ligatures
 window-inherit-font-size = false
 mouse-hide-while-typing = true
 window-padding-x = 0
 window-padding-y = 0
 window-padding-balance = true
 window-padding-color = extend
-#font-thicken = true
-cursor-invert-fg-bg = true
 theme = light:GitHub Light Colorblind,dark:TokyoNight Night
 desktop-notifications = true
+background-opacity-cells = true
+
+# font-thicken = true
+# cursor-invert-fg-bg = true
