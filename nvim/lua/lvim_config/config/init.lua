@@ -135,31 +135,6 @@ local defaults = {
   },
 }
 
-M.json = {
-  version = 7,
-  path = vim.g.lazyvim_json or vim.fn.stdpath("config") .. "/lazyvim.json",
-  data = {
-    version = nil, ---@type string?
-    news = {}, ---@type table<string, string>
-    extras = {}, ---@type string[]
-  },
-}
-
-function M.json.load()
-  local f = io.open(M.json.path, "r")
-  if f then
-    local data = f:read("*a")
-    f:close()
-    local ok, json = pcall(vim.json.decode, data, { luanil = { object = true, array = true } })
-    if ok then
-      M.json.data = vim.tbl_deep_extend("force", M.json.data, json or {})
-      if M.json.data.version ~= M.json.version then
-        LazyVim.json.migrate()
-      end
-    end
-  end
-end
-
 ---@type LazyVimOptions
 local options
 local lazy_clipboard
@@ -186,10 +161,6 @@ function M.setup(opts)
       if lazy_clipboard ~= nil then
         vim.opt.clipboard = lazy_clipboard
       end
-
-      vim.api.nvim_create_user_command("LazyExtras", function()
-        LazyVim.extras.show()
-      end, { desc = "Manage LazyVim extras" })
 
       vim.api.nvim_create_user_command("LazyHealth", function()
         vim.cmd([[Lazy! load all]])
@@ -284,8 +255,6 @@ function M.init()
   -- defer built-in clipboard handling: "xsel" and "pbcopy" can be slow
   lazy_clipboard = vim.opt.clipboard
   vim.opt.clipboard = ""
-
-  M.json.load()
 end
 
 setmetatable(M, {

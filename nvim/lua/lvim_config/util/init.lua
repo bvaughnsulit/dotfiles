@@ -8,9 +8,6 @@ local LazyUtil = require("lazy.core.util")
 ---@field terminal lazyvim.util.terminal
 ---@field format lazyvim.util.format
 ---@field plugin lazyvim.util.plugin
----@field extras lazyvim.util.extras
----@field inject lazyvim.util.inject
----@field json lazyvim.util.json
 ---@field lualine lazyvim.util.lualine
 ---@field mini lazyvim.util.mini
 ---@field cmp lazyvim.util.cmp
@@ -47,14 +44,6 @@ end
 ---@param plugin string
 function M.has(plugin)
   return M.get_plugin(plugin) ~= nil
-end
-
----@param extra string
-function M.has_extra(extra)
-  local Config = require("lvim_config.config")
-  local modname = "lazyvim.plugins.extras." .. extra
-  return vim.tbl_contains(require("lazy.core.config").spec.modules, modname)
-    or vim.tbl_contains(Config.json.data.extras, modname)
 end
 
 ---@param fn fun()

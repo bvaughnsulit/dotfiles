@@ -69,23 +69,6 @@ function M.enable(enable, buf)
   end
 end
 
-function M.health()
-  local Config = require("lazy.core.config")
-  local has_plugin = Config.spec.plugins["none-ls.nvim"]
-  local has_extra = vim.tbl_contains(Config.spec.modules, "lazyvim.plugins.extras.lsp.none-ls")
-  if has_plugin and not has_extra then
-    LazyVim.warn({
-      "`conform.nvim` and `nvim-lint` are now the default formatters and linters in LazyVim.",
-      "",
-      "You can use those plugins together with `none-ls.nvim`,",
-      "but you need to enable the `lazyvim.plugins.extras.lsp.none-ls` extra,",
-      "for formatting to work correctly.",
-      "",
-      "In case you no longer want to use `none-ls.nvim`, just remove the spec from your config.",
-    })
-  end
-end
-
 ---@param buf? boolean
 function M.snacks_toggle(buf)
   return Snacks.toggle({
