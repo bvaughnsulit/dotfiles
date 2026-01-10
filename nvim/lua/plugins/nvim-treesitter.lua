@@ -5,7 +5,7 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter-context",
-        event = "LazyFile",
+        event = "VeryLazy",
         opts = {
             max_lines = "40%",
             multline_threshold = 3,

@@ -274,11 +274,6 @@ function M.init()
     vim.opt.rtp:append(plugin.dir)
   end
 
-  package.preload["lazyvim.plugins.lsp.format"] = function()
-    LazyVim.deprecate([[require("lvim_config.plugins.lsp.format")]], [[LazyVim.format]])
-    return LazyVim.format
-  end
-
   -- delay notifications till vim.notify was replaced or after 500ms
   LazyVim.lazy_notify()
 
@@ -290,11 +285,6 @@ function M.init()
   lazy_clipboard = vim.opt.clipboard
   vim.opt.clipboard = ""
 
-  if vim.g.deprecation_warnings == false then
-    vim.deprecate = function() end
-  end
-
-  LazyVim.plugin.setup()
   M.json.load()
 end
 

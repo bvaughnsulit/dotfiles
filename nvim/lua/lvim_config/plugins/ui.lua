@@ -128,7 +128,7 @@ return {
   -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "LazyFile",
+    event = "VeryLazy",
     opts = function()
       Snacks.toggle({
         name = "Indention Guides",
