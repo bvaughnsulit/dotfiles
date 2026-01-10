@@ -24,10 +24,6 @@ setmetatable(M, {
   end,
 })
 
-function M.is_win()
-  return vim.uv.os_uname().sysname:find("Windows") ~= nil
-end
-
 ---@param name string
 function M.get_plugin(name)
   return require("lazy.core.config").spec.plugins[name]
