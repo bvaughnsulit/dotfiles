@@ -18,13 +18,16 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        version = false,
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
             config = function() return nil end,
         },
+        cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
         keys = {
-            { "<c-space>", false },
-            { "<bs>", false },
+            -- { "<c-space>", false },
+            -- { "<bs>", false },
         },
         opts = function()
             return {
@@ -40,6 +43,32 @@ return {
                     },
                 },
                 ignore_install = { "angular", "groovy" },
+                ensure_installed = {
+                    "bash",
+                    "c",
+                    "diff",
+                    "html",
+                    "javascript",
+                    "jsdoc",
+                    "json",
+                    "jsonc",
+                    "lua",
+                    "luadoc",
+                    "luap",
+                    "markdown",
+                    "markdown_inline",
+                    "printf",
+                    "python",
+                    "query",
+                    "regex",
+                    "toml",
+                    "tsx",
+                    "typescript",
+                    "vim",
+                    "vimdoc",
+                    "xml",
+                    "yaml",
+                },
                 textobjects = {
                     move = {
                         enable = true,
@@ -85,6 +114,7 @@ return {
                 },
             }
         end,
+        config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end,
     },
     {
         "stevearc/aerial.nvim",
