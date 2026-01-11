@@ -18,6 +18,7 @@ return {
                 symbol = "▏",
             })
             require("mini.cursorword").setup({})
+            require("mini.icons").setup({})
             require("mini.surround").setup({
                 mappings = {
                     add = "gsa", -- Add surrounding in Normal and Visual modes

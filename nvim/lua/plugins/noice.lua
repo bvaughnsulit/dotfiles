@@ -107,8 +107,8 @@ return {
             "rcarriga/nvim-notify",
         },
         keys = {
-            { "<c-f>", false },
-            { "<c-b>", false },
+            -- { "<c-f>", false },
+            -- { "<c-b>", false },
             {
                 "<leader>,M",
                 function() require("noice").cmd("filterTest") end,

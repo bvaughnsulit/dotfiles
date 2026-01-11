@@ -94,6 +94,7 @@ return {
     },
     {
         "lukas-reineke/indent-blankline.nvim",
+        event = "VeryLazy",
         main = "ibl",
         ---@module "ibl"
         ---@type ibl.config
@@ -102,6 +103,20 @@ return {
             indent = {
                 char = "▏",
                 tab_char = "▏",
+            },
+        },
+        exclude = {
+            filetypes = {
+                "Trouble",
+                "help",
+                "lazy",
+                "mason",
+                "neo-tree",
+                "notify",
+                "snacks_notif",
+                "snacks_terminal",
+                "snacks_win",
+                "trouble",
             },
         },
     },
@@ -123,6 +138,7 @@ return {
             },
         },
     },
+    { "MunifTanjim/nui.nvim" },
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
     { "https://github.com/lewis6991/satellite.nvim.git", cond = false },
