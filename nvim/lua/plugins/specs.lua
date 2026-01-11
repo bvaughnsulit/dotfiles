@@ -109,6 +109,20 @@ return {
         "mbbill/undotree",
         cmd = "UndotreeToggle",
     },
+    {
+        "folke/ts-comments.nvim",
+        event = "VeryLazy",
+    },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                { path = "snacks.nvim", words = { "Snacks" } },
+                { path = "lazy.nvim", words = { "LazyVim" } },
+            },
+        },
+    },
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
     { "https://github.com/lewis6991/satellite.nvim.git", cond = false },
