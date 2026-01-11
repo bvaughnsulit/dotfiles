@@ -94,5 +94,4 @@ vim.g.markdown_recommended_style = 0
 vim.g.autoformat = true
 
 -- vim.g.root_spec = { 'lsp', { '.git', 'lua' }, 'cwd' }
--- vim.opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
 -- vim.opt.formatoptions = 'jcroqlnt' -- tcqj

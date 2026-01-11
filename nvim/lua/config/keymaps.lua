@@ -243,8 +243,6 @@ map("n", "[D", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 -- stylua: ignore start
 
 -- toggle options
-LazyVim.format.snacks_toggle():map("<leader>uf")
-LazyVim.format.snacks_toggle(true):map("<leader>uF")
 Snacks.toggle.option("spell", { name = "Spelling"}):map("<leader>us")
 Snacks.toggle.diagnostics():map("<leader>ud")
 Snacks.toggle.line_number():map("<leader>ul")

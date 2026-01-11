@@ -5,12 +5,7 @@ local LazyUtil = require("lazy.core.util")
 ---@field ui lazyvim.util.ui
 ---@field lsp lazyvim.util.lsp
 ---@field root lazyvim.util.root
----@field terminal lazyvim.util.terminal
 ---@field format lazyvim.util.format
----@field plugin lazyvim.util.plugin
----@field lualine lazyvim.util.lualine
----@field mini lazyvim.util.mini
----@field cmp lazyvim.util.cmp
 local M = {}
 
 setmetatable(M, {
@@ -35,11 +30,6 @@ function M.get_plugin_path(name, path)
   local plugin = M.get_plugin(name)
   path = path and "/" .. path or ""
   return plugin and (plugin.dir .. path)
-end
-
----@param plugin string
-function M.has(plugin)
-  return M.get_plugin(plugin) ~= nil
 end
 
 ---@param fn fun()
@@ -81,43 +71,6 @@ function M.opts(name)
   end
   local Plugin = require("lazy.core.plugin")
   return Plugin.values(plugin, "opts", false)
-end
-
--- delay notifications till vim.notify was replaced or after 500ms
-function M.lazy_notify()
-  local notifs = {}
-  local function temp(...)
-    table.insert(notifs, vim.F.pack_len(...))
-  end
-
-  local orig = vim.notify
-  vim.notify = temp
-
-  local timer = vim.uv.new_timer()
-  local check = assert(vim.uv.new_check())
-
-  local replay = function()
-    timer:stop()
-    check:stop()
-    if vim.notify == temp then
-      vim.notify = orig -- put back the original notify if needed
-    end
-    vim.schedule(function()
-      ---@diagnostic disable-next-line: no-unknown
-      for _, notif in ipairs(notifs) do
-        vim.notify(vim.F.unpack_len(notif))
-      end
-    end)
-  end
-
-  -- wait till vim.notify has been replaced
-  check:start(function()
-    if vim.notify ~= temp then
-      replay()
-    end
-  end)
-  -- or if it took more than 500ms, then something went wrong
-  timer:start(500, 0, replay)
 end
 
 function M.is_loaded(name)
@@ -203,11 +156,6 @@ function M.get_pkg_path(pkg, path, opts)
   opts.warn = opts.warn == nil and true or opts.warn
   path = path or ""
   local ret = root .. "/packages/" .. pkg .. "/" .. path
-  if opts.warn and not vim.loop.fs_stat(ret) and not require("lazy.core.config").headless() then
-    M.warn(
-      ("Mason package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path)
-    )
-  end
   return ret
 end
 

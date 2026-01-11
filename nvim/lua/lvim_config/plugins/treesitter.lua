@@ -76,9 +76,6 @@ return {
     },
     ---@param opts TSConfig
     config = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        opts.ensure_installed = LazyVim.dedup(opts.ensure_installed)
-      end
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
@@ -88,12 +85,6 @@ return {
     event = "VeryLazy",
     enabled = true,
     config = function()
-      -- If treesitter is already loaded, we need to run config again for textobjects
-      if LazyVim.is_loaded("nvim-treesitter") then
-        local opts = LazyVim.opts("nvim-treesitter")
-        require("nvim-treesitter.configs").setup({ textobjects = opts.textobjects })
-      end
-
       -- When in diff mode, we want to use the default
       -- vim text objects c & C instead of the treesitter ones.
       local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>

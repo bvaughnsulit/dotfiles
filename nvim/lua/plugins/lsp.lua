@@ -1,3 +1,5 @@
+local LazyVim = require("lvim_config.util") --TODO
+
 ---@type table<string, vim.lsp.Config>
 local servers = {
     lua_ls = {
