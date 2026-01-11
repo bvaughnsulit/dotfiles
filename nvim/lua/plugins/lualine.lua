@@ -30,7 +30,7 @@ return {
                 component_separators = { left = "", right = "" }, --
                 disabled_filetypes = {
                     statusline = {},
-                    winbar = { "dap-repl", "neo-tree", "sidekick_terminal" },
+                    winbar = { "dap-repl", "neo-tree", "sidekick_terminal", "rest_nvim_result" },
                 },
                 ignore_focus = {
                     "neo-tree",
