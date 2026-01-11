@@ -1,10 +1,5 @@
-local LazyVim = require("lvim_config.util")
-
 ---@class LazyVimConfig: LazyVimOptions
 local M = {}
-
-M.version = "13.4.0" -- x-release-please-version
-LazyVim.config = M
 
 ---@class LazyVimOptions
 local defaults = {
@@ -173,22 +168,6 @@ function M.setup(opts)
       })
     end,
   })
-
-  LazyVim.track("colorscheme")
-  LazyVim.try(function()
-    if type(M.colorscheme) == "function" then
-      M.colorscheme()
-    else
-      vim.cmd.colorscheme(M.colorscheme)
-    end
-  end, {
-    msg = "Could not load your colorscheme",
-    on_error = function(msg)
-      LazyVim.error(msg)
-      vim.cmd.colorscheme("habamax")
-    end,
-  })
-  LazyVim.track()
 end
 
 ---@param buf? number
@@ -213,7 +192,7 @@ end
 function M.load(name)
   local function _load(mod)
     if require("lazy.core.cache").find(mod)[1] then
-      LazyVim.try(function()
+      require("lazy.core.util").try(function()
         require(mod)
       end, { msg = "Failed loading " .. mod })
     end
