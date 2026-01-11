@@ -16,6 +16,9 @@ return {
     opts = function()
         local neotree = require("neo-tree")
         local def = require("neo-tree.defaults")
+        local events = require("neo-tree.events")
+
+        local function on_move(data) Snacks.rename.on_rename_file(data.source, data.destination) end
 
         ---@diagnostic disable: missing-fields
         ---@type neotree.Config?
@@ -25,6 +28,8 @@ return {
                 "git_status",
                 "document_symbols",
             },
+            open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf" },
+            use_libuv_file_watcher = true,
             source_selector = {
                 winbar = true,
                 show_scrolled_off_parent_node = true,
@@ -71,8 +76,10 @@ return {
             use_popups_for_input = true,
             enable_git_status = true,
             event_handlers = {
+                { event = events.FILE_MOVED, handler = on_move },
+                { event = events.FILE_RENAMED, handler = on_move },
                 {
-                    event = "file_opened",
+                    event = events.FILE_OPENED,
                     handler = function(_)
                         if not vim.g.IS_EXPLORER_PINNED then require("neo-tree.sources.manager").close_all() end
                     end,
