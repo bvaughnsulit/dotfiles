@@ -93,5 +93,11 @@ vim.opt.foldcolumn = "1"
 vim.g.markdown_recommended_style = 0
 vim.g.autoformat = true
 
--- vim.g.root_spec = { 'lsp', { '.git', 'lua' }, 'cwd' }
 -- vim.opt.formatoptions = 'jcroqlnt' -- tcqj
+
+for _, opt in ipairs(vim.opt.guicursor:get()) do
+    -- Remove the default terminal cursor settings
+    if vim.startswith(opt, "t:") then vim.opt.guicursor:remove(opt) end
+end
+-- use vertical line for terminal cursor
+vim.opt.guicursor:append("t:ver25-blinkon500-blinkoff500-TermCursor")
