@@ -235,10 +235,13 @@ return {
         ---@module 'conform'
         ---@type conform.setupOpts
         opts = {
-            format_on_save = {
-                lsp_format = "fallback",
-                timeout_ms = 500,
-            },
+            format_on_save = function(bufnr)
+                if vim.g.autoformat == false then return nil end
+                return {
+                    lsp_format = "fallback",
+                    timeout_ms = 500,
+                }
+            end,
             default_format_opts = {
                 timeout_ms = 3000,
                 async = false,

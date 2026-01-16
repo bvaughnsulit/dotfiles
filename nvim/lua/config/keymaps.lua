@@ -317,3 +317,8 @@ vim.keymap.set(
     utils.cwd_filename_to_clipboard,
     { desc = "Copy Filename to Clipboard relative to CWD" }
 )
+
+vim.keymap.set("n", "<leader>tf", function()
+    vim.g.autoformat = not vim.g.autoformat
+    vim.notify("Autoformat: " .. (vim.g.autoformat and "Enabled" or "Disabled"))
+end, { desc = "Toggle Autoformat" })
