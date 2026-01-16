@@ -1,11 +1,11 @@
 [user]
-	name = b. vaughn sulit
-	email = bvaughnsulit@gmail.com
+    name = b. vaughn sulit
+    email = bvaughnsulit@gmail.com
 
 [core]
-	editor = nvim
+    editor = nvim
   pager = delta
-	excludesfile = ~/.gitignore_global
+    excludesfile = ~/.gitignore_global
 
 [interactive]
     diffFilter = delta --color-only
