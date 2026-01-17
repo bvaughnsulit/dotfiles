@@ -60,6 +60,7 @@ return {
                     {
                         function()
                             local git_base = git.get_git_base().name
+                            if git_base == nil then return "" end
                             if git_base == "merge_base" then
                                 return "(" .. git.get_default_branch_name() .. "...HEAD)"
                             else

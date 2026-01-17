@@ -1,16 +1,29 @@
 local M = {}
 
+---@type string | nil
 local git_base = "merge_base"
 
+---@return {name: string | nil, hash: string | nil}
 M.get_git_base = function()
     local hash
-    if string.lower(git_base) == "head" then
+
+    local result = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }):wait()
+
+    if result.code ~= 0 or result.stdout:sub(1, -2) ~= "true" then
         hash = nil
-    elseif git_base == "merge_base" then
-        hash = M.get_merge_base_hash()
-    else
-        hash = M.get_rev_hash(git_base)
+        git_base = nil
     end
+
+    if git_base then
+        if string.lower(git_base) == "head" then
+            hash = nil
+        elseif git_base == "merge_base" then
+            hash = M.get_merge_base_hash()
+        else
+            hash = M.get_rev_hash(git_base)
+        end
+    end
+
     return {
         name = git_base,
         hash = hash,
