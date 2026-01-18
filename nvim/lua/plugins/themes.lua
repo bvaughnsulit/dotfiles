@@ -14,11 +14,14 @@ local set_light_mode = function()
     vim.cmd("colorscheme " .. default_light_theme)
 end
 
+_G.set_dark_mode = set_dark_mode
+_G.set_light_mode = set_light_mode
+
 utils.create_cmd_and_map("ToggleLightDarkMode", nil, function()
     if vim.g.colors_name == default_light_theme then
-        set_light_mode()
-    else
         set_dark_mode()
+    else
+        set_light_mode()
     end
 end)
 

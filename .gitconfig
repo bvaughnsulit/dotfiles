@@ -12,7 +12,6 @@
 
 [delta]
     navigate = true
-    light = false
     line-numbers = true
     keep-plus-minus-markers = true
     side-by-side = false

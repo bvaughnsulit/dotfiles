@@ -18,8 +18,9 @@ return {
         end,
     },
     {
-        "windwp/nvim-autopairs",
+        "https://github.com/windwp/nvim-autopairs",
         event = "VeryLazy",
+        opts = {},
     },
     {
         "eandrju/cellular-automaton.nvim",
