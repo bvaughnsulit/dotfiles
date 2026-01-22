@@ -197,6 +197,26 @@ return {
                     vim.lsp.enable(name)
                 end
             end
+
+            vim.lsp.set_log_level(vim.lsp.log_levels.WARN)
+            vim.lsp.log.set_format_func(vim.inspect)
+
+            local set_lsp_log_level = function()
+                vim.ui.select(vim.tbl_keys(vim.log.levels), {
+                    prompt = "Select a level",
+                }, function(selection)
+                    if selection then
+                        vim.lsp.set_log_level(vim.log.levels[selection])
+                        vim.notify(
+                            "LSP log level set to: " .. vim.lsp.log_levels[vim.lsp.log.get_level()],
+                            vim.log.levels.INFO
+                        )
+                    else
+                        vim.notify("Invalid selection", vim.log.levels.WARN)
+                    end
+                end)
+            end
+            vim.keymap.set("n", "<leader>lsl", set_lsp_log_level, { desc = "Set LSP log level" })
         end,
     },
     {
