@@ -90,9 +90,6 @@ M.toggle_lazygit = function(args)
     local utils = require("config.utils")
     local dotfiles_root = utils.get_dotfiles_root()
     local lazygit_config = dotfiles_root .. "/lazygit/lazygit.yml"
-    if not utils.is_system_dark_mode() then
-        lazygit_config = lazygit_config .. "," .. dotfiles_root .. "/lazygit/light.yml"
-    end
 
     local cmd = vim.list_extend({ "lazygit" }, args or {})
 

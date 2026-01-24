@@ -1,3 +1,0 @@
-git:
-  pagers:
-    - pager: delta --light --paging=never

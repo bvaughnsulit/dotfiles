@@ -17,12 +17,11 @@ gui:
 os:
   edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server "$NVIM" --remote-send "qq" && nvim --server "$NVIM" --remote {{filename}})'
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "qq" &&  nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")'
-  editInTerminal: false
   open: 'open -R {{filename}}'
 git:
   pagers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      pager: '[ "$(defaults read -globalDomain AppleInterfaceStyle 2>/dev/null)" = "Dark" ] && (delta --paging=never --dark) || (delta --paging=never --light)'
 quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 notARepository: quit
