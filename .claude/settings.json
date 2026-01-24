@@ -1,10 +1,5 @@
 {
   "includeCoAuthoredBy": false,
-  "statusLine": {
-    "type": "command",
-    "command": "$DOTFILES_DIR/.claude/statusline.sh",
-    "padding": 0
-  },
   "permissions": {
     "allow": [
       "Bash(grep:*)"
@@ -25,6 +20,11 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "$DOTFILES_DIR/.claude/statusline.sh",
+    "padding": 0
+  },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
@@ -34,5 +34,6 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
     "github@claude-plugins-official": true
-  }
+  },
+  "model": "opus"
 }

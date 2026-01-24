@@ -117,13 +117,3 @@ vim.api.nvim_create_autocmd("CmdwinEnter", {
     end,
     desc = "",
 })
-
-vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
-    group = augroup("cursorline_in_active_window"),
-    callback = function() vim.wo.cursorline = true end,
-})
-
-vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
-    group = augroup("unset_cursorline_in_inactive_window"),
-    callback = function() vim.wo.cursorline = false end,
-})
