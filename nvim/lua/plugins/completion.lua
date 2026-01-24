@@ -79,7 +79,9 @@ return {
                         dismiss = "<C-]>",
                     },
                 },
-                filetypes = {},
+                filetypes = {
+                    markdown = true,
+                },
                 logger = {
                     -- file_log_level = vim.log.levels.TRACE,
                 },
