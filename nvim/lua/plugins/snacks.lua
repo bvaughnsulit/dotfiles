@@ -24,6 +24,17 @@ local custom_close = function(win)
     end
 end
 
+local get_filename_from_item = function(item)
+    local filename = item and item.file
+    if not filename then return nil end
+
+    if item.end_pos and item.end_pos[1] then
+        filename = filename .. ":" .. item.end_pos[1]
+        if item.end_pos[2] then filename = filename .. ":" .. item.end_pos[2] end
+    end
+    return filename
+end
+
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -73,6 +84,24 @@ return {
                         builtin = false,
                     },
                 },
+                actions = {
+                    debug_item = function(_picker, item) logger(item) end,
+                    debug_picker = function(picker) logger(picker) end,
+                    copy_filename_to_clipboard = function(_picker, item)
+                        local filename = get_filename_from_item(item)
+                        if not filename then return end
+                        vim.fn.setreg("+", filename)
+                        vim.notify("Copied to clipboard: " .. filename, vim.log.levels.INFO)
+                    end,
+                    send_filename_to_sidekick = function(_picker, item)
+                        local filename = get_filename_from_item(item)
+                        if not filename then return end
+                        require("sidekick.cli").send({
+                            msg = "@" .. filename,
+                            name = "claude",
+                        })
+                    end,
+                },
                 win = {
                     input = {
                         keys = {
@@ -83,6 +112,10 @@ return {
                             ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
                             ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
+                            ["<c-y>"] = { "copy_filename_to_clipboard", mode = { "i", "n" } },
+                            ["<c-s>"] = { "send_filename_to_sidekick", mode = { "i", "n" } },
+                            ["<leader>,i"] = { "debug_item", mode = { "n" } },
+                            ["<leader>,p"] = { "debug_picker", mode = { "n" } },
                         },
                     },
                 },
@@ -179,7 +212,11 @@ return {
 
             keymaps = function() Snacks.picker.keymaps({ plugs = true }) end,
 
-            help_tags = function() Snacks.picker.help() end,
+            help_tags = function()
+                Snacks.picker.help({
+                    confirm = "vsplit",
+                })
+            end,
 
             commands = function()
                 Snacks.picker.commands({
