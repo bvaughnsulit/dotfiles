@@ -11,6 +11,7 @@ return {
     },
     {
         "https://github.com/folke/sidekick.nvim",
+        dev = true,
         ---@class sidekick.Config
         opts = {
             nes = { enabled = false },
@@ -62,6 +63,7 @@ return {
                     require("sidekick.cli").toggle({
                         name = default_ai_cli,
                         focus = true,
+                        filter = { external = false },
                     })
                 end,
                 desc = "Sidekick Toggle CLI",
