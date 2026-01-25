@@ -18,6 +18,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$NVIM\" ] && (nvim --server \"$NVIM\" --remote-send '<cmd>checktime<cr>')"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
