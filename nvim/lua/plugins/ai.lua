@@ -1,6 +1,19 @@
 local default_ai_cli = "claude"
 local ai_chat_cli = "claude_haiku"
 
+local toggle_claude = function(args)
+    local cmd = vim.list_extend({ "claude" }, args or {})
+    require("config.utils").toggle_persistent_terminal(cmd, "Claude", {
+        q_to_go_back = { "n" },
+        auto_insert = false,
+        win_config = {
+            split = "right",
+        },
+        -- job_opts = { env = {} },
+    })
+end
+vim.keymap.set("n", "<leader>aa", toggle_claude, { desc = "Open Claude AI Terminal" })
+
 return {
     {
         "https://github.com/CopilotC-Nvim/CopilotChat.nvim",
@@ -11,6 +24,7 @@ return {
     },
     {
         "https://github.com/folke/sidekick.nvim",
+        enabled = false,
         dev = true,
         ---@class sidekick.Config
         opts = {
