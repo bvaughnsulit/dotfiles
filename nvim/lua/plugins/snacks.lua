@@ -93,13 +93,12 @@ return {
                         vim.fn.setreg("+", filename)
                         vim.notify("Copied to clipboard: " .. filename, vim.log.levels.INFO)
                     end,
-                    send_filename_to_sidekick = function(_picker, item)
+                    put_filename = function(picker, item)
                         local filename = get_filename_from_item(item)
                         if not filename then return end
-                        require("sidekick.cli").send({
-                            msg = "@" .. filename,
-                            name = "claude",
-                        })
+                        picker:close()
+                        if vim.api.nvim_buf_get_name(0):find("term://claude") then filename = "@" .. filename .. " " end
+                        vim.api.nvim_put({ filename }, "c", true, true)
                     end,
                 },
                 win = {
@@ -113,7 +112,7 @@ return {
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
                             ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
                             ["<c-y>"] = { "copy_filename_to_clipboard", mode = { "i", "n" } },
-                            ["<c-s>"] = { "send_filename_to_sidekick", mode = { "i", "n" } },
+                            ["<c-s>"] = { "put_filename", mode = { "i", "n" } },
                             ["<leader>,i"] = { "debug_item", mode = { "n" } },
                             ["<leader>,p"] = { "debug_picker", mode = { "n" } },
                         },
