@@ -72,6 +72,14 @@ return {
                 vim.g.minitrailspace_disable = not vim.g.minitrailspace_disable
                 vim.notify("MiniTrailspace is " .. (vim.g.minitrailspace_disable and "disabled" or "enabled"))
             end, "Toggle trailing whitespace highlighting")
+
+            local ui_select_orig = vim.ui.select
+            local mini_pick = require("mini.pick")
+            mini_pick.setup({})
+            vim.ui.select = ui_select_orig
+            require("config.pickers").register_picker("mini", {
+                live_grep = function() mini_pick.builtin.grep_live({}) end,
+            })
         end,
         keys = {
             { "<A-j>", nil, mode = { "n", "v" } },
