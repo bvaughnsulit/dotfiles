@@ -5,7 +5,7 @@ local toggle_claude = function(args)
     local cmd = vim.list_extend({ "claude" }, args or {})
     require("config.utils").toggle_persistent_terminal(cmd, "Claude", {
         q_to_go_back = { "n" },
-        auto_insert = false,
+        auto_insert = true,
         win_config = {
             split = "right",
         },
