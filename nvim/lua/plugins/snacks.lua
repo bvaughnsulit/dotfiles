@@ -139,8 +139,8 @@ return {
             desc = "Pick Git branch",
         },
         {
-            "<leader>\\\\",
-            function() Snacks.terminal.toggle() end,
+            "<leader>pps",
+            function() Snacks.picker.pickers() end,
         },
     },
     config = function(_, opts)
@@ -225,8 +225,6 @@ return {
                     end,
                 })
             end,
-
-            pickers = function() Snacks.picker.pickers() end,
 
             resume = function() Snacks.picker.resume() end,
         })

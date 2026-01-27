@@ -185,9 +185,9 @@ return {
                 keymaps = builtin.keymaps,
                 help_tags = builtin.help_tags,
                 commands = builtin.commands,
-                pickers = builtin.builtin,
                 resume = builtin.resume,
             })
+            vim.keymap.set("n", "<leader>ppt", ":Telescope<cr>", { desc = "Telescope Pickers" })
 
             vim.keymap.set(
                 "n",

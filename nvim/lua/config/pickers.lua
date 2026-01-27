@@ -14,11 +14,10 @@ M.picker_functions = {
     help_tags = { lhs = "<leader>?", desc = "Help Tags", rhs = {}, selected_picker = nil },
     commands = { lhs = "<leader><leader>", desc = "Commands", rhs = {}, selected_picker = nil },
     buffer_fuzzy = { lhs = "<leader>/f", desc = "Current Buffer Fuzzy Search", rhs = {}, selected_picker = nil },
-    pickers = { lhs = "<leader>pp       ", desc = "Pickers", rhs = {}, selected_picker = nil },
     resume = { lhs = "<leader><up>", desc = "Resume Last Picker", rhs = {}, selected_picker = nil },
 }
 
----@param picker_name 'snacks' | 'telescope' | 'mini' | string
+---@param picker_name 'snacks' | 'telescope' | 'mini' | 'fzf-lua' | string
 ---@param functions table<string, function>
 M.register_picker = function(picker_name, functions)
     for fn_name, fn in pairs(functions) do
