@@ -82,7 +82,11 @@ return {
             commands = {
                 filterTest = {
                     view = "popup",
-                    opts = { enter = true, format = "details" },
+                    opts = {
+                        enter = true,
+                        format = "details",
+                        win_options = { wrap = true },
+                    },
                     filter = {
                         any = {
                             { event = { "msg_ruler", "msg_showcmd" } },
@@ -92,7 +96,11 @@ return {
                 },
                 customAll = {
                     view = "popup",
-                    opts = { enter = true, format = "details" },
+                    opts = {
+                        enter = true,
+                        format = "details",
+                        win_options = { wrap = true },
+                    },
                     filter = {
                         ["not"] = {
                             event = { "msg_ruler", "msg_showcmd" },
