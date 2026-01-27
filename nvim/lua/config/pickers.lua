@@ -1,80 +1,74 @@
 local M = {}
 
-local pickers = {}
-local picker_functions = {}
-local picker_index = 1
+local default_picker = "snacks"
 
-M.register_picker = function(picker_name, functions)
-    for _, name in ipairs(pickers) do
-        if name == picker_name then
-            vim.notify("Picker " .. picker_name .. " already registered")
-            return
-        end
-    end
-
-    for fn_name, fn in pairs(functions) do
-        if type(fn) ~= "function" or not M.maps[fn_name] then
-            vim.notify("Picker " .. picker_name .. " contains invalid function: " .. fn_name)
-        end
-    end
-
-    table.insert(pickers, picker_name)
-    picker_functions[picker_name] = functions
-end
-
-M.change_picker = function(new_picker)
-    for i, name in ipairs(pickers) do
-        if name == new_picker then
-            picker_index = i
-            break
-        end
-        vim.notify("Picker " .. new_picker .. " not found")
-    end
-    vim.notify("Picker: " .. pickers[picker_index])
-end
-
-M.cycle_picker = function()
-    picker_index = (picker_index + 1) > #pickers and 1 or picker_index + 1
-    vim.notify("Picker: " .. pickers[picker_index])
-end
-
-M.maps = {
-    find_files = { "<C-p>", "Find Files" },
-    buffers = { "<C-b>", "Buffers", mode = { "n", "v", "t" } },
-    live_grep = { "<C-f>", "Live Grep" },
-    lsp_definitions = { "gd", "Go to Definition" },
-    lsp_references = { "gr", "Go to References" },
-    lsp_type_definitions = { "gt", "Go to Type Definition" },
-    keymaps = { "<leader>fm", "[F]ind [M]appings" },
-    help_tags = { "<leader>?", "Help Tags" },
-    commands = { "<leader><leader>", "Commands" },
-    buffer_fuzzy = { "<leader>/f", "Current Buffer Fuzzy Search" },
-    pickers = { "<leader>pp", "Pickers" },
-    resume = { "<leader><up>", "Resume Last Picker" },
+---@type table<string, {lhs: string, desc: string, mode?: table<string>, rhs: table<string, function>, selected_picker: string|nil}>
+M.picker_functions = {
+    find_files = { lhs = "<C-p>", desc = "Find Files", rhs = {}, selected_picker = nil },
+    buffers = { lhs = "<C-b>", desc = "Buffers", mode = { "n", "v", "t" }, rhs = {}, selected_picker = "telescope" },
+    live_grep = { lhs = "<C-f>", desc = "Live Grep", rhs = {}, selected_picker = nil },
+    lsp_definitions = { lhs = "gd", desc = "Go to Definition", rhs = {}, selected_picker = nil },
+    lsp_references = { lhs = "gr", desc = "Go to References", rhs = {}, selected_picker = nil },
+    lsp_type_definitions = { lhs = "gt", desc = "Go to Type Definition", rhs = {}, selected_picker = nil },
+    keymaps = { lhs = "<leader>fm", desc = "[F]ind [M]appings", rhs = {}, selected_picker = nil },
+    help_tags = { lhs = "<leader>?", desc = "Help Tags", rhs = {}, selected_picker = nil },
+    commands = { lhs = "<leader><leader>", desc = "Commands", rhs = {}, selected_picker = nil },
+    buffer_fuzzy = { lhs = "<leader>/f", desc = "Current Buffer Fuzzy Search", rhs = {}, selected_picker = nil },
+    pickers = { lhs = "<leader>pp       ", desc = "Pickers", rhs = {}, selected_picker = nil },
+    resume = { lhs = "<leader><up>", desc = "Resume Last Picker", rhs = {}, selected_picker = nil },
 }
 
-local call = function(fn_name, ...)
-    local current_picker = pickers[picker_index]
-    if picker_functions[current_picker] and picker_functions[current_picker][fn_name] then
-        picker_functions[current_picker][fn_name](...)
-    else
-        for i = 1, #pickers do
-            local fallback = pickers[i]
-            if picker_functions[fallback] and picker_functions[fallback][fn_name] then
-                picker_functions[fallback][fn_name](...)
-                return
-            end
+---@param picker_name 'snacks' | 'telescope' | 'mini' | string
+---@param functions table<string, function>
+M.register_picker = function(picker_name, functions)
+    for fn_name, fn in pairs(functions) do
+        if type(fn) ~= "function" or not M.picker_functions[fn_name] then
+            vim.notify("Picker " .. picker_name .. " contains invalid function: " .. fn_name)
         end
-        logger("Not found: " .. current_picker .. " " .. fn_name)
+        M.picker_functions[fn_name].rhs[picker_name] = fn
     end
 end
 
-for name, opts in pairs(M.maps) do
-    vim.keymap.set(opts.mode or { "n", "v" }, opts[1], function() call(name) end, {
-        desc = opts[2],
+local call = function(fn_name, ...)
+    local selected_picker = M.picker_functions[fn_name].selected_picker or default_picker
+
+    if M.picker_functions[fn_name].rhs[selected_picker] then
+        M.picker_functions[fn_name].rhs[selected_picker](...)
+        return
+    else
+        for _, fn in pairs(M.picker_functions[fn_name].rhs) do
+            fn(...)
+            return
+        end
+        logger("No valid picker function found for " .. fn_name)
+    end
+end
+
+for name, opts in pairs(M.picker_functions) do
+    vim.keymap.set(opts.mode or { "n", "v" }, opts.lhs, function() call(name) end, {
+        desc = opts.desc,
     })
 end
 
-vim.api.nvim_create_user_command("CyclePicker", function() M.cycle_picker() end, {})
+local update_selected_picker = function()
+    vim.ui.select(vim.tbl_keys(M.picker_functions), {
+        prompt = "Select a function to configure:",
+    }, function(selected_picker_fn)
+        if M.picker_functions[selected_picker_fn] then
+            vim.ui.select(vim.tbl_keys(M.picker_functions[selected_picker_fn].rhs), {
+                prompt = "Select picker for " .. selected_picker_fn .. ":",
+            }, function(selected_picker)
+                if M.picker_functions[selected_picker_fn].rhs[selected_picker] then
+                    M.picker_functions[selected_picker_fn].selected_picker = selected_picker
+                    vim.notify("Default picker for " .. selected_picker_fn .. " set to " .. selected_picker)
+                end
+            end)
+        end
+    end)
+end
+
+vim.keymap.set("n", "<leader>pps", update_selected_picker, {
+    desc = "Update Picker Selections",
+})
 
 return M
