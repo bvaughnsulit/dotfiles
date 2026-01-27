@@ -24,13 +24,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function() vim.cmd([[hi! default link MiniCursorword LspReferenceText]]) end,
 })
 
--- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("wrap_spell"),
     pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.wrap = true
-        vim.opt_local.spell = true
+        vim.opt_local.spell = false
         vim.opt_local.conceallevel = 0
     end,
 })
@@ -115,5 +114,5 @@ vim.api.nvim_create_autocmd("CmdwinEnter", {
             })
         end)
     end,
-    desc = "",
+    desc = "Close cmdwin with 'q'",
 })
