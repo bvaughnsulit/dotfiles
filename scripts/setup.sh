@@ -15,6 +15,7 @@ echo "Done."
 
 echo "Creating file symbolic links..."
 ln -si ${DOTFILES_DIR}/.claude/settings.json ~/.claude/settings.json
+ln -si ${DOTFILES_DIR}/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
 ln -si ${DOTFILES_DIR}/.gitconfig ~/.gitconfig
 ln -si ${DOTFILES_DIR}/.gitignore_global ~/.gitignore_global
 ln -si ${DOTFILES_DIR}/.p10k.zsh ~/.p10k.zsh
@@ -27,6 +28,7 @@ ln -siF ${DOTFILES_DIR}/ghostty ~/.config/ghostty
 ln -siF ${DOTFILES_DIR}/kitty ~/.config/kitty
 ln -siF ${DOTFILES_DIR}/nvim ~/.config/nvim
 ln -siF ${DOTFILES_DIR}/tmux ~/.config/tmux
+ln -siF ${DOTFILES_DIR}/opencode/plugins ~/.config/opencode/plugins
 echo "Done."
 
 echo "Setup complete."
