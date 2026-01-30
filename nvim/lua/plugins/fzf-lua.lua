@@ -2,6 +2,7 @@ return {
     {
         "https://github.com/ibhagwan/fzf-lua.git",
         event = "VeryLazy",
+        enabled = false,
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         },
@@ -13,9 +14,11 @@ return {
         config = function(_, opts)
             local fzf_lua = require("fzf-lua")
             fzf_lua.setup(opts)
+
             require("config.pickers").register_picker("fzf-lua", {
                 live_grep = function() fzf_lua.live_grep() end,
             })
+
             vim.keymap.set("n", "<leader>ppf", ":FzfLua<cr>", { desc = "Fzf Lua Pickers" })
         end,
     },
