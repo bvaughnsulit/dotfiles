@@ -134,9 +134,7 @@ return {
         ft = "lua",
         opts = {
             library = {
-                { import = "plugins.lazyvim" },
                 { path = "snacks.nvim", words = { "Snacks" } },
-                { path = "lazy.nvim", words = { "LazyVim" } },
             },
         },
     },
