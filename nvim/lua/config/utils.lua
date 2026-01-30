@@ -247,10 +247,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
             buffer = buf,
             group = M.augroup(buf .. "_terminal_enter"),
             callback = function()
-                vim.schedule(function()
-                    vim.api.nvim_win_set_cursor(0, { 1, 0 })
-                    vim.cmd.startinsert()
-                end)
+                vim.schedule(function() vim.cmd.startinsert() end)
             end,
         })
         vim.cmd.startinsert()

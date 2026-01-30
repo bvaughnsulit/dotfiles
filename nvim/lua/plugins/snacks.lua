@@ -182,6 +182,10 @@ return {
                         preview = function(ctx)
                             -- prevents using the actual buffer in the previewer to preserve lastused values
                             ctx.item.buf = nil
+                            if ctx.item.buftype == "terminal" then
+                                ctx.preview:set_lines({ ctx.item.file })
+                                return
+                            end
                             return Snacks.picker.preview.file(ctx)
                         end,
                         current = false,
