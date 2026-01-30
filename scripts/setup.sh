@@ -29,6 +29,7 @@ ln -siF ${DOTFILES_DIR}/kitty ~/.config/kitty
 ln -siF ${DOTFILES_DIR}/nvim ~/.config/nvim
 ln -siF ${DOTFILES_DIR}/tmux ~/.config/tmux
 ln -siF ${DOTFILES_DIR}/opencode/plugins ~/.config/opencode/plugins
+ln -siF ${DOTFILES_DIR}/.claude/skills ~/.claude/skills
 echo "Done."
 
 echo "Setup complete."
