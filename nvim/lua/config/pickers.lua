@@ -14,6 +14,7 @@ M.picker_functions = {
     help_tags = { lhs = "<leader>?", desc = "Help Tags", rhs = {}, selected_picker = nil },
     commands = { lhs = "<leader><leader>", desc = "Commands", rhs = {}, selected_picker = nil },
     buffer_fuzzy = { lhs = "<leader>/f", desc = "Current Buffer Fuzzy Search", rhs = {}, selected_picker = nil },
+    pickers = { lhs = "<leader>pp", desc = "Pickers", rhs = {}, selected_picker = default_picker },
     resume = { lhs = "<leader><up>", desc = "Resume Last Picker", rhs = {}, selected_picker = nil },
 }
 

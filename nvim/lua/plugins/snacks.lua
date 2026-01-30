@@ -46,30 +46,35 @@ return {
         ---@type snacks.Config
         return {
             lazygit = { enabled = false },
+            words = { enabled = false },
+
             notifier = { enabled = true },
             quickfile = { enabled = true },
             bigfile = { enabled = true },
-            words = { enabled = false },
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
                 main = { current = true }, -- focus last win on picker close
-                layout = {
-                    layout = {
-                        backdrop = false,
-                        row = 1,
-                        width = 0.95,
-                        min_width = 80,
-                        height = 0.95,
-                        box = "vertical",
-                        border = "rounded",
-                        title = "{title}",
-                        title_pos = "center",
-                        { win = "input", height = 1, border = "bottom" },
-                        { win = "list", border = "none" },
-                        { win = "preview", title = "{preview}", height = 0.7, border = "top" },
-                    },
-                },
+                layout = function(source)
+                    return {
+                        cycle = true,
+                        layout = {
+                            backdrop = false,
+                            row = 1,
+                            width = 0.95,
+                            min_width = 80,
+                            height = 0.95,
+                            box = "vertical",
+                            border = "rounded",
+                            title = "{title}",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                            { win = "preview", title = "{preview}", height = 0.7, border = "top" },
+                        },
+                        auto_hide = source == "select" and { "preview" } or {},
+                    }
+                end,
                 formatters = {
                     file = {
                         filename_first = true,
@@ -116,6 +121,8 @@ return {
                             ["<c-s>"] = { "put_filename", mode = { "i", "n" } },
                             ["<leader>,i"] = { "debug_item", mode = { "n" } },
                             ["<leader>,p"] = { "debug_picker", mode = { "n" } },
+                            ["<Down>"] = { "history_forward", mode = { "i", "n" } },
+                            ["<Up>"] = { "history_back", mode = { "i", "n" } },
                         },
                     },
                 },
@@ -232,6 +239,8 @@ return {
             end,
 
             resume = function() Snacks.picker.resume() end,
+
+            pickers = function() Snacks.picker.pickers() end,
         })
     end,
 }
