@@ -5,7 +5,7 @@ local default_picker = "snacks"
 ---@type table<string, {lhs: string, desc: string, mode?: table<string>, rhs: table<string, function>, selected_picker: string|nil}>
 M.picker_functions = {
     find_files = { lhs = "<C-p>", desc = "Find Files", rhs = {}, selected_picker = nil },
-    buffers = { lhs = "<C-b>", desc = "Buffers", mode = { "n", "v", "t" }, rhs = {}, selected_picker = "telescope" },
+    buffers = { lhs = "<C-b>", desc = "Buffers", mode = { "n", "v", "t" }, rhs = {}, selected_picker = nil },
     live_grep = { lhs = "<C-f>", desc = "Live Grep", rhs = {}, selected_picker = nil },
     lsp_definitions = { lhs = "gd", desc = "Go to Definition", rhs = {}, selected_picker = nil },
     lsp_references = { lhs = "gr", desc = "Go to References", rhs = {}, selected_picker = nil },

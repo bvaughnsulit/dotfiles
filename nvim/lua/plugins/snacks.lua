@@ -168,15 +168,19 @@ return {
                 )
             end,
 
-            -- buffers = function()
-            --     Snacks.picker.buffers(
-            --         --- @type snacks.picker.buffers.Config
-            --         {
-            --             current = false,
-            --             -- sort = { fields = {} },
-            --         }
-            --     )
-            -- end,
+            buffers = function()
+                Snacks.picker.buffers(
+                    --- @type snacks.picker.buffers.Config
+                    {
+                        preview = function(ctx)
+                            -- prevents using the actual buffer in the previewer to preserve lastused values
+                            ctx.item.buf = nil
+                            return Snacks.picker.preview.file(ctx)
+                        end,
+                        current = false,
+                    }
+                )
+            end,
 
             live_grep = function()
                 local default_exclude = {

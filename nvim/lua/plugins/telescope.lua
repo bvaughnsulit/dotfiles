@@ -4,6 +4,7 @@ local pickers = require("config.pickers")
 return {
     {
         "nvim-telescope/telescope.nvim",
+        enabled = false,
         dependencies = {
             "debugloop/telescope-undo.nvim",
             "nvim-lua/plenary.nvim",
@@ -305,6 +306,7 @@ return {
     {
         "nvim-telescope/telescope-file-browser.nvim",
         event = "VeryLazy",
+        enabled = false,
         config = function()
             local telescope = require("telescope")
             telescope.load_extension("file_browser")
