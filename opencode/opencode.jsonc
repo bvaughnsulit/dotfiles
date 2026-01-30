@@ -1,6 +1,9 @@
 {
+    // https://opencode.ai/docs/config/
     "$schema": "https://opencode.ai/config.json",
     "theme": "system",
+    "default_agent": "plan",
+    "share": "disabled",
     "model": "anthropic/claude-opus-4-5",
     "autoupdate": true,
     "permission": {
@@ -10,6 +13,37 @@
         "grep": "allow",
         "list": "allow",
         "lsp": "allow",
-        "websearch": "allow"
+        "websearch": "allow",
+        "todoread": "allow",
+        "todowrite": "allow",
+        "bash": {
+            "*": "ask",
+
+            // git
+            "git branch *": "allow",
+            "git log *": "allow",
+            "git diff *": "allow",
+            "git status *": "allow",
+            "git commit *": "allow",
+
+            // github
+            "gh pr view *": "allow",
+
+            "npm *": "allow",
+            "rm *": "deny",
+            "grep *": "allow"
+        },
+    },
+    "agent": {
+        "plan": {
+            "permission": {
+                "edit": "deny",
+            }
+        },
+        "build": {
+            "permission": {
+                "edit": "allow",
+            }
+        }
     }
 }
