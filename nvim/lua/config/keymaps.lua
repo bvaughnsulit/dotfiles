@@ -54,6 +54,10 @@ map({ "n", "t" }, "<C-l>", "<cmd>wincmd l<cr>")
 map({ "n", "t" }, "<C-j>", "<cmd>wincmd j<cr>")
 map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>")
 
+-- add some wincmd shortcuts for terminal mode
+map({ "t" }, "<C-w>q", "<cmd>wincmd q<cr>")
+map({ "t" }, "<C-w>o", "<cmd>wincmd o<cr>")
+
 map({ "i" }, "<M-h>", "<left>")
 map({ "i" }, "<M-l>", "<right>")
 
