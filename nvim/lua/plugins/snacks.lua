@@ -53,6 +53,7 @@ return {
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
+                main = { current = true }, -- focus last win on picker close
                 layout = {
                     layout = {
                         backdrop = false,
