@@ -255,6 +255,24 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
     if opts.cb then opts.cb(buf) end
 end
 
+M.get_responsive_win_config = function()
+    local is_small_screen = vim.o.columns < 180
+
+    local float_config = {
+        relative = "editor",
+        height = vim.o.lines - 3,
+        width = vim.o.columns,
+        row = 1,
+        col = 1,
+        border = "rounded",
+    }
+    local split_config = {
+        split = "right",
+    }
+
+    return is_small_screen and float_config or split_config
+end
+
 ---@param buf_opts? string[]
 ---@param win_opts? string[]
 M.debug_info = function(buf_opts, win_opts)

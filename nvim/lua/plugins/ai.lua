@@ -20,9 +20,7 @@ local toggle_ai_cli = function(opts)
         q_to_go_back = { "n" },
         auto_insert = true,
         if_exists = opts.if_exists or "use_existing",
-        win_config = {
-            split = "right",
-        },
+        win_config = require("config.utils").get_responsive_win_config(),
         cb = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
     })
 end
