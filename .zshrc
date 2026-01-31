@@ -59,7 +59,7 @@ compinit
 # End of Docker CLI completions
 
 source <(fzf --zsh)
-export FZF_DEFAULT_COMMAND='fd . ~ --type dir --follow --max-depth 5 -E Library/'
+export FZF_DEFAULT_COMMAND='fd . ~ --type dir --follow --max-depth 5 -E Library/ -E Applications/ -E Downloads/'
 export FZF_DEFAULT_OPTS='--layout reverse'
 export FZF_COMPLETION_TRIGGER='//'
 alias cdf='cd $(fzf)'
