@@ -34,12 +34,13 @@ M.change_git_base = function()
     vim.ui.select({
         "merge_base",
         "HEAD",
-        "custom",
+        "git log",
+        "hash",
     }, { prompt = "Select a git base" }, function(selection)
         if selection then
-            if selection == "custom" then
+            if selection == "hash" then
                 vim.ui.input({
-                    prompt = "Enter custom git base",
+                    prompt = "Enter commit hash: ",
                 }, function(input)
                     if input and type(M.get_rev_hash(vim.trim(input))) == "string" then
                         git_base = vim.trim(input)
@@ -50,6 +51,16 @@ M.change_git_base = function()
                         vim.notify("Invalid git base hash: " .. input, vim.log.levels.WARN)
                     end
                 end)
+            elseif selection == "git log" then
+                Snacks.picker.git_log({
+                    confirm = function(picker, item)
+                        git_base = item.commit
+                        ---@diagnostic disable-next-line: param-type-mismatch
+                        require("gitsigns").change_base(M.get_git_base().hash, true)
+                        vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
+                        picker:close()
+                    end,
+                })
             else
                 git_base = selection
                 ---@diagnostic disable-next-line: param-type-mismatch
