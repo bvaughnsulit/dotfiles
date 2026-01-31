@@ -238,10 +238,10 @@ local diagnostic_goto = function(next, severity)
     return function() go({ severity = severity }) end
 end
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "]d", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-map("n", "[d", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-map("n", "]D", diagnostic_goto(true), { desc = "Next Diagnostic" })
-map("n", "[D", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+map("n", "]D", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+map("n", "[D", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
+map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 
 
 -- stylua: ignore start
