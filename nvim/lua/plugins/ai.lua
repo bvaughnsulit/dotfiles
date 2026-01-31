@@ -50,6 +50,7 @@ vim.keymap.set("n", "<leader>aA", function()
     end)
 end, { desc = "Select AI CLI" })
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {

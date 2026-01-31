@@ -83,6 +83,7 @@ local servers = {
     },
 }
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {

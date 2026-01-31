@@ -1,5 +1,6 @@
 local git = require("config.git")
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     "https://github.com/kokusenz/deltaview.nvim",

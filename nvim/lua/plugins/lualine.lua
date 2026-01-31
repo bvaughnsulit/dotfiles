@@ -1,6 +1,7 @@
 local utils = require("config.utils")
 local git = require("config.git")
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     "https://github.com/nvim-lualine/lualine.nvim",

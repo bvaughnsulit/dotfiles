@@ -1,6 +1,7 @@
 local utils = require("config.utils")
 local pickers = require("config.pickers")
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {

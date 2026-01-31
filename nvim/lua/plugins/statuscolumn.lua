@@ -1,3 +1,4 @@
+---@module 'lazy'
 ---@type LazySpec
 return {
     "https://github.com/luukvbaal/statuscol.nvim",

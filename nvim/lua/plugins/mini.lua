@@ -1,5 +1,6 @@
 local utils = require("config.utils")
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {

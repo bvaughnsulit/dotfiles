@@ -3,6 +3,7 @@ local git = require("config.git")
 
 vim.g.IS_EXPLORER_PINNED = false
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     "https://github.com/nvim-neo-tree/neo-tree.nvim",

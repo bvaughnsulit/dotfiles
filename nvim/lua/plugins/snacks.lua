@@ -36,6 +36,7 @@ local get_filename_from_item = function(item)
     return filename
 end
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     "https://github.com/folke/snacks.nvim",
