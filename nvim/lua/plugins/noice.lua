@@ -61,6 +61,9 @@ return {
                 },
                 notify = {
                     replace = true,
+                    win_options = {
+                        wrap = true,
+                    },
                 },
             },
             routes = {
@@ -85,6 +88,10 @@ return {
                     opts = {
                         enter = true,
                         format = "details",
+                        size = {
+                            width = 0.7,
+                            height = 0.8,
+                        },
                         win_options = { wrap = true },
                     },
                     filter = {
@@ -99,6 +106,10 @@ return {
                     opts = {
                         enter = true,
                         format = "details",
+                        size = {
+                            width = 0.7,
+                            height = 0.8,
+                        },
                         win_options = { wrap = true },
                     },
                     filter = {
