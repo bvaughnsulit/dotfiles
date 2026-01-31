@@ -24,6 +24,7 @@ local custom_close = function(win)
     end
 end
 
+--- @param item snacks.picker.Item
 local get_filename_from_item = function(item)
     local filename = item and item.file
     if not filename then return nil end
@@ -54,7 +55,13 @@ return {
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
-                main = { current = true }, -- focus last win on picker close
+                debug = {
+                    -- grep = true,
+                },
+                main = {
+                    -- focus last win on picker close
+                    current = true,
+                },
                 layout = function(source)
                     return {
                         cycle = true,
@@ -91,9 +98,9 @@ return {
                     },
                 },
                 actions = {
-                    debug_item = function(_picker, item) logger(item) end,
+                    debug_item = function(_, item) logger(item) end,
                     debug_picker = function(picker) logger(picker) end,
-                    copy_filename_to_clipboard = function(_picker, item)
+                    copy_filename_to_clipboard = function(_, item)
                         local filename = get_filename_from_item(item)
                         if not filename then return end
                         vim.fn.setreg("+", filename)
@@ -103,7 +110,7 @@ return {
                         local filename = get_filename_from_item(item)
                         if not filename then return end
                         picker:close()
-                        if vim.api.nvim_buf_get_name(0):find("term://claude") then filename = "@" .. filename .. " " end
+                        if vim.api.nvim_buf_get_name(0):find("term://ai_cli") then filename = "@" .. filename .. " " end
                         vim.api.nvim_put({ filename }, "c", true, true)
                     end,
                 },
@@ -142,6 +149,11 @@ return {
             desc = "Pick Git status",
         },
         {
+            "<leader>pG",
+            function() Snacks.picker.git_log() end,
+            desc = "Pick Git log",
+        },
+        {
             "<leader>pb",
             function() Snacks.picker.git_branches() end,
             desc = "Pick Git branch",
@@ -165,6 +177,7 @@ return {
         end
         utils.create_cmd_and_map("GrepNvimPlugins", nil, grep_nvim_plugins_source, "")
 
+        -- TODO: qf append
         pickers.register_picker("snacks", {
             find_files = function()
                 Snacks.picker.files(
