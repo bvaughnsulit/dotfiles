@@ -19,6 +19,7 @@ os:
   editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "qq" &&  nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")'
   open: 'open -R {{filename}}'
 git:
+  localBranchSortOrder: recency
   pagers:
     - colorArg: always
       pager: '[ "$(defaults read -globalDomain AppleInterfaceStyle 2>/dev/null)" = "Dark" ] && (delta --paging=never --dark) || (delta --paging=never --light)'
