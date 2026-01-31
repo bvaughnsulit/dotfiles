@@ -113,6 +113,20 @@ return {
                         if vim.api.nvim_buf_get_name(0):find("term://ai_cli") then filename = "@" .. filename .. " " end
                         vim.api.nvim_put({ filename }, "c", true, true)
                     end,
+                    select_filters = function(picker)
+                        vim.ui.select({ "**/tests/**" }, {
+                            prompt = "Exclude pattern:",
+                            format_item = function(pattern) return pattern end,
+                        }, function(pattern)
+                            if not pattern then return end
+                            ---
+                            picker.opts.exclude = vim.tbl_extend("force", picker.opts.exclude or {}, {
+                                pattern,
+                            })
+                            picker.list:set_target()
+                            picker:find()
+                        end)
+                    end,
                 },
                 win = {
                     input = {
@@ -123,6 +137,7 @@ return {
                             ["<c-c>"] = { custom_close, mode = { "n", "i" } },
                             ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
+                            ["<c-f>"] = { "select_filters", mode = { "i", "n" } },
                             ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
                             ["<c-y>"] = { "copy_filename_to_clipboard", mode = { "i", "n" } },
                             ["<c-s>"] = { "put_filename", mode = { "i", "n" } },
