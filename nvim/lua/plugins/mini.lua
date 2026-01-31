@@ -1,5 +1,6 @@
 local utils = require("config.utils")
 
+---@type LazySpec
 return {
     {
         "https://github.com/echasnovski/mini.nvim",

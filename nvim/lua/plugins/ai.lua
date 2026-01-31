@@ -50,13 +50,14 @@ vim.keymap.set("n", "<leader>aA", function()
     end)
 end, { desc = "Select AI CLI" })
 
+---@type LazySpec
 return {
     {
         "https://github.com/CopilotC-Nvim/CopilotChat.nvim",
         event = "VeryLazy",
         enabled = false,
         dependencies = {
-            "nvim-lua/plenary.nvim",
+            "https://github.com/nvim-lua/plenary.nvim",
         },
     },
 }

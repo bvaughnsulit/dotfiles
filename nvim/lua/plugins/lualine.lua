@@ -1,9 +1,10 @@
 local utils = require("config.utils")
 local git = require("config.git")
 
+---@type LazySpec
 return {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
+    "https://github.com/nvim-lualine/lualine.nvim",
+    dependencies = { "https://github.com/nvim-tree/nvim-web-devicons", lazy = true },
     event = "VeryLazy",
     opts = function()
         local is_top_right_win = function()

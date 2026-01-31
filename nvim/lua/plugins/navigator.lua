@@ -1,5 +1,6 @@
+---@type LazySpec
 return {
-    "numToStr/Navigator.nvim",
+    "https://github.com/numToStr/Navigator.nvim",
     -- NOTE: could load on keys instead
     event = "VeryLazy",
     config = function()

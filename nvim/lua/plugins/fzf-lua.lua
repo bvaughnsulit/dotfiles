@@ -1,10 +1,11 @@
+---@type LazySpec
 return {
     {
-        "https://github.com/ibhagwan/fzf-lua.git",
+        "https://github.com/ibhagwan/fzf-lua",
         event = "VeryLazy",
         enabled = false,
         dependencies = {
-            "nvim-tree/nvim-web-devicons",
+            "https://github.com/nvim-tree/nvim-web-devicons",
         },
         ---@module "fzf-lua"
         ---@type fzf-lua.Config|{}

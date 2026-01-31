@@ -1,6 +1,8 @@
+---@type LazySpec
 return {
-    "sindrets/diffview.nvim",
-    dependencies = "nvim-lua/plenary.nvim",
+    "https://github.com/sindrets/diffview.nvim",
+    enabled = false,
+    dependencies = "https://github.com/nvim-lua/plenary.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
         local actions = require("diffview.actions")

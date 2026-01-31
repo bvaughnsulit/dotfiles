@@ -1,6 +1,7 @@
+---@type LazySpec
 return {
     {
-        "folke/noice.nvim",
+        "https://github.com/folke/noice.nvim",
         event = "VeryLazy",
         -- dev = true,
         ---@module "noice"
@@ -122,8 +123,8 @@ return {
             },
         },
         dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
+            "https://github.com/MunifTanjim/nui.nvim",
+            "https://github.com/rcarriga/nvim-notify",
         },
         keys = {
             -- { "<c-f>", false },

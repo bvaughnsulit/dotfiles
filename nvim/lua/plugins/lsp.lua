@@ -83,11 +83,12 @@ local servers = {
     },
 }
 
+---@type LazySpec
 return {
     {
-        "https://github.com/neovim/nvim-lspconfig.git",
+        "https://github.com/neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile", "BufWritePre" },
-        dependencies = { "mason.nvim" },
+        dependencies = { "https://github.com/mason-org/mason.nvim" },
         keys = {
             {
                 "K",
@@ -220,7 +221,7 @@ return {
         end,
     },
     {
-        "folke/neoconf.nvim",
+        "https://github.com/folke/neoconf.nvim",
         lazy = false,
         init = function()
             require("neoconf").setup({
@@ -230,7 +231,7 @@ return {
         end,
     },
     {
-        "mfussenegger/nvim-lint",
+        "https://github.com/mfussenegger/nvim-lint",
         event = "VeryLazy",
         opts = {
             linters_by_ft = {
@@ -248,8 +249,8 @@ return {
         end,
     },
     {
-        "stevearc/conform.nvim",
-        dependencies = { "mason.nvim" },
+        "https://github.com/stevearc/conform.nvim",
+        dependencies = { "https://github.com/mason-org/mason.nvim" },
         event = "VeryLazy",
         cmd = "ConformInfo",
         ---@module 'conform'
@@ -287,8 +288,8 @@ return {
     {
         "https://github.com/mason-org/mason-lspconfig.nvim",
         dependencies = {
-            "mason-org/mason.nvim",
-            "neovim/nvim-lspconfig",
+            "https://github.com/mason-org/mason.nvim",
+            "https://github.com/neovim/nvim-lspconfig",
         },
         opts = {
             ensure_installed = vim.tbl_keys(servers),

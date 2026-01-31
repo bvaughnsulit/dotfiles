@@ -1,10 +1,11 @@
+---@type LazySpec
 return {
     {
-        "nvim-treesitter/playground",
+        "https://github.com/nvim-treesitter/playground",
         cmd = "TSPlaygroundToggle",
     },
     {
-        "nvim-treesitter/nvim-treesitter-context",
+        "https://github.com/nvim-treesitter/nvim-treesitter-context",
         event = "VeryLazy",
         opts = {
             max_lines = "40%",
@@ -17,11 +18,11 @@ return {
         },
     },
     {
-        "nvim-treesitter/nvim-treesitter",
+        "https://github.com/nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         version = false,
         dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
+            "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
             config = function() return nil end,
         },
         cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
@@ -117,7 +118,7 @@ return {
         config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end,
     },
     {
-        "stevearc/aerial.nvim",
+        "https://github.com/stevearc/aerial.nvim",
         event = "VeryLazy",
         keys = {
             { "<leader>es", "<cmd>AerialToggle<cr>" },

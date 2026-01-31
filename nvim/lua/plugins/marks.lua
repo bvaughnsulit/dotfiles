@@ -1,5 +1,6 @@
+---@type LazySpec
 return {
-    "chentoast/marks.nvim",
+    "https://github.com/chentoast/marks.nvim",
     event = "VeryLazy",
     config = true,
     keys = {

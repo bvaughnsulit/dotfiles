@@ -1,16 +1,17 @@
 local utils = require("config.utils")
 local pickers = require("config.pickers")
 
+---@type LazySpec
 return {
     {
-        "nvim-telescope/telescope.nvim",
+        "https://github.com/nvim-telescope/telescope.nvim",
         enabled = false,
         dependencies = {
-            "debugloop/telescope-undo.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope-live-grep-args.nvim",
+            "https://github.com/debugloop/telescope-undo.nvim",
+            "https://github.com/nvim-lua/plenary.nvim",
+            "https://github.com/nvim-telescope/telescope-live-grep-args.nvim",
             {
-                "nvim-telescope/telescope-fzf-native.nvim",
+                "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
                 config = function() require("telescope").load_extension("fzf") end,
             },
@@ -304,7 +305,7 @@ return {
         end,
     },
     {
-        "nvim-telescope/telescope-file-browser.nvim",
+        "https://github.com/nvim-telescope/telescope-file-browser.nvim",
         event = "VeryLazy",
         enabled = false,
         config = function()

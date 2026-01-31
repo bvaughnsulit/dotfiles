@@ -1,6 +1,7 @@
+---@type LazySpec
 return {
     {
-        "lewis6991/satellite.nvim",
+        "https://github.com/lewis6991/satellite.nvim",
         enabled = false,
         event = "VeryLazy",
         dev = false,

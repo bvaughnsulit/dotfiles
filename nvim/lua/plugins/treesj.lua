@@ -1,6 +1,7 @@
+---@type LazySpec
 return {
-    "Wansmer/treesj",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    "https://github.com/Wansmer/treesj",
+    dependencies = { "https://github.com/nvim-treesitter/nvim-treesitter" },
     event = "BufReadPost",
     config = function()
         require("treesj").setup({

@@ -25,9 +25,10 @@ utils.create_cmd_and_map("ToggleLightDarkMode", nil, function()
     end
 end)
 
+---@type LazySpec
 return {
     {
-        "projekt0n/github-nvim-theme",
+        "https://github.com/projekt0n/github-nvim-theme",
         lazy = false,
         dev = false,
         priority = 1000,
@@ -59,7 +60,7 @@ return {
         end,
     },
     {
-        "folke/tokyonight.nvim",
+        "https://github.com/folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
         config = function()
@@ -72,7 +73,7 @@ return {
         end,
     },
     {
-        "catppuccin/nvim",
+        "https://github.com/catppuccin/nvim",
         lazy = false,
         priority = 1000,
         name = "catppuccin",

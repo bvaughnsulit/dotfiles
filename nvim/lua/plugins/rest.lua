@@ -44,8 +44,9 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+---@type LazySpec
 return {
-    "https://github.com/rest-nvim/rest.nvim.git",
+    "https://github.com/rest-nvim/rest.nvim",
     cond = true,
     cmd = "Rest",
     config = function()

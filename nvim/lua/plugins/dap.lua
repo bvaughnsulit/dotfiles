@@ -1,17 +1,18 @@
 local utils = require("config.utils")
 
+---@type LazySpec
 return {
     {
-        "mfussenegger/nvim-dap",
+        "https://github.com/mfussenegger/nvim-dap",
         event = "VeryLazy",
         dependencies = {
-            "rcarriga/nvim-dap-ui",
-            "mxsdev/nvim-dap-vscode-js",
-            "mfussenegger/nvim-dap-python",
-            "jbyuki/one-small-step-for-vimkind",
+            "https://github.com/rcarriga/nvim-dap-ui",
+            "https://github.com/mxsdev/nvim-dap-vscode-js",
+            "https://github.com/mfussenegger/nvim-dap-python",
+            "https://github.com/jbyuki/one-small-step-for-vimkind",
             {
-                "jay-babu/mason-nvim-dap.nvim",
-                dependencies = "mason.nvim",
+                "https://github.com/jay-babu/mason-nvim-dap.nvim",
+                dependencies = "https://github.com/mason-org/mason.nvim",
                 cmd = { "DapInstall", "DapUninstall" },
                 opts = {
                     automatic_setup = true,
@@ -19,7 +20,7 @@ return {
                 },
             },
             {
-                "theHamsta/nvim-dap-virtual-text",
+                "https://github.com/theHamsta/nvim-dap-virtual-text",
                 enabled = false,
             },
         },
@@ -235,9 +236,9 @@ return {
         },
     },
     {
-        "rcarriga/nvim-dap-ui",
+        "https://github.com/rcarriga/nvim-dap-ui",
         dependencies = {
-            "nvim-neotest/nvim-nio",
+            "https://github.com/nvim-neotest/nvim-nio",
         },
         ---@diagnostic disable: missing-fields
         ---@type dapui.Config
@@ -303,7 +304,7 @@ return {
         ---@diagnostic enable: missing-fields
     },
     {
-        "jbyuki/one-small-step-for-vimkind",
+        "https://github.com/jbyuki/one-small-step-for-vimkind",
         init = function()
             if vim.fn.getenv("INIT_DEBUG") == "true" then require("osv").launch({ port = 8086, blocking = true }) end
         end,
@@ -316,7 +317,7 @@ return {
         },
     },
     {
-        "mfussenegger/nluarepl",
+        "https://github.com/mfussenegger/nluarepl",
         event = "VeryLazy",
     },
 }

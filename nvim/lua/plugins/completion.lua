@@ -1,7 +1,8 @@
+---@type LazySpec
 return {
     {
-        "saghen/blink.cmp",
-        dependencies = "rafamadriz/friendly-snippets",
+        "https://github.com/saghen/blink.cmp",
+        dependencies = "https://github.com/rafamadriz/friendly-snippets",
         event = "VeryLazy",
         version = "1.*",
 

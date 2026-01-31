@@ -1,8 +1,9 @@
 local utils = require("config.utils")
 local git = require("config.git")
 
+---@type LazySpec
 return {
-    "lewis6991/gitsigns.nvim",
+    "https://github.com/lewis6991/gitsigns.nvim",
     event = "BufReadPre",
     opts = function()
         ---@type Gitsigns.Config

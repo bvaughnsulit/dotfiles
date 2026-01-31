@@ -1,5 +1,6 @@
+---@type LazySpec
 return {
-    "luukvbaal/statuscol.nvim",
+    "https://github.com/luukvbaal/statuscol.nvim",
     event = "VeryLazy",
     enabled = true,
     opts = function()

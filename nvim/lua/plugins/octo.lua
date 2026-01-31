@@ -1,8 +1,9 @@
 local utils = require("config.utils")
 
+---@type LazySpec
 return {
     {
-        "pwntester/octo.nvim",
+        "https://github.com/pwntester/octo.nvim",
         cmd = "Octo",
         opts = function()
             ---@diagnostic disable: missing-fields

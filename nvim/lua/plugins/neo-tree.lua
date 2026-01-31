@@ -3,15 +3,16 @@ local git = require("config.git")
 
 vim.g.IS_EXPLORER_PINNED = false
 
+---@type LazySpec
 return {
-    "nvim-neo-tree/neo-tree.nvim",
+    "https://github.com/nvim-neo-tree/neo-tree.nvim",
     enabled = true,
     branch = "v3.x",
     event = "VeryLazy",
     dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons",
-        "MunifTanjim/nui.nvim",
+        "https://github.com/nvim-lua/plenary.nvim",
+        "https://github.com/nvim-tree/nvim-web-devicons",
+        "https://github.com/MunifTanjim/nui.nvim",
     },
     opts = function()
         local neotree = require("neo-tree")

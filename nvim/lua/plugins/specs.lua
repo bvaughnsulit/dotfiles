@@ -1,3 +1,4 @@
+---@type LazySpec
 return {
     {
         "/local-config",
@@ -9,7 +10,7 @@ return {
         "https://github.com/numToStr/Comment.nvim",
         event = "VeryLazy",
         dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
+            "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
         },
         opts = function()
             return {
@@ -23,7 +24,7 @@ return {
         opts = {},
     },
     {
-        "eandrju/cellular-automaton.nvim",
+        "https://github.com/eandrju/cellular-automaton.nvim",
         cmd = "Oops",
         config = function()
             vim.api.nvim_create_user_command(
@@ -34,7 +35,7 @@ return {
         end,
     },
     {
-        "rmagatti/auto-session",
+        "https://github.com/rmagatti/auto-session",
         lazy = false,
         ---@module "auto-session"
         ---@type AutoSession.Config
@@ -43,15 +44,15 @@ return {
         },
     },
     {
-        "tpope/vim-sleuth",
+        "https://github.com/tpope/vim-sleuth",
         event = "BufReadPre",
     },
     {
-        "tpope/vim-repeat",
+        "https://github.com/tpope/vim-repeat",
         event = "VeryLazy",
     },
     {
-        "tpope/vim-fugitive",
+        "https://github.com/tpope/vim-fugitive",
         cmd = "G",
     },
     {
@@ -65,7 +66,7 @@ return {
         },
     },
     {
-        "kevinhwang91/nvim-bqf",
+        "https://github.com/kevinhwang91/nvim-bqf",
         event = "VeryLazy",
         ---@diagnostic disable: missing-fields
         ---@module "bqf"
@@ -78,11 +79,11 @@ return {
         ---@diagnostic enable: missing-fields
     },
     {
-        "abecodes/tabout.nvim",
+        "https://github.com/abecodes/tabout.nvim",
         event = "VeryLazy",
     },
     {
-        "rcarriga/nvim-notify",
+        "https://github.com/rcarriga/nvim-notify",
         enabled = true,
         opts = {
             timeout = 2000,
@@ -94,7 +95,7 @@ return {
         init = function() vim.notify = require("notify") end,
     },
     {
-        "lukas-reineke/indent-blankline.nvim",
+        "https://github.com/lukas-reineke/indent-blankline.nvim",
         event = "VeryLazy",
         main = "ibl",
         ---@module "ibl"
@@ -122,15 +123,15 @@ return {
         },
     },
     {
-        "mbbill/undotree",
+        "https://github.com/mbbill/undotree",
         cmd = "UndotreeToggle",
     },
     {
-        "folke/ts-comments.nvim",
+        "https://github.com/folke/ts-comments.nvim",
         event = "VeryLazy",
     },
     {
-        "folke/lazydev.nvim",
+        "https://github.com/folke/lazydev.nvim",
         ft = "lua",
         opts = {
             library = {
@@ -138,7 +139,7 @@ return {
             },
         },
     },
-    { "MunifTanjim/nui.nvim" },
+    { "https://github.com/MunifTanjim/nui.nvim" },
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
     { "https://github.com/lewis6991/satellite.nvim.git", cond = false },
