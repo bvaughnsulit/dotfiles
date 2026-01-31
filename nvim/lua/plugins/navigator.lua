@@ -4,19 +4,17 @@ return {
     "https://github.com/numToStr/Navigator.nvim",
     -- NOTE: could load on keys instead
     event = "VeryLazy",
-    config = function()
-        require("Navigator").setup({ disable_on_zoom = true })
-
-        vim.keymap.set({ "n", "t" }, "<C-h>", "<CMD>NavigatorLeft<CR>")
-        vim.keymap.set({ "n", "t" }, "<C-w>h", "<CMD>NavigatorLeft<CR>")
-
-        vim.keymap.set({ "n", "t" }, "<C-l>", "<CMD>NavigatorRight<CR>")
-        vim.keymap.set({ "n", "t" }, "<C-w>l", "<CMD>NavigatorRight<CR>")
-
-        vim.keymap.set({ "n", "t" }, "<C-k>", "<CMD>NavigatorUp<CR>")
-        vim.keymap.set({ "n", "t" }, "<C-w>k", "<CMD>NavigatorUp<CR>")
-
-        vim.keymap.set({ "n", "t" }, "<C-j>", "<CMD>NavigatorDown<CR>")
-        vim.keymap.set({ "n", "t" }, "<C-w>j", "<CMD>NavigatorDown<CR>")
-    end,
+    opts = {
+        disable_on_zoom = true,
+    },
+    keys = {
+        { "<C-h>", "<CMD>NavigatorLeft<CR>", mode = { "n", "t" } },
+        { "<C-w>h", "<CMD>NavigatorLeft<CR>", mode = { "n", "t" } },
+        { "<C-l>", "<CMD>NavigatorRight<CR>", mode = { "n", "t" } },
+        { "<C-w>l", "<CMD>NavigatorRight<CR>", mode = { "n", "t" } },
+        { "<C-k>", "<CMD>NavigatorUp<CR>", mode = { "n", "t" } },
+        { "<C-w>k", "<CMD>NavigatorUp<CR>", mode = { "n", "t" } },
+        { "<C-j>", "<CMD>NavigatorDown<CR>", mode = { "n", "t" } },
+        { "<C-w>j", "<CMD>NavigatorDown<CR>", mode = { "n", "t" } },
+    },
 }

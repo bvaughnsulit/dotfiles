@@ -82,30 +82,28 @@ return {
         lazy = false,
         priority = 1000,
         name = "catppuccin",
-        config = function()
-            require("catppuccin").setup({
-                dim_inactive = {
-                    enabled = true,
-                    shade = "dark",
-                    percentage = 0.15,
-                },
-                no_italic = true,
-                integrations = {
-                    telescope = { enabled = true },
-                    lsp_trouble = true,
-                    treesitter = true,
-                    treesitter_context = true,
-                    notify = true,
-                    dap = true,
-                    cmp = true,
-                    gitsigns = true,
-                    leap = true,
-                    mini = true,
-                    neotree = true,
-                    neotest = true,
-                    illuminate = true,
-                },
-            })
-        end,
+        opts = {
+            dim_inactive = {
+                enabled = true,
+                shade = "dark",
+                percentage = 0.15,
+            },
+            no_italic = true,
+            integrations = {
+                telescope = { enabled = true },
+                lsp_trouble = true,
+                treesitter = true,
+                treesitter_context = true,
+                notify = true,
+                dap = true,
+                cmp = true,
+                gitsigns = true,
+                leap = true,
+                mini = true,
+                neotree = true,
+                neotest = true,
+                illuminate = true,
+            },
+        },
     },
 }

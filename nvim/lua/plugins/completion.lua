@@ -64,31 +64,35 @@ return {
     {
         "https://github.com/zbirenbaum/copilot.lua",
         event = "InsertEnter",
-        config = function()
-            --- @type CopilotConfig
-            require("copilot").setup({
-                panel = { enabled = false },
-                enabled = true,
-                suggestion = {
-                    auto_trigger = true,
-                    debounce = 10,
-                    keymap = {
-                        accept = false,
-                        accept_word = "<M-Tab>",
-                        accept_line = false,
-                        next = "<M-]>",
-                        prev = "<M-[>",
-                        dismiss = "<C-]>",
-                    },
+        ---@diagnostic disable: missing-fields
+        ---@module 'copilot'
+        ---@type CopilotConfig
+        opts = {
+            panel = { enabled = false },
+            enabled = true,
+            suggestion = {
+                auto_trigger = true,
+                debounce = 10,
+                keymap = {
+                    accept = false,
+                    accept_word = "<M-Tab>",
+                    accept_line = false,
+                    next = "<M-]>",
+                    prev = "<M-[>",
+                    dismiss = "<C-]>",
                 },
-                filetypes = {
-                    markdown = true,
-                },
-                logger = {
-                    -- file_log_level = vim.log.levels.TRACE,
-                },
-                copilot_model = "",
-            })
+            },
+            filetypes = {
+                markdown = true,
+            },
+            logger = {
+                -- file_log_level = vim.log.levels.TRACE,
+            },
+            copilot_model = "",
+        },
+        --@diagnostic enable: missing-fields
+        config = function(_, opts)
+            require("copilot").setup(opts)
             vim.keymap.set("i", "<Tab>", function()
                 if require("copilot.suggestion").is_visible() then
                     require("copilot.suggestion").accept_line()
