@@ -1,5 +1,6 @@
 local utils = require("config.utils")
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {
@@ -14,6 +15,8 @@ return {
                 "https://github.com/jay-babu/mason-nvim-dap.nvim",
                 dependencies = "https://github.com/mason-org/mason.nvim",
                 cmd = { "DapInstall", "DapUninstall" },
+                ---@module 'mason-nvim-dap'
+                ---@type MasonNvimDapSettings
                 opts = {
                     automatic_setup = true,
                     ensure_installed = {},

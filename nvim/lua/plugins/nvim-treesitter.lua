@@ -1,3 +1,4 @@
+---@module 'lazy'
 ---@type LazySpec
 return {
     {
@@ -7,6 +8,8 @@ return {
     {
         "https://github.com/nvim-treesitter/nvim-treesitter-context",
         event = "VeryLazy",
+        ---@module 'treesitter-context'
+        ---@type TSContext.UserConfig
         opts = {
             max_lines = "40%",
             multline_threshold = 3,

@@ -25,6 +25,7 @@ utils.create_cmd_and_map("ToggleLightDarkMode", nil, function()
     end
 end)
 
+---@module 'lazy'
 ---@type LazySpec
 return {
     {
@@ -63,12 +64,16 @@ return {
         "https://github.com/folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        config = function()
-            require("tokyonight").setup({
-                styles = {
-                    keywords = { italic = false },
-                },
-            })
+        ---@type tokyonight.Config
+        ---@diagnostic disable: missing-fields
+        opts = {
+            styles = {
+                keywords = { italic = false },
+            },
+        },
+        ---@diagnostic enable: missing-fields
+        config = function(_, opts)
+            require("tokyonight").setup(opts)
             if is_system_dark_mode and default_dark_theme == "tokyonight-moon" then set_dark_mode() end
         end,
     },

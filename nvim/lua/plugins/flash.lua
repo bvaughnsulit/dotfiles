@@ -1,9 +1,11 @@
+---@module 'lazy'
 ---@type LazySpec
 return {
     {
         "https://github.com/folke/flash.nvim",
         event = "VeryLazy",
         enabled = true,
+        ---@type Flash.Config
         opts = {
             label = {
                 uppercase = false,
