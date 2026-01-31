@@ -67,7 +67,7 @@ local update_selected_picker = function()
     end)
 end
 
-vim.keymap.set("n", "<leader>pps", update_selected_picker, {
+vim.keymap.set("n", "<leader>pP", update_selected_picker, {
     desc = "Update Picker Selections",
 })
 

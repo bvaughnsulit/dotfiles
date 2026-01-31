@@ -20,6 +20,7 @@ return {
                 symbol = "▏",
             })
             require("mini.cursorword").setup({})
+            require("mini.align").setup({})
             require("mini.icons").setup({})
             require("mini.surround").setup({
                 mappings = {

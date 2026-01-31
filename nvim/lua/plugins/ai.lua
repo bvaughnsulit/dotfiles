@@ -5,7 +5,6 @@ local ai_cli_options = {
 }
 
 local default_ai_cli = ai_cli_options.claude
-local ai_chat_cli = "claude_haiku"
 
 ---@class ToggleAICLIOptions
 ---@field cmd? string[]
@@ -26,6 +25,7 @@ local toggle_ai_cli = function(opts)
 end
 
 vim.keymap.set("n", "<leader>aa", toggle_ai_cli, { desc = "Open AI CLI" })
+
 vim.keymap.set(
     "n",
     "<leader>af",

@@ -144,6 +144,4 @@ return {
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
     { "https://github.com/lewis6991/satellite.nvim.git", cond = false },
-    { "https://github.com/kristijanhusak/vim-dadbod-ui.git", cond = false },
-    { "https://github.com/tpope/vim-dadbod.git", cond = false },
 }
