@@ -15,6 +15,7 @@ echo "Done."
 
 echo "Creating file symbolic links..."
 ln -si ${DOTFILES_DIR}/.claude/settings.json ~/.claude/settings.json
+ln -si ${DOTFILES_DIR}/.claude/keybindings.json ~/.claude/keybindings.json
 ln -si ${DOTFILES_DIR}/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
 ln -si ${DOTFILES_DIR}/.gitconfig ~/.gitconfig
 ln -si ${DOTFILES_DIR}/.gitignore_global ~/.gitignore_global
