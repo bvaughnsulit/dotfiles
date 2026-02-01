@@ -21,10 +21,13 @@ return {
             vim.g.db_ui_use_nerd_fonts = 1
             vim.g.db_ui_show_help = 0
             vim.g.db_ui_disable_info_notifications = 1
-            vim.g.db_ui_use_nvim_notify = not vim.g.db_ui_disable_info_notifications
+            vim.g.db_ui_use_nvim_notify = 1
 
-            -- g:db_ui_save_location
-            -- vim.g.db_ui_env_variable_url =
+            local project_config_dir = require("config.utils").get_project_config_dir()
+            if project_config_dir then vim.g.db_ui_save_location = project_config_dir .. "/db/" end
         end,
+        keys = {
+            { "<leader>ss", "<cmd>DBUIToggle<cr>", desc = "Toggle DB UI" },
+        },
     },
 }

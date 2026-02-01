@@ -10,6 +10,7 @@ M.get_git_base = function()
     local result = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }):wait()
 
     if result.code ~= 0 or result.stdout:sub(1, -2) ~= "true" then
+        vim.notify("Not inside a git repository", vim.log.levels.DEBUG)
         hash = nil
         git_base = nil
     end
@@ -91,7 +92,7 @@ M.get_default_branch_name = function()
         return
     end
     if result.stdout == "" then
-        vim.notify("No main or master branch found")
+        vim.notify("No main or master branch found", vim.log.levels.DEBUG)
         return
     end
     return result.stdout:sub(1, -2)
@@ -124,7 +125,7 @@ end
 M.get_merge_base_hash = function()
     local result = vim.system({ "git", "merge-base", M.get_default_branch_name(), "HEAD" }, { text = true }):wait()
     if result.code ~= 0 then
-        vim.notify("Error getting merge base hash")
+        vim.notify("Error getting merge base hash", vim.log.levels.DEBUG)
         return nil
     end
     return result.stdout:sub(1, -2)

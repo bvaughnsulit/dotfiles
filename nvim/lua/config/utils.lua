@@ -260,7 +260,7 @@ M.get_responsive_win_config = function()
 
     local float_config = {
         relative = "editor",
-        height = vim.o.lines - 3,
+        height = vim.o.lines - 4,
         width = vim.o.columns,
         row = 1,
         col = 1,
@@ -318,5 +318,13 @@ M.debug_info = function(buf_opts, win_opts)
     return info
 end
 _G.debug_info = M.debug_info
+
+M.get_project_config_dir = function()
+    local git_root = Snacks.git.get_root(vim.uv.cwd())
+    if git_root then
+        local config_dir = git_root .. "/.vaughn"
+        if vim.fn.isdirectory(config_dir) == 1 then return config_dir end
+    end
+end
 
 return M

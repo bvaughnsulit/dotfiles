@@ -27,11 +27,6 @@ local servers = {
         },
     },
     pyright = {
-        -- root_dir = function(fname)
-        --     local util = require("lspconfig.util")
-        --     ---@diagnostic disable-next-line: redundant-return-value
-        --     return util.root_pattern(".git")(fname)
-        -- end,
         root_markers = { ".git" },
         settings = {
             python = {
@@ -45,11 +40,6 @@ local servers = {
         },
     },
     basedpyright = {
-        -- root_dir = function(fname)
-        --     local util = require("lspconfig.util")
-        --     ---@diagnostic disable-next-line: redundant-return-value
-        --     return util.root_pattern(".git")(fname)
-        -- end,
         root_markers = { ".git" },
         settings = {
             basedpyright = {
@@ -224,8 +214,12 @@ return {
         lazy = false,
         init = function()
             require("neoconf").setup({
-                local_settings = ".__bvs__neoconf.json",
-                import = { vscode = false },
+                local_settings = ".vaughn/neoconf.json",
+                import = {
+                    vscode = false,
+                    coc = false,
+                    nlsp = false,
+                },
             })
         end,
     },

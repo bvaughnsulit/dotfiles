@@ -233,8 +233,9 @@ return {
                     "*.jpg",
                     "*.jpeg",
                 }
-                local grep_exclude =
-                    vim.tbl_extend("force", default_exclude, require("config.settings").grep_exclude or {})
+                local config = require("config.settings").grep_exclude
+
+                local grep_exclude = vim.tbl_extend("force", default_exclude, config or {})
 
                 Snacks.picker.grep(
                     --- @type snacks.picker.grep.Config

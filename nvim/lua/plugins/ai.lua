@@ -20,6 +20,11 @@ local toggle_ai_cli = function(opts)
         auto_insert = true,
         if_exists = opts.if_exists or "use_existing",
         win_config = require("config.utils").get_responsive_win_config(),
+        job_opts = {
+            env = {
+                CLAUDE_CODE_TASK_LIST_ID = vim.uv.cwd(),
+            },
+        },
         cb = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
     })
 end

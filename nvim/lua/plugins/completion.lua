@@ -20,12 +20,13 @@ return {
                 nerd_font_variant = "mono",
             },
             sources = {
-                default = { "lsp", "path", "snippets", "buffer" },
+                default = { "lsp", "lazydev", "path", "snippets", "buffer" },
                 per_filetype = {
                     sql = { "snippets", "dadbod", "buffer" },
                 },
                 providers = {
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+                    lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
                 },
             },
             completion = {
