@@ -42,6 +42,15 @@ return {
         ---@type AutoSession.Config
         opts = {
             suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+            close_filetypes_on_save = {
+                "neo-tree",
+                "terminal",
+                "dapui_scopes",
+                "dapui_watches",
+                "dapui_stacks",
+                "dapui_console",
+                "dbout",
+            },
         },
     },
     {
