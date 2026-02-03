@@ -1,6 +1,18 @@
 local M = {}
 
-local default_picker = "snacks"
+---@enum PickerNames
+local pickers = {
+    snacks = "snacks",
+    telescope = "telescope",
+    mini = "mini",
+    ["fzf-lua"] = "fzf-lua",
+}
+
+---@type PickerNames
+local default_picker = "fzf-lua"
+
+---@type PickerNames[]
+M.registered_pickers = {}
 
 ---@type table<string, {lhs: string, desc: string, mode?: table<string>, rhs: table<string, function>, selected_picker: string|nil}>
 M.picker_functions = {
@@ -18,9 +30,10 @@ M.picker_functions = {
     resume = { lhs = "<leader><up>", desc = "Resume Last Picker", rhs = {}, selected_picker = nil },
 }
 
----@param picker_name 'snacks' | 'telescope' | 'mini' | 'fzf-lua' | string
+---@param picker_name PickerNames
 ---@param functions table<string, function>
 M.register_picker = function(picker_name, functions)
+    table.insert(M.registered_pickers, picker_name)
     for fn_name, fn in pairs(functions) do
         if type(fn) ~= "function" or not M.picker_functions[fn_name] then
             vim.notify("Picker " .. picker_name .. " contains invalid function: " .. fn_name)
@@ -51,10 +64,24 @@ for name, opts in pairs(M.picker_functions) do
 end
 
 local update_selected_picker = function()
-    vim.ui.select(vim.tbl_keys(M.picker_functions), {
+    local opts = vim.tbl_keys(M.picker_functions)
+    table.insert(opts, 1, "all")
+
+    vim.ui.select(opts, {
         prompt = "Select a function to configure:",
     }, function(selected_picker_fn)
-        if M.picker_functions[selected_picker_fn] then
+        if selected_picker_fn == "all" then
+            vim.ui.select(M.registered_pickers, {
+                prompt = "Select default picker for all functions:",
+            }, function(selected_picker)
+                if not selected_picker then return end
+                for fn_name, _ in pairs(M.picker_functions) do
+                    M.picker_functions[fn_name].selected_picker = nil
+                    default_picker = selected_picker
+                end
+                vim.notify("Default picker for all functions set to " .. selected_picker)
+            end)
+        elseif M.picker_functions[selected_picker_fn] then
             vim.ui.select(vim.tbl_keys(M.picker_functions[selected_picker_fn].rhs), {
                 prompt = "Select picker for " .. selected_picker_fn .. ":",
             }, function(selected_picker)
