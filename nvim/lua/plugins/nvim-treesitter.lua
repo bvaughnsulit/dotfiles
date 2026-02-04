@@ -7,14 +7,31 @@ return {
         ---@module 'treesitter-context'
         ---@type TSContext.UserConfig
         opts = {
-            max_lines = "40%",
+            max_lines = "5%",
             multline_threshold = 3,
-            ensure_installed = { "dart" },
             multiwindow = true,
         },
-        keys = {
-            { "<leader>tc", "<cmd>TSContextToggle<cr>" },
-        },
+        keys = function(plugin)
+            local default_max_lines = plugin.opts.max_lines
+            local base_config = vim.deepcopy(plugin.opts or {})
+
+            return {
+                { "<leader>tC", "<cmd>TSContextToggle<cr>" },
+                {
+                    "<leader>tc",
+                    function()
+                        if base_config.max_lines == default_max_lines then
+                            base_config.max_lines = 0
+                            require("treesitter-context").setup(base_config)
+                        else
+                            base_config.max_lines = default_max_lines
+                            require("treesitter-context").setup(base_config)
+                        end
+                    end,
+                    desc = "Toggle Treesitter Context Max Lines",
+                },
+            }
+        end,
     },
     {
         "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
