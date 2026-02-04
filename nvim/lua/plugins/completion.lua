@@ -27,6 +27,11 @@ return {
                 providers = {
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
                     lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+                    buffer = {
+                        opts = {
+                            -- get_bufnrs = function() logger("hello") end,
+                        },
+                    },
                 },
             },
             completion = {
