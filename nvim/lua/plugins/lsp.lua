@@ -265,6 +265,8 @@ return {
             formatters_by_ft = {
                 lua = { "stylua" },
                 sh = { "shfmt" },
+                json = { "prettier" },
+                jsonc = { "prettier" },
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
