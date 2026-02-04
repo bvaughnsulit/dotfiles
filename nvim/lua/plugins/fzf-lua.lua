@@ -22,6 +22,12 @@ return {
                     flip_columns = 200,
                 },
             },
+            defaults = {
+                formatter = "path.filename_first",
+            },
+            files = {
+                cwd_prompt = false,
+            },
         },
         ---@diagnostic enable: missing-fields
         config = function(_, opts)

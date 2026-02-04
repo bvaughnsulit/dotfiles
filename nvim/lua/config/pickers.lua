@@ -9,7 +9,7 @@ local pickers = {
 }
 
 ---@type PickerNames
-local default_picker = "fzf-lua"
+local default_picker = "snacks"
 
 ---@type PickerNames[]
 M.registered_pickers = {}
