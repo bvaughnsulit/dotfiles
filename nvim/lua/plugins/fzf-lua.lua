@@ -4,7 +4,7 @@ return {
     {
         "https://github.com/ibhagwan/fzf-lua",
         event = "VeryLazy",
-        enabled = true,
+        cond = false,
         dependencies = {
             "https://github.com/nvim-tree/nvim-web-devicons",
         },
