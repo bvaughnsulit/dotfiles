@@ -2,13 +2,17 @@
 ---@type LazySpec
 return {
     {
-        "https://github.com/nvim-treesitter/nvim-treesitter-context",
+        -- "https://github.com/nvim-treesitter/nvim-treesitter-context",
+        "https://github.com/bvaughnsulit/nvim-treesitter-context",
+        branch = "bvs",
+        -- dev = true,
         event = "VeryLazy",
         ---@module 'treesitter-context'
         ---@type TSContext.UserConfig
         opts = {
-            max_lines = "5%",
-            multline_threshold = 3,
+            max_lines = 0,
+            multline_threshold = 99,
+            flatten_multiline = true,
             multiwindow = true,
         },
         keys = function(plugin)
@@ -21,7 +25,7 @@ return {
                     "<leader>tc",
                     function()
                         if base_config.max_lines == default_max_lines then
-                            base_config.max_lines = 0
+                            base_config.max_lines = "10%"
                             require("treesitter-context").setup(base_config)
                         else
                             base_config.max_lines = default_max_lines
