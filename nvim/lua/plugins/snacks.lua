@@ -91,6 +91,20 @@ return {
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
+                sources = {
+                    treesitter = {
+                        filter = { default = true },
+                    },
+                    lsp_symbols = {
+                        filter = { default = true },
+                    },
+                    help = {
+                        confirm = {
+                            action = "help",
+                            cmd = "vsplit",
+                        },
+                    },
+                },
                 debug = {
                     -- grep = true,
                 },
@@ -220,10 +234,6 @@ return {
             function() Snacks.picker.git_branches() end,
             desc = "Pick Git branch",
         },
-        {
-            "<leader>pps",
-            function() Snacks.picker.pickers() end,
-        },
     },
     config = function(_, opts)
         require("snacks").setup(opts)
@@ -241,58 +251,28 @@ return {
 
         -- TODO: qf append
         pickers.register_picker("snacks", {
-            find_files = function()
-                Snacks.picker.files(
-                    ---@type snacks.picker.files.Config
-                    {
-                        hidden = true,
-                    }
-                )
-            end,
-
             buffers = function()
-                Snacks.picker.buffers(
-                    --- @type snacks.picker.buffers.Config
-                    {
-                        preview = function(ctx)
-                            -- prevents using the actual buffer in the previewer to preserve lastused values
-                            ctx.item.buf = nil
-                            if ctx.item.buftype == "terminal" then
-                                ctx.preview:set_lines({ ctx.item.file })
-                                return
-                            end
-                            return Snacks.picker.preview.file(ctx)
-                        end,
-                        current = false,
-                    }
-                )
+                Snacks.picker.buffers({
+                    preview = function(ctx)
+                        -- prevents using the actual buffer in the previewer to preserve lastused values
+                        ctx.item.buf = nil
+                        if ctx.item.buftype == "terminal" then
+                            ctx.preview:set_lines({ ctx.item.file })
+                            return
+                        end
+                        return Snacks.picker.preview.file(ctx)
+                    end,
+                    current = false,
+                })
             end,
 
             live_grep = function()
-                Snacks.picker.grep(
-                    --- @type snacks.picker.grep.Config
-                    {
-                        hidden = true,
-                        ignored = false,
-                        cwd = Snacks.git.get_root(),
-                        exclude = get_grep_excludes(),
-                    }
-                )
-            end,
-
-            lsp_definitions = function() Snacks.picker.lsp_definitions() end,
-
-            lsp_references = function() Snacks.picker.lsp_references() end,
-
-            lsp_type_definitions = function() Snacks.picker.lsp_type_definitions() end,
-
-            buffer_fuzzy = function() Snacks.picker.lines() end,
-
-            keymaps = function() Snacks.picker.keymaps({ plugs = true }) end,
-
-            help_tags = function()
-                Snacks.picker.help({
-                    confirm = "vsplit",
+                Snacks.picker.grep({
+                    hidden = true,
+                    ignored = false,
+                    cwd = Snacks.git.get_root(),
+                    exclude = get_grep_excludes(),
+                    title = "grep (excluding: " .. table.concat(enabled_toggles, ", ") .. ")",
                 })
             end,
 
@@ -305,8 +285,15 @@ return {
                 })
             end,
 
-            resume = function() Snacks.picker.resume() end,
+            find_files = function() Snacks.picker.files({ hidden = true }) end,
+            keymaps = function() Snacks.picker.keymaps({ plugs = true }) end,
 
+            help_tags = function() Snacks.picker.help() end,
+            lsp_definitions = function() Snacks.picker.lsp_definitions() end,
+            lsp_references = function() Snacks.picker.lsp_references() end,
+            lsp_type_definitions = function() Snacks.picker.lsp_type_definitions() end,
+            buffer_fuzzy = function() Snacks.picker.lines() end,
+            resume = function() Snacks.picker.resume() end,
             pickers = function() Snacks.picker.pickers() end,
         })
     end,
