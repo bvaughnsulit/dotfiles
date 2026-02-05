@@ -3,17 +3,39 @@ local pickers = require("config.pickers")
 
 local default_excludes = {
     "package-lock.json",
-    "**/static/**",
-    "**/public/**",
-    -- '%node_modules%',
     "*.git/",
-    "*.png",
-    "*.svg",
-    "*.gif",
-    "*.jpg",
-    "*.jpeg",
-    "*.csv",
 }
+
+local exclude_toggles = {
+    tests = {
+        "**/test_*.*",
+        "*.test.*",
+        "*_spec.*",
+    },
+    data = {
+        "*.json",
+        "*.md",
+        "*.txt",
+        "*.csv",
+        "*.sql",
+    },
+    media = {
+        "**/static/**",
+        "**/public/**",
+        "*.png",
+        "*.svg",
+        "*.gif",
+        "*.jpg",
+        "*.jpeg",
+    },
+}
+local enabled_toggles = { "tests", "data", "media" }
+
+local get_grep_excludes = function()
+    local config = require("config.settings").grep_exclude
+    local toggled = vim.tbl_map(function(t) return exclude_toggles[t] or {} end, enabled_toggles)
+    return vim.tbl_extend("force", default_excludes, config or {}, vim.fn.flatten(toggled))
+end
 
 --- @type fun(win: snacks.win)
 local custom_close = function(win)
@@ -116,18 +138,33 @@ return {
                         vim.api.nvim_put({ filename }, "c", true, true)
                     end,
                     select_filters = function(picker)
-                        vim.ui.select({ "**/tests/**" }, {
-                            prompt = "Exclude pattern:",
-                            format_item = function(pattern) return pattern end,
-                        }, function(pattern)
-                            if not pattern then return end
-                            ---
-                            picker.opts.exclude = vim.tbl_extend("force", picker.opts.exclude or {}, {
-                                pattern,
-                            })
-                            picker.list:set_target()
-                            picker:find()
-                        end)
+                        vim.ui.select(
+                            vim.tbl_map(
+                                function(t) return (vim.tbl_contains(enabled_toggles, t) and " " or "  ") .. t end,
+                                vim.tbl_keys(exclude_toggles)
+                            ),
+                            { prompt = "Toggle exclude patterns" },
+                            ---@param choice string
+                            function(choice)
+                                if not choice then return end
+                                local selection = choice:sub(3)
+
+                                if vim.tbl_contains(enabled_toggles, selection) then
+                                    enabled_toggles = vim.tbl_filter(
+                                        function(t) return t ~= selection end,
+                                        enabled_toggles
+                                    )
+                                else
+                                    table.insert(enabled_toggles, selection)
+                                end
+
+                                ---@diagnostic disable-next-line: inject-field
+                                picker.opts.exclude = get_grep_excludes()
+
+                                picker.list:set_target()
+                                picker:find()
+                            end
+                        )
                     end,
                 },
                 win = {
@@ -224,26 +261,13 @@ return {
             end,
 
             live_grep = function()
-                local default_exclude = {
-                    "package-lock.json",
-                    "*.git/",
-                    "*.png",
-                    "*.svg",
-                    "*.gif",
-                    "*.jpg",
-                    "*.jpeg",
-                }
-                local config = require("config.settings").grep_exclude
-
-                local grep_exclude = vim.tbl_extend("force", default_exclude, config or {})
-
                 Snacks.picker.grep(
                     --- @type snacks.picker.grep.Config
                     {
                         hidden = true,
                         ignored = false,
                         cwd = Snacks.git.get_root(),
-                        exclude = grep_exclude,
+                        exclude = get_grep_excludes(),
                     }
                 )
             end,
