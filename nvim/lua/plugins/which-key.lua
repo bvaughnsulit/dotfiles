@@ -24,8 +24,6 @@ return {
             { "<leader>!", group = "terminal" },
             { "<leader>/", group = "search" },
             { "<leader>\\", group = "terminal" },
-
-            { "<leader>r", hidden = true },
         },
     },
     keys = {

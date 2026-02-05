@@ -5,7 +5,16 @@ local git = require("config.git")
 return {
     "https://github.com/kokusenz/deltaview.nvim",
     dev = true,
-    opts = {},
+    ---@module 'deltaview'
+    ---@type DeltaViewOpts
+    ---@diagnostic disable: missing-fields
+    opts = {
+        keyconfig = {
+            next_hunk = "]c",
+            prev_hunk = "[c",
+        },
+    },
+    ---@diagnostic enable: missing-fields
     cmd = { "DeltaView", "DeltaMenu" },
     keys = {
         {
