@@ -1,11 +1,16 @@
 local utils = require("config.utils")
 local pickers = require("config.pickers")
 
-local default_excludes = {
+--- @type string[]
+local always_exclude = {
     "package-lock.json",
     "*.git/",
 }
 
+--- @type string[]
+local enabled_toggles = { "tests", "data", "media" }
+
+--- @type table<string, string[]>
 local exclude_toggles = {
     tests = {
         "**/test_*.*",
@@ -14,10 +19,15 @@ local exclude_toggles = {
     },
     data = {
         "*.json",
+        "*.jsonc",
         "*.md",
         "*.txt",
         "*.csv",
         "*.sql",
+        "*.toml",
+        "*.yml",
+        "*.yaml",
+        "**/migrations/**",
     },
     media = {
         "**/static/**",
@@ -29,12 +39,14 @@ local exclude_toggles = {
         "*.jpeg",
     },
 }
-local enabled_toggles = { "tests", "data", "media" }
 
+--- @return string[]
 local get_grep_excludes = function()
+    ---@type string[]
     local config = require("config.settings").grep_exclude
+    ---@type string[][]
     local toggled = vim.tbl_map(function(t) return exclude_toggles[t] or {} end, enabled_toggles)
-    return vim.tbl_extend("force", default_excludes, config or {}, vim.fn.flatten(toggled))
+    return vim.tbl_extend("force", always_exclude, config or {}, vim.fn.flatten(toggled))
 end
 
 --- @type fun(win: snacks.win)
@@ -138,33 +150,29 @@ return {
                         vim.api.nvim_put({ filename }, "c", true, true)
                     end,
                     select_filters = function(picker)
-                        vim.ui.select(
-                            vim.tbl_map(
-                                function(t) return (vim.tbl_contains(enabled_toggles, t) and " " or "  ") .. t end,
-                                vim.tbl_keys(exclude_toggles)
-                            ),
-                            { prompt = "Toggle exclude patterns" },
-                            ---@param choice string
-                            function(choice)
-                                if not choice then return end
-                                local selection = choice:sub(3)
+                        vim.ui.select(vim.tbl_keys(exclude_toggles), {
+                            prompt = "Toggle exclude patterns",
+                            format_item = function(item)
+                                return (vim.tbl_contains(enabled_toggles, item) and " " or "  ") .. item
+                            end,
+                        }, function(selection)
+                            if not selection then return end
 
-                                if vim.tbl_contains(enabled_toggles, selection) then
-                                    enabled_toggles = vim.tbl_filter(
-                                        function(t) return t ~= selection end,
-                                        enabled_toggles
-                                    )
-                                else
-                                    table.insert(enabled_toggles, selection)
-                                end
-
-                                ---@diagnostic disable-next-line: inject-field
-                                picker.opts.exclude = get_grep_excludes()
-
-                                picker.list:set_target()
-                                picker:find()
+                            logger(selection)
+                            if vim.tbl_contains(enabled_toggles, selection) then
+                                enabled_toggles = vim.tbl_filter(function(t) return t ~= selection end, enabled_toggles)
+                            else
+                                table.insert(enabled_toggles, selection)
                             end
-                        )
+
+                            ---@diagnostic disable-next-line: inject-field
+                            picker.opts.exclude = get_grep_excludes()
+                            picker.title = "grep (excludes: " .. table.concat(enabled_toggles, ", ") .. ")"
+
+                            picker:update_titles()
+                            picker.list:set_target()
+                            picker:find()
+                        end)
                     end,
                 },
                 win = {
