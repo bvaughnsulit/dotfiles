@@ -104,6 +104,12 @@ return {
                             cmd = "vsplit",
                         },
                     },
+                    files = {
+                        hidden = true,
+                    },
+                    keymaps = {
+                        plugs = true,
+                    },
                 },
                 debug = {
                     -- grep = true,
@@ -276,6 +282,16 @@ return {
                 })
             end,
 
+            live_grep_no_filters = function()
+                Snacks.picker.grep({
+                    hidden = true,
+                    ignored = false,
+                    cwd = Snacks.git.get_root(),
+                    -- exclude= get_grep_excludes(),
+                    title = "Live grep (no filters)",
+                })
+            end,
+
             commands = function()
                 Snacks.picker.commands({
                     confirm = function(picker, item)
@@ -285,8 +301,8 @@ return {
                 })
             end,
 
-            find_files = function() Snacks.picker.files({ hidden = true }) end,
-            keymaps = function() Snacks.picker.keymaps({ plugs = true }) end,
+            find_files = function() Snacks.picker.files() end,
+            keymaps = function() Snacks.picker.keymaps() end,
 
             help_tags = function() Snacks.picker.help() end,
             lsp_definitions = function() Snacks.picker.lsp_definitions() end,
