@@ -11,7 +11,7 @@ local M = {}
 
 ---@param command? string|User_Command # Name of command as a string, or a table containing name and opts.
 ---@param mapping? string|Mapping # Normal mode mapping as a string, or a table containing mode, lhs, and opts.
----@param fn fun()|string
+---@param fn fun(...)|string
 ---@param desc? string
 M.create_cmd_and_map = function(command, mapping, fn, desc)
     local desc_with_fallback = desc
@@ -325,6 +325,88 @@ M.get_project_config_dir = function()
         local config_dir = git_root .. "/.vaughn"
         if vim.fn.isdirectory(config_dir) == 1 then return config_dir end
     end
+end
+
+---@type string | nil
+local diff_first_selection = nil
+---@type string | nil
+local diff_second_selection = nil
+---@type integer | nil
+local diff_buf = nil
+
+local function open_diff_buf()
+    if diff_first_selection == nil or diff_second_selection == nil then
+        vim.notify("Diff: both selections must be captured before opening diff.")
+        return
+    end
+
+    local file1 = vim.fn.tempname()
+    local file2 = vim.fn.tempname()
+    vim.fn.writefile(vim.split(diff_first_selection, "\n"), file1)
+    vim.fn.writefile(vim.split(diff_second_selection, "\n"), file2)
+
+    if diff_buf and vim.api.nvim_buf_is_valid(diff_buf) then vim.api.nvim_buf_delete(diff_buf, { force = true }) end
+
+    diff_buf = vim.api.nvim_create_buf(true, false)
+    vim.cmd("vnew")
+    vim.api.nvim_win_set_buf(0, diff_buf)
+    vim.fn.jobstart("delta " .. vim.fn.shellescape(file1) .. " " .. vim.fn.shellescape(file2), { term = true })
+
+    vim.keymap.set("n", "q", "<cmd>bd!<cr>", { buffer = diff_buf, desc = "Close diff" })
+end
+
+---@param opts? { range?: number } set if called via command with range
+M.visual_diff = function(opts)
+    opts = opts or {}
+    local cur_mode = vim.fn.mode()
+    local has_range = opts.range and opts.range > 0
+
+    if cur_mode:find("[vV\22]") or has_range then
+        local start_pos, end_pos, region_type
+        if cur_mode:find("[vV\22]") then
+            -- called from visual mode
+            start_pos = vim.fn.getpos("v")
+            end_pos = vim.fn.getpos(".")
+            region_type = cur_mode
+        else
+            -- called from command with range
+            start_pos = vim.fn.getpos("'<")
+            end_pos = vim.fn.getpos("'>")
+            region_type = vim.fn.visualmode()
+            if region_type == "" then region_type = "v" end
+        end
+
+        local lines = vim.fn.getregion(start_pos, end_pos, { type = region_type })
+        local text = table.concat(lines, "\n")
+
+        if diff_first_selection ~= nil and diff_second_selection ~= nil then
+            -- if both selections are already captured, reset them to start a new diff
+            diff_first_selection = nil
+            diff_second_selection = nil
+        end
+
+        if diff_first_selection == nil then
+            diff_first_selection = text
+            vim.notify("Diff: first selection captured. Select second text and call function again.")
+            return
+        end
+
+        diff_second_selection = text
+        open_diff_buf()
+    else
+        -- if called from normal mode without range, try to reopen the last viewed diff
+        if diff_first_selection == nil or diff_second_selection == nil then
+            vim.notify("Diff: no previous diff to reopen.")
+            return
+        end
+        open_diff_buf()
+    end
+end
+
+M.reset_diff_selections = function()
+    diff_first_selection = nil
+    diff_second_selection = nil
+    vim.notify("Diff: selection cleared.")
 end
 
 return M

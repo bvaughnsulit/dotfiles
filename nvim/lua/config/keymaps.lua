@@ -322,6 +322,17 @@ vim.keymap.set(
     { desc = "Copy Filename to Clipboard relative to CWD" }
 )
 
+utils.create_cmd_and_map(
+    { name = "DiffSelect", opts = { range = true } },
+    { mode = "v", lhs = "<leader>vd", opts = {} },
+    function(...) utils.visual_diff(...) end,
+    "Diff visual selection (two-step) / Reopen last diff"
+)
+
+vim.keymap.set("n", "<leader>vd", function() utils.visual_diff() end, { desc = "Reopen last diff" })
+
+utils.create_cmd_and_map("DiffSelectReset", nil, function() utils.reset_diff_selections() end, "Reset diff selection")
+
 vim.keymap.set("n", "<leader>tf", function()
     vim.g.autoformat = not vim.g.autoformat
     vim.notify("Autoformat: " .. (vim.g.autoformat and "Enabled" or "Disabled"))
