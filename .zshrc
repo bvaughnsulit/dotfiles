@@ -7,7 +7,11 @@ fi
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export EDITOR=nvim
+if [ -n "$NVIM" ]; then
+  export EDITOR="nvim --server $NVIM"
+else
+  export EDITOR=nvim
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
