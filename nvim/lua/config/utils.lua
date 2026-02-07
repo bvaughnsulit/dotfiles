@@ -195,6 +195,8 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         stdout_buffered = true,
     }, opts.job_opts or {})
 
+    local win_config = opts.win_config or M.get_responsive_win_config()
+
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         -- Check if the buffer already exists
         if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
@@ -332,7 +334,6 @@ local diff_first_selection = nil
 ---@type string | nil
 local diff_second_selection = nil
 ---@type integer | nil
-local diff_buf = nil
 
 local function open_diff_buf()
     if diff_first_selection == nil or diff_second_selection == nil then
@@ -345,14 +346,21 @@ local function open_diff_buf()
     vim.fn.writefile(vim.split(diff_first_selection, "\n"), file1)
     vim.fn.writefile(vim.split(diff_second_selection, "\n"), file2)
 
-    if diff_buf and vim.api.nvim_buf_is_valid(diff_buf) then vim.api.nvim_buf_delete(diff_buf, { force = true }) end
+    local cmd = {
+        "delta",
+        file1,
+        file2,
+        "--line-numbers",
+        "--paging=never",
+        "--hunk-header-style=omit",
+        "--file-style=omit",
+    }
 
-    diff_buf = vim.api.nvim_create_buf(true, false)
-    vim.cmd("vnew")
-    vim.api.nvim_win_set_buf(0, diff_buf)
-    vim.fn.jobstart("delta " .. vim.fn.shellescape(file1) .. " " .. vim.fn.shellescape(file2), { term = true })
-
-    vim.keymap.set("n", "q", "<cmd>bd!<cr>", { buffer = diff_buf, desc = "Close diff" })
+    M.toggle_persistent_terminal(cmd, "delta_diff_view", {
+        q_to_go_back = { "n", "t" },
+        auto_insert = false,
+        if_exists = "replace",
+    })
 end
 
 ---@param opts? { range?: number } set if called via command with range
