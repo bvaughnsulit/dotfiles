@@ -190,7 +190,6 @@ return {
                 commands = builtin.commands,
                 resume = builtin.resume,
             })
-            vim.keymap.set("n", "<leader>ppt", ":Telescope<cr>", { desc = "Telescope Pickers" })
 
             vim.keymap.set(
                 "n",

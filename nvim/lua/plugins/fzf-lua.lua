@@ -48,8 +48,6 @@ return {
                 pickers = function() fzf_lua.builtin() end,
                 resume = function() fzf_lua.resume() end,
             })
-
-            vim.keymap.set("n", "<leader>ppf", ":FzfLua<cr>", { desc = "Fzf Lua Pickers" })
         end,
     },
 }
