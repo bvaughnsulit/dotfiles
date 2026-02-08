@@ -1,5 +1,5 @@
 local ai_cli_options = {
-    claude = { "claude" },
+    claude = { "claude", "--continue" },
     opencode = { "opencode" },
     gemini = { "gemini" },
 }
@@ -17,7 +17,7 @@ local toggle_ai_cli = function(opts)
 
     require("config.utils").toggle_persistent_terminal(opts.cmd or default_ai_cli, "ai_cli", {
         q_to_go_back = { "n" },
-        auto_insert = true,
+        auto_insert = false,
         if_exists = opts.if_exists or "use_existing",
         win_config = require("config.utils").get_responsive_win_config(),
         job_opts = {
@@ -27,6 +27,11 @@ local toggle_ai_cli = function(opts)
             },
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
+        cb_on_create = function(term_bufnr)
+            vim.api.nvim_buf_set_keymap(term_bufnr, "t", "<c-u>", "<c-\\><c-n><c-u>", {})
+            vim.api.nvim_buf_set_keymap(term_bufnr, "t", "<c-d>", "<c-\\><c-n><c-d>", {})
+            vim.cmd.startinsert()
+        end,
     })
 end
 
