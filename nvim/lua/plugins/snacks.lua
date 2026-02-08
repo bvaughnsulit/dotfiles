@@ -91,12 +91,13 @@ return {
             input = { enabled = true },
             scope = { enabled = true },
             picker = {
+                icons = require("config.constants").kind_map,
                 sources = {
                     treesitter = {
-                        filter = { default = true },
+                        filter = { default = require("config.constants").kind_filter_base },
                     },
                     lsp_symbols = {
-                        filter = { default = true },
+                        filter = { default = require("config.constants").kind_filter_base },
                     },
                     help = {
                         confirm = {

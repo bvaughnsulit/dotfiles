@@ -26,7 +26,7 @@ local toggle_ai_cli = function(opts)
                 EDITOR = 'nvim --server "$NVIM" --remote',
             },
         },
-        cb = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
+        cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
     })
 end
 

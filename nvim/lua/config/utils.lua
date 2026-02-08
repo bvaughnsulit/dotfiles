@@ -178,7 +178,8 @@ end
 ---@field q_to_go_back? ("t"|"n")[] | nil
 ---@field auto_insert? boolean
 ---@field if_exists? "use_existing" | "replace" | "keep_both"
----@field cb? fun(bufnr: number): nil
+---@field cb_on_every? fun(bufnr: number): nil
+---@field cb_on_create? fun(bufnr: number): nil
 ---@field win_config? vim.api.keyset.win_config
 ---@field job_opts? table # options to pass to `vim.fn.jobstart`
 ---@see vim.fn.jobstart
@@ -211,7 +212,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
                     -- If already open in a window, just switch to it
                     if vim.api.nvim_win_get_buf(window) == buf then
                         vim.api.nvim_set_current_win(window)
-                        if opts.cb then opts.cb(buf) end
+                        if opts.cb_on_every then opts.cb_on_every(buf) end
                         return
                     end
                 end
@@ -219,7 +220,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
                 -- Otherwise, open the buffer
                 if opts.win_config then vim.api.nvim_open_win(buf, true, opts.win_config) end
                 vim.api.nvim_win_set_buf(0, buf)
-                if opts.cb then opts.cb(buf) end
+                if opts.cb_on_every then opts.cb_on_every(buf) end
                 return
             end
         end
@@ -254,7 +255,8 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         })
         vim.cmd.startinsert()
     end
-    if opts.cb then opts.cb(buf) end
+    if opts.cb_on_create then opts.cb_on_create(buf) end
+    if opts.cb_on_every then opts.cb_on_every(buf) end
 end
 
 M.get_responsive_win_config = function()
