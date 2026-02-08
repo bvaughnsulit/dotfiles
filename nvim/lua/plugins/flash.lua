@@ -15,6 +15,7 @@ return {
                     enabled = false,
                 },
                 char = {
+                    enabled = false,
                     config = function(opts) opts.jump_labels = vim.v.count == 0 and not vim.fn.mode(true):find("o") end,
                 },
             },
