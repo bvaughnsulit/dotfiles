@@ -32,6 +32,7 @@ return {
                 "asciidoc",
                 "man",
             },
+            close_automatic_events = { "switch_buffer" },
             icons = require("config.constants").kind_map,
             filter_kind = require("config.constants").kind_filter_base,
             highlight_on_hover = true,
