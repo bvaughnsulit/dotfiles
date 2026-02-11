@@ -40,9 +40,9 @@ alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 
 alias lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias nvim-min='NVIM_APPNAME=minimal-nvim nvim'
-alias plug='cd $(fd . ~/.local/share/nvim/lazy/ --type dir --max-depth 1 | fzf)' 
-alias dev='cd $(fd . ~/dev/ --type dir --max-depth 1 | fzf)'
-alias wtr='cd $(fd . ~/worktrees/ --type dir --max-depth 1 | fzf)'
+alias plug='cd $(fd . ~/.local/share/nvim/lazy/ --type dir --max-depth 1 | fzf) && nvim'
+alias dev='cd $(fd . ~/dev/ --type dir --max-depth 1 | fzf) && nvim'
+alias wtr='cd $(fd . ~/worktrees/ --type dir --max-depth 1 | fzf) && nvim'
 alias nvim-debug="INIT_DEBUG=true nvim"
 
 alias lg='lazygit'
