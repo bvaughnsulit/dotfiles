@@ -29,7 +29,26 @@ return {
                     lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
                     buffer = {
                         opts = {
-                            -- get_bufnrs = function() logger("hello") end,
+                            get_bufnrs = function()
+                                return vim.iter(vim.api.nvim_list_wins())
+                                    :map(function(win) return vim.api.nvim_win_get_buf(win) end)
+                                    :filter(
+                                        function(buf)
+                                            return vim.bo[buf].buftype ~= "nofile"
+                                                and vim.bo[buf].buftype ~= "terminal"
+                                                and not vim.tbl_contains({
+                                                    "dap-repl",
+                                                    "neo-tree",
+                                                    "aerial",
+                                                    "dapui_console",
+                                                    "dapui_scopes",
+                                                    "dapui_watches",
+                                                    "dapui_stacks",
+                                                }, vim.bo[buf].filetype)
+                                        end
+                                    )
+                                    :totable()
+                            end,
                         },
                     },
                 },
@@ -101,6 +120,19 @@ return {
                 -- file_log_level = vim.log.levels.TRACE,
             },
             copilot_model = "",
+            should_attach = function(buf)
+                return vim.bo[buf].buflisted
+                    and vim.bo[buf].buftype == ""
+                    and not vim.tbl_contains({
+                        "dap-repl",
+                        "neo-tree",
+                        "aerial",
+                        "dapui_console",
+                        "dapui_scopes",
+                        "dapui_watches",
+                        "dapui_stacks",
+                    }, vim.bo[buf].filetype)
+            end,
         },
         --@diagnostic enable: missing-fields
         config = function(_, opts)
