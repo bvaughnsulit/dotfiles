@@ -297,28 +297,19 @@ vim.keymap.set("n", "<leader>\\c", function()
             local cmd = { "zsh" }
             utils.toggle_persistent_terminal(cmd, input, {
                 auto_insert = false,
-                close_on_exit = true,
                 win_config = {
-                    split = "right",
+                    relative = "editor",
+                    anchor = "NE",
+                    height = math.floor(vim.o.lines * 0.7),
                     width = math.floor(vim.o.columns * 0.4),
+                    row = 1,
+                    col = vim.o.columns - 1,
+                    border = "rounded",
                 },
                 job_opts = {},
-                cb_on_create = function(term_bufnr)
-                    vim.keymap.set(
-                        "n",
-                        "q",
-                        function() vim.api.nvim_buf_delete(term_bufnr, { force = true }) end,
-                        { buffer = term_bufnr, silent = true, desc = "Close Terminal Buffer" }
-                    )
-                end,
             })
-            -- TODO: this is a hack, figure out the right way to do this
-            vim.cmd.startinsert()
-            vim.api.nvim_feedkeys(
-                vim.api.nvim_replace_termcodes(input .. "<cr><c-\\><c-n>", true, false, true),
-                "n",
-                false
-            )
+
+            vim.api.nvim_put({ input, "sleep 2", "exit", "" }, "c", true, true)
         end
     end)
 end)
