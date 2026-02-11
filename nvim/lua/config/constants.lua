@@ -1,5 +1,6 @@
 local M = {}
 
+---@enum (key) Kind
 M.kind_map = {
     File = "[File]",
     Module = "[Module]",
@@ -40,23 +41,43 @@ M.kind_map = {
     Value = "[Value]",
 }
 
-M.kind_filter_base = {
-    "Variable",
-    "File",
-    "Module",
-    "Namespace",
-    "Class",
-    "Method",
-    "Field",
-    "Constructor",
-    "Enum",
-    "Function",
-    "Object",
-    "Key",
-    "EnumMember",
-    "Struct",
-    "Event",
-    "TypeParameter",
+---@type table<string, Kind[]>
+M.ft_kind_filter = {
+    python = {
+        "File",
+        "Module",
+        "Namespace",
+        "Class",
+        "Method",
+        "Field",
+        "Constructor",
+        "Enum",
+        "Function",
+        "Object",
+        "Key",
+        "EnumMember",
+        "Struct",
+        "Event",
+        "TypeParameter",
+    },
+    typescript = {
+        "Variable",
+        "File",
+        "Module",
+        "Namespace",
+        "Class",
+        "Method",
+        "Field",
+        "Constructor",
+        "Enum",
+        "Function",
+        "Object",
+        "Key",
+        "EnumMember",
+        "Struct",
+        "Event",
+        "TypeParameter",
+    },
 }
 
 return M
