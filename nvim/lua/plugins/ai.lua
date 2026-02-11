@@ -28,8 +28,8 @@ local toggle_ai_cli = function(opts)
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
         cb_on_create = function(term_bufnr)
-            vim.api.nvim_buf_set_keymap(term_bufnr, "t", "<c-u>", "<c-\\><c-n><c-u>", {})
-            vim.api.nvim_buf_set_keymap(term_bufnr, "t", "<c-d>", "<c-\\><c-n><c-d>", {})
+            vim.keymap.set("t", "<c-u>", "<c-\\><c-n><c-u>", { buffer = term_bufnr })
+            vim.keymap.set("t", "<c-d>", "<c-\\><c-n><c-d>", { buffer = term_bufnr })
             vim.cmd.startinsert()
         end,
     })
