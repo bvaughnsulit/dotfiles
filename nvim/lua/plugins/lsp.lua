@@ -71,6 +71,7 @@ local servers = {
             },
         },
     },
+    tailwindcss = {},
 }
 
 ---@module 'lazy'
@@ -155,6 +156,7 @@ return {
                 vim.o.foldlevel = 99
                 if client and client:supports_method("textDocument/foldingRange") then
                     local win = vim.api.nvim_get_current_win()
+                    vim.wo[win][0].foldmethod = "expr"
                     vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
                 end
                 vim.cmd([[hi! default link Folded LspInlayHint]])
