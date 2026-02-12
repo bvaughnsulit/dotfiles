@@ -72,6 +72,7 @@ local servers = {
         },
     },
     tailwindcss = {},
+    jsonls = {},
 }
 
 ---@module 'lazy'
