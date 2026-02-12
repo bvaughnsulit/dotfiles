@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "type.checkTableShape": true,
+  "type.inferParamType": true,
+  "type.inferTableSize": 99,
+  "diagnostics.severity": {
+    "redefined-local": "Error"
+  }
+}
