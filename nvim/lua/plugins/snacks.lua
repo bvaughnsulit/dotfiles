@@ -311,6 +311,8 @@ return {
             find_files = function() Snacks.picker.files() end,
             keymaps = function() Snacks.picker.keymaps() end,
 
+            lsp_symbols = function() Snacks.picker.lsp_symbols() end,
+            lsp_workspace_symbols = function() Snacks.picker.lsp_workspace_symbols() end,
             help_tags = function() Snacks.picker.help() end,
             lsp_definitions = function() Snacks.picker.lsp_definitions() end,
             lsp_references = function() Snacks.picker.lsp_references() end,
