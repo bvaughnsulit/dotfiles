@@ -2,48 +2,53 @@ local M = {}
 
 ---@enum (key) Kind
 M.kind_map = {
-    File = "[File]",
-    Module = "[Module]",
-    Namespace = "[Namespace]",
-    Package = "[Package]",
-    Class = "[Class]",
-    Method = "[Method]",
-    Property = "[Property]",
-    Field = "[Field]",
-    Constructor = "[Constructor]",
-    Enum = "[Enum]",
-    Interface = "[Interface]",
-    Function = "[Function]",
-    Variable = "[Variable]",
-    Constant = "[Constant]",
-    String = "[String]",
-    Number = "[Number]",
-    Boolean = "[Boolean]",
-    Array = "[Array]",
-    Object = "[Object]",
-    Key = "[Key]",
-    Null = "[Null]",
-    EnumMember = "[EnumMember]",
-    Struct = "[Struct]",
-    Event = "[Event]",
-    Operator = "[Operator]",
-    TypeParameter = "[TypeParameter]",
-    Color = "[Color]",
-    Control = "[Control]",
-    Collapsed = "[Collapsed]",
-    Folder = "[Folder]",
-    Keyword = "[Keyword]",
-    Reference = "[Reference]",
-    Snippet = "[Snippet]",
-    Text = "[Text]",
-    Unit = "[Unit]",
-    Unknown = "[Unknown]",
-    Value = "[Value]",
+    Array = { abbrev = "Arr", icon = " " },
+    Boolean = { abbrev = "Bool", icon = "󰨙 " },
+    Class = { abbrev = "Class", icon = " " },
+    Collapsed = { abbrev = "Collapsed", icon = " " },
+    Color = { abbrev = "Color", icon = " " },
+    Constant = { abbrev = "Const", icon = "󰏿 " },
+    Constructor = { abbrev = "Constr", icon = " " },
+    Control = { abbrev = "Ctrl", icon = " " },
+    Enum = { abbrev = "Enum", icon = " " },
+    EnumMember = { abbrev = "EnumMem", icon = " " },
+    Event = { abbrev = "Event", icon = " " },
+    Field = { abbrev = "Field", icon = " " },
+    File = { abbrev = "File", icon = " " },
+    Folder = { abbrev = "Folder", icon = " " },
+    Function = { abbrev = "Func", icon = "󰊕 " },
+    Interface = { abbrev = "Inter", icon = " " },
+    Key = { abbrev = "Key", icon = " " },
+    Keyword = { abbrev = "Keyword", icon = " " },
+    Method = { abbrev = "Method", icon = "󰊕 " },
+    Module = { abbrev = "Module", icon = " " },
+    Namespace = { abbrev = "Namespc", icon = "󰦮 " },
+    Null = { abbrev = "Null", icon = "󰟢 " },
+    Number = { abbrev = "Num", icon = "󰎠 " },
+    Object = { abbrev = "Obj", icon = " " },
+    Operator = { abbrev = "Op", icon = " " },
+    Package = { abbrev = "Pkg", icon = " " },
+    Property = { abbrev = "Prop", icon = " " },
+    Reference = { abbrev = "Ref", icon = " " },
+    Snippet = { abbrev = "Snip", icon = "󰩫 " },
+    String = { abbrev = "Str", icon = "󱀍 " },
+    Struct = { abbrev = "Struct", icon = " " },
+    Text = { abbrev = "Text", icon = " " },
+    TypeParameter = { abbrev = "TypeParam", icon = " " },
+    Unit = { abbrev = "Unit", icon = " " },
+    Unknown = { abbrev = "Unknown", icon = " " },
+    Value = { abbrev = "Val", icon = "󱄽 " },
+    Variable = { abbrev = "Var", icon = " " },
 }
+M.kind = {}
+
+for key, value in pairs(M.kind_map) do
+    M.kind[key] = "[" .. value.icon .. value.abbrev .. "]"
+end
 
 ---@type table<string, Kind[]>
 M.ft_kind_filter = {
-    python = {
+    ["_"] = {
         "File",
         "Module",
         "Namespace",
@@ -79,5 +84,9 @@ M.ft_kind_filter = {
         "TypeParameter",
     },
 }
+
+M.ft_kind_filter["javascript"] = M.ft_kind_filter["typescript"]
+M.ft_kind_filter["javascriptreact"] = M.ft_kind_filter["typescript"]
+M.ft_kind_filter["typescriptreact"] = M.ft_kind_filter["typescript"]
 
 return M

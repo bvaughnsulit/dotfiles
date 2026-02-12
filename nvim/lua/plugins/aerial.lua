@@ -42,7 +42,7 @@ return {
                     "lsp",
                 },
             },
-            icons = require("config.constants").kind_map,
+            icons = require("config.constants").kind,
             filter_kind = require("config.constants").ft_kind_filter,
             highlight_on_hover = true,
             highlight_on_jump = 300,

@@ -92,7 +92,7 @@ return {
             scope = { enabled = true },
             picker = {
                 icons = {
-                    kinds = require("config.constants").kind_map,
+                    kinds = require("config.constants").kind,
                 },
                 sources = {
                     treesitter = {
