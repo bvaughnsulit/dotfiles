@@ -61,7 +61,6 @@ return {
                 { "@function.outer", "end", previous = "[M", next = "]M" },
                 { "@block.outer", "end", previous = "[{", next = "]}" },
             }
-            local keys = 2
 
             for _, move in pairs(move_maps) do
                 table.insert(keys, {
