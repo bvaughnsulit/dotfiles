@@ -310,6 +310,7 @@ return {
 
             find_files = function() Snacks.picker.files() end,
             keymaps = function() Snacks.picker.keymaps() end,
+            jumps = function() Snacks.picker.jumps() end,
 
             lsp_symbols = function() Snacks.picker.lsp_symbols() end,
             lsp_workspace_symbols = function() Snacks.picker.lsp_workspace_symbols() end,
