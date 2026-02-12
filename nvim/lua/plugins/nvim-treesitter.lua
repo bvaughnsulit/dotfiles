@@ -52,36 +52,44 @@ return {
         keys = function()
             local keys = {}
 
-            local moves = {
-                { "@parameter.inner", previous = "[a", next = "]a" },
-                { "@function.outer", previous = "[m", next = "]m" },
-                { "@block.outer", previous = "[[", next = "]]" },
-                { "@comment.outer", previous = "[/", next = "]/" },
+            ---@type { [1]: string, [2]: "start" | "end", previous: string, next: string }[]
+            local move_maps = {
+                { "@parameter.inner", "start", previous = "[a", next = "]a" },
+                { "@function.outer", "start", previous = "[m", next = "]m" },
+                { "@block.outer", "start", previous = "[[", next = "]]" },
+                { "@comment.outer", "start", previous = "[/", next = "]/" },
+                { "@function.outer", "end", previous = "[M", next = "]M" },
+                { "@block.outer", "end", previous = "[{", next = "]}" },
             }
+            local keys = 2
 
-            for _, move in pairs(moves) do
+            for _, move in pairs(move_maps) do
                 table.insert(keys, {
                     move.previous,
-                    function() require("nvim-treesitter-textobjects.move").goto_previous_start(move[1], "textobjects") end,
+                    function()
+                        require("nvim-treesitter-textobjects.move")["goto_previous_" .. move[2]](move[1], "textobjects")
+                    end,
                     mode = { "n", "x", "o" },
-                    desc = "Previous " .. move[1],
+                    desc = "Previous " .. move[1] .. " " .. move[2],
                 })
             end
 
-            for _, move in pairs(moves) do
+            for _, move in pairs(move_maps) do
                 table.insert(keys, {
                     move.next,
-                    function() require("nvim-treesitter-textobjects.move").goto_next_start(move[1], "textobjects") end,
+                    function()
+                        require("nvim-treesitter-textobjects.move")["goto_next_" .. move[2]](move[1], "textobjects")
+                    end,
                     mode = { "n", "x", "o" },
-                    desc = "Next " .. move[1],
+                    desc = "Next " .. move[1] .. " " .. move[2],
                 })
             end
 
-            local swaps = {
+            local swap_maps = {
                 { "@parameter.inner", previous = "<leader>[a", next = "<leader>]a" },
             }
 
-            for _, swap in pairs(swaps) do
+            for _, swap in pairs(swap_maps) do
                 table.insert(keys, {
                     swap.previous,
                     function() require("nvim-treesitter-textobjects.swap").swap_previous(swap[1]) end,
@@ -90,7 +98,7 @@ return {
                 })
             end
 
-            for _, swap in pairs(swaps) do
+            for _, swap in pairs(swap_maps) do
                 table.insert(keys, {
                     swap.next,
                     function() require("nvim-treesitter-textobjects.swap").swap_next(swap[1]) end,
