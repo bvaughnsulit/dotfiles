@@ -420,4 +420,10 @@ M.reset_diff_selections = function()
     vim.notify("Diff: selection cleared.")
 end
 
+--- HACK: reopens treesitter context after it's closed by wincmd o
+M.only = function()
+    vim.cmd("only")
+    require("treesitter-context").enable()
+end
+
 return M

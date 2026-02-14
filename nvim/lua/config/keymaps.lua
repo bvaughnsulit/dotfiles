@@ -56,7 +56,7 @@ map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>")
 
 -- add some wincmd shortcuts for terminal mode
 map({ "t" }, "<C-w>q", "<cmd>wincmd q<cr>")
-map({ "t" }, "<C-w>o", "<cmd>wincmd o<cr>")
+map({ "t", "n" }, "<C-w>o", require("config.utils").only)
 
 map({ "i" }, "<M-h>", "<left>")
 map({ "i" }, "<M-l>", "<right>")
@@ -194,7 +194,7 @@ end, { silent = true })
 -- wincmd o also zooms tmux pane
 vim.keymap.set({ "n", "t" }, "<c-w>o", function()
     -- default behavior
-    vim.cmd("only")
+    require("config.utils").only()
     -- if unzoomed, zoom
     vim.cmd([[ silent
       \ !tmux if-shell -F
