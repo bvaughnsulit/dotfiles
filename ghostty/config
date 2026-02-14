@@ -14,6 +14,3 @@ window-padding-color = extend
 theme = light:GitHub Light Colorblind,dark:TokyoNight Night
 desktop-notifications = true
 background-opacity-cells = true
-
-# font-thicken = true
-# cursor-invert-fg-bg = true
