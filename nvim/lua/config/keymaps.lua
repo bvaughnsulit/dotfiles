@@ -5,12 +5,6 @@ local map = function(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-pcall(vim.keymap.del, "n", "<leader>w")
-pcall(vim.keymap.del, "n", "<leader>wd")
-pcall(vim.keymap.del, "n", "<leader>w-")
-pcall(vim.keymap.del, "n", "<leader>w|")
-pcall(vim.keymap.del, "n", "<leader>wm")
-
 map({ "n", "v" }, "<leader>bd", "<cmd>bdelete<cr>", {})
 
 -- \V - very nomagic
@@ -207,18 +201,6 @@ end, { silent = true })
 utils.create_cmd_and_map("WhichConfig", nil, function() vim.notify(vim.fn.stdpath("config")) end, "Print Config Path")
 map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Comment At End Of Line" }) -- TODO how to return cursor to original position?
 
---
--- TODO: clean up below, pasted from lazyvim
---
-
--- Move Lines
-map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
-map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
-map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
-
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
@@ -227,40 +209,32 @@ map("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Prev Search R
 map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 
--- commenting
-map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
-map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
-
--- diagnostic
-local diagnostic_goto = function(next, severity)
-    local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-    severity = severity and vim.diagnostic.severity[severity] or nil
-    return function() go({ severity = severity }) end
-end
-map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
-map("n", "]D", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
-map("n", "[D", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
-map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
-map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
-
-
--- stylua: ignore start
-
--- toggle options
-Snacks.toggle.option("spell", { name = "Spelling"}):map("<leader>us")
-Snacks.toggle.diagnostics():map("<leader>ud")
-Snacks.toggle.line_number():map("<leader>ul")
-Snacks.toggle.option("conceallevel", {off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2}):map("<leader>uc")
-Snacks.toggle.treesitter():map("<leader>uT")
-
-map("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "Git Browse" })
-
--- highlights under cursor
-map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
-
--- lazyvim end
--- stylua: ignore end
+map(
+    "n",
+    "]D",
+    function()
+        vim.diagnostic.jump({
+            count = 1,
+            float = true,
+            severity = vim.diagnostic.severity.ERROR,
+        })
+    end,
+    { desc = "Next Error" }
+)
+map(
+    "n",
+    "[D",
+    function()
+        vim.diagnostic.jump({
+            count = -1,
+            float = true,
+            severity = vim.diagnostic.severity.ERROR,
+        })
+    end,
+    { desc = "Prev Error" }
+)
+map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
+map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
 
 utils.create_cmd_and_map("FocusFloat", "<c-w>f", function()
     for _, winid in ipairs(vim.api.nvim_list_wins()) do
