@@ -1,5 +1,65 @@
 local utils = require("config.utils")
 
+local run_js_test = function()
+    local config_paths = vim.fs.find({
+        "vite.config.ts",
+        "vite.config.js",
+        "vitest.config.ts",
+        "vitest.config.js",
+        "jest.config.ts",
+        "jest.config.js",
+    }, { upward = true, type = "file", path = vim.api.nvim_buf_get_name(0) })
+    -- just use the first one
+    local config_dir = config_paths[1] and vim.fs.dirname(config_paths[1]) or ""
+    local config_file = config_paths[1] and vim.fs.basename(config_paths[1]) or ""
+
+    local program, args = nil, nil
+
+    if config_file:find("vite") ~= nil then
+        program = config_dir .. "/node_modules/vitest/vitest.mjs"
+        args = {
+            "run",
+            vim.fn.expand("%:."),
+        }
+    elseif config_file:find("jest") ~= nil then
+        program = config_dir .. "/node_modules/jest/bin/jest.js"
+        args = {
+            "-i",
+            "--reporters=default",
+            "--reporters=jest-junit",
+            "-c",
+            config_file,
+            "--env=jsdom",
+            "--",
+            vim.fn.expand("%:."),
+        }
+    else
+        vim.notify(
+            #config_paths > 0 and config_file .. " found, but not recognized as valid jest or vitest config file"
+                or "No config found for jest or vitest in this project",
+
+            vim.log.levels.WARN
+        )
+        return
+    end
+
+    require("dap").run({
+        name = "Debug Node Test",
+        type = "pwa-node",
+        request = "launch",
+        env = {},
+        cwd = config_dir,
+        program = program,
+        args = args,
+        runtimeArgs = { "--inspect" },
+        skipFiles = { "<node_internals>/**", "**/node_modules/**" },
+        autoAttachChildProcesses = true,
+        smartStep = true,
+        sourceMaps = true,
+        console = "integratedTerminal",
+    })
+end
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
@@ -233,80 +293,28 @@ return {
             {
                 "<leader>tr",
                 function()
-                    local config_paths = vim.fs.find({
-                        "vite.config.ts",
-                        "vite.config.js",
-                        "vitest.config.ts",
-                        "vitest.config.js",
-                        "jest.config.ts",
-                        "jest.config.js",
-                    }, { upward = true, type = "file", path = vim.api.nvim_buf_get_name(0) })
-                    -- just use the first one
-                    local config_dir = config_paths[1] and vim.fs.dirname(config_paths[1]) or ""
-                    local config_file = config_paths[1] and vim.fs.basename(config_paths[1]) or ""
-
-                    local program, args = nil, nil
-
-                    if config_file:find("vite") ~= nil then
-                        program = config_dir .. "/node_modules/vitest/vitest.mjs"
-                        args = {
-                            "run",
-                            vim.fn.expand("%:."),
-                        }
-                    elseif config_file:find("jest") ~= nil then
-                        program = config_dir .. "/node_modules/jest/bin/jest.js"
-                        args = {
-                            "-i",
-                            "--reporters=default",
-                            "--reporters=jest-junit",
-                            "-c",
-                            config_file,
-                            "--env=jsdom",
-                            "--",
-                            vim.fn.expand("%:."),
-                        }
-                    else
-                        vim.notify(
-                            #config_paths > 0
-                                    and config_file .. " found, but not recognized as valid jest or vitest config file"
-                                or "No config found for jest or vitest in this project",
-
-                            vim.log.levels.WARN
-                        )
-                        return
-                    end
-
-                    local js_filetypes = {
-                        "javascript",
-                        "javascriptreact",
-                        "javascript.jsx",
-                        "typescript",
-                        "typescriptreact",
-                        "typescript.tsx",
-                    }
-
                     require("dapui").close()
                     require("dapui").open({ layout = 1 })
 
-                    if vim.tbl_contains(js_filetypes, vim.bo.filetype) then
-                        require("dap").run({
-                            name = "Debug Node Test",
-                            type = "pwa-node",
-                            request = "launch",
-                            env = {},
-                            cwd = config_dir,
-                            program = program,
-                            args = args,
-                            runtimeArgs = { "--inspect" },
-                            skipFiles = { "<node_internals>/**", "**/node_modules/**" },
-                            autoAttachChildProcesses = true,
-                            smartStep = true,
-                            sourceMaps = true,
-                            console = "integratedTerminal",
-                        })
+                    if
+                        vim.tbl_contains({
+                            "javascript",
+                            "javascriptreact",
+                            "javascript.jsx",
+                            "typescript",
+                            "typescriptreact",
+                            "typescript.tsx",
+                        }, vim.bo.filetype)
+                    then
+                        run_js_test()
+                    elseif vim.bo.filetype == "python" then
+                        require("dap-python").test_method()
+                    else
+                        vim.notify(
+                            "DAP test runner is not configured for " .. vim.bo.filetype .. " files",
+                            vim.log.levels.WARN
+                        )
                     end
-                    --     if vim.bo.filetype == "python" then
-                    --         dap_python.test_method(python_test_opts)
                 end,
                 desc = "Run tests with DAP",
             },
