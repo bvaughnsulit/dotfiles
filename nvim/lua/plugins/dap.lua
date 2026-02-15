@@ -60,6 +60,21 @@ local run_js_test = function()
     })
 end
 
+local run_python_test = function()
+    local settings = require("config.settings").python_test_runner_opts
+
+    local opts = {
+        test_runner = settings.module,
+        config = function(config)
+            if settings.args ~= nil then config.args = vim.list_extend(config.args or {}, settings.args) end
+            if settings.env ~= nil then config.env = vim.tbl_extend("force", config.env or {}, settings.env) end
+
+            return config
+        end,
+    }
+    require("dap-python").test_method(opts)
+end
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
@@ -308,7 +323,7 @@ return {
                     then
                         run_js_test()
                     elseif vim.bo.filetype == "python" then
-                        require("dap-python").test_method()
+                        run_python_test()
                     else
                         vim.notify(
                             "DAP test runner is not configured for " .. vim.bo.filetype .. " files",

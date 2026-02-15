@@ -217,7 +217,7 @@ return {
         lazy = false,
         init = function()
             require("neoconf").setup({
-                local_settings = ".vaughn/neoconf.json",
+                local_settings = ".vaughn/neoconf.jsonc",
                 import = {
                     vscode = false,
                     coc = false,
