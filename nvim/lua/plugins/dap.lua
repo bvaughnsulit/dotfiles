@@ -63,16 +63,17 @@ end
 local run_python_test = function()
     local settings = require("config.settings").python_test_runner_opts
 
-    local opts = {
+    require("dap-python").test_method({
         test_runner = settings.module,
         config = function(config)
+            ---@diagnostic disable-next-line: inject-field
             if settings.args ~= nil then config.args = vim.list_extend(config.args or {}, settings.args) end
+            ---@diagnostic disable-next-line: inject-field
             if settings.env ~= nil then config.env = vim.tbl_extend("force", config.env or {}, settings.env) end
 
             return config
         end,
-    }
-    require("dap-python").test_method(opts)
+    })
 end
 
 ---@module 'lazy'
