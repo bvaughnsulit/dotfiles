@@ -14,3 +14,4 @@ window-padding-color = extend
 theme = light:GitHub Light Colorblind,dark:TokyoNight Night
 desktop-notifications = true
 background-opacity-cells = true
+shell-integration-features = ssh-terminfo
