@@ -245,6 +245,14 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
         })
     end
 
+    -- vim.keymap.set("t", "<c-o>", "<C-\\><C-n><C-o>", { desc = "Jump to Normal Mode and Go Back" })
+    vim.keymap.set(
+        "t",
+        "qq",
+        function() require("config.utils").safe_close_win(0) end,
+        { silent = true, desc = "Hide terminal buffer" }
+    )
+
     if opts.auto_insert then
         vim.api.nvim_create_autocmd("BufEnter", {
             buffer = buf,
