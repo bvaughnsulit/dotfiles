@@ -37,7 +37,6 @@ local run_js_test = function()
         vim.notify(
             #config_paths > 0 and config_file .. " found, but not recognized as valid jest or vitest config file"
                 or "No config found for jest or vitest in this project",
-
             vim.log.levels.WARN
         )
         return
@@ -60,10 +59,12 @@ local run_js_test = function()
     })
 end
 
-local run_python_test = function()
+---@param type? "method" | "class"
+local run_python_test = function(type)
+    local run_test = type == "class" and require("dap-python").test_class or require("dap-python").test_method
     local settings = require("config.settings").python_test_runner_opts
 
-    require("dap-python").test_method({
+    run_test({
         test_runner = settings.module,
         config = function(config)
             ---@diagnostic disable-next-line: inject-field
@@ -107,7 +108,8 @@ return {
             local dap = require("dap")
             local dapui = require("dapui")
 
-            require("dap-python").setup()
+            -- require("dap-python").setup()
+            require("dap-python").setup("python3", { include_configs = false })
             require("dap").defaults.python.exception_breakpoints = {}
 
             dap.adapters["pwa-node"] = {
@@ -325,6 +327,34 @@ return {
                         run_js_test()
                     elseif vim.bo.filetype == "python" then
                         run_python_test()
+                    else
+                        vim.notify(
+                            "DAP test runner is not configured for " .. vim.bo.filetype .. " files",
+                            vim.log.levels.WARN
+                        )
+                    end
+                end,
+                desc = "Run tests with DAP",
+            },
+            {
+                "<leader>tR",
+                function()
+                    require("dapui").close()
+                    require("dapui").open({ layout = 1 })
+
+                    if
+                        vim.tbl_contains({
+                            "javascript",
+                            "javascriptreact",
+                            "javascript.jsx",
+                            "typescript",
+                            "typescriptreact",
+                            "typescript.tsx",
+                        }, vim.bo.filetype)
+                    then
+                        run_js_test()
+                    elseif vim.bo.filetype == "python" then
+                        run_python_test("class")
                     else
                         vim.notify(
                             "DAP test runner is not configured for " .. vim.bo.filetype .. " files",
