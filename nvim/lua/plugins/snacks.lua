@@ -196,6 +196,7 @@ return {
                         picker:close()
                         if vim.api.nvim_buf_get_name(0):find("term://ai_cli") then filename = "@" .. filename .. " " end
                         vim.api.nvim_put({ filename }, "c", true, true)
+                        vim.schedule(function() vim.cmd.startinsert() end)
                     end,
                     select_filters = function(picker)
                         vim.ui.select(vim.tbl_keys(exclude_toggles), {

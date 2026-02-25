@@ -1,5 +1,5 @@
 local ai_cli_options = {
-    claude = { "claude", "--continue" },
+    claude = { "claude" },
     opencode = { "opencode" },
     gemini = { "gemini" },
 }
