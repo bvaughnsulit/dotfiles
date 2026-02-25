@@ -1,5 +1,10 @@
 local utils = require("config.utils")
 
+local exception_breakpoint_options = {
+    uncaught = "uncaught",
+    raised = "raised",
+}
+
 local run_js_test = function()
     local config_paths = vim.fs.find({
         "vite.config.ts",
@@ -167,14 +172,33 @@ return {
                 desc = "Toggle DAP UI",
             },
             {
-                "<leader>de",
-                function() require("dap").defaults.python.exception_breakpoints = { "uncaught" } end,
-                desc = "Break on Uncaught Exceptions",
-            },
-            {
                 "<leader>dE",
-                function() require("dap").defaults.python.exception_breakpoints = { "raised", "uncaught" } end,
-                desc = "Break on All Exceptions",
+                function()
+                    local current_settings = require("dap").defaults.debugpy.exception_breakpoints
+                    if type(current_settings) == "string" then current_settings = { current_settings } end
+                    vim.ui.select({ "uncaught", "raised", "default" }, {
+                        prompt = "Exception Breakpoint Settings",
+                        format_item = function(item)
+                            return (vim.tbl_contains(current_settings, item) and "✓ " or "  ") .. item
+                        end,
+                    }, function(choice)
+                        if vim.tbl_contains(current_settings, choice) then
+                            require("dap").defaults.debugpy.exception_breakpoints = vim.tbl_filter(
+                                function(item) return item ~= choice end,
+                                current_settings
+                            )
+                        else
+                            require("dap").defaults.debugpy.exception_breakpoints =
+                                vim.list_extend(current_settings, { choice })
+                        end
+                        vim.notify(
+                            "Exception breakpoints set to: "
+                                .. table.concat(require("dap").defaults.debugpy.exception_breakpoints, ", ")
+                        )
+                    end)
+                end,
+
+                desc = "Update Exception Breakpoints",
             },
             {
                 "<leader>db",
@@ -204,7 +228,7 @@ return {
                 function()
                     require("dapui").close()
                     require("dapui").open({ layout = 1 })
-                    require("dap").continue()
+                    require("dap").continue() -- TODO add ability to set default config
                 end,
                 desc = "Continue",
             },
@@ -289,6 +313,7 @@ return {
                         vim.cmd(width .. " vsplit dap-eval://lua")
                         vim.api.nvim_buf_set_lines(0, 0, 1, false, { "debug_info()" })
                         vim.cmd("w")
+                        -- vim.lsp.start(vim.lsp.config["lua_ls"], { bufnr = 0 })
 
                         vim.keymap.set("n", "q", function()
                             require("dap").repl.close()
