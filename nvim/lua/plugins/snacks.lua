@@ -105,6 +105,27 @@ return {
                             default = true,
                         },
                     },
+                    marks = {
+                        finder = function(opts, ctx)
+                            local default = require("snacks.picker.source.vim").marks(opts, ctx)
+                            local current_buf = ctx.filter.current_buf
+                            ---@diagnostic disable-next-line: param-type-mismatch
+                            table.sort(default, function(a, b)
+                                -- marks in current buffer first
+                                if a.buf == current_buf and b.buf ~= current_buf then return true end
+                                if b.buf == current_buf and a.buf ~= current_buf then return false end
+                                if a.buf == current_buf and b.buf == current_buf then
+                                    -- user marks before builtin marks
+                                    if a.label:match("%l") and not b.label:match("%l") then return true end
+                                    if b.label:match("%l") and not a.label:match("%l") then return false end
+                                    -- then sorted by line
+                                    return a.pos[1] < b.pos[1]
+                                end
+                                return a.label < b.label
+                            end)
+                            return default
+                        end,
+                    },
                     help = {
                         confirm = {
                             action = "help",
@@ -312,6 +333,7 @@ return {
             keymaps = function() Snacks.picker.keymaps() end,
             jumps = function() Snacks.picker.jumps() end,
 
+            marks = function() Snacks.picker.marks() end,
             lsp_symbols = function() Snacks.picker.lsp_symbols() end,
             lsp_workspace_symbols = function() Snacks.picker.lsp_workspace_symbols() end,
             help_tags = function() Snacks.picker.help() end,

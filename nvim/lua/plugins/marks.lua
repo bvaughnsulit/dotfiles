@@ -3,26 +3,38 @@
 return {
     "https://github.com/chentoast/marks.nvim",
     event = "VeryLazy",
-    config = true,
+    opts = {
+        mappings = {
+            set = "m",
+            set_next = false,
+            toggle = "m,",
+            next = false,
+            prev = false,
+            preview = "m:",
+            next_bookmark = "m}",
+            prev_bookmark = "m{",
+            delete = "dm",
+            delete_line = "dm-",
+            delete_bookmark = "dm=",
+            delete_buf = "dm<space>",
+        },
+    },
     keys = {
         {
             "]'",
-            '<cmd>lua require("marks").next()<CR>',
+            function()
+                require("marks").next()
+                vim.cmd("normal! m'") -- TODO this can be better
+            end,
             { desc = "Jump to next mark" },
         },
         {
             "['",
-            '<cmd>lua require("marks").prev()<CR>',
-            { desc = "Jump to previous mark" },
-        },
-        {
-            "<leader>mm",
-            mode = { "n" },
             function()
-                require("marks").mark_state:all_to_list()
-                vim.cmd("lopen")
+                require("marks").prev()
+                vim.cmd("normal! m'")
             end,
-            { desc = "Toggle mark visual" },
+            { desc = "Jump to previous mark" },
         },
     },
 }

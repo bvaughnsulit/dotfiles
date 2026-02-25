@@ -106,7 +106,7 @@ M.picker_functions = {
     lsp_symbols = { lhs = "<leader>fs", desc = "Buffer LSP Symbols" },
     lsp_workspace_symbols = { lhs = "<leader>fS", desc = "Workspace LSP Symbols" },
     man = { lhs = "", desc = "" },
-    marks = { lhs = "", desc = "" },
+    marks = { lhs = "<leader>mm", desc = "Search Marks" },
     noice = { lhs = "", desc = "" },
     notifications = { lhs = "", desc = "" },
     projects = { lhs = "", desc = "" },
