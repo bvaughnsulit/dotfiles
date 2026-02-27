@@ -5,7 +5,7 @@ return {
         -- "https://github.com/nvim-treesitter/nvim-treesitter-context",
         "https://github.com/bvaughnsulit/nvim-treesitter-context",
         branch = "bvs",
-        -- dev = true,
+        dev = true,
         event = "VeryLazy",
         ---@module 'treesitter-context'
         ---@type TSContext.UserConfig
@@ -21,19 +21,6 @@ return {
 
             return {
                 { "<leader>tC", "<cmd>TSContextToggle<cr>" },
-                {
-                    "<leader>tc",
-                    function()
-                        if base_config.max_lines == default_max_lines then
-                            base_config.max_lines = "10%"
-                            require("treesitter-context").setup(base_config)
-                        else
-                            base_config.max_lines = default_max_lines
-                            require("treesitter-context").setup(base_config)
-                        end
-                    end,
-                    desc = "Toggle Treesitter Context Max Lines",
-                },
             }
         end,
     },
