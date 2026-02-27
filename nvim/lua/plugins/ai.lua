@@ -28,6 +28,10 @@ local toggle_ai_cli = function(opts)
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
         cb_on_create = function(term_bufnr)
+            vim.keymap.set("n", "1", function() vim.api.nvim_put({ "1" }, "c", true, true) end, { buffer = term_bufnr })
+            vim.keymap.set("n", "2", function() vim.api.nvim_put({ "2" }, "c", true, true) end, { buffer = term_bufnr })
+            vim.keymap.set("n", "3", function() vim.api.nvim_put({ "3" }, "c", true, true) end, { buffer = term_bufnr })
+            vim.keymap.set("n", "4", function() vim.api.nvim_put({ "4" }, "c", true, true) end, { buffer = term_bufnr })
             vim.keymap.set("t", "<c-u>", "<c-\\><c-n><c-u>", { buffer = term_bufnr })
             vim.keymap.set("t", "<c-d>", "<c-\\><c-n><c-d>", { buffer = term_bufnr })
             vim.cmd.startinsert()
