@@ -60,6 +60,9 @@ local servers = {
     vtsls = {
         settings = {
             typescript = {
+                tsserver = {
+                    maxTsServerMemory = 8192,
+                },
                 format = {
                     enable = false,
                 },
@@ -270,8 +273,10 @@ return {
                 sh = { "shfmt" },
                 json = { "biome-check" },
                 jsonc = { "biome-check" },
-                typescript = { "biome-check" },
-                typescriptreact = { "biome-check" },
+                typescript = { "biome" },
+                typescriptreact = { "biome" },
+                javascript = { "biome" },
+                javascriptreact = { "biome" },
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
