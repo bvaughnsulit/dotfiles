@@ -13,6 +13,11 @@ export NVM_DIR="$HOME/.nvm"
 # export NODE_PATH=$NODE_PATH:`npm root --location=global`
 
 ZLE_RPROMPT_INDENT=0
+HISTFILE="$HOME/.zsh_history"
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+HISTSIZE=100000
+SAVEHIST=100000
 
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -33,10 +38,6 @@ alias vi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmvi='sh ~/dotfiles/scripts/tmux-session.sh'
 alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux'
-
-alias nvim-color='nvim --cmd "+lua vim.g.set_scheme='true'"'
-alias nvim-dark='nvim --cmd "+lua vim.g.set_scheme=\"dark\""'
-alias nvim-light='nvim --cmd "+lua vim.g.set_scheme=\"light\""'
 
 alias lazyvim='NVIM_APPNAME=lazyvim nvim'
 alias nvim-min='NVIM_APPNAME=minimal-nvim nvim'
