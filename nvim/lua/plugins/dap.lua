@@ -237,7 +237,12 @@ return {
                 function()
                     require("dapui").close()
                     require("dapui").open({ layout = 1 })
-                    require("dap").run_last()
+
+                    if require("dap").session() then
+                        require("dap").restart()
+                    else
+                        require("dap").run_last()
+                    end
                 end,
                 desc = "Run Last",
             },

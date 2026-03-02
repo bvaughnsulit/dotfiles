@@ -41,10 +41,10 @@ keybinding:
   files:
     openMergeOptions: t
 customCommands:
-  - key: "<space>"
-    command: "git checkout {{.SelectedLocalBranch.Name}} --ignore-other-worktrees"
-    context: "localBranches"
-    description: "Checkout"
+  # - key: "<space>"
+  #   command: "git checkout {{.SelectedLocalBranch.Name}} --ignore-other-worktrees"
+  #   context: "localBranches"
+  #   description: "Checkout"
   - key: "G"
     command: "gh pr view -w {{.SelectedLocalBranch.Name}}"
     context: "localBranches"
