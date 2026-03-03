@@ -24,7 +24,7 @@
         "ctrl+_": "chat:undo",
         "ctrl+shift+-": "chat:undo",
         "ctrl+g": "chat:externalEditor",
-        "ctrl+s": "chat:stash",
+        "ctrl+s": null,
         "ctrl+v": "chat:imagePaste"
       }
     },

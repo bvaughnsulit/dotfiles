@@ -199,7 +199,8 @@ vim.keymap.set({ "n", "t" }, "<c-w>o", function()
 end, { silent = true })
 
 utils.create_cmd_and_map("WhichConfig", nil, function() vim.notify(vim.fn.stdpath("config")) end, "Print Config Path")
-map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Comment At End Of Line" }) -- TODO how to return cursor to original position?
+map("n", "gcT", "<cmd>normal gcATODO<cr>", { desc = "Add Todo At End Of Line" })
+map("n", "gcN", "<cmd>normal gcANOTE<cr>", { desc = "Add Note At End Of Line" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })

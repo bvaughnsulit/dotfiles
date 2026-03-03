@@ -16,9 +16,6 @@ return {
             multiwindow = true,
         },
         keys = function(plugin)
-            local default_max_lines = plugin.opts.max_lines
-            local base_config = vim.deepcopy(plugin.opts or {})
-
             return {
                 { "<leader>tC", "<cmd>TSContextToggle<cr>" },
             }
