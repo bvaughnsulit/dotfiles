@@ -23,6 +23,7 @@
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     status
     command_execution_time
+    virtualenv
     time
     newline
   )
