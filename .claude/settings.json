@@ -2,13 +2,21 @@
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
+      "Bash(find:*)",
+      "Bash(gh pr view *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
+      "Bash(npm run test *)",
+      "Bash(npm test *)",
+      "Bash(tail:*)",
+      "WebFetch(domain:github.com)",
       "WebSearch"
     ],
-    "deny": [],
+    "deny": [
+      "Bash(npx:*)"
+    ],
     "defaultMode": "plan"
   },
   "hooks": {
@@ -30,6 +38,17 @@
           {
             "type": "command",
             "command": "[ -n \"$NVIM\" ] && (nvim --server \"$NVIM\" --remote-send '<cmd>checktime<cr>')"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $DOTFILES_DIR/.claude/onPreToolUse.ts"
           }
         ]
       }
