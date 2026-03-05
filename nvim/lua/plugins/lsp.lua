@@ -283,6 +283,7 @@ return {
                 stylua = { require_cwd = true },
                 prettier = { require_cwd = true },
                 biome_check = { require_cwd = true },
+                biome = { require_cwd = true },
             },
         },
     },
