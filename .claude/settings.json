@@ -1,78 +1,75 @@
 {
-  "includeCoAuthoredBy": false,
-  "permissions": {
-    "allow": [
-      "Bash(find:*)",
-      "Bash(gh pr view *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(grep:*)",
-      "Bash(ls:*)",
-      "Bash(npm run test *)",
-      "Bash(npm test *)",
-      "Bash(tail:*)",
-      "WebFetch(domain:github.com)",
-      "WebSearch"
-    ],
-    "deny": [
-      "Bash(npx:*)"
-    ],
-    "defaultMode": "plan"
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$DOTFILES_DIR/.claude/notification-hook.sh"
-          }
+    "includeCoAuthoredBy": false,
+    "permissions": {
+        "allow": [
+            "Bash(find:*)",
+            "Bash(gh pr view *)",
+            "Bash(git add *)",
+            "Bash(git commit *)",
+            "Bash(grep:*)",
+            "Bash(ls:*)",
+            "Bash(npm run test *)",
+            "Bash(npm test *)",
+            "Bash(tail:*)",
+            "WebFetch(domain:github.com)",
+            "WebSearch"
+        ],
+        "deny": ["Bash(npx:*)", "Bash(yarn:*)"],
+        "defaultMode": "plan"
+    },
+    "model": "opus",
+    "hooks": {
+        "Notification": [
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "$DOTFILES_DIR/.claude/notification_hook.sh"
+                    }
+                ]
+            }
+        ],
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "[ -n \"$NVIM\" ] && (nvim --server \"$NVIM\" --remote-send '<cmd>checktime<cr>')"
+                    }
+                ]
+            }
+        ],
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "node $DOTFILES_DIR/.claude/on_pre_tool_use.ts"
+                    }
+                ]
+            }
         ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -n \"$NVIM\" ] && (nvim --server \"$NVIM\" --remote-send '<cmd>checktime<cr>')"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node $DOTFILES_DIR/.claude/onPreToolUse.ts"
-          }
-        ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "$DOTFILES_DIR/.claude/statusline.sh",
-    "padding": 0
-  },
-  "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
-  "promptSuggestionEnabled": false,
-  "effortLevel": "medium",
-  "model": "opus"
+    },
+    "statusLine": {
+        "type": "command",
+        "command": "$DOTFILES_DIR/.claude/statusline.sh",
+        "padding": 0
+    },
+    "enabledPlugins": {
+        "claude-code-setup@claude-plugins-official": true,
+        "claude-md-management@claude-plugins-official": true,
+        "commit-commands@claude-plugins-official": true,
+        "feature-dev@claude-plugins-official": true,
+        "lua-lsp@claude-plugins-official": true,
+        "pr-review-toolkit@claude-plugins-official": true,
+        "pyright-lsp@claude-plugins-official": true,
+        "ralph-loop@claude-plugins-official": true,
+        "security-guidance@claude-plugins-official": true,
+        "superpowers@claude-plugins-official": true,
+        "typescript-lsp@claude-plugins-official": true
+    },
+    "promptSuggestionEnabled": false
 }
