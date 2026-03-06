@@ -6,7 +6,7 @@
             "context": "Global",
             "bindings": {
                 "ctrl+i": "app:toggleTodos",
-                "ctrl+t": "app:toggleTranscript",
+                "enter": "app:toggleTranscript",
                 "ctrl+shift+o": "app:toggleTeammatePreview",
                 "ctrl+r": "history:search"
             }
