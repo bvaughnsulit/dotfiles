@@ -21,6 +21,8 @@
                 "enter": "chat:submit",
                 "up": "history:previous",
                 "down": "history:next",
+                "ctrl+p": "history:previous",
+                "ctrl+n": "history:next",
                 "ctrl+_": "chat:undo",
                 "ctrl+shift+-": "chat:undo",
                 "ctrl+g": "chat:externalEditor",
@@ -34,7 +36,9 @@
                 "tab": "autocomplete:accept",
                 "escape": "autocomplete:dismiss",
                 "up": "autocomplete:previous",
-                "down": "autocomplete:next"
+                "down": "autocomplete:next",
+                "ctrl+p": "autocomplete:previous",
+                "ctrl+n": "autocomplete:next"
             }
         },
         {
@@ -62,6 +66,8 @@
                 "escape": "confirm:no",
                 "up": "confirm:previous",
                 "down": "confirm:next",
+                "ctrl+p": "confirm:previous",
+                "ctrl+n": "confirm:next",
                 "tab": "confirm:nextField",
                 "shift+tab": "confirm:cycleMode",
                 "ctrl+e": "confirm:toggleExplanation"
@@ -135,6 +141,8 @@
             "bindings": {
                 "up": "messageSelector:up",
                 "down": "messageSelector:down",
+                "ctrl+p": "messageSelector:up",
+                "ctrl+n": "messageSelector:down",
                 "k": "messageSelector:up",
                 "j": "messageSelector:down",
                 "ctrl+up": "messageSelector:top",
@@ -156,6 +164,8 @@
                 "right": "diff:nextSource",
                 "up": "diff:previousFile",
                 "down": "diff:nextFile",
+                "ctrl+p": "diff:previousFile",
+                "ctrl+n": "diff:nextFile",
                 "enter": "diff:viewDetails"
             }
         },
