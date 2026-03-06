@@ -7,10 +7,15 @@ local git_base = "merge_base"
 M.get_git_base = function()
     local hash
 
+    if not git_base then return {
+        name = nil,
+        hash = nil,
+    } end
+
     local result = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }):wait()
 
     if result.code ~= 0 or result.stdout:sub(1, -2) ~= "true" then
-        vim.notify("Not inside a git repository", vim.log.levels.DEBUG)
+        -- vim.notify("Not inside a git repository", vim.log.levels.DEBUG)
         hash = nil
         git_base = nil
     end
