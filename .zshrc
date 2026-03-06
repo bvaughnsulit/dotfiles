@@ -19,6 +19,8 @@ setopt SHARE_HISTORY
 HISTSIZE=100000
 SAVEHIST=100000
 
+export MANPAGER="nvim +Man!"
+
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -28,7 +30,7 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 
 export DOTFILES_DIR="$HOME/dotfiles"
 
-alias ls='ls -a'
+alias ls='ls -AFG'
 alias home='cd ~'
 alias dot='cd ~/dotfiles'
 alias gho='gh browse'

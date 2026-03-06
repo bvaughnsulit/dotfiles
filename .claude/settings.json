@@ -6,6 +6,7 @@
             "Bash(gh pr view *)",
             "Bash(git add *)",
             "Bash(git commit *)",
+            "Bash(git show *)",
             "Bash(grep:*)",
             "Bash(ls:*)",
             "Bash(npm run test *)",

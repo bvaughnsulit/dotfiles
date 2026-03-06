@@ -28,7 +28,7 @@ local toggle_ai_cli = function(opts)
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
         cb_on_create = function(term_bufnr)
-            local passthrough_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<cr>" }
+            local passthrough_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<c-t>" }
 
             for _, key in ipairs(passthrough_keys) do
                 vim.keymap.set(

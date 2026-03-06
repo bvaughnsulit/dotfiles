@@ -18,12 +18,12 @@ return {
     {
         "https://github.com/stevearc/aerial.nvim",
         keys = {
-            { "<leader>es", "<cmd>AerialToggle<cr>" },
+            { "<leader>es", "<cmd>AerialOpen<cr>" },
         },
         opts = {
             layout = {
-                width = 0.35,
-                max_width = 0.5,
+                width = 0.3,
+                max_width = 0.3,
             },
             backends = {
                 ["_"] = {

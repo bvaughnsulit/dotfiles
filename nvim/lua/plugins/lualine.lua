@@ -6,7 +6,7 @@ local git = require("config.git")
 return {
     "https://github.com/nvim-lualine/lualine.nvim",
     dependencies = { "https://github.com/nvim-tree/nvim-web-devicons", lazy = true },
-    event = "VeryLazy",
+    lazy = false,
     opts = function()
         local is_top_right_win = function()
             local winnr = vim.api.nvim_get_current_win()
