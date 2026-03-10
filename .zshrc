@@ -31,6 +31,7 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 export DOTFILES_DIR="$HOME/dotfiles"
 
 alias ls='ls -AFG'
+alias mv='mv -i'
 alias home='cd ~'
 alias dot='cd ~/dotfiles'
 alias gho='gh browse'

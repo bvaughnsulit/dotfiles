@@ -9,7 +9,7 @@ fi
 
 echo "Making scripts executable..."
 chmod +x ${DOTFILES_DIR}/scripts/tmux-session.sh
-chmod +x ${DOTFILES_DIR}/.claude/notification-hook.sh
+chmod +x ${DOTFILES_DIR}/.claude/notification_hook.sh
 chmod +x ${DOTFILES_DIR}/.claude/statusline.sh
 echo "Done."
 
