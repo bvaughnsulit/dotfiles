@@ -15,7 +15,14 @@ local default_ai_cli = ai_cli_options.claude
 local toggle_ai_cli = function(opts)
     opts = opts or {}
 
-    require("config.utils").toggle_persistent_terminal(opts.cmd or default_ai_cli, "ai_cli", {
+    local dotfiles_root = require("config.utils").get_dotfiles_root()
+    local skills_dir = dotfiles_root .. "/.claude/skills"
+    local cmd = vim.list_extend(opts.cmd or default_ai_cli, {
+        "--add-dir",
+        skills_dir,
+    })
+
+    require("config.utils").toggle_persistent_terminal(cmd, "ai_cli", {
         q_to_go_back = { "n" },
         auto_insert = false,
         if_exists = opts.if_exists or "use_existing",
