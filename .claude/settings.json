@@ -11,6 +11,7 @@
             "Bash(ls:*)",
             "Bash(npm run test *)",
             "Bash(npm test *)",
+            "Bash(npm run check*)",
             "Bash(tail:*)",
             "WebFetch(domain:github.com)",
             "WebSearch"
