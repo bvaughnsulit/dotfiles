@@ -10,7 +10,7 @@
     "author": "",
     "type": "commonjs",
     "scripts": {
-        "mock_hook": "node .claude/hook_tester.ts | node"
+        "mock_hook": "node claude/hooks/hook_tester.ts | node"
     },
     "devDependencies": {
         "@types/node": "^25.3.3"

@@ -27,7 +27,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "$DOTFILES_DIR/.claude/notification_hook.sh"
+                        "command": "$DOTFILES_DIR/claude/hooks/notification_hook.sh"
                     }
                 ]
             }
@@ -49,7 +49,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "node $DOTFILES_DIR/.claude/on_pre_tool_use.ts"
+                        "command": "node $DOTFILES_DIR/claude/hooks/on_pre_tool_use.ts"
                     }
                 ]
             }
@@ -57,7 +57,7 @@
     },
     "statusLine": {
         "type": "command",
-        "command": "$DOTFILES_DIR/.claude/statusline.sh",
+        "command": "$DOTFILES_DIR/claude/statusline.sh",
         "padding": 0
     },
     "enabledPlugins": {

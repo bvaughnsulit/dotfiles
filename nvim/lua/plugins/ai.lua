@@ -16,10 +16,10 @@ local toggle_ai_cli = function(opts)
     opts = opts or {}
 
     local dotfiles_root = require("config.utils").get_dotfiles_root()
-    local skills_dir = dotfiles_root .. "/.claude/skills"
+    local dotfiles_dir = dotfiles_root .. "/claude"
     local cmd = vim.list_extend(opts.cmd or default_ai_cli, {
         "--add-dir",
-        skills_dir,
+        dotfiles_dir,
     })
 
     require("config.utils").toggle_persistent_terminal(cmd, "ai_cli", {
