@@ -15,12 +15,14 @@ local default_ai_cli = ai_cli_options.claude
 local toggle_ai_cli = function(opts)
     opts = opts or {}
 
-    local dotfiles_root = require("config.utils").get_dotfiles_root()
-    local dotfiles_dir = dotfiles_root .. "/claude"
-    local cmd = vim.list_extend(opts.cmd or default_ai_cli, {
+    local claude_add_dirs = {
         "--add-dir",
-        dotfiles_dir,
-    })
+        require("config.utils").get_dotfiles_root() .. "/claude",
+    }
+    vim.list_extend(claude_add_dirs, require("config.settings").claude_dirs)
+    local cmd = {}
+    vim.list_extend(cmd, opts.cmd or default_ai_cli)
+    vim.list_extend(cmd, claude_add_dirs)
 
     require("config.utils").toggle_persistent_terminal(cmd, "ai_cli", {
         q_to_go_back = { "n" },

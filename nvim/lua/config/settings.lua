@@ -13,6 +13,7 @@ local defaults = {
         args = nil,
         env = nil,
     },
+    claude_dirs = {},
 }
 
 return require("neoconf").get("config", defaults)

@@ -46,7 +46,11 @@ local get_grep_excludes = function()
     local config = require("config.settings").grep_exclude
     ---@type string[][]
     local toggled = vim.tbl_map(function(t) return exclude_toggles[t] or {} end, enabled_toggles)
-    return vim.tbl_extend("force", always_exclude, config or {}, vim.fn.flatten(toggled))
+    local result = {}
+    vim.list_extend(result, always_exclude)
+    vim.list_extend(result, config)
+    vim.list_extend(result, vim.fn.flatten(toggled))
+    return result
 end
 
 --- @type fun(win: snacks.win)
