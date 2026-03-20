@@ -8,8 +8,8 @@ local default_ai_cli = ai_cli_options.claude
 
 ---@class ToggleAICLIOptions
 ---@field cmd? string[]
----@field if_exists? "use_existing" | "replace" | "keep_both"
 ---@field text? string[]
+---@field namespace? string
 
 ---@param opts? ToggleAICLIOptions
 local toggle_ai_cli = function(opts)
@@ -24,10 +24,9 @@ local toggle_ai_cli = function(opts)
     vim.list_extend(cmd, opts.cmd or default_ai_cli)
     vim.list_extend(cmd, claude_add_dirs)
 
-    require("config.utils").toggle_persistent_terminal(cmd, "ai_cli", {
+    require("config.utils").toggle_persistent_terminal(cmd, opts.namespace or "ai_cli", {
         q_to_go_back = { "n" },
         auto_insert = false,
-        if_exists = opts.if_exists or "use_existing",
         win_config = require("config.utils").get_responsive_win_config(),
         job_opts = {
             env = {
@@ -85,11 +84,23 @@ vim.keymap.set("n", "<leader>aA", function()
         if choice then
             toggle_ai_cli({
                 cmd = ai_cli_options[choice],
-                if_exists = "replace",
+                namespace = "ai_cli_" .. choice .. ":" .. tostring(vim.fn.localtime()),
             })
         end
     end)
 end, { desc = "Select AI CLI" })
+
+vim.keymap.set(
+    "n",
+    "<leader>aC",
+    function()
+        toggle_ai_cli({
+            cmd = ai_cli_options.claude,
+            namespace = "ai_cli_claude" .. ":" .. tostring(vim.fn.localtime()),
+        })
+    end,
+    { desc = "New Claude CLI" }
+)
 
 ---@module 'lazy'
 ---@type LazySpec

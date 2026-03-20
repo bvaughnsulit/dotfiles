@@ -175,22 +175,23 @@ M.safe_close_win = function(win_id)
 end
 
 ---@class TerminalOpts
+---@field identifier? string
 ---@field q_to_go_back? ("t"|"n")[] | nil
 ---@field auto_insert? boolean
----@field if_exists? "use_existing" | "replace" | "keep_both"
 ---@field cb_on_every? fun(bufnr: number): nil
 ---@field cb_on_create? fun(bufnr: number): nil
+---@field enter? boolean -- should focus on create TODO: not implemented
 ---@field win_config? vim.api.keyset.win_config
 ---@field job_opts? table # options to pass to `vim.fn.jobstart`
 ---@see vim.fn.jobstart
 ---@see vim.api.nvim_open_win
 
 ---@param cmd string|string[]
----@param name string
+---@param namespace string
 ---@param opts? TerminalOpts
-M.toggle_persistent_terminal = function(cmd, name, opts)
+M.toggle_persistent_terminal = function(cmd, namespace, opts)
     opts = opts or {}
-    local buffer_name = "term://" .. name
+    local buffer_name = "term://" .. namespace .. (opts.identifier and ":" .. opts.identifier or "")
     local job_opts_merged = vim.tbl_deep_extend("force", {
         term = true,
         stdout_buffered = true,
@@ -200,11 +201,9 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
 
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         -- Check if the buffer already exists
-        if vim.api.nvim_buf_get_name(buf):find(buffer_name) then
-            if opts.if_exists == "replace" then
+        if vim.api.nvim_buf_get_name(buf):find("term://" .. namespace, nil, true) then
+            if vim.api.nvim_buf_get_name(buf) ~= buffer_name then
                 vim.api.nvim_buf_delete(buf, { force = true })
-            elseif opts.if_exists == "keep_both" then
-                buffer_name = buffer_name .. "_" .. tostring(vim.fn.localtime())
             else
                 -- If "use_existing" or unspecified, use the existing buffer
                 -- If the buffer exists, check if it's already open in a window
@@ -218,7 +217,7 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
                 end
 
                 -- Otherwise, open the buffer
-                if opts.win_config then vim.api.nvim_open_win(buf, true, opts.win_config) end
+                if win_config then vim.api.nvim_open_win(buf, true, win_config) end
                 vim.api.nvim_win_set_buf(0, buf)
                 if opts.cb_on_every then opts.cb_on_every(buf) end
                 return
@@ -229,8 +228,8 @@ M.toggle_persistent_terminal = function(cmd, name, opts)
     -- If the buffer does not exist, create and open it
     local buf = vim.api.nvim_create_buf(true, false)
 
-    if opts.win_config then
-        vim.api.nvim_open_win(buf, true, opts.win_config)
+    if win_config then
+        vim.api.nvim_open_win(buf, true, win_config)
     else
         vim.api.nvim_win_set_buf(0, buf)
     end
@@ -280,6 +279,7 @@ M.get_responsive_win_config = function()
     }
     local split_config = {
         split = "right",
+        width = math.floor(vim.o.columns * 0.4),
     }
 
     return is_small_screen and float_config or split_config
@@ -370,7 +370,7 @@ local function open_diff_buf()
     M.toggle_persistent_terminal(cmd, "delta_diff_view", {
         q_to_go_back = { "n", "t" },
         auto_insert = false,
-        if_exists = "replace",
+        identifier = tostring(vim.fn.localtime()),
     })
 end
 

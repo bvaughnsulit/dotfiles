@@ -103,6 +103,7 @@ M.get_default_branch_name = function()
     return result.stdout:sub(1, -2)
 end
 
+---@param args string[] | nil
 M.toggle_lazygit = function(args)
     local utils = require("config.utils")
     local dotfiles_root = utils.get_dotfiles_root()
@@ -110,7 +111,9 @@ M.toggle_lazygit = function(args)
 
     local cmd = vim.list_extend({ "lazygit" }, args or {})
 
-    utils.toggle_persistent_terminal(cmd, "Lazygit", {
+    local name = args and "lazygit-file" or "lazygit"
+    utils.toggle_persistent_terminal(cmd, name, {
+        identifier = args and table.concat(args, " ") or nil,
         q_to_go_back = { "n" },
         auto_insert = true,
         win_config = {
