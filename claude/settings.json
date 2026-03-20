@@ -22,7 +22,7 @@
         "deny": ["Bash(npx:*)", "Bash(yarn:*)"],
         "defaultMode": "plan"
     },
-    "model": "opus",
+    "model": "opus[1m]",
     "hooks": {
         "Notification": [
             {
@@ -76,6 +76,6 @@
         "superpowers@claude-plugins-official": true,
         "typescript-lsp@claude-plugins-official": true
     },
-    "promptSuggestionEnabled": false,
-    "effortLevel": "high"
+    "effortLevel": "high",
+    "promptSuggestionEnabled": false
 }
