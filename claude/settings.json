@@ -10,11 +10,13 @@
             "Bash(git add *)",
             "Bash(git commit *)",
             "Bash(git show *)",
+            "Bash(git status *)",
             "Bash(grep:*)",
             "Bash(ls:*)",
             "Bash(npm run test *)",
             "Bash(npm test *)",
             "Bash(npm run check*)",
+            "Bash(npm run format *)",
             "Bash(tail:*)",
             "WebFetch(domain:github.com)",
             "WebSearch"
