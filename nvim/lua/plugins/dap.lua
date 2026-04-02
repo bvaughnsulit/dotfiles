@@ -51,7 +51,9 @@ local run_js_test = function()
         name = "Debug Node Test",
         type = "pwa-node",
         request = "launch",
-        env = {},
+        env = {
+            DEBUG_PRINT_LIMIT = "Infinity",
+        },
         cwd = config_dir,
         program = program,
         args = args,
