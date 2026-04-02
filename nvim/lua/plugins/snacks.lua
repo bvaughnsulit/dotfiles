@@ -260,7 +260,12 @@ return {
         },
         {
             "<leader>pg",
-            function() Snacks.picker.git_diff({ base = require("config.git").get_git_base().hash }) end,
+            function()
+                Snacks.picker.git_diff({
+                    group = true,
+                    base = require("config.git").get_git_base().hash,
+                })
+            end,
             desc = "Pick Git status",
         },
         {
