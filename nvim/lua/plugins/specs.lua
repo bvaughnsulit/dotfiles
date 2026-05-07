@@ -10,9 +10,11 @@ return {
     {
         "https://github.com/numToStr/Comment.nvim",
         event = "VeryLazy",
-        enabled = false,
         dependencies = {
-            "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
+            {
+                "https://github.com/JoosepAlviste/nvim-ts-context-commentstring",
+                opts = { enable_autocmd = false },
+            },
         },
         opts = function()
             return {
