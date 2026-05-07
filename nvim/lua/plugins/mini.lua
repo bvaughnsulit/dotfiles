@@ -19,7 +19,6 @@ return {
                 mappings = {},
                 symbol = "▏",
             })
-            require("mini.cursorword").setup({})
             require("mini.align").setup({})
             require("mini.icons").setup({})
             require("mini.surround").setup({
@@ -90,5 +89,11 @@ return {
             { "<A-o>", function() require("mini.bracketed").jump("backward", { wrap = false }) end },
             { "<A-i>", function() require("mini.bracketed").jump("forward", { wrap = false }) end },
         },
+    },
+    {
+        "https://github.com/bvaughnsulit/mini.cursorword",
+        branch = "bvs",
+        event = "VeryLazy",
+        opts = {},
     },
 }
