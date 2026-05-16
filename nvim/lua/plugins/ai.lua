@@ -39,22 +39,11 @@ local toggle_ai_cli = function(opts)
             local passthrough_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<c-t>" }
 
             for _, key in ipairs(passthrough_keys) do
-                vim.keymap.set(
-                    "n",
-                    key,
-                    key:match("<.*")
-                            and function()
-                                vim.cmd.startinsert()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes(key, true, false, true),
-                                    "n",
-                                    false
-                                )
-                                vim.schedule(function() vim.cmd.stopinsert() end)
-                            end
-                        or function() vim.api.nvim_put({ key }, "c", true, true) end,
-                    { buffer = term_bufnr }
-                )
+                vim.keymap.set("n", key, function()
+                    vim.cmd.startinsert()
+                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "n", false)
+                    vim.schedule(function() vim.cmd.stopinsert() end)
+                end, { buffer = term_bufnr })
             end
 
             vim.keymap.set("t", "<c-u>", "<c-\\><c-n><c-u>", { buffer = term_bufnr })
