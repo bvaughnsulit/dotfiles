@@ -5,12 +5,12 @@ local default_light_theme = "github_light_colorblind"
 local default_dark_theme = "tokyonight-moon"
 
 local set_dark_mode = function()
-    vim.o.background = "dark"
+    if vim.o.background ~= "dark" then vim.o.background = "dark" end
     vim.cmd("colorscheme " .. default_dark_theme)
 end
 
 local set_light_mode = function()
-    vim.o.background = "light"
+    if vim.o.background ~= "light" then vim.o.background = "light" end
     vim.cmd("colorscheme " .. default_light_theme)
 end
 
@@ -24,6 +24,19 @@ utils.create_cmd_and_map("ToggleLightDarkMode", nil, function()
         set_light_mode()
     end
 end)
+
+vim.api.nvim_create_autocmd("OptionSet", {
+    group = utils.augroup("background_option_set"),
+    pattern = { "background" },
+    callback = function()
+        local dark_mode_set = vim.o.background == "dark"
+        if dark_mode_set then
+            set_dark_mode()
+        else
+            set_light_mode()
+        end
+    end,
+})
 
 ---@module 'lazy'
 ---@type LazySpec
