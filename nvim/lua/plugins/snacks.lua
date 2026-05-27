@@ -142,6 +142,22 @@ return {
                     keymaps = {
                         plugs = true,
                     },
+                    git_diff = {
+                        formatters = {
+                            file = { filename_first = false },
+                        },
+                        ---@param picker snacks.Picker
+                        on_show = function(picker)
+                            local current_file = vim.api.nvim_buf_get_name(picker.input.filter.current_buf)
+                            for i, item in ipairs(picker:items()) do
+                                if item.cwd .. "/" .. item.file == current_file then
+                                    picker.list:view(i)
+                                    Snacks.picker.actions.list_scroll_center(picker)
+                                    break
+                                end
+                            end
+                        end,
+                    },
                 },
                 debug = {
                     -- grep = true,
@@ -179,6 +195,7 @@ return {
                 previewers = {
                     diff = {
                         builtin = false,
+                        style = "terminal",
                         cmd = { "delta" },
                     },
                     git = {
