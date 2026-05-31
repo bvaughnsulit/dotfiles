@@ -4,15 +4,9 @@ local is_system_dark_mode = utils.is_system_dark_mode()
 local default_light_theme = "github_light_colorblind"
 local default_dark_theme = "tokyonight-moon"
 
-local set_dark_mode = function()
-    if vim.o.background ~= "dark" then vim.o.background = "dark" end
-    vim.cmd("colorscheme " .. default_dark_theme)
-end
+local set_dark_mode = function() vim.cmd("colorscheme " .. default_dark_theme) end
 
-local set_light_mode = function()
-    if vim.o.background ~= "light" then vim.o.background = "light" end
-    vim.cmd("colorscheme " .. default_light_theme)
-end
+local set_light_mode = function() vim.cmd("colorscheme " .. default_light_theme) end
 
 _G.set_dark_mode = set_dark_mode
 _G.set_light_mode = set_light_mode
@@ -29,11 +23,10 @@ vim.api.nvim_create_autocmd("OptionSet", {
     group = utils.augroup("background_option_set"),
     pattern = { "background" },
     callback = function()
-        local dark_mode_set = vim.o.background == "dark"
-        if dark_mode_set then
-            set_dark_mode()
+        if vim.o.background == "dark" then
+            vim.schedule(set_dark_mode)
         else
-            set_light_mode()
+            vim.schedule(set_light_mode)
         end
     end,
 })
@@ -42,7 +35,9 @@ vim.api.nvim_create_autocmd("OptionSet", {
 ---@type LazySpec
 return {
     {
-        "https://github.com/projekt0n/github-nvim-theme",
+        -- "https://github.com/projekt0n/github-nvim-theme",
+        "https://github.com/bvaughnsulit/github-nvim-theme",
+        branch = "bvs",
         lazy = false,
         dev = false,
         priority = 1000,
