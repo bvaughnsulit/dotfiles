@@ -87,5 +87,6 @@
     "effortLevel": "high",
     "promptSuggestionEnabled": false,
     "theme": "light",
-    "preferredNotifChannel": "terminal_bell"
+    "preferredNotifChannel": "terminal_bell",
+    "tui": "default"
 }
