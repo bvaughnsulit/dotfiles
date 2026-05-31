@@ -1,0 +1,3 @@
+#!/bin/zsh
+# nvim --server "$NVIM" --remote-send "<cmd>lua print '$@'<cr>"
+nvim --server "$NVIM" --remote "$@"

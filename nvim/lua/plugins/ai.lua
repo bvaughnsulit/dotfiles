@@ -31,7 +31,7 @@ local toggle_ai_cli = function(opts)
         job_opts = {
             env = {
                 CLAUDE_CODE_TASK_LIST_ID = vim.uv.cwd(),
-                EDITOR = 'nvim --server "$NVIM" --remote',
+                EDITOR = "sh " .. require("config.utils").get_dotfiles_root() .. "/scripts/neovim-remote",
             },
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
