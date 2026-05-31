@@ -76,7 +76,7 @@ return {
             hide_root_node = true,
             -- enable_diagnostics = false,
             use_popups_for_input = true,
-            enable_git_status = true,
+            enable_git_status = false,
             event_handlers = {
                 { event = events.FILE_MOVED, handler = on_move },
                 { event = events.FILE_RENAMED, handler = on_move },
@@ -156,21 +156,16 @@ return {
         }
         ---@diagnostic enable: missing-fields
 
-        vim.keymap.set(
-            "n",
-            "<leader>ee",
-            function()
-                require("neo-tree.command").execute({
-                    source = "filesystem",
-                    action = "focus",
-                    git_base = git.get_git_base().hash,
-                    toggle = true,
-                    reveal = true,
-                    dir = Snacks.git.get_root(require("neo-tree.sources.manager").get_path_to_reveal(false)),
-                })
-            end,
-            {}
-        )
+        vim.keymap.set("n", "<leader>ee", function()
+            require("neo-tree.command").execute({
+                source = "filesystem",
+                action = "focus",
+                -- git_base = git.get_git_base().hash,
+                toggle = true,
+                reveal = true,
+                dir = Snacks.git.get_root(require("neo-tree.sources.manager").get_path_to_reveal(false)),
+            })
+        end, {})
 
         utils.create_cmd_and_map(
             "ToggleIsExplorerPinned",
@@ -183,7 +178,7 @@ return {
             require("neo-tree.command").execute({
                 source = "git_status",
                 action = "focus",
-                git_base = git.get_git_base().hash,
+                -- git_base = git.get_git_base().hash,
                 toggle = true,
                 reveal = true,
             })
