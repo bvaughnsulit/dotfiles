@@ -116,7 +116,7 @@ return {
             local dapui = require("dapui")
 
             -- require("dap-python").setup()
-            require("dap-python").setup("python3", { include_configs = false })
+            require("dap-python").setup("uv", { include_configs = false })
             require("dap").defaults.python.exception_breakpoints = {}
 
             dap.adapters["pwa-node"] = {

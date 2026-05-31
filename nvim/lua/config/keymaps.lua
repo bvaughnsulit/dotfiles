@@ -9,6 +9,7 @@ map({ "n", "v" }, "<leader>bd", "<cmd>bdelete<cr>", {})
 
 -- \V - very nomagic
 map("n", "<leader>/y", "/\\V<C-r>+<cr>", { desc = "search with contents of + register" })
+map("n", "<leader>*", "*N", { desc = "search word under cursor" })
 
 map("n", "<leader>:", ":lua print(vim.inspect())<left><left>")
 map({ "n", "v" }, "zf", "za", { desc = "Toggle fold" })
@@ -54,12 +55,6 @@ map({ "t", "n" }, "<C-w>o", require("config.utils").only)
 
 map({ "i" }, "<M-h>", "<left>")
 map({ "i" }, "<M-l>", "<right>")
-
--- stop using arrow keys!!!
-map("n", "<up>", "<>", {})
-map("n", "<down>", "<>", {})
-map("n", "<left>", "<>", {})
-map("n", "<right>", "<>", {})
 
 map({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 

@@ -24,6 +24,7 @@ return {
     },
     {
         "https://github.com/windwp/nvim-autopairs",
+        enabled = false,
         event = "VeryLazy",
         opts = {},
     },

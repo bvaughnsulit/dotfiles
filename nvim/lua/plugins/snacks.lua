@@ -16,6 +16,7 @@ local exclude_toggles = {
         "**/test_*.*",
         "*.test.*",
         "*_spec.*",
+        "**/mocks/**",
     },
     data = {
         "*.json",

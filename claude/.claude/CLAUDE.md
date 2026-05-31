@@ -9,3 +9,4 @@ Your priorities ARE:
 Guidelines:
 - Always include tests as part of implementation plans.
 - Before writing custom code to workaround a library limitation, read the library's source code or docs for the relevant class/function to check if a built-in solution already exists. Always exhaust built-in options before implementing custom workarounds.
+- When abbreviating or shortening a name, make sure that shortening the name does not change its meaning.
