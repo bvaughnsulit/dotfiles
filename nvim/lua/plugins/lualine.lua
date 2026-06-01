@@ -32,7 +32,15 @@ return {
                 component_separators = { left = "", right = "" }, --
                 disabled_filetypes = {
                     statusline = {},
-                    winbar = { "dap-repl", "neo-tree", "sidekick_terminal", "rest_nvim_result", "dbout" },
+                    winbar = {
+                        "dap-repl",
+                        "neo-tree",
+                        "sidekick_terminal",
+                        "rest_nvim_result",
+                        "dbout",
+                        "dap-view",
+                        "dap-view-term",
+                    },
                 },
                 ignore_focus = {
                     "neo-tree",
@@ -42,6 +50,8 @@ return {
                     "dapui_scopes",
                     "dapui_watches",
                     "dapui_stacks",
+                    "dap-view",
+                    "dap-view-term",
                     "sidekick_terminal",
                 },
                 always_divide_middle = true,

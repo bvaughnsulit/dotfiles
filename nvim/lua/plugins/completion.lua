@@ -44,6 +44,8 @@ return {
                                                     "dapui_scopes",
                                                     "dapui_watches",
                                                     "dapui_stacks",
+                                                    "dap-view",
+                                                    "dap-view-term",
                                                 }, vim.bo[buf].filetype)
                                         end
                                     )
@@ -131,6 +133,8 @@ return {
                         "dapui_scopes",
                         "dapui_watches",
                         "dapui_stacks",
+                        "dap-view",
+                        "dap-view-term",
                     }, vim.bo[buf].filetype)
             end,
         },

@@ -5,6 +5,8 @@ local exception_breakpoint_options = {
     raised = "raised",
 }
 
+local ui = "dap-view"
+
 local run_js_test = function()
     local config_paths = vim.fs.find({
         "vite.config.ts",
@@ -91,7 +93,8 @@ return {
         "https://github.com/mfussenegger/nvim-dap",
         event = "VeryLazy",
         dependencies = {
-            "https://github.com/rcarriga/nvim-dap-ui",
+            -- "https://github.com/rcarriga/nvim-dap-ui",
+            "https://github.com/igorlfs/nvim-dap-view",
             "https://github.com/mxsdev/nvim-dap-vscode-js",
             "https://github.com/mfussenegger/nvim-dap-python",
             "https://github.com/jbyuki/one-small-step-for-vimkind",
@@ -113,7 +116,6 @@ return {
         },
         config = function()
             local dap = require("dap")
-            local dapui = require("dapui")
 
             -- require("dap-python").setup()
             require("dap-python").setup("uv", { include_configs = false })
@@ -145,15 +147,15 @@ return {
             end
             vim.api.nvim_create_autocmd("VimLeavePre", {
                 pattern = "*",
-                callback = function() dapui.close() end,
+                callback = function() require(ui).close() end,
             })
 
             vim.api.nvim_create_autocmd("FileType", {
-                pattern = { "dap-*", "dapui_*" },
+                pattern = { "dap-*", "dapui_*", "dap-view", "dap-view-term" },
                 group = utils.augroup("dap_ui_mappings"),
                 callback = function(event)
                     vim.schedule(function()
-                        vim.keymap.set("n", "q", function() dapui.close() end, {
+                        vim.keymap.set("n", "q", function() require(ui).close() end, {
                             buffer = event.buf,
                             silent = true,
                             desc = "Close DAP UI",
@@ -170,7 +172,7 @@ return {
         keys = {
             {
                 "<leader>dd",
-                function() require("dapui").toggle({ layout = 1 }) end,
+                function() require(ui).toggle() end,
                 desc = "Toggle DAP UI",
             },
             {
@@ -228,8 +230,8 @@ return {
             {
                 "<leader>dc",
                 function()
-                    require("dapui").close()
-                    require("dapui").open({ layout = 1 })
+                    require(ui).close()
+                    require(ui).open()
                     require("dap").continue() -- TODO add ability to set default config
                 end,
                 desc = "Continue",
@@ -237,8 +239,8 @@ return {
             {
                 "<leader>dr",
                 function()
-                    require("dapui").close()
-                    require("dapui").open({ layout = 1 })
+                    require(ui).close()
+                    require(ui).open()
 
                     if require("dap").session() then
                         require("dap").restart()
@@ -343,8 +345,8 @@ return {
             {
                 "<leader>tr",
                 function()
-                    require("dapui").close()
-                    require("dapui").open({ layout = 1 })
+                    require(ui).close()
+                    require(ui).open({ layout = 1 })
 
                     if
                         vim.tbl_contains({
@@ -371,8 +373,8 @@ return {
             {
                 "<leader>tR",
                 function()
-                    require("dapui").close()
-                    require("dapui").open({ layout = 1 })
+                    require(ui).close()
+                    require(ui).open({ layout = 1 })
 
                     if
                         vim.tbl_contains({
@@ -404,10 +406,73 @@ return {
         },
     },
     {
+        "https://github.com/igorlfs/nvim-dap-view",
+        opts = function()
+            local get_section_label_function = function(section_name)
+                return function(_, active)
+                    local labels = {
+                        console = { long = " [C]ons.", short = " C", name = "console" },
+                        breakpoints = { long = "󰪥 [B]reakpts", short = "󰪥 B", name = "breakpoints" },
+                        watches = { long = "󰈈 [W]atch", short = "󰈈 W", name = "watches" },
+                        scopes = { long = "󰫧 [S]cope", short = "󰫧 S", name = "scopes" },
+                        exceptions = { long = " [E]xcep.", short = " E", name = "exceptions" },
+                        threads = { long = "󱢓 [T]hread", short = "󱢓 T", name = "threads" },
+                        repl = { long = " [R]EPL", short = " R", name = "repl" },
+                        sessions = { long = " Sess.", short = " K", name = "sessions" },
+                    }
+
+                    if section_name == labels[section_name].name then
+                        return active == section_name and labels[section_name].long or labels[section_name].short
+                    end
+                end
+            end
+
+            ---@module 'dap-view'
+            ---@type dapview.Config
+            local opts = {
+                winbar = {
+                    sections = {
+                        "console",
+                        "scopes",
+                        "watches",
+                        "breakpoints",
+                        "exceptions",
+                        "threads",
+                        "repl",
+                    },
+                    default_section = "console",
+                    show_keymap_hints = false,
+                    base_sections = {
+                        breakpoints = { label = get_section_label_function("breakpoints") },
+                        scopes = { label = get_section_label_function("scopes") },
+                        exceptions = { label = get_section_label_function("exceptions") },
+                        watches = { label = get_section_label_function("watches") },
+                        threads = { label = get_section_label_function("threads") },
+                        repl = { label = get_section_label_function("repl") },
+                        sessions = { label = get_section_label_function("sessions") },
+                        console = { label = get_section_label_function("console") },
+                    },
+                },
+                windows = {
+                    position = "right",
+                    size = 0.35,
+                },
+                keymaps = {
+                    base = {
+                        next_view = ">",
+                        prev_view = "<",
+                    },
+                },
+            }
+            return opts
+        end,
+    },
+    {
         "https://github.com/rcarriga/nvim-dap-ui",
         dependencies = {
             "https://github.com/nvim-neotest/nvim-nio",
         },
+        enabled = false,
         ---@diagnostic disable: missing-fields
         ---@type dapui.Config
         opts = {

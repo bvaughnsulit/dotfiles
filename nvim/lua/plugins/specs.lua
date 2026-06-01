@@ -53,6 +53,8 @@ return {
                 "dapui_watches",
                 "dapui_stacks",
                 "dapui_console",
+                "dap-view",
+                "dap-view-term",
                 "dbout",
             },
         },
