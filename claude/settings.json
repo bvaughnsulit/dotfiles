@@ -22,9 +22,8 @@
             "WebSearch"
         ],
         "deny": ["Bash(npx:*)", "Bash(yarn:*)"],
-        "defaultMode": "plan"
+        "defaultMode": "default"
     },
-    "model": "opus[1m]",
     "hooks": {
         "Notification": [
             {
@@ -86,7 +85,7 @@
     },
     "effortLevel": "high",
     "promptSuggestionEnabled": false,
+    "tui": "default",
     "theme": "light",
-    "preferredNotifChannel": "terminal_bell",
-    "tui": "default"
+    "preferredNotifChannel": "terminal_bell"
 }
