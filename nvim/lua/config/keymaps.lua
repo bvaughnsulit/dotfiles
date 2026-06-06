@@ -51,6 +51,7 @@ map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>")
 
 -- add some wincmd shortcuts for terminal mode
 map({ "t" }, "<C-w>q", "<cmd>wincmd q<cr>")
+map({ "t" }, "<C-w>=", "<cmd>wincmd =<cr>")
 map({ "t", "n" }, "<C-w>o", require("config.utils").only)
 
 map({ "i" }, "<M-h>", "<left>")
@@ -142,11 +143,11 @@ utils.create_cmd_and_map(
 
 utils.create_cmd_and_map("OpenRepoInGitHub", nil, function() utils.open_repo_in_gh() end, "Open Github Repo in Browser")
 
-utils.create_cmd_and_map(nil, "<leader>tc", function() vim.cmd("tabnew") end, "New Tab")
-utils.create_cmd_and_map(nil, "<leader>tx", function() vim.cmd("tabclose") end, "Close Tab")
-utils.create_cmd_and_map(nil, "]t", function() vim.cmd("tabnext") end, "Next Tab")
-utils.create_cmd_and_map(nil, "[t", function() vim.cmd("tabp") end, "Previous Tab")
-utils.create_cmd_and_map(nil, "<leader>to", function() vim.cmd("tabonly") end, "Close Other Tabs")
+vim.keymap.set({ "n", "t" }, "<leader>tc", function() vim.cmd("tabnew") end, { desc = "New Tab" })
+vim.keymap.set({ "n", "t" }, "<leader>tx", function() vim.cmd("tabclose") end, { desc = "Close Tab" })
+vim.keymap.set({ "n", "t" }, "]t", function() vim.cmd("tabnext") end, { desc = "Next Tab" })
+vim.keymap.set({ "n", "t" }, "[t", function() vim.cmd("tabp") end, { desc = "Previous Tab" })
+vim.keymap.set({ "n", "t" }, "<leader>to", function() vim.cmd("tabonly") end, { desc = "Close Other Tabs" })
 
 utils.create_cmd_and_map("InspectHighlights", nil, function() vim.show_pos() end, "Inspect highlights under cursor")
 
