@@ -439,6 +439,7 @@ return {
                         "exceptions",
                         "threads",
                         "repl",
+                        "sessions",
                     },
                     default_section = "console",
                     show_keymap_hints = false,

@@ -194,8 +194,7 @@ return {
                 end
             end
 
-            vim.lsp.log.set_level(vim.lsp.log_levels.WARN)
-            vim.lsp.log.set_format_func(vim.inspect)
+            vim.lsp.log.set_level(vim.log.levels.WARN)
 
             local set_lsp_log_level = function()
                 vim.ui.select(vim.tbl_keys(vim.log.levels), {
