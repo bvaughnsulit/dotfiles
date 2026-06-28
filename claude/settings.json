@@ -21,8 +21,10 @@
             "WebFetch(domain:github.com)",
             "WebSearch"
         ],
-        "deny": ["Bash(npx:*)", "Bash(yarn:*)"],
-        "defaultMode": "default"
+        "deny": [
+            "Bash(npx:*)",
+            "Bash(yarn:*)"
+        ]
     },
     "hooks": {
         "Notification": [
