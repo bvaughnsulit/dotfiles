@@ -30,15 +30,17 @@ local servers = {
         root_markers = { ".git" },
         settings = {
             python = {
+                pythonPath = "./.venv/bin/python",
                 analysis = {
                     --- @type ("off" | "basic" | "standard" | "strict")
-                    typeCheckingMode = "standard",
+                    typeCheckingMode = "off",
                     --- @type ("openFilesOnly" | "workspace")
                     diagnosticMode = "openFilesOnly",
                 },
             },
         },
     },
+    ruff = {},
     basedpyright = {
         root_markers = { ".git" },
         settings = {
@@ -155,6 +157,8 @@ return {
                     client.server_capabilities.documentFormattingProvider = true
                 elseif client and client.name == "vtsls" then
                     client.server_capabilities.documentFormattingProvider = false
+                elseif client.name == "ruff" then
+                    client.server_capabilities.hoverProvider = false
                 end
 
                 vim.o.foldlevel = 99
@@ -230,6 +234,7 @@ return {
     },
     {
         "https://github.com/mfussenegger/nvim-lint",
+        enabled = false,
         event = "VeryLazy",
         opts = {
             linters_by_ft = {
@@ -270,12 +275,7 @@ return {
             formatters_by_ft = {
                 lua = { "stylua" },
                 sh = { "shfmt" },
-                json = { "biome-check" },
-                jsonc = { "biome-check" },
-                typescript = { "biome" },
-                typescriptreact = { "biome" },
-                javascript = { "biome" },
-                javascriptreact = { "biome" },
+                yaml = { "yamlfmt" },
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
@@ -283,6 +283,13 @@ return {
                 prettier = { require_cwd = true },
                 biome_check = { require_cwd = true },
                 biome = { require_cwd = true },
+            },
+        },
+        keys = {
+            {
+                "<leader>cf",
+                function() require("conform").format() end,
+                desc = "Format Buffer",
             },
         },
     },
