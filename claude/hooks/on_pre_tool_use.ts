@@ -1,5 +1,3 @@
-const fs = require("node:fs")
-
 ;(function on_pre_tool_use() {
     const input = process.stdin.on("data", data => {
         const input = JSON.parse(data.toString())

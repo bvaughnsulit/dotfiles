@@ -8,11 +8,15 @@
     },
     "license": "ISC",
     "author": "",
-    "type": "commonjs",
+    "type": "module",
     "scripts": {
         "mock_hook": "node claude/hooks/hook_tester.ts | node"
     },
     "devDependencies": {
-        "@types/node": "^25.3.3"
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^25.3.3",
+        "eslint": "^10.6.0",
+        "globals": "^17.7.0",
+        "typescript-eslint": "^8.63.0"
     }
 }
