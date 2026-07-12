@@ -150,4 +150,54 @@ M.get_rev_hash = function(rev)
     return result.stdout:sub(1, -2)
 end
 
+M.get_worktree_panes = function()
+    local result = vim.system({
+        "node",
+        require("config.utils").get_dotfiles_root() .. "/scripts/tmux-worktrees.ts",
+    }, { text = true }):wait()
+
+    if result.code ~= 0 or result.stdout == "" then
+        vim.notify("Error getting worktree panes")
+        return
+    end
+    local output = result.stdout or ""
+    local worktrees_map = {}
+    local worktrees_opts = {}
+    for _, line_str in ipairs(vim.split(output, "\n")) do
+        local line = vim.split(line_str, " ")
+        if #line > 1 then
+            local key = line[1] .. " [" .. line[2] .. "]"
+            table.insert(worktrees_opts, key)
+            worktrees_map[key] = {
+                branch = line[1],
+                path = line[2],
+                session = line[3],
+                window_index = line[4],
+                pane_index = line[5],
+                command = line[6],
+            }
+        end
+    end
+    return worktrees_map, worktrees_opts
+end
+
+M.switch_worktree_pane = function()
+    local worktrees_map, worktrees_opts = M.get_worktree_panes()
+    if not worktrees_map or vim.tbl_isempty(worktrees_map) then
+        vim.notify("No worktree panes found", vim.log.levels.INFO)
+        return
+    end
+
+    vim.ui.select(worktrees_opts or {}, {
+        prompt = "Select worktree pane: ",
+    }, function(choice)
+        if choice then
+            local wt = worktrees_map[choice]
+            vim.cmd("silent !tmux switch-client -t " .. wt.session .. ":" .. wt.window_index .. "." .. wt.pane_index)
+        end
+    end)
+end
+
+vim.keymap.set("n", "<leader>gt", M.switch_worktree_pane, { desc = "Switch to git worktree pane" })
+
 return M
