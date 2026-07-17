@@ -97,7 +97,7 @@ M.get_default_branch_name = function()
         return
     end
     if result.stdout == "" then
-        vim.notify("No main or master branch found", vim.log.levels.DEBUG)
+        vim.notify("No main or master branch found", vim.log.levels.INFO)
         return
     end
     return result.stdout:sub(1, -2)

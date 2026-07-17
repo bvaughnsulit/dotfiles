@@ -276,6 +276,7 @@ return {
                 lua = { "stylua" },
                 sh = { "shfmt" },
                 yaml = { "yamlfmt" },
+                python = { "ruff_fix" },
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
