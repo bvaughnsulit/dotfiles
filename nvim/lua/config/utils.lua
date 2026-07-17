@@ -194,7 +194,7 @@ M.toggle_persistent_terminal = function(cmd, namespace, opts)
     local buffer_name = "term://" .. namespace .. (opts.identifier and ":" .. opts.identifier or "")
     local job_opts_merged = vim.tbl_deep_extend("force", {
         term = true,
-        stdout_buffered = true,
+        stdout_buffered = false,
     }, opts.job_opts or {})
 
     local win_config = opts.win_config or M.get_responsive_win_config()

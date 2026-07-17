@@ -5,6 +5,7 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
+vim.g.sleuth_json_heuristics = 0 -- lazy way to disable sleuth for json files. look at editorconfig if this needs to be more robust
 
 vim.opt.number = true
 vim.opt.mouse = "a"
