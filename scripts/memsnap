@@ -1,0 +1,115 @@
+#!/usr/bin/zsh
+# memsnap — quick memory snapshot (true footprint) with an nvim drill-down.
+#
+# Why not ps/RSS: under memory pressure macOS compresses and swaps pages, so a
+# process actually holding gigabytes can report only a few MB of RSS. top's MEM
+# column counts the real physical footprint (resident + compressed + dirty), so
+# that is what we read here.
+#
+# usage: memsnap [N]      # N = number of overall consumers to list (default 15)
+
+emulate -L zsh
+setopt pipefail
+
+typeset -i n=${1:-15}
+
+# One snapshot of every process, ordered by footprint. Reused for every section.
+typeset snap
+snap=$(top -l 1 -o mem -stats pid,mem,command 2>/dev/null)
+
+print -P "%B== memory pressure ==%b"
+print -r -- "$snap" | grep -E '^(PhysMem|VM):'
+
+# Parse top's table into "pid<TAB>MB" lines (already sorted by footprint desc).
+# tomb() normalises top's MEM units (K/M/G/B) to integer megabytes.
+typeset parsed
+parsed=$(print -r -- "$snap" | awk '
+  function tomb(v,  num,unit){
+    num=v;  gsub(/[^0-9.]/,"",num)
+    unit=v; gsub(/[0-9.]/,"",unit)
+    if (unit ~ /G/) return num*1024
+    if (unit ~ /K/) return num/1024
+    if (unit ~ /B/) return 0
+    return num
+  }
+  start && $1 ~ /^[0-9]+$/ { printf "%s\t%d\n", $1, tomb($2) }
+  /^PID/ { start=1 }
+')
+
+# pid -> footprint(MB) lookup, populated from the single snapshot above.
+typeset -A MEM
+typeset pid mb
+while IFS=$'\t' read -r pid mb; do
+  MEM[$pid]=$mb
+done <<< "$parsed"
+
+# short_cmd PID -> command with $HOME stripped, truncated. "<gone>" if exited.
+short_cmd() {
+  local c
+  c=$(ps -o command= -p $1 2>/dev/null | sed "s#$HOME/##g")
+  print -r -- "${c:-<gone>}" | cut -c1-72
+}
+
+print -P "\n%B== top $n by footprint ==%b"
+typeset -i shown=0
+while IFS=$'\t' read -r pid mb; do
+  (( shown++ < n )) || break
+  printf '%7s  %6sMB  %s\n' "$pid" "$mb" "$(short_cmd $pid)"
+done <<< "$parsed"
+
+# ppid -> "child child ..." map, so we can walk each nvim's descendants.
+typeset -A KIDS ISNVIM
+typeset p pp
+while read -r p pp; do
+  KIDS[$pp]+="$p "
+done < <(ps -axo pid=,ppid=)
+for p in ${(f)"$(pgrep -x nvim)"}; do ISNVIM[$p]=1; done
+
+# walk PID DEPTH — print a process and recurse into its children, indented.
+# Accumulates the tree's footprint into the global `subtotal`.
+typeset -i subtotal
+walk() {
+  local wp=$1 depth=$2 pad="" extra=""
+  (( depth )) && pad=$(printf '%*s' $((depth*3)) '')
+  local cmd=$(short_cmd $wp)
+  [[ $cmd == '<gone>' ]] && return
+  (( subtotal += ${MEM[$wp]:-0} ))
+  if [[ -n ${ISNVIM[$wp]} ]]; then
+    local cwd=$(lsof -a -d cwd -p $wp 2>/dev/null | tail -1 | awk '{print $NF}' | sed "s#$HOME/##")
+    extra="  [dir: ${cwd:-?}]"
+  fi
+  printf '   %s%-7s %6sMB  %s%s\n' "$pad" "$wp" "${MEM[$wp]:-0}" "$cmd" "$extra"
+  local c
+  for c in ${=KIDS[$wp]}; do
+    walk $c $((depth+1))
+  done
+}
+
+print -P "\n%B== nvim sessions (each with its child procs) ==%b"
+if (( ${#ISNVIM} == 0 )); then
+  print "   (none running)"
+else
+  for p in ${(k)ISNVIM}; do
+    pp=$(ps -o ppid= -p $p 2>/dev/null | tr -d ' ')
+    [[ -n ${ISNVIM[$pp]} ]] && continue   # nested nvim: shown under its parent
+    subtotal=0
+    walk $p 0
+    printf '   subtotal (nvim + children): %dMB\n\n' $subtotal
+  done
+fi
+
+# Copilot/LSP servers daemonize and reparent to launchd (ppid 1), so they never
+# show up under an nvim above even though they belong to one. List them so their
+# footprint is not invisible.
+print -P "%B== orphaned LSP/copilot (reparented, not under any nvim) ==%b"
+typeset -i any=0
+for p in ${(f)"$(pgrep node)"}; do
+  [[ $(ps -o ppid= -p $p 2>/dev/null | tr -d ' ') == 1 ]] || continue
+  local cmd=$(ps -o command= -p $p 2>/dev/null)
+  case $cmd in
+    *copilot*|*language-server*|*langserver*|*lsp*)
+      any=1
+      printf '   %-7s %6sMB  %s\n' "$p" "${MEM[$p]:-0}" "$(short_cmd $p)" ;;
+  esac
+done
+(( any )) || print "   (none)"

@@ -10,7 +10,8 @@
     "author": "",
     "type": "module",
     "scripts": {
-        "mock_hook": "node claude/hooks/hook_tester.ts | node"
+        "mock_hook": "node claude/hooks/hook_tester.ts | node",
+        "test": "node --test 'scripts/*.test.ts'"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
