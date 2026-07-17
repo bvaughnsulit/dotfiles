@@ -5,14 +5,18 @@
 // column counts the real physical footprint (resident + compressed + dirty), so
 // that is what we read here.
 //
-// usage: node scripts/memsnap.ts [N] [--full]
-//   N       number of overall consumers to list (default 15)
-//   --full  print full command names instead of truncating them to 72 columns
+// usage: node scripts/memsnap.ts [N] [--full] [--compact]
+//   N          number of overall consumers to list (default 15)
+//   --full     print full command names instead of truncating them to 72 columns
+//   --compact  hide nvim instances under 1000 MB and child procs under 100 MB,
+//              replacing each hidden group with a trailing count
 
 import { execSync } from "node:child_process"
 
 const HOME = process.env.HOME ?? ""
 const DEFAULT_CMD_LEN = 72 // command-name truncation width; --full lifts it
+const NVIM_MIN_MB = 1000 // --compact: hide nvim instances whose subtotal is below this
+const PROC_MIN_MB = 100 // --compact: hide a nvim's child procs below this
 
 const BOLD = "\x1b[1m"
 const DIM = "\x1b[2m"
@@ -90,9 +94,29 @@ export function parseSnapshot(snap: string): Array<[string, number]> {
     return parsed
 }
 
+// Collect a pid's transitive descendants as [pid, footprintMB] pairs, sorted by
+// footprint descending. The root is excluded — it stays the anchor line of its
+// nvim instance. `mem` supplies footprints (0 for any pid it doesn't list).
+export function flattenDescendants(
+    root: string,
+    kids: Map<string, string[]>,
+    mem: Map<string, number>,
+): Array<[string, number]> {
+    const out: Array<[string, number]> = []
+    const stack = [...(kids.get(root) ?? [])]
+    while (stack.length) {
+        const pid = stack.pop()!
+        out.push([pid, mem.get(pid) ?? 0])
+        const grandkids = kids.get(pid)
+        if (grandkids) stack.push(...grandkids)
+    }
+    return out.sort((a, b) => b[1] - a[1])
+}
+
 function main(): void {
     const argv = process.argv.slice(2)
     const noTruncate = argv.some((arg) => arg === "--full" || arg === "--no-truncate")
+    const compact = argv.some((arg) => arg === "--compact")
     const n = Number(argv.find((arg) => /^[0-9]+$/.test(arg))) || 15
     const cmdLen = noTruncate ? Infinity : DEFAULT_CMD_LEN
 
@@ -132,47 +156,59 @@ function main(): void {
         sh("pgrep -x nvim").split("\n").map((s) => s.trim()).filter(Boolean),
     )
 
-    // walk pid depth — print a process, then recurse into its children with
-    // box-drawing connectors. `prefix` carries the ancestors' vertical bars so
-    // the tree lives entirely in the command column, leaving the size/pid
-    // columns aligned. Accumulates footprint/count into the caller's tallies.
-    let subtotal = 0
-    let subCount = 0
-    function walk(wp: string, prefix: string, isLast: boolean, isRoot: boolean): void {
-        const cmd = shortCmd(wp, cmdLen)
-        if (cmd === "<gone>") return
-        const mb = MEM.get(wp) ?? 0
-        subtotal += mb
-        subCount += 1
-
-        let extra = ""
-        if (ISNVIM.has(wp)) {
-            const cwd = cwdOf(wp)
-            extra = ` ${DIM}⟨${cwd || "?"}⟩${RESET}`
-        }
-
-        const branch = isRoot ? "" : isLast ? "└─ " : "├─ "
-        console.log(`${sizeCell(mb)}  ${wp.padStart(6)}  ${prefix}${branch}${cmd}${extra}`)
-
-        const kids = KIDS.get(wp) ?? []
-        const childPrefix = isRoot ? "" : prefix + (isLast ? "   " : "│  ")
-        kids.forEach((c, i) => walk(c, childPrefix, i === kids.length - 1, false))
-    }
-
     console.log("")
     header("== nvim sessions (each with its child procs) ==")
     if (ISNVIM.size === 0) {
         console.log(`  ${DIM}(none running)${RESET}`)
     } else {
-        for (const p of ISNVIM) {
-            const pp = sh(`ps -o ppid= -p ${p}`).trim()
-            if (ISNVIM.has(pp)) continue // nested nvim: shown under its parent
-            subtotal = 0
-            subCount = 0
-            walk(p, "", true, true)
+        // Build each root nvim instance up front: its own footprint plus every
+        // descendant flattened to one level and sorted by footprint. Nested
+        // nvims fold into their parent's descendant list rather than starting a
+        // new instance. Collecting first lets us order instances by subtotal.
+        type Proc = { pid: string; mb: number; cmd: string }
+        const instances: Array<{ root: string; rootCmd: string; rootMb: number; procs: Proc[]; subtotal: number }> = []
+        for (const root of ISNVIM) {
+            const pp = sh(`ps -o ppid= -p ${root}`).trim()
+            if (ISNVIM.has(pp)) continue // nested nvim: folded into its parent below
+            const rootCmd = shortCmd(root, cmdLen)
+            if (rootCmd === "<gone>") continue
+            const procs: Proc[] = []
+            for (const [pid, mb] of flattenDescendants(root, KIDS, MEM)) {
+                const cmd = shortCmd(pid, cmdLen)
+                if (cmd !== "<gone>") procs.push({ pid, mb, cmd })
+            }
+            const rootMb = MEM.get(root) ?? 0
+            const subtotal = rootMb + procs.reduce((sum, proc) => sum + proc.mb, 0)
+            instances.push({ root, rootCmd, rootMb, procs, subtotal })
+        }
+        instances.sort((a, b) => b.subtotal - a.subtotal)
+
+        let hiddenInstances = 0
+        for (const inst of instances) {
+            if (compact && inst.subtotal < NVIM_MIN_MB) { hiddenInstances += 1; continue }
+
+            const rootCwd = cwdOf(inst.root)
+            console.log(`${sizeCell(inst.rootMb)}  ${inst.root.padStart(6)}  ${inst.rootCmd} ${DIM}⟨${rootCwd || "?"}⟩${RESET}`)
+
+            // Hiding is display-only: hidden procs still count toward the subtotal.
+            let hiddenProcs = 0
+            for (const proc of inst.procs) {
+                if (compact && proc.mb < PROC_MIN_MB) { hiddenProcs += 1; continue }
+                const tag = ISNVIM.has(proc.pid) ? ` ${DIM}⟨${cwdOf(proc.pid) || "?"}⟩${RESET}` : ""
+                console.log(`${sizeCell(proc.mb)}  ${proc.pid.padStart(6)}  ${DIM}·${RESET} ${proc.cmd}${tag}`)
+            }
+            if (hiddenProcs > 0) {
+                console.log(`  ${DIM}… ${hiddenProcs} process${hiddenProcs === 1 ? "" : "es"} below ${PROC_MIN_MB} MB${RESET}`)
+            }
+
             console.log(`  ${DIM}${"─".repeat(9)}${RESET}`)
-            const total = `${subtotal.toLocaleString("en-US")} MB`.padStart(9)
-            console.log(`${BOLD}${total}${RESET}  ${DIM}subtotal · ${subCount} proc${subCount === 1 ? "" : "s"}${RESET}\n`)
+            const total = `${inst.subtotal.toLocaleString("en-US")} MB`.padStart(9)
+            const count = 1 + inst.procs.length
+            console.log(`${BOLD}${total}${RESET}  ${DIM}subtotal · ${count} proc${count === 1 ? "" : "s"}${RESET}\n`)
+        }
+
+        if (hiddenInstances > 0) {
+            console.log(`  ${DIM}… ${hiddenInstances} more nvim instance${hiddenInstances === 1 ? "" : "s"} under ${NVIM_MIN_MB} MB${RESET}`)
         }
     }
 

@@ -9,7 +9,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
-import { formatCmd, parseSnapshot, tomb } from "./memsnap.ts"
+import { flattenDescendants, formatCmd, parseSnapshot, tomb } from "./memsnap.ts"
 
 // A command well past the 72-col truncation width, with no $HOME prefix to strip.
 const LONG_CMD = "/opt/big/process/" + "deep/".repeat(20) + "leaf"
@@ -58,6 +58,29 @@ test("parseSnapshot: empty input yields no rows", () => {
     assert.deepEqual(parseSnapshot(""), [])
 })
 
+test("flattenDescendants: transitive children, sorted by footprint desc", () => {
+    const kids = new Map([
+        ["100", ["200", "250", "700"]],
+        ["200", ["300"]], // grandchild, reached transitively
+    ])
+    const mem = new Map([
+        ["100", 1200], ["200", 300], ["250", 40], ["300", 500],
+    ])
+
+    // root excluded; the grandchild is pulled in; rows sorted by MB descending;
+    // a pid absent from `mem` (700) contributes 0.
+    assert.deepEqual(flattenDescendants("100", kids, mem), [
+        ["300", 500],
+        ["200", 300],
+        ["250", 40],
+        ["700", 0],
+    ])
+
+    // a leaf has no descendants; an unknown pid yields nothing
+    assert.deepEqual(flattenDescendants("250", kids, mem), [])
+    assert.deepEqual(flattenDescendants("999", new Map(), new Map()), [])
+})
+
 test("integration: renders every section from faked system tools", () => {
     const dir = mkdtempSync(join(tmpdir(), "memsnap-"))
     try {
@@ -67,19 +90,27 @@ test("integration: renders every section from faked system tools", () => {
             chmodSync(binPath, 0o755)
         }
 
-        // A tiny process world: one big consumer (300), an nvim (100) with a
-        // child lsp (200), and a copilot server (400) reparented to launchd.
+        // A small process world exercising both nvim instances and truncation:
+        //   300  big consumer, ppid 1
+        //   100  nvim (1200M) @ project, with children 200 (300M) and 250 (40M)
+        //   500  nvim (400M)  @ other-project, with child 600 (50M)
+        //   400  copilot server (80M), reparented to launchd (ppid 1)
+        // Instance 100 totals 1540M (kept under --compact); instance 500 totals
+        // 450M (dropped under --compact); child 250 is below the 100M proc cutoff.
         fake("top", [
             "#!/bin/sh",
             "cat <<'EOF'",
-            "Processes: 4 total",
+            "Processes: 7 total",
             "PhysMem: 15G used (4073M wired), 134M unused.",
             "VM: 264T vsize, 6144M framework vsize.",
             "PID    MEM    COMMAND",
             "300    6000M  /opt/big/process",
-            "100    500M   /home/test/.local/nvim",
+            "100    1200M  /home/test/.local/nvim",
+            "500    400M   /home/test/.local/nvim",
+            "200    300M   node some-lsp",
             "400    80M    node copilot-language-server",
-            "200    50M    node some-lsp",
+            "600    50M    node small-lsp",
+            "250    40M    node tiny-helper",
             "EOF",
             "",
         ].join("\n"))
@@ -88,8 +119,8 @@ test("integration: renders every section from faked system tools", () => {
             "#!/bin/sh",
             'for last in "$@"; do :; done',
             'case "$last" in',
-            "  nvim) echo 100 ;;",
-            "  node) printf '200\\n400\\n' ;;",
+            "  nvim) printf '100\\n500\\n' ;;",
+            "  node) printf '200\\n250\\n400\\n600\\n' ;;",
             "esac",
             "",
         ].join("\n"))
@@ -99,15 +130,17 @@ test("integration: renders every section from faked system tools", () => {
             'for last in "$@"; do :; done',
             'case "$*" in',
             "  *pid=,ppid=*)",
-            "    printf '  100     1\\n  200   100\\n  300     1\\n  400     1\\n' ;;",
+            "    printf '  100     1\\n  200   100\\n  250   100\\n  300     1\\n  400     1\\n  500     1\\n  600   500\\n' ;;",
             "  *ppid=*)",
-            '    case "$last" in 100|300|400) echo 1 ;; 200) echo 100 ;; *) echo 1 ;; esac ;;',
+            '    case "$last" in 200|250) echo 100 ;; 600) echo 500 ;; *) echo 1 ;; esac ;;',
             "  *command=*)",
             '    case "$last" in',
-            "      100) echo /home/test/.local/nvim ;;",
+            "      100|500) echo /home/test/.local/nvim ;;",
             "      200) echo node some-lsp ;;",
+            "      250) echo node tiny-helper ;;",
             `      300) echo ${LONG_CMD} ;;`,
             "      400) echo node copilot-language-server ;;",
+            "      600) echo node small-lsp ;;",
             "    esac ;;",
             "esac",
             "",
@@ -119,6 +152,7 @@ test("integration: renders every section from faked system tools", () => {
             'echo "COMMAND PID USER FD TYPE DEVICE SIZE NODE NAME"',
             'case "$last" in',
             '  100) echo "nvim $last user cwd DIR 1,2 3 4 /home/test/project" ;;',
+            '  500) echo "nvim $last user cwd DIR 1,2 3 4 /home/test/other-project" ;;',
             '  *) echo "proc $last user cwd DIR 1,2 3 4 /home/test/other" ;;',
             "esac",
             "",
@@ -141,20 +175,44 @@ test("integration: renders every section from faked system tools", () => {
         assert.match(out, /== top 3 by footprint ==/)
         assert.match(out, /6,000 MB[^\n]*300[^\n]*⟨other⟩[^\n]*\/opt\/big\/process/)
 
-        // nvim tree: $HOME stripped from cmd + cwd, child under a connector, subtotal summed
-        assert.match(out, /500 MB[^\n]*100[^\n]*\.local\/nvim[^\n]*⟨project⟩/)
-        assert.match(out, /50 MB[^\n]*200[^\n]*└─ node some-lsp/)
-        assert.match(out, /550 MB[^\n]*subtotal · 2 procs/)
+        // nvim instance: $HOME stripped from cmd + cwd, children flattened (no tree
+        // connectors) to one level and sorted by footprint desc, subtotal summed
+        assert.match(out, /1,200 MB[^\n]*100[^\n]*\.local\/nvim[^\n]*⟨project⟩/)
+        assert.match(out, /300 MB[^\n]*200[^\n]*node some-lsp/)
+        assert.match(out, /40 MB[^\n]*250[^\n]*node tiny-helper/)
+        assert.match(out, /1,540 MB[^\n]*subtotal · 3 procs/)
+        assert.ok(!out.includes("└─"), "expected flat listing, not a tree")
+
+        // instances ordered by subtotal desc (1540 before 450); within an instance,
+        // children ordered by footprint desc (some-lsp 300M before tiny-helper 40M)
+        assert.ok(out.indexOf("some-lsp") < out.indexOf("small-lsp"), "instances not sorted by subtotal")
+        assert.ok(out.indexOf("some-lsp") < out.indexOf("tiny-helper"), "children not sorted by footprint")
+
+        // the smaller nvim instance and its child are still fully shown by default
+        assert.match(out, /400 MB[^\n]*500[^\n]*\.local\/nvim[^\n]*⟨other-project⟩/)
+        assert.match(out, /50 MB[^\n]*600[^\n]*node small-lsp/)
+        assert.match(out, /450 MB[^\n]*subtotal · 2 procs/)
 
         // orphan section lists the reparented copilot (ppid 1)...
         assert.match(out, /orphaned LSP\/copilot[\s\S]*80 MB[^\n]*400[^\n]*node copilot-language-server/)
-        // ...but the child lsp (ppid 100) is only shown once, under its nvim
+        // ...but each child proc is only shown once, under its nvim
         assert.equal((out.match(/node some-lsp/g) ?? []).length, 1)
 
         // long command is truncated by default, printed in full under --full
         assert.ok(!out.includes(LONG_CMD), "expected default run to truncate")
         const full = execFileSync("node", [script, "3", "--full"], { encoding: "utf-8", env })
         assert.ok(full.includes(LONG_CMD), "expected --full run to keep the whole command")
+
+        // --compact drops the sub-1000MB instance (500) and the sub-100MB child
+        // (250), each replaced by a count, while the kept instance's subtotal still
+        // reflects the hidden child (display-only hiding).
+        const cmpct = execFileSync("node", [script, "3", "--compact"], { encoding: "utf-8", env })
+        assert.match(cmpct, /300 MB[^\n]*200[^\n]*node some-lsp/) // above the 100M cutoff, kept
+        assert.match(cmpct, /… 1 process below 100 MB/)
+        assert.match(cmpct, /… 1 more nvim instance under 1000 MB/)
+        assert.match(cmpct, /1,540 MB[^\n]*subtotal · 3 procs/) // hidden child still counted
+        assert.ok(!cmpct.includes("tiny-helper"), "expected the sub-100MB child hidden")
+        assert.ok(!cmpct.includes("small-lsp"), "expected the sub-1000MB instance dropped")
     } finally {
         rmSync(dir, { recursive: true, force: true })
     }
