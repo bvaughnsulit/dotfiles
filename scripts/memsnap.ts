@@ -6,17 +6,18 @@
 // that is what we read here.
 //
 // usage: node scripts/memsnap.ts [N] [--full] [--compact]
-//   N          number of overall consumers to list (default 15)
+//   N          max number of top consumers to list (default 15; those ≥1000 MB)
 //   --full     print full command names instead of truncating them to 72 columns
-//   --compact  hide nvim instances under 1000 MB and child procs under 100 MB,
+//   --compact  hide nvim instances under 1000 MB and child procs under 500 MB,
 //              replacing each hidden group with a trailing count
 
 import { execSync } from "node:child_process"
 
 const HOME = process.env.HOME ?? ""
 const DEFAULT_CMD_LEN = 72 // command-name truncation width; --full lifts it
+const TOP_MIN_MB = 1000 // top-consumers section: always hide anything below this
 const NVIM_MIN_MB = 1000 // --compact: hide nvim instances whose subtotal is below this
-const PROC_MIN_MB = 100 // --compact: hide a nvim's child procs below this
+const PROC_MIN_MB = 500 // --compact: hide a nvim's procs below this
 
 const BOLD = "\x1b[1m"
 const DIM = "\x1b[2m"
@@ -123,22 +124,21 @@ function main(): void {
     // One snapshot of every process, ordered by footprint. Reused for every section.
     const snap = sh("top -l 1 -o mem -stats pid,mem,command")
 
-    header("== memory pressure ==")
-    for (const line of snap.split("\n")) {
-        if (/^(PhysMem|VM):/.test(line)) console.log(line)
-    }
-
     const parsed = parseSnapshot(snap)
 
     // pid -> footprint(MB) lookup, populated from the single snapshot above.
     const MEM = new Map<string, number>(parsed)
 
-    console.log("")
-    header(`== top ${n} by footprint ==`)
-    // Dir goes ahead of the command here (unlike the nvim tree's trailing tag):
-    // top-N commands run long, so a leading dir stays visible while the command
+    // Heavy hitters only: the largest consumers at or above TOP_MIN_MB, capped at n.
+    const heavy = parsed.filter(([, mb]) => mb >= TOP_MIN_MB).slice(0, n)
+    header(`== top by footprint (≥ ${TOP_MIN_MB.toLocaleString("en-US")} MB) ==`)
+    if (heavy.length === 0) {
+        console.log(`  ${DIM}(none)${RESET}`)
+    }
+    // Dir goes ahead of the command here (unlike the nvim section's trailing tag):
+    // top commands run long, so a leading dir stays visible while the command
     // trails off the right edge.
-    for (const [pid, mb] of parsed.slice(0, n)) {
+    for (const [pid, mb] of heavy) {
         const cwd = cwdOf(pid)
         const dir = cwd ? `${DIM}⟨${cwd}⟩${RESET} ` : ""
         console.log(`${sizeCell(mb)}  ${pid.padStart(6)}  ${dir}${shortCmd(pid, cmdLen)}`)
@@ -161,25 +161,25 @@ function main(): void {
     if (ISNVIM.size === 0) {
         console.log(`  ${DIM}(none running)${RESET}`)
     } else {
-        // Build each root nvim instance up front: its own footprint plus every
-        // descendant flattened to one level and sorted by footprint. Nested
-        // nvims fold into their parent's descendant list rather than starting a
-        // new instance. Collecting first lets us order instances by subtotal.
+        // Build each nvim instance up front: the root nvim plus every descendant,
+        // flattened to one level and sorted by footprint. Nested nvims fold into
+        // their parent's list rather than starting a new instance. Collecting
+        // first lets us order instances by subtotal.
         type Proc = { pid: string; mb: number; cmd: string }
-        const instances: Array<{ root: string; rootCmd: string; rootMb: number; procs: Proc[]; subtotal: number }> = []
+        const instances: Array<{ dir: string; procs: Proc[]; subtotal: number }> = []
         for (const root of ISNVIM) {
-            const pp = sh(`ps -o ppid= -p ${root}`).trim()
-            if (ISNVIM.has(pp)) continue // nested nvim: folded into its parent below
+            const parent = sh(`ps -o ppid= -p ${root}`).trim()
+            if (ISNVIM.has(parent)) continue // nested nvim: folded into its parent below
             const rootCmd = shortCmd(root, cmdLen)
             if (rootCmd === "<gone>") continue
-            const procs: Proc[] = []
+            const procs: Proc[] = [{ pid: root, mb: MEM.get(root) ?? 0, cmd: rootCmd }]
             for (const [pid, mb] of flattenDescendants(root, KIDS, MEM)) {
                 const cmd = shortCmd(pid, cmdLen)
                 if (cmd !== "<gone>") procs.push({ pid, mb, cmd })
             }
-            const rootMb = MEM.get(root) ?? 0
-            const subtotal = rootMb + procs.reduce((sum, proc) => sum + proc.mb, 0)
-            instances.push({ root, rootCmd, rootMb, procs, subtotal })
+            procs.sort((a, b) => b.mb - a.mb)
+            const subtotal = procs.reduce((sum, proc) => sum + proc.mb, 0)
+            instances.push({ dir: cwdOf(root) || "?", procs, subtotal })
         }
         instances.sort((a, b) => b.subtotal - a.subtotal)
 
@@ -187,24 +187,22 @@ function main(): void {
         for (const inst of instances) {
             if (compact && inst.subtotal < NVIM_MIN_MB) { hiddenInstances += 1; continue }
 
-            const rootCwd = cwdOf(inst.root)
-            console.log(`${sizeCell(inst.rootMb)}  ${inst.root.padStart(6)}  ${inst.rootCmd} ${DIM}⟨${rootCwd || "?"}⟩${RESET}`)
+            // The directory subheader carries the instance's total and proc count,
+            // so no divider/subtotal footer is needed. Any hiding below is
+            // display-only — the total and count still include every proc.
+            const total = inst.subtotal.toLocaleString("en-US")
+            const count = inst.procs.length
+            console.log(`${BOLD}${inst.dir}${RESET}  ${DIM}(${total} MB · ${count} proc${count === 1 ? "" : "s"})${RESET}`)
 
-            // Hiding is display-only: hidden procs still count toward the subtotal.
             let hiddenProcs = 0
             for (const proc of inst.procs) {
                 if (compact && proc.mb < PROC_MIN_MB) { hiddenProcs += 1; continue }
-                const tag = ISNVIM.has(proc.pid) ? ` ${DIM}⟨${cwdOf(proc.pid) || "?"}⟩${RESET}` : ""
-                console.log(`${sizeCell(proc.mb)}  ${proc.pid.padStart(6)}  ${DIM}·${RESET} ${proc.cmd}${tag}`)
+                console.log(`${sizeCell(proc.mb)}  ${proc.pid.padStart(6)}  ${proc.cmd}`)
             }
             if (hiddenProcs > 0) {
                 console.log(`  ${DIM}… ${hiddenProcs} process${hiddenProcs === 1 ? "" : "es"} below ${PROC_MIN_MB} MB${RESET}`)
             }
-
-            console.log(`  ${DIM}${"─".repeat(9)}${RESET}`)
-            const total = `${inst.subtotal.toLocaleString("en-US")} MB`.padStart(9)
-            const count = 1 + inst.procs.length
-            console.log(`${BOLD}${total}${RESET}  ${DIM}subtotal · ${count} proc${count === 1 ? "" : "s"}${RESET}\n`)
+            console.log("")
         }
 
         if (hiddenInstances > 0) {
@@ -213,20 +211,20 @@ function main(): void {
     }
 
     // Copilot/LSP servers daemonize and reparent to launchd (ppid 1), so they never
-    // show up under an nvim above even though they belong to one. List them so their
-    // footprint is not invisible.
-    console.log("")
-    header("== orphaned LSP/copilot (reparented, not under any nvim) ==")
-    let any = false
-    for (const p of sh("pgrep node").split("\n").map((s) => s.trim()).filter(Boolean)) {
-        if (sh(`ps -o ppid= -p ${p}`).trim() !== "1") continue
-        const cmd = sh(`ps -o command= -p ${p}`)
-        if (/copilot|language-server|langserver|lsp/.test(cmd)) {
-            any = true
-            console.log(`${sizeCell(MEM.get(p) ?? 0)}  ${p.padStart(6)}  ${shortCmd(p, cmdLen)}`)
+    // show up under an nvim above even though they belong to one. Collect them so
+    // their footprint is not invisible; the whole section is omitted when none exist.
+    const orphans: string[] = []
+    for (const pid of sh("pgrep node").split("\n").map((s) => s.trim()).filter(Boolean)) {
+        if (sh(`ps -o ppid= -p ${pid}`).trim() !== "1") continue
+        if (/copilot|language-server|langserver|lsp/.test(sh(`ps -o command= -p ${pid}`))) orphans.push(pid)
+    }
+    if (orphans.length > 0) {
+        console.log("")
+        header("== orphaned LSP/copilot (reparented, not under any nvim) ==")
+        for (const pid of orphans) {
+            console.log(`${sizeCell(MEM.get(pid) ?? 0)}  ${pid.padStart(6)}  ${shortCmd(pid, cmdLen)}`)
         }
     }
-    if (!any) console.log(`  ${DIM}(none)${RESET}`)
 }
 
 if (import.meta.main) main()
