@@ -63,6 +63,28 @@ local custom_close = function(win)
     end
 end
 
+--- Mirror of snacks' internal setqflist item mapping (it's a local, so not reusable).
+--- @param items snacks.picker.Item[]
+--- @return vim.quickfix.entry[]
+local items_to_qf = function(items)
+    local qf = {}
+    for _, item in ipairs(items) do
+        qf[#qf + 1] = {
+            filename = Snacks.picker.util.path(item),
+            bufnr = item.buf,
+            lnum = item.pos and item.pos[1] or 1,
+            col = item.pos and item.pos[2] + 1 or 1,
+            end_lnum = item.end_pos and item.end_pos[1] or nil,
+            end_col = item.end_pos and item.end_pos[2] + 1 or nil,
+            text = item.line or item.comment or item.label or item.name or item.detail or item.text,
+            pattern = item.search,
+            type = ({ "E", "W", "I", "N" })[item.severity],
+            valid = true,
+        }
+    end
+    return qf
+end
+
 --- @param item snacks.picker.Item
 local get_filename_from_item = function(item)
     local filename = item and item.file
@@ -204,6 +226,14 @@ return {
                     },
                 },
                 actions = {
+                    -- like the builtin `qflist` action, but appends instead of replacing
+                    qflist_add = function(picker)
+                        picker:close()
+                        local sel = picker:selected()
+                        local items = #sel > 0 and sel or picker:items()
+                        vim.fn.setqflist(items_to_qf(items), "a")
+                        vim.cmd("botright copen")
+                    end,
                     debug_item = function(_, item) logger(item) end,
                     debug_picker = function(picker) logger(picker) end,
                     copy_filename_to_clipboard = function(_, item)
@@ -257,6 +287,7 @@ return {
                             ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
                             ["<c-f>"] = { "select_filters", mode = { "i", "n" } },
                             ["<c-_>"] = { "toggle_help_input", mode = { "i", "n" } },
+                            ["<m-q>"] = { "qflist_add", mode = { "i", "n" } },
                             ["<c-y>"] = { "copy_filename_to_clipboard", mode = { "i", "n" } },
                             ["<c-s>"] = { "put_filename", mode = { "i", "n" } },
                             ["<leader>,i"] = { "debug_item", mode = { "n" } },
@@ -311,7 +342,6 @@ return {
         end
         utils.create_cmd_and_map("GrepNvimPlugins", nil, grep_nvim_plugins_source, "")
 
-        -- TODO: qf append
         pickers.register_picker("snacks", {
             buffers = function()
                 Snacks.picker.buffers({
