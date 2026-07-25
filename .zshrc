@@ -43,6 +43,7 @@ alias tmls='tmux new -A -s tmux \; choose-session'
 alias tm='tmux new -A -s tmux'
 
 alias lazyvim='NVIM_APPNAME=lazyvim nvim'
+alias nvim-2='NVIM_APPNAME=nvim-2 nvim'
 alias nvim-min='NVIM_APPNAME=minimal-nvim nvim'
 alias plug='cd $(fd . ~/.local/share/nvim/lazy/ --type dir --max-depth 1 | fzf) && nvim'
 alias dev='cd $(fd . ~/dev/ --type dir --max-depth 1 | fzf) && nvim'
