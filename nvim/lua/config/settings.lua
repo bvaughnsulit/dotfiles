@@ -14,6 +14,7 @@ local defaults = {
         env = nil,
     },
     claude_args = {},
+    default_ai_cli = "claude",
 }
 
 return require("neoconf").get("config", defaults)

@@ -2,9 +2,8 @@ local ai_cli_options = {
     claude = { "claude" },
     opencode = { "opencode" },
     gemini = { "gemini" },
+    codex = { "codex" },
 }
-
-local default_ai_cli = ai_cli_options.claude
 
 ---@class ToggleAICLIOptions
 ---@field cmd? string[]
@@ -15,14 +14,18 @@ local default_ai_cli = ai_cli_options.claude
 local toggle_ai_cli = function(opts)
     opts = opts or {}
 
-    local claude_args = {
-        "--add-dir",
-        require("config.utils").get_dotfiles_root() .. "/claude",
-    }
-    vim.list_extend(claude_args, require("config.settings").claude_args)
+    local default_ai_cli = ai_cli_options[require("config.settings").default_ai_cli] or ai_cli_options.claude
     local cmd = {}
     vim.list_extend(cmd, opts.cmd or default_ai_cli)
-    vim.list_extend(cmd, claude_args)
+
+    if cmd[1] == "claude" then
+        local claude_args = {
+            "--add-dir",
+            require("config.utils").get_dotfiles_root() .. "/claude",
+        }
+        vim.list_extend(claude_args, require("config.settings").claude_args)
+        vim.list_extend(cmd, claude_args)
+    end
 
     require("config.utils").toggle_persistent_terminal(cmd, opts.namespace or "ai_cli", {
         q_to_go_back = { "n" },
@@ -36,7 +39,9 @@ local toggle_ai_cli = function(opts)
         },
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
         cb_on_create = function(term_bufnr)
-            local passthrough_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<c-t>" }
+            local passthrough_keys = {}
+            local claude_passthru_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<c-t>" }
+            if cmd[1] == "claude" then vim.list_extend(passthrough_keys, claude_passthru_keys) end
 
             for _, key in ipairs(passthrough_keys) do
                 vim.keymap.set("n", key, function()
