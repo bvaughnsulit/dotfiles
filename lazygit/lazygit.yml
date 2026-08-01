@@ -1,3 +1,4 @@
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
 gui:
   scrollHeight: 2 # how many lines you scroll by
   scrollPastBottom: true # enable scrolling past the bottom
@@ -41,10 +42,10 @@ keybinding:
   files:
     openMergeOptions: t
 customCommands:
-  # - key: "<space>"
-  #   command: "git checkout {{.SelectedLocalBranch.Name}} --ignore-other-worktrees"
-  #   context: "localBranches"
-  #   description: "Checkout"
+  - key: "d"
+    command: "git checkout --detach {{.SelectedLocalBranch.Name}}"
+    context: "localBranches"
+    description: "Checkout as detached HEAD"
   - key: "G"
     command: "gh pr view -w {{.SelectedLocalBranch.Name}}"
     context: "localBranches"
