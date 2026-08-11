@@ -156,6 +156,11 @@ return {
             },
         },
     },
+    {
+        "https://github.com/stevearc/oil.nvim",
+        event = "VeryLazy",
+        opts = {},
+    },
     { "https://github.com/MunifTanjim/nui.nvim" },
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
