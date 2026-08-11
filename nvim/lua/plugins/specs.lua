@@ -161,6 +161,10 @@ return {
         event = "VeryLazy",
         opts = {},
     },
+    {
+        "OXY2DEV/markview.nvim",
+        lazy = false,
+    },
     { "https://github.com/MunifTanjim/nui.nvim" },
     { "https://github.com/petertriho/nvim-scrollbar.git", cond = false },
     { "https://github.com/dstein64/nvim-scrollview.git", cond = false },
