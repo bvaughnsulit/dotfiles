@@ -75,6 +75,73 @@ local get_filename_from_item = function(item)
     return filename
 end
 
+--- Render nvim-treesitter-context directly in Snacks' event-suppressed preview.
+--- TODO: needs closer review
+---@param picker snacks.Picker
+local update_treesitter_context = function(picker)
+    vim.schedule(function()
+        if picker.closed or not picker.preview or not picker.preview.win:valid() then return end
+
+        local win = picker.preview.win.win
+        local buf = vim.api.nvim_win_get_buf(win)
+        local item = picker.preview.item
+        local path = item and Snacks.picker.util.path(item)
+        local ft = path and vim.filetype.match({ filename = path, buf = buf })
+        if not ft then return end
+
+        -- treesitter-context resolves the parser from 'filetype'. Snacks starts
+        -- the parser with an explicit language but keeps this as its preview ft.
+        local eventignore = vim.o.eventignore
+        vim.o.eventignore = "all"
+        vim.bo[buf].filetype = ft
+        vim.o.eventignore = eventignore
+
+        local lang = vim.treesitter.language.get_lang(ft)
+        local ok, parser = pcall(vim.treesitter.get_parser, buf, lang, { error = false })
+        if not ok or not parser then return end
+
+        local rendered = false
+        for _, delay in ipairs({ 0, 20, 50, 100 }) do
+            vim.defer_fn(function()
+                if
+                    rendered
+                    or picker.closed
+                    or not picker.preview
+                    or picker.preview.item ~= item
+                    or not picker.preview.win:valid()
+                    or vim.api.nvim_win_get_buf(win) ~= buf
+                    or not parser:is_valid(true)
+                then
+                    return
+                end
+
+                rendered = true
+                local context = require("treesitter-context.context")
+                local render = require("treesitter-context.render")
+                local ranges, lines = context.get(win)
+                if not ranges or #ranges == 0 then
+                    render.close(win)
+                    return
+                end
+
+                local config = require("treesitter-context.config")
+                local zindex = config.zindex
+                config.zindex = math.max(zindex, (vim.api.nvim_win_get_config(win).zindex or 0) + 20)
+                vim.api.nvim_win_call(win, function() render.open(win, ranges, lines) end)
+                config.zindex = zindex
+            end, delay)
+        end
+    end)
+end
+
+---@param picker snacks.Picker
+---@param up boolean
+local scroll_preview = function(picker, up)
+    if not picker.preview.win:valid() then return end
+    picker.preview.win:scroll(up)
+    update_treesitter_context(picker)
+end
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
@@ -204,6 +271,8 @@ return {
                     },
                 },
                 actions = {
+                    preview_scroll_down = function(picker) scroll_preview(picker, false) end,
+                    preview_scroll_up = function(picker) scroll_preview(picker, true) end,
                     debug_item = function(_, item) logger(item) end,
                     debug_picker = function(picker) logger(picker) end,
                     copy_filename_to_clipboard = function(_, item)
@@ -299,6 +368,13 @@ return {
     },
     config = function(_, opts)
         require("snacks").setup(opts)
+
+        local file_preview = Snacks.picker.preview.file
+        Snacks.picker.preview.file = function(ctx)
+            local result = file_preview(ctx)
+            update_treesitter_context(ctx.picker)
+            return result
+        end
 
         local grep_nvim_plugins_source = function()
             Snacks.picker.grep(
