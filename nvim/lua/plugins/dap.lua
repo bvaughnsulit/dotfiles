@@ -464,9 +464,17 @@ return {
                         prev_view = "<",
                     },
                 },
+                hover = {},
             }
             return opts
         end,
+        keys = {
+            {
+                "<leader>dk",
+                function() require(ui).hover(nil, false) end,
+                desc = "DAP Hover",
+            },
+        },
     },
     {
         "https://github.com/rcarriga/nvim-dap-ui",
