@@ -33,7 +33,7 @@ Your priorities ARE:
 
 ## Specs
 
-- Write design specs to `.claude/specs/` in the project root, not `docs/superpowers/specs/`.
+- Write design specs to `docs/` in the project root unless otherwise discussed.
 
 ## Memory & preferences
 
