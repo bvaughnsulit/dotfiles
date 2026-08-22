@@ -27,7 +27,7 @@
         ],
         "defaultMode": "auto"
     },
-    "model": "opus[1m]",
+    "model": "claude-opus-4-8[1m]",
     "hooks": {
         "Notification": [
             {
@@ -85,6 +85,7 @@
         "hookify@claude-plugins-official": false,
         "datadog@claude-plugins-official": false,
         "github@claude-plugins-official": false,
+        "mattpocock-skills@claude-plugins-official": true
     },
     "effortLevel": "high",
     "promptSuggestionEnabled": false,
