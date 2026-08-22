@@ -159,7 +159,20 @@ return {
     {
         "https://github.com/stevearc/oil.nvim",
         event = "VeryLazy",
-        opts = {},
+        ---@diagnostic disable: missing-fields
+        ---@module "oil"
+        ---@type oil.Config
+        opts = {
+            skip_confirm_for_simple_edits = true,
+            keymaps = {
+                ["R"] = { "actions.refresh", mode = "n" },
+                ["<BS>"] = { "actions.parent", mode = "n" },
+            },
+            view_options = {
+                show_hidden = true,
+            },
+        },
+        ---@diagnostic enable: missing-fields
     },
     {
         "OXY2DEV/markview.nvim",
