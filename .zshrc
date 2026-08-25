@@ -55,6 +55,15 @@ alias venv='source venv/bin/activate'
 alias pr='gh pr checkout'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
+# Load the Docker Sandbox convenience commands.
+sbx-opencode() {
+  python3 "$DOTFILES_DIR/docker-sandboxes/sandboxes.py" opencode "$@"
+}
+
+sbx-codex() {
+  python3 "$DOTFILES_DIR/docker-sandboxes/sandboxes.py" codex "$@"
+}
+
 
 # add computer-specific configs in a separate, non-committed file
 [[ ! -f ~/.zshrc_addtl ]] || source ~/.zshrc_addtl

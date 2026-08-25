@@ -1,0 +1,24 @@
+schemaVersion: "2"
+kind: mixin
+name: codex-dotfiles
+displayName: Codex dotfiles
+description: Load the shared Codex configuration and global instructions
+
+# The wrapper renames Docker's sibling AGENTS.md to IGNORE_ME.md after setup;
+# mixins cannot override the built-in agentInstructions.filename.
+requires:
+  agent: codex
+
+setup:
+  install:
+    - command: |
+        if [ -z "${DOTFILES_DIR:-}" ]; then
+          echo "DOTFILES_DIR must be passed into the sandbox" >&2
+          exit 1
+        fi
+
+        mkdir -p /home/agent/.codex
+        ln -sfn "$DOTFILES_DIR/codex/config.toml" /home/agent/.codex/dotfiles.config.toml
+        ln -sfn "$DOTFILES_DIR/AGENTS.md" /home/agent/.codex/AGENTS.md
+      user: "1000"
+      description: Link the mounted dotfiles as a separate Codex configuration profile

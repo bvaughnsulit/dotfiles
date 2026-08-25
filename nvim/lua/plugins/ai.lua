@@ -3,6 +3,8 @@ local ai_cli_options = {
     opencode = { "opencode" },
     gemini = { "gemini" },
     codex = { "codex" },
+    ["sbx-opencode"] = { "sbx-opencode" },
+    ["sbx-codex"] = { "sbx-codex" },
 }
 
 ---@class ToggleAICLIOptions

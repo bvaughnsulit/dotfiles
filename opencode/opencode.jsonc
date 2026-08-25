@@ -1,7 +1,6 @@
 {
     // https://opencode.ai/docs/config/
     "$schema": "https://opencode.ai/config.json",
-    "theme": "system",
     "default_agent": "plan",
     "share": "disabled",
     "model": "anthropic/claude-opus-4-5",

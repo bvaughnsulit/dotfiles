@@ -1,0 +1,30 @@
+schemaVersion: "2"
+kind: mixin
+name: opencode-dotfiles
+displayName: OpenCode dotfiles
+description: Load the shared OpenCode configuration, plugins, and global instructions
+
+# The wrapper renames Docker's sibling AGENTS.md to IGNORE_ME.md after setup;
+# mixins cannot override the built-in agentInstructions.filename.
+requires:
+  agent: opencode
+
+environment:
+  variables:
+    OPENCODE_CONFIG: /home/agent/.config/opencode/dotfiles.jsonc
+    OPENCODE_CONFIG_DIR: /home/agent/.config/opencode/dotfiles
+
+setup:
+  install:
+    - command: |
+        if [ -z "${DOTFILES_DIR:-}" ]; then
+          echo "DOTFILES_DIR must be passed into the sandbox" >&2
+          exit 1
+        fi
+
+        mkdir -p /home/agent/.config/opencode/dotfiles
+        ln -sfn "$DOTFILES_DIR/opencode/opencode.jsonc" /home/agent/.config/opencode/dotfiles.jsonc
+        ln -sfn "$DOTFILES_DIR/AGENTS.md" /home/agent/.config/opencode/AGENTS.md
+        ln -sfn "$DOTFILES_DIR/opencode/plugins" /home/agent/.config/opencode/dotfiles/plugins
+      user: "1000"
+      description: Link the mounted dotfiles into OpenCode's configuration directories
