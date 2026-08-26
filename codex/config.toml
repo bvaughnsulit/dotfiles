@@ -1,1 +1,18 @@
+approvals_reviewer = "auto_review"
 
+[projects."/Users/vaughn/dotfiles"]
+trust_level = "trusted"
+
+[tui]
+status_line = [
+    "model-with-reasoning",
+    "context-used",
+    "five-hour-limit",
+    "weekly-limit",
+    "approval-mode",
+    "permissions",
+]
+status_line_use_colors = true
+notification_condition = "always"
+notification_method = "bel"
+notifications = true
