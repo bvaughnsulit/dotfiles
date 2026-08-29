@@ -5,7 +5,7 @@ return {
         -- "https://github.com/nvim-treesitter/nvim-treesitter-context",
         "https://github.com/bvaughnsulit/nvim-treesitter-context",
         branch = "bvs",
-        dev = true,
+        dev = false,
         event = "VeryLazy",
         ---@module 'treesitter-context'
         ---@type TSContext.UserConfig
