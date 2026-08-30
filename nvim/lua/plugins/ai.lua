@@ -60,8 +60,8 @@ local toggle_ai_cli = function(opts)
     })
 end
 
--- Opens every existing `ai_cli` terminal stacked top-to-bottom inside a single
--- vertical split. Falls back to `toggle_ai_cli` when none exist yet.
+-- Opens AI CLI terminals not already visible in the current tab as vertical
+-- splits. Falls back to `toggle_ai_cli` when none exist yet.
 local open_all_ai_clis = function()
     local ai_bufs = {}
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -73,20 +73,16 @@ local open_all_ai_clis = function()
         return
     end
 
-    -- Detach these buffers from any window currently showing them so the panel
-    -- is the only place they live.
+    local visible_bufs = {}
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.tbl_contains(ai_bufs, vim.api.nvim_win_get_buf(win)) then require("config.utils").safe_close_win(win) end
+        visible_bufs[vim.api.nvim_win_get_buf(win)] = true
     end
 
-    vim.api.nvim_open_win(ai_bufs[1], true, {
-        split = "right",
-        width = math.floor(vim.o.columns * 0.4),
-    })
-
-    for i = 2, #ai_bufs do
-        vim.api.nvim_open_win(ai_bufs[i], true, { split = "below" })
+    for _, buf in ipairs(ai_bufs) do
+        if not visible_bufs[buf] then vim.api.nvim_open_win(buf, true, { split = "right" }) end
     end
+
+    vim.cmd("wincmd =")
 end
 
 vim.keymap.set("n", "<leader>aa", open_all_ai_clis, { desc = "Open all AI CLIs" })
