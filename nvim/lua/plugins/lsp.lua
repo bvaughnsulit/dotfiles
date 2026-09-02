@@ -40,7 +40,6 @@ local servers = {
             },
         },
     },
-    ruff = {},
     basedpyright = {
         root_markers = { ".git" },
         settings = {
@@ -54,6 +53,8 @@ local servers = {
             },
         },
     },
+    ruff = {},
+    ty = {},
     eslint = {
         settings = {
             workingDirectory = { mode = "location" },
