@@ -1,4 +1,13 @@
 approvals_reviewer = "auto_review"
+service_tier = "default"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+notify = [
+    "uv",
+    "run",
+    "--no-project",
+    "$DOTFILES_DIR/codex/hooks/notification.py",
+]
 
 [projects."/Users/vaughn/dotfiles"]
 trust_level = "trusted"
