@@ -13,7 +13,6 @@ local defaults = {
         args = nil,
         env = nil,
     },
-    claude_args = {},
     default_ai_cli = "claude",
 }
 
