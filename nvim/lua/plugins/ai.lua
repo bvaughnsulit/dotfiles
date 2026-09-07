@@ -33,6 +33,9 @@ local toggle_ai_cli = function(opts)
         cb_on_every = opts.text and function() vim.api.nvim_put(opts.text, "c", true, true) end or nil,
         cb_on_create = function(term_bufnr)
             local passthrough_keys = {}
+            local codex_passthru_keys = { "<c-t>" }
+            if cmd[1] == "codex" then vim.list_extend(passthrough_keys, codex_passthru_keys) end
+
             local claude_passthru_keys = { "1", "2", "3", "4", "<c-g>", "<s-tab>", "<c-t>" }
             if cmd[1] == "claude" then vim.list_extend(passthrough_keys, claude_passthru_keys) end
 
