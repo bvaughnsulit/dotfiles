@@ -192,7 +192,7 @@ return {
             end
 
             for name, config in pairs(servers) do
-                local disabled = { "basedpyright" }
+                local disabled = { "basedpyright", "pyright" }
                 if not vim.tbl_contains(disabled, name) then
                     vim.lsp.config(name, config)
                     vim.lsp.enable(name)
