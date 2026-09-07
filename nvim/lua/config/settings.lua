@@ -13,7 +13,7 @@ local defaults = {
         args = nil,
         env = nil,
     },
-    default_ai_cli = "claude",
+    default_ai_cli = "sbx",
 }
 
 return require("neoconf").get("config", defaults)

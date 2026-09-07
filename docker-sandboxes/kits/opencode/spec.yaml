@@ -22,6 +22,6 @@ setup:
         fi
 
         ln -sfn "$DOTFILES_DIR/opencode" /home/agent/custom-config
-        ln -sfn "$DOTFILES_DIR/AGENTS.md" /home/agent/custom-config/AGENTS.md
+        ln -sfn "$DOTFILES_DIR/../.agents" /home/agent/.agents
       user: "1000"
       description: Link the mounted dotfiles into OpenCode's configuration directories

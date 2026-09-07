@@ -3,8 +3,7 @@ local ai_cli_options = {
     opencode = { "opencode" },
     gemini = { "gemini" },
     codex = { "codex" },
-    ["sbx-opencode"] = { "sbx-opencode" },
-    ["sbx-codex"] = { "sbx-codex" },
+    sbx = { "sbx" }, -- use ../*.sbxenv.yaml files
 }
 
 ---@class ToggleAICLIOptions
@@ -16,9 +15,18 @@ local ai_cli_options = {
 local toggle_ai_cli = function(opts)
     opts = opts or {}
 
-    local default_ai_cli = ai_cli_options[require("config.settings").default_ai_cli] or ai_cli_options.claude
+    local default_ai_cli = ai_cli_options[require("config.settings").default_ai_cli] or ai_cli_options.sbx
     local cmd = {}
     vim.list_extend(cmd, opts.cmd or default_ai_cli)
+
+    if cmd[1] == "sbx" then
+        vim.list_extend(cmd, {
+            "env",
+            "run",
+            "../.sbxenv/" .. require("config.utils").get_path_tail(vim.loop.cwd()) .. ".sbxenv.yaml",
+            "../.sbxenv/base.sbxenv.yaml",
+        })
+    end
 
     require("config.utils").toggle_persistent_terminal(cmd, opts.namespace or "ai_cli", {
         q_to_go_back = { "n" },
