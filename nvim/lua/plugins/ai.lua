@@ -1,7 +1,7 @@
 local ai_cli_options = {
     claude = { "claude" },
+    claude_opus_4_8 = { "claude", "--model", "claude-opus-4-8[1m]" },
     opencode = { "opencode" },
-    gemini = { "gemini" },
     codex = { "codex" },
     sbx = { "sbx" }, -- use ../*.sbxenv.yaml files
 }
