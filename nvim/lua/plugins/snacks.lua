@@ -423,7 +423,7 @@ return {
                 Snacks.picker.buffers({
                     preview = function(ctx)
                         -- prevents using the actual buffer in the previewer to preserve lastused values
-                        ctx.item.buf = nil
+                        if ctx.item.name ~= "" then ctx.item.buf = nil end
                         if ctx.item.buftype == "terminal" then
                             ctx.preview:set_lines({ ctx.item.file })
                             return
