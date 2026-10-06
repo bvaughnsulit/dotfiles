@@ -40,6 +40,7 @@ M.change_git_base = function()
     vim.ui.select({
         "merge_base",
         "HEAD",
+        "HEAD~1",
         "git log",
         "hash",
     }, { prompt = "Select a git base" }, function(selection)
