@@ -7,12 +7,6 @@ if [ "$(pwd)" != "$DOTFILES_DIR" ]; then
   exit 1
 fi
 
-echo "Making scripts executable..."
-chmod +x ${DOTFILES_DIR}/scripts/tmux-session.sh
-chmod +x ${DOTFILES_DIR}/claude/hooks/notification_hook.sh
-chmod +x ${DOTFILES_DIR}/claude/statusline.sh
-echo "Done."
-
 echo "Creating file symbolic links..."
 ln -si ${DOTFILES_DIR}/claude/settings.json ~/.claude/settings.json
 ln -si ${DOTFILES_DIR}/claude/keybindings.json ~/.claude/keybindings.json
