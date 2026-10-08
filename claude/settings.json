@@ -27,7 +27,7 @@
         ],
         "defaultMode": "auto"
     },
-    "model": "claude-opus-4-8[1m]",
+    "model": "opus",
     "hooks": {
         "Notification": [
             {
@@ -90,6 +90,8 @@
     "effortLevel": "high",
     "promptSuggestionEnabled": false,
     "tui": "default",
+    "autoMemoryEnabled": false,
     "theme": "light",
-    "preferredNotifChannel": "terminal_bell"
+    "preferredNotifChannel": "terminal_bell",
+    "switchModelsOnFlag": false
 }
