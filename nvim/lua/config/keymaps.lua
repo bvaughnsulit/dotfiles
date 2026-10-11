@@ -290,6 +290,20 @@ vim.keymap.set(
     { desc = "Copy Filename to Clipboard relative to CWD" }
 )
 
+local cwd_filename_with_line_to_clipboard = function()
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local filename_with_line = vim.fn.expand("%:.") .. ":" .. line
+    vim.fn.setreg("+", filename_with_line)
+    vim.notify("Copied to clipboard: " .. filename_with_line)
+end
+
+vim.keymap.set(
+    "n",
+    "<leader>rF",
+    cwd_filename_with_line_to_clipboard,
+    { desc = "Copy Filename with Line Number to Clipboard relative to CWD" }
+)
+
 utils.create_cmd_and_map(
     { name = "DiffSelect", opts = { range = true } },
     { mode = "v", lhs = "<leader>vd", opts = {} },

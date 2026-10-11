@@ -314,8 +314,9 @@ return {
                     put_filename = function(picker, item)
                         local filename = get_filename_from_item(item)
                         if not filename then return end
+                        local line_no = item.pos and item.pos[1]
                         picker:close()
-                        if vim.api.nvim_buf_get_name(0):find("term://ai_cli") then filename = "@" .. filename .. " " end
+                        if line_no then filename = filename .. ":" .. line_no end
                         vim.api.nvim_put({ filename }, "c", true, true)
                         vim.schedule(function() vim.cmd.startinsert() end)
                     end,
