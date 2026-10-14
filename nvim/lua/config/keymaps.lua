@@ -105,6 +105,11 @@ map("n", "<leader>xx", function()
     vim.cmd("so %")
 end, { desc = "Save and source current file" })
 
+utils.create_cmd_and_map("SourceAllInstances", "<leader>xX", function()
+    vim.cmd("w")
+    utils.source_in_all_instances()
+end, "Save and source current file in all nvim instances")
+
 map("n", "<leader>,r", ":restart<cr>", { desc = "Restart Neovim" })
 
 map("n", "gf", "gF", { desc = "Go to file under cursor at line" })
@@ -140,6 +145,9 @@ utils.create_cmd_and_map(
     function() utils.open_file_in_vscode() end,
     "Open File in VS Code"
 )
+
+local open_file_in_obsidian = function() vim.system({ "open", "-a", "Obsidian", vim.fn.expand("%:p") }) end
+utils.create_cmd_and_map("OpenFileInObsidian", "<leader>fo", open_file_in_obsidian, "Open File in Obsidian")
 
 utils.create_cmd_and_map("OpenRepoInGitHub", nil, function() utils.open_repo_in_gh() end, "Open Github Repo in Browser")
 
