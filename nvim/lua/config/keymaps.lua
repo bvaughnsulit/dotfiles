@@ -52,7 +52,6 @@ map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>")
 -- add some wincmd shortcuts for terminal mode
 map({ "t" }, "<C-w>q", "<cmd>wincmd q<cr>")
 map({ "t" }, "<C-w>=", "<cmd>wincmd =<cr>")
-map({ "t", "n" }, "<C-w>o", require("config.utils").only)
 
 map({ "i" }, "<M-h>", "<left>")
 map({ "i" }, "<M-l>", "<right>")
@@ -130,26 +129,64 @@ utils.create_cmd_and_map(
     "Toggle Relative Numbers"
 )
 
-utils.create_cmd_and_map(
-    "CopyGitHubUrlToClipboard",
-    nil,
-    function() utils.copy_gh_file_url() end,
-    "Copy GitHub URL to Clipboard"
-)
+---@return string | nil
+local get_gh_repo_url = function()
+    local result = vim.system({
+        "git",
+        "config",
+        "--get",
+        "remote.origin.url",
+    }, { text = true }):wait()
 
-utils.create_cmd_and_map("OpenFileInGitHub", nil, function() utils.open_file_in_gh() end, "Open File in Github")
+    if result.code ~= 0 or result.stdout == "" then
+        vim.notify("Error getting git remote URL")
+        return
+    end
+    if result.stdout then return result.stdout:sub(1, -6) end
+end
 
-utils.create_cmd_and_map(
-    "OpenFileInVSCode",
-    "<leader>vs",
-    function() utils.open_file_in_vscode() end,
-    "Open File in VS Code"
-)
+---@return string | nil
+local get_gh_file_url = function()
+    local path = vim.fn.expand("%:.")
+    local hash = require("config.git").get_merge_base_hash()
+    local repo_url = get_gh_repo_url()
+    local line_number = vim.api.nvim_win_get_cursor(0)[1]
+    if repo_url then return repo_url .. "/blob/" .. hash .. "/" .. path .. "\\#L" .. line_number end
+end
+
+---@return nil
+local copy_gh_file_url = function()
+    local url = get_gh_file_url()
+    vim.fn.setreg("+", url)
+    vim.notify("Copied to clipboard: " .. url)
+end
+
+utils.create_cmd_and_map("CopyGitHubUrlToClipboard", nil, copy_gh_file_url, "Copy GitHub URL to Clipboard")
+
+local open_file_in_gh = function()
+    local url = get_gh_file_url()
+    vim.cmd("silent !open " .. url)
+end
+
+utils.create_cmd_and_map("OpenFileInGitHub", nil, open_file_in_gh, "Open File in Github")
+
+local open_file_in_vscode = function()
+    local path = vim.fn.expand("%:p")
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    vim.cmd("silent !code -g " .. path .. ":" .. line)
+end
+
+utils.create_cmd_and_map("OpenFileInVSCode", "<leader>vs", open_file_in_vscode, "Open File in VS Code")
 
 local open_file_in_obsidian = function() vim.system({ "open", "-a", "Obsidian", vim.fn.expand("%:p") }) end
 utils.create_cmd_and_map("OpenFileInObsidian", "<leader>fo", open_file_in_obsidian, "Open File in Obsidian")
 
-utils.create_cmd_and_map("OpenRepoInGitHub", nil, function() utils.open_repo_in_gh() end, "Open Github Repo in Browser")
+local open_repo_in_gh = function()
+    local url = get_gh_repo_url()
+    vim.cmd("silent !open " .. url)
+end
+
+utils.create_cmd_and_map("OpenRepoInGitHub", nil, open_repo_in_gh, "Open Github Repo in Browser")
 
 vim.keymap.set({ "n" }, "<leader>tc", function() vim.cmd("tabnew") end, { desc = "New Tab" })
 vim.keymap.set({ "n" }, "<leader>tx", function() vim.cmd("tabclose") end, { desc = "Close Tab" })
@@ -189,10 +226,16 @@ vim.keymap.set("n", "<leader>!!", function()
     ]])
 end, { silent = true })
 
+--- HACK: reopens treesitter context after it's closed by wincmd o
+local only = function()
+    vim.cmd("only")
+    require("treesitter-context").enable()
+end
+
 -- wincmd o also zooms tmux pane
 vim.keymap.set({ "n", "t" }, "<c-w>o", function()
     -- default behavior
-    require("config.utils").only()
+    only()
     -- if unzoomed, zoom
     vim.cmd([[ silent
       \ !tmux if-shell -F
@@ -291,12 +334,14 @@ vim.keymap.set("n", "<leader>\\c", function()
     end)
 end)
 
-vim.keymap.set(
-    "n",
-    "<leader>rf",
-    utils.cwd_filename_to_clipboard,
-    { desc = "Copy Filename to Clipboard relative to CWD" }
-)
+---@return nil
+local cwd_filename_to_clipboard = function()
+    local filename = vim.fn.expand("%:.")
+    vim.fn.setreg("+", filename)
+    vim.notify("Copied to clipboard: " .. filename)
+end
+
+vim.keymap.set("n", "<leader>rf", cwd_filename_to_clipboard, { desc = "Copy Filename to Clipboard relative to CWD" })
 
 local cwd_filename_with_line_to_clipboard = function()
     local line = vim.api.nvim_win_get_cursor(0)[1]
@@ -312,16 +357,103 @@ vim.keymap.set(
     { desc = "Copy Filename with Line Number to Clipboard relative to CWD" }
 )
 
+---@type string | nil
+local diff_first_selection = nil
+---@type string | nil
+local diff_second_selection = nil
+
+local function open_diff_buf()
+    if diff_first_selection == nil or diff_second_selection == nil then
+        vim.notify("Diff: both selections must be captured before opening diff.")
+        return
+    end
+
+    local file1 = vim.fn.tempname()
+    local file2 = vim.fn.tempname()
+    vim.fn.writefile(vim.split(diff_first_selection, "\n"), file1)
+    vim.fn.writefile(vim.split(diff_second_selection, "\n"), file2)
+
+    local cmd = {
+        "delta",
+        file1,
+        file2,
+        "--line-numbers",
+        "--paging=never",
+        "--hunk-header-style=omit",
+        "--file-style=omit",
+    }
+
+    utils.toggle_persistent_terminal(cmd, "delta_diff_view", {
+        q_to_go_back = { "n", "t" },
+        auto_insert = false,
+        identifier = tostring(vim.fn.localtime()),
+    })
+end
+
+---@param opts? { range?: number } set if called via command with range
+local visual_diff = function(opts)
+    opts = opts or {}
+    local cur_mode = vim.fn.mode()
+    local has_range = opts.range and opts.range > 0
+
+    if cur_mode:find("[vV\22]") or has_range then
+        local start_pos, end_pos, region_type
+        if cur_mode:find("[vV\22]") then
+            -- called from visual mode
+            start_pos = vim.fn.getpos("v")
+            end_pos = vim.fn.getpos(".")
+            region_type = cur_mode
+        else
+            -- called from command with range
+            start_pos = vim.fn.getpos("'<")
+            end_pos = vim.fn.getpos("'>")
+            region_type = vim.fn.visualmode()
+            if region_type == "" then region_type = "v" end
+        end
+
+        local lines = vim.fn.getregion(start_pos, end_pos, { type = region_type })
+        local text = table.concat(lines, "\n")
+
+        if diff_first_selection ~= nil and diff_second_selection ~= nil then
+            -- if both selections are already captured, reset them to start a new diff
+            diff_first_selection = nil
+            diff_second_selection = nil
+        end
+
+        if diff_first_selection == nil then
+            diff_first_selection = text
+            vim.notify("Diff: first selection captured. Select second text and call function again.")
+            return
+        end
+
+        diff_second_selection = text
+        open_diff_buf()
+    else
+        -- if called from normal mode without range, try to reopen the last viewed diff
+        if diff_first_selection == nil or diff_second_selection == nil then
+            vim.notify("Diff: no previous diff to reopen.")
+            return
+        end
+        open_diff_buf()
+    end
+end
+
+local reset_diff_selections = function()
+    diff_first_selection = nil
+    diff_second_selection = nil
+    vim.notify("Diff: selection cleared.")
+end
+
 utils.create_cmd_and_map(
     { name = "DiffSelect", opts = { range = true } },
     { mode = "v", lhs = "<leader>vd", opts = {} },
-    function(...) utils.visual_diff(...) end,
+    visual_diff,
     "Diff visual selection (two-step) / Reopen last diff"
 )
 
-vim.keymap.set("n", "<leader>vd", function() utils.visual_diff() end, { desc = "Reopen last diff" })
+vim.keymap.set("n", "<leader>vd", visual_diff, { desc = "Reopen last diff" })
 
-utils.create_cmd_and_map("DiffSelectReset", nil, function() utils.reset_diff_selections() end, "Reset diff selection")
+utils.create_cmd_and_map("DiffSelectReset", nil, reset_diff_selections, "Reset diff selection")
 
 vim.keymap.set("n", "<leader>tf", function()
     vim.g.autoformat = not vim.g.autoformat
