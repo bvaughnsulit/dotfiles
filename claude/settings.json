@@ -66,7 +66,7 @@
     },
     "statusLine": {
         "type": "command",
-        "command": "$DOTFILES_DIR/claude/statusline.sh",
+        "command": "$DOTFILES_DIR/claude/statusline.py",
         "padding": 0
     },
     "enabledPlugins": {
