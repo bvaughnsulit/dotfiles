@@ -46,6 +46,7 @@ return {
             options = {
                 modules = {
                     dapui = true,
+                    diffchar = false,
                     diagnostic = true,
                     fzf = true,
                     gitsigns = true,

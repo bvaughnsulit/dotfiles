@@ -93,5 +93,6 @@
     "autoMemoryEnabled": false,
     "theme": "light",
     "preferredNotifChannel": "terminal_bell",
-    "switchModelsOnFlag": false
+    "switchModelsOnFlag": false,
+    "cleanupPeriodDays": 365
 }

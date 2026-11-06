@@ -431,6 +431,8 @@ return {
                         end
                         return Snacks.picker.preview.file(ctx)
                     end,
+                    -- use the same line as :buffers instead of the '"' mark
+                    transform = function(item) item.pos = { item.info.lnum, 0 } end,
                     current = false,
                 })
             end,
