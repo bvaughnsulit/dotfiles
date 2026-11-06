@@ -17,6 +17,7 @@ ln -si ${DOTFILES_DIR}/.gitconfig ~/.gitconfig
 ln -si ${DOTFILES_DIR}/.gitignore_global ~/.gitignore_global
 ln -si ${DOTFILES_DIR}/.p10k.zsh ~/.p10k.zsh
 ln -si ${DOTFILES_DIR}/.zshrc ~/.zshrc
+ln -si ${DOTFILES_DIR}/.tool-versions ~/.tool-versions
 ln -si ${DOTFILES_DIR}/lazygit/lazygit.yml ~/Library/Application\ Support/lazygit/config.yml
 echo "Done."
 
