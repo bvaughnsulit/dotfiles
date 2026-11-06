@@ -1,35 +1,22 @@
 tap "anomalyco/tap"
 tap "aws/tap"
 tap "docker/tap", trusted: true
-tap "homebrew/cask-fonts"
 tap "homebrew/services"
 tap "jesseduffield/lazygit"
-tap "romkatv/powerlevel10k"
-tap "sst/tap", "https://github.com/anomalyco/homebrew-tap.git"
 # CLI tool to build, test, debug, and deploy Serverless applications using AWS SAM
 brew "aws-sam-cli"
 # Official Amazon AWS command-line interface
 brew "awscli"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3", link: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Version manager for neovim
 brew "bob"
-# Validate CloudFormation templates against the CloudFormation spec
-brew "cfn-lint"
 # Official command-line tool for CircleCI
 brew "circleci"
-# Utility that creates projects from templates
-brew "cookiecutter"
-# GNU File, Shell, and Text utilities
-brew "coreutils"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# User-friendly command-line shell for UNIX-like operating systems
-brew "fish"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GitHub command-line tool
@@ -38,12 +25,8 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
-# Agent multiplexer that lives in your terminal
-brew "herdr"
 # Improved top (interactive process viewer)
 brew "htop"
-# Image manipulation library
-brew "jpeg"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -61,15 +44,13 @@ brew "mkcert"
 # Libraries for security-enabled client and server applications
 brew "nss"
 # Object-relational database system
-brew "postgresql@18"
+brew "postgresql@18", link: true
 # Theme for zsh
 brew "powerlevel10k"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Opinionated Lua code formatter
 brew "stylua"
-# Clean C library for processing UTF-8 Unicode data
-brew "utf8proc"
 # Terminal multiplexer
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
@@ -78,12 +59,8 @@ brew "tree"
 brew "tree-sitter-cli"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# PDF viewer
-brew "xpdf"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode", trusted: true
 # Command-line interface for 1Password
 cask "1password-cli"
 # OpenAI's coding agent that runs in your terminal
