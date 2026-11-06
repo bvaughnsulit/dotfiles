@@ -19,9 +19,6 @@ export MANPAGER="nvim +Man!"
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# asdf (node, python, go versions via .tool-versions)
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
@@ -67,3 +64,5 @@ export FZF_DEFAULT_COMMAND='fd . ~ --type dir --follow --max-depth 5 -E Library/
 export FZF_DEFAULT_OPTS='--layout reverse'
 export FZF_COMPLETION_TRIGGER='@'
 alias cdf='cd $(fzf)'
+
+eval "$(mise activate zsh)"
