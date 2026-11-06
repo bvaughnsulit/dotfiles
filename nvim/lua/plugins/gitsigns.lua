@@ -27,7 +27,7 @@ return {
                 changedelete = { text = "▌" },
                 untracked = { text = "▌" },
             },
-            base = git.get_git_base().hash,
+            base = git.get_git_base_hash(),
             diff_opts = {
                 internal = true,
             },
@@ -49,38 +49,49 @@ return {
                     vim.keymap.set(mode, l, r, opts)
                 end
 
+                local open_unified = function(cb)
+                    local Unified = require("gitsigns.unified")
+                    if Unified.get_view() then
+                        cb()
+                    else
+                        gitsigns.diffthis(git.get_git_base_hash(), { unified = true }, cb)
+                    end
+                end
+                -- TODO: possible to have inline hunk 2/n like with / searching?
                 map("n", "]c", function()
-                    if vim.wo.diff then return "]c" end
-                    vim.schedule(
-                        function()
-                            gitsigns.nav_hunk("next", {
-                                wrap = false,
-                                preview = true,
-                                foldopen = true,
-                                target = "all",
-                            })
-                        end
-                    )
-                    return "<Ignore>"
-                end, { expr = true })
+                    if vim.wo.diff then vim.cmd.normal({ "]c", bang = true }) end
+                    open_unified(function()
+                        vim.schedule(
+                            function()
+                                gitsigns.nav_hunk("next", {
+                                    wrap = false,
+                                    preview = false,
+                                    foldopen = true,
+                                    target = "all",
+                                })
+                            end
+                        )
+                    end)
+                end)
 
                 map("n", "[c", function()
-                    if vim.wo.diff then return "[c" end
-                    vim.schedule(
-                        function()
-                            gitsigns.nav_hunk("prev", {
-                                wrap = false,
-                                preview = true,
-                                foldopen = true,
-                                target = "all",
-                            })
-                        end
-                    )
-                    return "<Ignore>"
-                end, { expr = true })
+                    if vim.wo.diff then vim.cmd.normal({ "[c", bang = true }) end
+                    open_unified(function()
+                        vim.schedule(
+                            function()
+                                gitsigns.nav_hunk("prev", {
+                                    wrap = false,
+                                    preview = false,
+                                    foldopen = true,
+                                    target = "all",
+                                })
+                            end
+                        )
+                    end)
+                end)
 
                 -- Actions
-                map("n", "<leader>hh", function() gitsigns.preview_hunk() end)
+                map("n", "<leader>hh", function() gitsigns.diffthis(git.get_git_base_hash(), { unified = true }) end)
                 map("n", "<leader>gb", function() gitsigns.blame_line({ full = true }) end)
                 map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
                 map({ "n", "v" }, "<leader>hr", function() gitsigns.reset_hunk() end)
@@ -107,7 +118,7 @@ return {
         vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
             group = utils.augroup("gitsigns_refresh"),
             callback = function()
-                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(git.get_git_base().hash, true) end
+                if vim.o.buftype ~= "nofile" then require("gitsigns").change_base(git.get_git_base_hash(), true) end
             end,
         })
         return opts
