@@ -205,11 +205,11 @@ vim.keymap.set("n", "<C-\\>", function()
         \ '\#{?window_zoomed_flag,1,0}'
         \ 'resize-pane -Z'
         \ "if-shell -F
-          \ '\#{?pane_at_right,1,0}'
-          \ 'split-window -h -l 25\% ; split-window -v -l 80\%; select-pane -R'
+          \ '\#{?pane_at_bottom,1,0}'
+          \ 'split-window -v -l 20\% ; split-window -h -l 50\%; select-pane -D'
           \ '' "
         \ ';'
-      \ select-pane -R
+      \ select-pane -D
     ]])
 end, { silent = true })
 
@@ -246,8 +246,8 @@ vim.keymap.set({ "n", "t" }, "<c-w>o", function()
 end, { silent = true })
 
 utils.create_cmd_and_map("WhichConfig", nil, function() vim.notify(vim.fn.stdpath("config")) end, "Print Config Path")
-map("n", "gcT", "<cmd>normal gcATODO: <cr>", { desc = "Add Todo At End Of Line" })
-map("n", "gcN", "<cmd>normal gcANOTE: <cr>", { desc = "Add Note At End Of Line" })
+map("n", "gcT", "<cmd>normal gcOTODO: <cr>", { desc = "Add Todo At End Of Line" })
+map("n", "gcN", "<cmd>normal gcONOTE: <cr>", { desc = "Add Note At End Of Line" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })

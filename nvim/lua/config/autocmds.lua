@@ -26,10 +26,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("wrap_spell"),
-    pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+    pattern = { "text", "plaintex", "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.spell = false
+        -- no "f" flag so <CR>/o/O repeat the list marker instead of aligning to the text
+        vim.opt_local.comments = "b:- [ ],b:- [x],b:*,b:-,b:+,n:>"
     end,
 })
 

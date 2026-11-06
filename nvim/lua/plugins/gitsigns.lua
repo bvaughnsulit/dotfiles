@@ -65,7 +65,7 @@ return {
                             function()
                                 gitsigns.nav_hunk("next", {
                                     wrap = false,
-                                    preview = false,
+                                    preview = true,
                                     foldopen = true,
                                     target = "all",
                                 })
@@ -81,7 +81,7 @@ return {
                             function()
                                 gitsigns.nav_hunk("prev", {
                                     wrap = false,
-                                    preview = false,
+                                    preview = true,
                                     foldopen = true,
                                     target = "all",
                                 })
