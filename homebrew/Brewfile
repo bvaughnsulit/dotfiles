@@ -3,67 +3,36 @@ tap "aws/tap"
 tap "docker/tap", trusted: true
 tap "homebrew/services"
 tap "jesseduffield/lazygit"
-# CLI tool to build, test, debug, and deploy Serverless applications using AWS SAM
 brew "aws-sam-cli"
-# Official Amazon AWS command-line interface
 brew "awscli"
-# Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Version manager for neovim
 brew "bob"
-# Official command-line tool for CircleCI
 brew "circleci"
-# Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
-# Simple, fast and user-friendly alternative to find
 brew "fd"
-# Command-line fuzzy finder written in Go
 brew "fzf"
-# GitHub command-line tool
 brew "gh"
-# Distributed revision control system
 brew "git"
-# Syntax-highlighting pager for git and diff output
 brew "git-delta"
-# Improved top (interactive process viewer)
 brew "htop"
-# Lightweight and flexible command-line JSON processor
 brew "jq"
-# Handy way to save and run project-specific commands
 brew "just"
-# Kubernetes command-line interface
 brew "kubernetes-cli"
-# Simple terminal UI for git commands
 brew "lazygit"
-# Pager program similar to more
 brew "less"
-# Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Simple tool to make locally trusted development certificates
 brew "mkcert"
-# Libraries for security-enabled client and server applications
 brew "nss"
-# Object-relational database system
 brew "postgresql@18", link: true
-# Theme for zsh
 brew "powerlevel10k"
-# Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# Opinionated Lua code formatter
 brew "stylua"
-# Terminal multiplexer
 brew "tmux"
-# Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Parser generator tool
 brew "tree-sitter-cli"
-# Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Command-line interface for 1Password
 cask "1password-cli"
-# OpenAI's coding agent that runs in your terminal
 cask "codex"
 cask "font-blex-mono-nerd-font"
 cask "font-fira-mono-nerd-font"
@@ -71,7 +40,5 @@ cask "font-go-mono-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-sauce-code-pro-nerd-font"
-# Local voice dictation
 cask "anomalyco/tap/hex", trusted: true
-# Build, run, and govern agents across the software development lifecycle
 cask "docker/tap/sbx", trusted: true

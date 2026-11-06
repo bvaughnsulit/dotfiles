@@ -1,5 +1,14 @@
 `sh scripts/setup.sh`
 
+## Homebrew
+
+```sh
+brew bundle install                 # install everything in the Brewfile
+brew bundle dump --force            # overwrite the Brewfile with what's installed
+brew bundle cleanup (--force)       # list installed packages not in the Brewfile (--force to uninstall)
+brew bundle add <formula>           # add a formula to the Brewfile (--cask for casks)
+```
+
 ## Agent sandboxes
 
 The shell configuration provides commands for creating Docker Sandboxes with
