@@ -19,6 +19,9 @@ ln -si ${DOTFILES_DIR}/.p10k.zsh ~/.p10k.zsh
 ln -si ${DOTFILES_DIR}/.zshrc ~/.zshrc
 ln -si ${DOTFILES_DIR}/.tool-versions ~/.tool-versions
 ln -si ${DOTFILES_DIR}/lazygit/lazygit.yml ~/Library/Application\ Support/lazygit/config.yml
+mkdir -p ~/.homebrew
+ln -si ${DOTFILES_DIR}/homebrew/brew.env ~/.homebrew/brew.env
+ln -si ${DOTFILES_DIR}/homebrew/Brewfile ~/.homebrew/Brewfile
 echo "Done."
 
 echo "Creating directory symbolic links..."
