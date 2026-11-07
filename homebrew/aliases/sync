@@ -1,0 +1,5 @@
+#! /bin/bash
+# alias: brew sync
+#:  * `sync`
+#:    `brew sync` is an alias for `brew bundle cleanup --force && brew bundle install`
+brew bundle cleanup --force && brew bundle install
