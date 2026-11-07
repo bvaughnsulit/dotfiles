@@ -382,7 +382,7 @@ return {
             function()
                 Snacks.picker.git_diff({
                     group = true,
-                    base = require("config.git").get_git_base().hash,
+                    base = require("config.git").get_git_base_hash(),
                 })
             end,
             desc = "Pick Git status",

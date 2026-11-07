@@ -1,42 +1,45 @@
 local M = {}
 
----@type string | nil
+---@type string
 local git_base = "merge_base"
 
----@return {name: string | nil, hash: string | nil}
-M.get_git_base = function()
-    local hash
+---@class GitCwdCache
+---@field inside_work_tree? boolean
+---@field default_branch? string | false # `false` when no default branch could be determined
 
-    if not git_base then return {
-        name = nil,
-        hash = nil,
-    } end
+--- Results of git queries that rarely change, keyed by cwd.
+---@type table<string, GitCwdCache>
+local cwd_cache = {}
 
-    local result = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }):wait()
+---@return GitCwdCache
+local get_cwd_cache = function()
+    local cwd = vim.uv.cwd() or ""
+    cwd_cache[cwd] = cwd_cache[cwd] or {}
+    return cwd_cache[cwd]
+end
 
-    if result.code ~= 0 or result.stdout:sub(1, -2) ~= "true" then
-        -- vim.notify("Not inside a git repository", vim.log.levels.DEBUG)
-        hash = nil
-        git_base = nil
+---@return boolean
+M.is_inside_work_tree = function()
+    local cache = get_cwd_cache()
+    if cache.inside_work_tree == nil then
+        local result = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }):wait()
+        cache.inside_work_tree = result.code == 0 and vim.trim(result.stdout) == "true"
     end
+    return cache.inside_work_tree
+end
 
-    if git_base then
-        if string.lower(git_base) == "head" then
-            hash = nil
-        elseif git_base == "merge_base" then
-            hash = M.get_merge_base_hash()
-        else
-            hash = M.get_rev_hash(git_base)
-        end
-    end
+---@return string
+M.get_git_base = function() return git_base end
 
-    return {
-        name = git_base,
-        hash = hash,
-    }
+---@return string | nil
+M.get_git_base_hash = function()
+    if not M.is_inside_work_tree() or string.lower(git_base) == "head" then return nil end
+    if git_base == "merge_base" then return M.get_merge_base_hash() end
+    return M.get_rev_hash(git_base)
 end
 
 M.change_git_base = function()
+    cwd_cache = {}
     vim.ui.select({
         "merge_base",
         "HEAD",
@@ -52,7 +55,7 @@ M.change_git_base = function()
                     if input and type(M.get_rev_hash(vim.trim(input))) == "string" then
                         git_base = vim.trim(input)
                         ---@diagnostic disable-next-line: param-type-mismatch
-                        require("gitsigns").change_base(M.get_git_base().hash, true)
+                        require("gitsigns").change_base(M.get_git_base_hash(), true)
                         vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
                     else
                         vim.notify("Invalid git base hash: " .. input, vim.log.levels.WARN)
@@ -63,7 +66,7 @@ M.change_git_base = function()
                     confirm = function(picker, item)
                         git_base = item.commit
                         ---@diagnostic disable-next-line: param-type-mismatch
-                        require("gitsigns").change_base(M.get_git_base().hash, true)
+                        require("gitsigns").change_base(M.get_git_base_hash(), true)
                         vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
                         picker:close()
                     end,
@@ -71,7 +74,7 @@ M.change_git_base = function()
             else
                 git_base = selection
                 ---@diagnostic disable-next-line: param-type-mismatch
-                require("gitsigns").change_base(M.get_git_base().hash, true)
+                require("gitsigns").change_base(M.get_git_base_hash(), true)
                 vim.notify("Git base changed to: " .. git_base, vim.log.levels.INFO)
             end
         else
@@ -82,26 +85,38 @@ end
 
 vim.keymap.set("n", "<leader>gcb", M.change_git_base, { desc = "Change git base" })
 
----@alias branch 'main' | 'master'
----@return branch | nil
+--- The branch origin/HEAD points to, falling back to a local main or master branch.
+---@return string | nil
 M.get_default_branch_name = function()
-    local result = vim.system({
-        "git",
-        "for-each-ref",
-        "--format=%(refname:short)",
-        "refs/heads/main",
-        "refs/heads/master",
-    }, { text = true }):wait()
+    local cache = get_cwd_cache()
+    if cache.default_branch == nil then
+        local origin_head = vim.system(
+            { "git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD" },
+            { text = true }
+        ):wait()
+        if origin_head.code == 0 and origin_head.stdout ~= "" then
+            cache.default_branch = vim.trim(origin_head.stdout):gsub("^origin/", "")
+        else
+            local result = vim.system({
+                "git",
+                "for-each-ref",
+                "--format=%(refname:short)",
+                "refs/heads/main",
+                "refs/heads/master",
+            }, { text = true }):wait()
 
-    if result.code ~= 0 then
-        vim.notify("Error getting git refs")
-        return
+            if result.code ~= 0 then
+                vim.notify("Error getting git refs")
+                cache.default_branch = false
+            elseif result.stdout == "" then
+                vim.notify("No main or master branch found", vim.log.levels.INFO)
+                cache.default_branch = false
+            else
+                cache.default_branch = vim.split(result.stdout, "\n")[1]
+            end
+        end
     end
-    if result.stdout == "" then
-        vim.notify("No main or master branch found", vim.log.levels.INFO)
-        return
-    end
-    return result.stdout:sub(1, -2)
+    return cache.default_branch or nil
 end
 
 ---@param args string[] | nil
@@ -132,7 +147,9 @@ end
 
 ---@return string | nil
 M.get_merge_base_hash = function()
-    local result = vim.system({ "git", "merge-base", M.get_default_branch_name(), "HEAD" }, { text = true }):wait()
+    local default_branch = M.get_default_branch_name()
+    if not default_branch then return nil end
+    local result = vim.system({ "git", "merge-base", default_branch, "HEAD" }, { text = true }):wait()
     if result.code ~= 0 then
         vim.notify("Error getting merge base hash", vim.log.levels.DEBUG)
         return nil
@@ -149,6 +166,19 @@ M.get_rev_hash = function(rev)
         return nil
     end
     return result.stdout:sub(1, -2)
+end
+
+---@return string[] # absolute paths of every worktree of the current repo
+M.get_worktree_paths = function()
+    local result = vim.system({ "git", "worktree", "list", "--porcelain" }, { text = true }):wait()
+    if result.code ~= 0 then return {} end
+
+    local paths = {}
+    for _, line in ipairs(vim.split(result.stdout, "\n")) do
+        local path = line:match("^worktree (.+)$")
+        if path then table.insert(paths, path) end
+    end
+    return paths
 end
 
 M.get_worktree_panes = function()

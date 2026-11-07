@@ -19,7 +19,7 @@ return {
     keys = {
         {
             "<leader>gd",
-            ":DeltaView " .. (git.get_git_base().hash or "") .. "<cr>",
+            ":DeltaView " .. (git.get_git_base_hash() or "") .. "<cr>",
             desc = "Open DeltaView",
         },
     },

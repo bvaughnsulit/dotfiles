@@ -18,6 +18,15 @@ return {
             return false
         end
 
+        local show_git_components = function()
+            return git.is_inside_work_tree()
+                and vim.bo.buftype ~= "terminal"
+                and not vim.tbl_contains({
+                    "help",
+                    "man",
+                }, vim.bo.filetype)
+        end
+
         local tab_component = {
             "tabs",
             cond = function()
@@ -68,17 +77,17 @@ return {
                     {
                         "branch",
                         icon = "󰘬",
+                        cond = show_git_components,
                     },
                     {
                         function()
-                            local git_base = git.get_git_base().name
-                            if git_base == nil then return "" end
-                            if git_base == "merge_base" then
-                                return "(" .. git.get_default_branch_name() .. "...HEAD)"
-                            else
-                                return "(" .. git_base .. ")"
-                            end
+                            local git_base = git.get_git_base()
+                            if git_base ~= "merge_base" then return "(" .. git_base .. ")" end
+                            local default_branch = git.get_default_branch_name()
+                            if not default_branch then return "" end
+                            return "(" .. default_branch .. "...HEAD)"
                         end,
+                        cond = show_git_components,
                     },
                 },
                 lualine_x = {
