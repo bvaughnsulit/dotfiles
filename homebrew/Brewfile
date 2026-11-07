@@ -42,3 +42,4 @@ cask "font-jetbrains-mono-nerd-font"
 cask "font-sauce-code-pro-nerd-font"
 cask "anomalyco/tap/hex", trusted: true
 cask "docker/tap/sbx", trusted: true
+brew "difftastic"

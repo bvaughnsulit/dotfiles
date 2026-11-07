@@ -24,6 +24,10 @@ git:
   diffRenderers:
     - colorArg: always
       command: '[ "$(defaults read -globalDomain AppleInterfaceStyle 2>/dev/null)" = "Dark" ] && (delta --paging=never --dark) || (delta --paging=never --light)'
+    - colorArg: always
+      command: '[ "$(defaults read -globalDomain AppleInterfaceStyle 2>/dev/null)" = "Dark" ] && (delta --paging=never --dark --side-by-side) || (delta --paging=never --light --side-by-side)'
+    - type: extDiff
+      command: difft --color=always --background={{colorScheme}} --context={{diffContext}} --display=inline
 quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 notARepository: quit
