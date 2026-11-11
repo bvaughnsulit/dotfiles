@@ -1,0 +1,2 @@
+[env]
+CLAUDE_CONFIG_DIR = "{{env.HOME}}/.claude"

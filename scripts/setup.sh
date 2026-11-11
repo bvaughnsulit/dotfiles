@@ -31,6 +31,7 @@ ln -siF ${DOTFILES_DIR}/nvim ~/.config/nvim
 ln -siF ${DOTFILES_DIR}/tmux ~/.config/tmux
 ln -siF ${DOTFILES_DIR}/opencode/plugins ~/.config/opencode/plugins
 ln -siF ${DOTFILES_DIR}/homebrew/aliases ~/.brew-aliases
+ln -siF ${DOTFILES_DIR}/mise ~/.config/mise
 echo "Done."
 
 echo "Setup complete."
