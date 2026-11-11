@@ -129,4 +129,29 @@ return {
             return opts
         end,
     },
+    {
+        "https://github.com/kokusenz/deltaview.nvim",
+        ---@module 'deltaview'
+        ---@type DeltaViewOpts
+        ---@diagnostic disable: missing-fields
+        opts = {
+            keyconfig = {
+                next_hunk = "]c",
+                prev_hunk = "[c",
+            },
+        },
+        ---@diagnostic enable: missing-fields
+        cmd = { "DeltaView", "DeltaMenu" },
+        keys = {
+            {
+                "<leader>gd",
+                ":DeltaView " .. (git.get_git_base_hash() or "") .. "<cr>",
+                desc = "Open DeltaView",
+            },
+        },
+    },
+    {
+        "https://github.com/barrettruth/diffs.nvim",
+        event = "VeryLazy",
+    },
 }
