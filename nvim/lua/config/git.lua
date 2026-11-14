@@ -38,6 +38,11 @@ M.get_git_base_hash = function()
     return M.get_rev_hash(git_base)
 end
 
+--- Like `get_git_base_hash`, but resolves a HEAD base to "HEAD" instead of nil, for tools that need an
+--- explicit revision (gitsigns treats nil as the index; deltaview treats a missing ref as its last-used ref).
+---@return string
+M.get_git_base_rev = function() return M.get_git_base_hash() or "HEAD" end
+
 M.change_git_base = function()
     cwd_cache = {}
     vim.ui.select({
@@ -230,5 +235,238 @@ M.switch_worktree_pane = function()
 end
 
 vim.keymap.set("n", "<leader>gt", M.switch_worktree_pane, { desc = "Switch to git worktree pane" })
+
+--- Opens DeltaView on the current file against the persisted git base.
+M.open_deltaview = function() vim.cmd.DeltaView(M.get_git_base_rev()) end
+
+--- Populates the quickfix list with files changed since the persisted git base.
+M.open_deltamenu_quickfix = function() vim.cmd.DeltaMenu({ args = { M.get_git_base_rev() }, bang = true }) end
+
+---@class HunkTarget
+---@field path string # absolute path of the file, as named by the buffer
+---@field lnum integer # worktree line under the cursor; on a deleted line, the worktree line it was deleted after (0 = top)
+---@field on_deleted_line boolean # cursor is on a deltaview "removed" line, which has no worktree line
+---@field single_file_deltaview boolean # cursor is in a `:DeltaView` buffer, which can be rebuilt after committing
+
+---@class UnstagedHunk
+---@field new_start integer
+---@field new_count integer
+---@field lines string[] # the `@@` header followed by the hunk body
+
+---@param bufnr integer
+---@return HunkTarget | nil
+local get_buffer_hunk_target = function(bufnr)
+    if vim.bo[bufnr].buftype ~= "" then
+        vim.notify("Not a file buffer", vim.log.levels.WARN)
+        return nil
+    end
+    if vim.bo[bufnr].modified then
+        vim.notify("Save the buffer before committing a hunk", vim.log.levels.WARN)
+        return nil
+    end
+    return {
+        path = vim.api.nvim_buf_get_name(bufnr),
+        lnum = vim.api.nvim_win_get_cursor(0)[1],
+        on_deleted_line = false,
+        single_file_deltaview = false,
+    }
+end
+
+--- Maps the cursor in a deltaview diff buffer back to a worktree file and line, using the same
+--- `delta_diff_data_set` buffer variable deltaview uses to place the cursor when exiting a diff.
+---@param bufnr integer
+---@return HunkTarget | nil
+local get_deltaview_hunk_target = function(bufnr)
+    local diff_data_set = vim.b[bufnr].delta_diff_data_set
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    for _, diff_data in ipairs(diff_data_set) do
+        for _, hunk in ipairs(diff_data.hunks) do
+            local prev_new_line_num ---@type integer | nil
+            for line_idx, line in ipairs(hunk.lines) do
+                if line.formatted_diff_line_num + 1 == row then
+                    local lnum = line.new_line_num
+                    local on_deleted_line = lnum == nil
+                    if on_deleted_line then
+                        lnum = prev_new_line_num
+                        if lnum == nil then
+                            -- deletion leads the hunk: it sits just before the next surviving line
+                            for next_idx = line_idx + 1, #hunk.lines do
+                                local next_new_line_num = hunk.lines[next_idx].new_line_num
+                                if next_new_line_num then
+                                    lnum = next_new_line_num - 1
+                                    break
+                                end
+                            end
+                        end
+                        lnum = lnum or hunk.new_start
+                    end
+
+                    -- `:Delta <path>` diffs carry repo-relative paths; `:DeltaView` diffs are built from
+                    -- in-memory text, so the source file is only recorded in the buffer name.
+                    local path = diff_data.new_path and (vim.b[bufnr].git_root .. "/" .. diff_data.new_path)
+                        or vim.api.nvim_buf_get_name(bufnr):match("^deltaview://diff/(.-)    ")
+                    if not path or vim.fn.filereadable(path) == 0 then
+                        vim.notify("Could not determine the file for this deltaview line", vim.log.levels.WARN)
+                        return nil
+                    end
+
+                    return {
+                        path = path,
+                        lnum = lnum,
+                        on_deleted_line = on_deleted_line,
+                        single_file_deltaview = diff_data.new_path == nil,
+                    }
+                end
+                prev_new_line_num = line.new_line_num or prev_new_line_num
+            end
+        end
+    end
+
+    vim.notify("Cursor is not on a diff line", vim.log.levels.WARN)
+    return nil
+end
+
+---@param root string
+---@param args string[]
+---@param opts? vim.SystemOpts
+---@return vim.SystemCompleted
+local run_git = function(root, args, opts)
+    local cmd = vim.list_extend({ "git", "-C", root }, args)
+    return vim.system(cmd, vim.tbl_extend("force", { text = true }, opts or {})):wait()
+end
+
+--- Parses `git diff -U0` (index -> worktree) for one file.
+---@param root string
+---@param relpath string
+---@return string[] | nil header # the file header lines (`diff --git`, `index`, `---`, `+++`)
+---@return UnstagedHunk[] hunks
+local get_unstaged_hunks = function(root, relpath)
+    local result = run_git(root, { "diff", "--no-ext-diff", "--no-color", "-U0", "--", relpath })
+    if result.code ~= 0 then
+        vim.notify("git diff failed: " .. result.stderr, vim.log.levels.ERROR)
+        return nil, {}
+    end
+
+    local header, hunks = {}, {} ---@type string[], UnstagedHunk[]
+    for _, line in ipairs(vim.split(result.stdout, "\n", { trimempty = true })) do
+        local new_start, new_count = line:match("^@@ %-%d+,?%d* %+(%d+),?(%d*) @@")
+        if new_start then
+            table.insert(hunks, {
+                new_start = tonumber(new_start),
+                new_count = new_count == "" and 1 or tonumber(new_count),
+                lines = { line },
+            })
+        elseif #hunks > 0 then
+            table.insert(hunks[#hunks].lines, line)
+        else
+            table.insert(header, line)
+        end
+    end
+    return header, hunks
+end
+
+--- Whether an index -> worktree hunk covers the cursor target. A pure deletion (count 0) sits after line
+--- `new_start`; in a file buffer it is shown on line `new_start` (or line 1 for a deletion at the top).
+---@param hunk UnstagedHunk
+---@param target HunkTarget
+---@return boolean
+local hunk_contains_target = function(hunk, target)
+    local last = hunk.new_start + hunk.new_count - 1
+    if target.on_deleted_line then
+        if hunk.new_count == 0 then return hunk.new_start == target.lnum end
+        return hunk.new_start <= target.lnum + 1 and target.lnum + 1 <= last
+    end
+    if hunk.new_count == 0 then return hunk.new_start == target.lnum or (hunk.new_start == 0 and target.lnum == 1) end
+    return hunk.new_start <= target.lnum and target.lnum <= last
+end
+
+--- Rebuilds a `:DeltaView` buffer (deltaview has no refresh API) by returning to the source file at
+--- the committed hunk and reopening the view against the persisted git base.
+---@param target HunkTarget
+local rebuild_deltaview = function(target)
+    vim.cmd.edit(vim.fn.fnameescape(target.path))
+    local lnum = math.min(math.max(target.lnum, 1), vim.api.nvim_buf_line_count(0))
+    vim.api.nvim_win_set_cursor(0, { lnum, 0 })
+    M.open_deltaview()
+end
+
+--- Stages the unstaged (index -> worktree) hunk under the cursor and commits it, or amends HEAD with it.
+--- Works in file buffers and deltaview diff buffers. Untracked files are staged whole. Refuses to run
+--- when the index already has staged changes, so the commit contains only this hunk.
+---@param amend boolean
+M.commit_cursor_hunk = function(amend)
+    local bufnr = vim.api.nvim_get_current_buf()
+    -- deltaview's own `is_deltaview_buffer()` checks a variable it never sets, so detect its diff data instead
+    local target
+    if vim.b[bufnr].delta_diff_data_set then
+        target = get_deltaview_hunk_target(bufnr)
+    else
+        target = get_buffer_hunk_target(bufnr)
+    end
+    if not target then return end
+
+    -- dotfiles buffers are often named via symlinks; git needs the real path to compute a repo-relative one
+    local realpath = vim.uv.fs_realpath(target.path) or target.path
+    local toplevel = run_git(vim.fs.dirname(realpath), { "rev-parse", "--show-toplevel" })
+    if toplevel.code ~= 0 then
+        vim.notify("Not in a git repository: " .. target.path, vim.log.levels.WARN)
+        return
+    end
+    local root = vim.trim(toplevel.stdout)
+    local relpath = realpath:sub(#root + 2)
+
+    if run_git(root, { "diff", "--cached", "--quiet" }).code ~= 0 then
+        vim.notify("The index already has staged changes; commit or unstage them first", vim.log.levels.WARN)
+        return
+    end
+
+    local stage_args ---@type string[]
+    local stage_opts ---@type vim.SystemOpts | nil
+    if run_git(root, { "ls-files", "--error-unmatch", "--", relpath }).code ~= 0 then
+        stage_args = { "add", "--", relpath }
+    else
+        local header, hunks = get_unstaged_hunks(root, relpath)
+        if not header then return end
+        local hunk = vim.iter(hunks):find(function(h) return hunk_contains_target(h, target) end)
+        if not hunk then
+            vim.notify("No unstaged hunk under the cursor", vim.log.levels.WARN)
+            return
+        end
+        stage_args = { "apply", "--cached", "--unidiff-zero", "--whitespace=nowarn", "-" }
+        stage_opts = { stdin = table.concat(vim.list_extend(vim.list_extend({}, header), hunk.lines), "\n") .. "\n" }
+    end
+
+    ---@param commit_args string[]
+    local stage_and_commit = function(commit_args)
+        local staged = run_git(root, stage_args, stage_opts)
+        if staged.code ~= 0 then
+            vim.notify("Failed to stage hunk: " .. staged.stderr, vim.log.levels.ERROR)
+            return
+        end
+
+        local committed = run_git(root, vim.list_extend({ "commit" }, commit_args))
+        if committed.code ~= 0 then
+            -- the index matched HEAD before staging, so resetting this path restores it exactly
+            run_git(root, { "reset", "-q", "--", relpath })
+            vim.notify("Commit failed, hunk unstaged:\n" .. committed.stderr .. committed.stdout, vim.log.levels.ERROR)
+            return
+        end
+        vim.notify(vim.split(committed.stdout, "\n")[1], vim.log.levels.INFO)
+
+        if package.loaded.gitsigns then require("gitsigns").refresh() end
+        if target.single_file_deltaview then rebuild_deltaview(target) end
+    end
+
+    if amend then
+        stage_and_commit({ "--amend", "--no-edit" })
+    else
+        vim.ui.input({ prompt = "Commit message: " }, function(message)
+            if message and vim.trim(message) ~= "" then stage_and_commit({ "-m", message }) end
+        end)
+    end
+end
+
+vim.keymap.set("n", "<leader>hc", function() M.commit_cursor_hunk(false) end, { desc = "Stage and commit hunk" })
+vim.keymap.set("n", "<leader>ha", function() M.commit_cursor_hunk(true) end, { desc = "Stage and amend hunk" })
 
 return M

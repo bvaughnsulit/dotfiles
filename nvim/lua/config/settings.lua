@@ -14,6 +14,7 @@ local defaults = {
         env = nil,
     },
     default_ai_cli = nil,
+    agent_specs = {},
 }
 
 return require("neoconf").get("config", defaults)

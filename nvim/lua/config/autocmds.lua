@@ -24,6 +24,22 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function() vim.cmd([[hi! default link MiniCursorword LspReferenceText]]) end,
 })
 
+local function set_gitsigns_unified_highlights()
+    -- gitsigns unified diffthis fills the gutter of deleted lines with base line numbers;
+    -- blend them into the background so the gutter looks empty
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+    vim.api.nvim_set_hl(0, "GitSignsVirtLnum", { fg = normal.bg, bg = normal.bg })
+    -- drop the added-line background so CursorLine shows through; an empty group would be
+    -- re-linked to DiffAdd by gitsigns, so set a cterm-only color (ignored with termguicolors)
+    vim.api.nvim_set_hl(0, "GitSignsAddPreview", { ctermbg = 22 })
+end
+set_gitsigns_unified_highlights()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    desc = "adjust gitsigns unified diffthis highlights",
+    group = augroup("gitsigns_unified_highlights"),
+    callback = set_gitsigns_unified_highlights,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("wrap_spell"),
     pattern = { "text", "plaintex", "gitcommit", "markdown" },

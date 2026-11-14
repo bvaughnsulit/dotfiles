@@ -224,7 +224,7 @@ M.get_responsive_win_config = function()
     }
     local split_config = {
         split = "right",
-        width = math.floor(vim.o.columns * 0.4),
+        -- width = math.floor(vim.o.columns * 0.4),
     }
 
     return is_small_screen and float_config or split_config

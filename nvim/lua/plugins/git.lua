@@ -143,11 +143,8 @@ return {
         ---@diagnostic enable: missing-fields
         cmd = { "DeltaView", "DeltaMenu" },
         keys = {
-            {
-                "<leader>gd",
-                ":DeltaView " .. (git.get_git_base_hash() or "") .. "<cr>",
-                desc = "Open DeltaView",
-            },
+            { "<leader>gd", git.open_deltaview, desc = "Open DeltaView" },
+            { "<leader>gq", git.open_deltamenu_quickfix, desc = "Open Changed Files in Quickfix" },
         },
     },
     {

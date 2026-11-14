@@ -1,7 +1,7 @@
 approvals_reviewer = "auto_review"
 service_tier = "default"
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-sol"
+model_reasoning_effort = "medium"
 notify = [
     "uv",
     "run",
@@ -10,6 +10,15 @@ notify = [
 ]
 
 [projects."/Users/vaughn/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/vaughn/.agents"]
+trust_level = "trusted"
+
+[projects."/Users/vaughn/northspyre"]
+trust_level = "trusted"
+
+[projects."/Users/vaughn/dev/local-config"]
 trust_level = "trusted"
 
 [tui]
@@ -25,3 +34,23 @@ status_line_use_colors = true
 notification_condition = "always"
 notification_method = "bel"
 notifications = true
+theme = "one-half-light"
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
+
+[[hooks.PreCompact]]
+matcher = "^auto$"
+
+[[hooks.PreCompact.hooks]]
+type = "command"
+command = 'uv run --no-project "$DOTFILES_DIR/codex/hooks/block_auto_compaction.py"'
+timeout = 5
+
+[hooks.state]
+
+[hooks.state."/Users/vaughn/.codex/config.toml:pre_compact:0:0"]
+trusted_hash = "sha256:dce357546ba493a35912db83930323a69133c9fd5713846ae9ec69c6dc5e0689"
+
+[notice.model_migrations]
+"gpt-5.6-sol" = "gpt-6-sol"

@@ -191,13 +191,16 @@ return {
                 return register_capability(err, res, ctx)
             end
 
+            local enabled = {}
             for name, config in pairs(servers) do
                 local disabled = { "basedpyright", "pyright" }
                 if not vim.tbl_contains(disabled, name) then
                     vim.lsp.config(name, config)
                     vim.lsp.enable(name)
+                    table.insert(enabled, name)
                 end
             end
+            require("config.lsp_timeout").setup(enabled)
 
             vim.lsp.log.set_level(vim.log.levels.WARN)
 

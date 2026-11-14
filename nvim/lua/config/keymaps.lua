@@ -104,9 +104,42 @@ map("n", "<leader>xx", function()
     vim.cmd("so %")
 end, { desc = "Save and source current file" })
 
+--- Runs lua code in every other running nvim instance. The code is scheduled
+--- remotely so a slow/blocking chunk doesn't hang this instance.
+---@param code string lua chunk; receives `args` as `...`
+---@param args? any[]
+---@return integer count number of instances the code was sent to
+local exec_lua_in_other_instances = function(code, args)
+    -- each instance's socket lives at <run dir parent>/<random>/nvim.<pid>.0
+    local run_parent = vim.fs.dirname(vim.fn.stdpath("run"))
+    local sockets = vim.fn.glob(run_parent .. "/*/nvim.*.0", true, true)
+    local wrapped = "local args = { ... } vim.schedule(function() assert(loadstring(args[1]))(unpack(args, 2)) end)"
+    local count = 0
+    for _, sock in ipairs(sockets) do
+        if sock ~= vim.v.servername then
+            local ok, chan = pcall(vim.fn.sockconnect, "pipe", sock, { rpc = true })
+            if ok and chan > 0 then
+                local sent = pcall(vim.fn.rpcrequest, chan, "nvim_exec_lua", wrapped, { code, unpack(args or {}) })
+                if sent then count = count + 1 end
+                vim.fn.chanclose(chan)
+            end
+        end
+    end
+    return count
+end
+
+--- Sources a file in this and every other running nvim instance
+---@param file? string defaults to the current file
+local source_in_all_instances = function(file)
+    file = vim.fn.fnamemodify(file or vim.fn.expand("%"), ":p")
+    vim.cmd.source(vim.fn.fnameescape(file))
+    local count = exec_lua_in_other_instances("local f = ... vim.cmd.source(vim.fn.fnameescape(f))", { file })
+    vim.notify(("Sourced %s in %d other instance(s)"):format(vim.fn.fnamemodify(file, ":t"), count))
+end
+
 utils.create_cmd_and_map("SourceAllInstances", "<leader>xX", function()
     vim.cmd("w")
-    utils.source_in_all_instances()
+    source_in_all_instances()
 end, "Save and source current file in all nvim instances")
 
 map("n", "<leader>,r", ":restart<cr>", { desc = "Restart Neovim" })

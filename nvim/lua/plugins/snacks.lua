@@ -7,6 +7,10 @@ local always_exclude = {
     "*.git/",
 }
 
+--- rg flags to include files ignored only by local overrides (.git/info/exclude, core.excludesFile)
+--- @type string[]
+local local_ignore_overrides = { "--no-ignore-exclude", "--no-ignore-global" }
+
 --- @type string[]
 local enabled_toggles = { "tests", "data", "media" }
 
@@ -228,6 +232,14 @@ return {
                     },
                     files = {
                         hidden = true,
+                        -- fd can't skip local ignores while still respecting .gitignore
+                        cmd = "rg",
+                        args = local_ignore_overrides,
+                        -- rg skips symlinked files unless following links (also follows symlinked dirs)
+                        follow = true,
+                    },
+                    grep = {
+                        args = local_ignore_overrides,
                     },
                     keymaps = {
                         plugs = true,
