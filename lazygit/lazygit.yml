@@ -50,7 +50,7 @@ customCommands:
     command: "git checkout --detach {{.SelectedLocalBranch.Name}}"
     context: "localBranches"
     description: "Checkout as detached HEAD"
-  - key: "G"
+  - key: "o"
     command: "gh pr view -w {{.SelectedLocalBranch.Name}}"
     context: "localBranches"
     description: "Open Github PR in browser"
