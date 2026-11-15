@@ -25,7 +25,8 @@
             "Bash(npx:*)",
             "Bash(yarn:*)"
         ],
-        "defaultMode": "auto"
+        "defaultMode": "auto",
+        "blockWritesOutsideWorkingDirectories": true
     },
     "model": "opus",
     "hooks": {
@@ -93,5 +94,6 @@
     "autoMemoryEnabled": false,
     "theme": "light",
     "preferredNotifChannel": "terminal_bell",
-    "switchModelsOnFlag": false
+    "switchModelsOnFlag": false,
+    "agentPushNotifEnabled": true
 }

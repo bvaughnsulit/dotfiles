@@ -15,7 +15,7 @@ local ai_cli_options = {
 local toggle_ai_cli = function(opts)
     opts = opts or {}
 
-    local default_ai_cli = ai_cli_options[require("config.settings").default_ai_cli] or ai_cli_options.sbx
+    local default_ai_cli = ai_cli_options[require("config.settings").default_ai_cli] or ai_cli_options.claude
     local cmd = {}
     vim.list_extend(cmd, opts.cmd or default_ai_cli)
 
