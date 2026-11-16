@@ -1,1 +1,6 @@
+# https://github.com/agavra/tuicr/blob/main/docs/CONFIG.md
 comment_vim = true
+wrap = true
+wrap_style = "gutter"
+scroll_offset = 4
+q_quits = true
