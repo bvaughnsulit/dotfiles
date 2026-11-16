@@ -19,6 +19,7 @@ ln -si ${DOTFILES_DIR}/.p10k.zsh ~/.p10k.zsh
 ln -si ${DOTFILES_DIR}/.zshrc ~/.zshrc
 ln -si ${DOTFILES_DIR}/.tool-versions ~/.tool-versions
 ln -si ${DOTFILES_DIR}/lazygit/lazygit.yml ~/Library/Application\ Support/lazygit/config.yml
+
 mkdir -p ~/.homebrew
 ln -si ${DOTFILES_DIR}/homebrew/brew.env ~/.homebrew/brew.env
 ln -si ${DOTFILES_DIR}/homebrew/Brewfile ~/.homebrew/Brewfile
@@ -29,6 +30,7 @@ ln -siF ${DOTFILES_DIR}/ghostty ~/.config/ghostty
 ln -siF ${DOTFILES_DIR}/kitty ~/.config/kitty
 ln -siF ${DOTFILES_DIR}/nvim ~/.config/nvim
 ln -siF ${DOTFILES_DIR}/tmux ~/.config/tmux
+ln -siF ${DOTFILES_DIR}/tuicr ~/.config/tuicr
 ln -siF ${DOTFILES_DIR}/opencode/plugins ~/.config/opencode/plugins
 ln -siF ${DOTFILES_DIR}/homebrew/aliases ~/.brew-aliases
 ln -siF ${DOTFILES_DIR}/mise ~/.config/mise

@@ -296,6 +296,30 @@ end, "Focus Floating Window")
 
 vim.keymap.set("t", "<c-\\><c-\\>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
+---@param args string[] | nil
+local toggle_tuicr = function(args)
+    -- local utils = require("config.utils")
+
+    local cmd = vim.list_extend({ "tuicr" }, args or {})
+
+    utils.toggle_persistent_terminal(cmd, "tuicr", {
+        identifier = args and table.concat(args, " ") or nil,
+        q_to_go_back = { "n" },
+        auto_insert = true,
+        win_config = {
+            relative = "editor",
+            height = vim.o.lines - 2,
+            width = vim.o.columns,
+            row = 1,
+            col = 1,
+        },
+        job_opts = { env = {
+            EDITOR = utils.get_dotfiles_root() .. "/tuicr/nvim",
+        } },
+    })
+end
+vim.keymap.set("n", "<leader>gr", function() toggle_tuicr() end, { desc = "Open tuicr Terminal" })
+
 vim.keymap.set(
     "n",
     "<leader>gg",

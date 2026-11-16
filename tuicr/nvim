@@ -1,0 +1,23 @@
+#!/bin/sh
+# tuicr editor shim: open the file in the parent nvim when tuicr runs inside an nvim terminal.
+#
+# Named `nvim` so tuicr passes `+LINE PATH` (it picks line syntax by executable name).
+# Used via $EDITOR from toggle_tuicr in nvim/lua/config/keymaps.lua.
+# Shell rather than Python: this runs on every edit, and Python startup was noticeably slower.
+
+line=
+case "$1" in
++*)
+    line=${1#+}
+    shift
+    ;;
+esac
+path=$1
+
+if [ -z "$NVIM" ]; then
+    exec nvim ${line:+"+$line"} -- "$path"
+fi
+
+nvim --server "$NVIM" --remote-send "qq" &&
+    nvim --server "$NVIM" --remote "$path" &&
+    if [ -n "$line" ]; then nvim --server "$NVIM" --remote-send "<Cmd>$line<CR>"; fi
