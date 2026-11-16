@@ -31,6 +31,18 @@ vim.api.nvim_create_autocmd("OptionSet", {
     end,
 })
 
+-- tmux can miss a light/dark change that happens while the machine is asleep,
+-- so re-check macOS directly whenever focus returns.
+vim.api.nvim_create_autocmd("FocusGained", {
+    group = utils.augroup("background_focus_check"),
+    -- nested so that setting 'background' fires the OptionSet autocmd above
+    nested = true,
+    callback = function()
+        local background = utils.is_system_dark_mode() and "dark" or "light"
+        if vim.o.background ~= background then vim.o.background = background end
+    end,
+})
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
