@@ -91,9 +91,14 @@
     "effortLevel": "high",
     "promptSuggestionEnabled": false,
     "tui": "default",
+    "voice": {
+        "enabled": true,
+        "mode": "tap"
+    },
     "autoMemoryEnabled": false,
-    "theme": "light",
+    "theme": "dark",
     "preferredNotifChannel": "terminal_bell",
     "switchModelsOnFlag": false,
-    "agentPushNotifEnabled": true
+    "agentPushNotifEnabled": true,
+    "voiceEnabled": true
 }
