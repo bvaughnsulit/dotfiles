@@ -96,7 +96,7 @@
         "mode": "tap"
     },
     "autoMemoryEnabled": false,
-    "theme": "dark",
+    "theme": "light",
     "preferredNotifChannel": "terminal_bell",
     "switchModelsOnFlag": false,
     "agentPushNotifEnabled": true,
