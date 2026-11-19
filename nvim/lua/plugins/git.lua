@@ -42,6 +42,13 @@ return {
                     anchor = "SW",
                 },
                 on_attach = function(bufnr)
+                    -- Only attach to buffers in the cwd's repo. The global base is a hash from that repo, and
+                    -- change_base(..., true) errors on buffers from repos that don't contain it. The buffer
+                    -- path is resolved because gitsigns attaches a symlinked file to the repo of its target.
+                    local bufname = vim.api.nvim_buf_get_name(bufnr)
+                    local buf_root = Snacks.git.get_root(vim.uv.fs_realpath(bufname) or bufname)
+                    if buf_root ~= Snacks.git.get_root(vim.uv.cwd()) then return false end
+
                     local gitsigns = require("gitsigns")
 
                     local function map(mode, l, r, opts)
