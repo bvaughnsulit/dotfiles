@@ -4,12 +4,16 @@
 # ///
 """Print the tmux status label for one window.
 
-Windows inside a worktree of the session's repo show their branch; others show
-their directory name. Labels share the total width: labels shorter than an even
-share keep their full length, and the longer ones split what is left.
+Windows named by hand show that name. Other windows inside a worktree of the
+session's repo show their branch; the rest show their directory name. Labels
+share the total width: labels shorter than an even share keep their full
+length, and the longer ones split what is left.
 
 Usage:
-    tmux-window-label.py <session path> <total width> <window index> [<window index> <window path>]...
+    tmux-window-label.py <session path> <total width> <window index> [<window index> <window path> <window name>]...
+
+<window name> is the window's name if it was named by hand, or empty while tmux
+is renaming it automatically.
 """
 
 import os
@@ -43,7 +47,10 @@ def worktree_refs(session_path):
     return refs
 
 
-def label_for(window_path, refs):
+def label_for(window_path, window_name, refs):
+    if window_name:
+        return window_name
+
     real_path = os.path.realpath(window_path)
     directory_name = os.path.basename(window_path)
     matches = [w for w in refs if real_path == w or real_path.startswith(w + os.sep)]
@@ -83,8 +90,8 @@ def main():
     session_path, total_width, own_window_index, *window_args = sys.argv[1:]
     refs = worktree_refs(session_path)
     labels = {
-        window_index: label_for(window_path, refs)
-        for window_index, window_path in zip(window_args[::2], window_args[1::2])
+        window_index: label_for(window_path, window_name, refs)
+        for window_index, window_path, window_name in zip(window_args[::3], window_args[1::3], window_args[2::3])
     }
     max_length = max(MIN_LENGTH, max_label_length([len(label) for label in labels.values()], int(total_width)))
     print(truncate(labels[own_window_index], max_length))
