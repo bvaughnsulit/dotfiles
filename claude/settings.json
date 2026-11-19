@@ -8,7 +8,6 @@
             "Bash(find:*)",
             "Bash(gh pr view *)",
             "Bash(git add *)",
-            "Bash(git commit *)",
             "Bash(git show *)",
             "Bash(git status *)",
             "Bash(grep:*)",
@@ -23,7 +22,9 @@
         ],
         "deny": [
             "Bash(npx:*)",
-            "Bash(yarn:*)"
+            "Bash(yarn:*)",
+            "Bash(pkill:*)",
+            "Bash(killall:*)"
         ],
         "defaultMode": "auto",
         "blockWritesOutsideWorkingDirectories": true
@@ -75,7 +76,6 @@
         "feature-dev@claude-plugins-official": true,
         "pr-review-toolkit@claude-plugins-official": true,
         "pyright-lsp@claude-plugins-official": true,
-        "ralph-loop@claude-plugins-official": false,
         "security-guidance@claude-plugins-official": true,
         "typescript-lsp@claude-plugins-official": true,
         "frontend-design@claude-plugins-official": false,
